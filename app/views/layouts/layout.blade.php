@@ -41,7 +41,7 @@
               @if(Auth::check())
                 <li><a>Hello {{ Auth::user()->name }}</a></li>
               @else
-                <li><a href="#" data-toggle="modal" data-target="#myModal">Login</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
               @endif
             </ul>
           </div><!-- /.navbar-collapse -->
@@ -55,8 +55,8 @@
         </div>
       </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- Modals -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">

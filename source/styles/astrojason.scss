@@ -13,7 +13,7 @@
   }
 }
 
-.link-action {
+.link-action, .book-action, .movie-action {
   cursor: pointer;
   &:hover {
     color: #009933;

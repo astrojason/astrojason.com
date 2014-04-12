@@ -28,6 +28,7 @@ Route::group(array('prefix' => 'api'), function() {
 
   Route::group(array('prefix' => 'link'), function(){
     Route::put('/', 'ApiController@saveLink');
+    Route::get('/{id}/read/', 'ApiController@markLinkAsRead');
   });
 
   Route::post('/login', 'ApiController@login');

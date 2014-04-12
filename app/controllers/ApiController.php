@@ -55,21 +55,46 @@ class ApiController extends BaseController {
   public function saveLink() {
     if(Auth::check()) {
       if(Input::get('id')) {
-
+        $link = Link::where('id', Input::get('id'))->where('user_id', Auth::user()->id)->get()[0];
       } else {
         $link = new Link();
       }
-
+      if(isset($link)) {
+        $link->name = Input::get('name');
+        $link->link = Input::get('link');
+        $link->category = Input::get('category');
+        $link->read = Input::get('read');
+        $link->instapaper_id = Input::get('instapaper_id');
+        $link->save();
+        return Response::json(array('success' => true, 'link' => $link->toArray()), 200);
+      } else {
+        return Response::json(array('success' => false), 200);
+      }
     }
-//    $linkData = array(
-//      'id' => Input::get('id'),
-//      'name' => Input::get('name'),
-//      'link' => Input::get('link'),
-//      'category' => Input::get('category'),
-//      'read' => Input::get('read'),
-//      'instapaper_id' => Input::get('instapaper_id')
-//    );
-//    //TODO: Save this link
+  }
+
+  public function markLinkAsRead($id){
+    $link = Link::where('user_id', Auth::user()->id)->where('id', $id)->get();
+    if(count($link) > 0) {
+      $link = $link[0];
+      $link->read = true;
+      if($link->instapaper_id){
+        $instapaper_client = $_SERVER["INSTAPAPER_CLIENT"];
+        $instapaper_client_secret = $_SERVER["INSTAPAPER_CLIENT_SECRET"];
+        $instapaper_username = $_SERVER["INSTAPAPER_USERNAME"];
+        $instapaper_password = $_SERVER["INSTAPAPER_PASSWORD"];
+        $instapaper = new InstapaperOAuth($instapaper_client, $instapaper_client_secret);
+        $token = $instapaper->get_access_token($instapaper_username, $instapaper_password);
+        $oauth_token = $token["oauth_token"];
+        $oauth_token_secret = $token["oauth_token_secret"];
+        $instapaper = new InstapaperOAuth($instapaper_client, $instapaper_client_secret ,$oauth_token,$oauth_token_secret);
+        $instapaper->archive_bookmark($link->instapaper_id);
+      }
+      $link->save();
+      return Response::json(array('success' => true), 200);
+    } else {
+      return Response::json(array('success' => false), 200);
+    }
   }
 
   public function login(){

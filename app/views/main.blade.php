@@ -50,10 +50,47 @@
               <!-- TODO: Find out how to organize these -->
               <tr ng-repeat="movie in movies">
                 <td class="fill-row">@{{ movie.title }}</td>
-                <td><div class="glyphicon glyphicon-arrow-down movie-action right"></div></td>
-                <td><div class="glyphicon glyphicon-arrow-up movie-action right"></div></td>
+                <td><div class="glyphicon glyphicon-arrow-down movie-action right" ng-show="!$last"></div></td>
+                <td><div class="glyphicon glyphicon-arrow-up movie-action right" ng-show="!$first"></div></td>
               </div>
             </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="linkModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">Link Edit</h4>
+            </div>
+            <div class="modal-body">
+              <form id="link-edit" ng-controller="todayController" ng-subimt="editLink" data-abide>
+                <div class="row">
+                  <div class="col-lg-10 col-lg-offset-1 input-group">
+                    <label class="input-group-addon">Name:</label>
+                    <input class="form-control" type="text" ng-model="editing_link.name" />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-10 col-lg-offset-1 input-group">
+                    <label class="input-group-addon">URL:</label>
+                    <input class="form-control" type="text" ng-model="editing_link.link" />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-10 col-lg-offset-1 input-group">
+                    <label class="input-group-addon">Category:</label>
+                    <select class="form-control" ng-model="editing_link.category">
+                      <option ng-repeat="category in categories">@{{ category.category }}</option>
+                    </select>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
+            </div>
           </div>
         </div>
       </div>
@@ -70,9 +107,9 @@
   <script src="/js/controllers/nextBookController.js"></script>
   <script src="/js/controllers/movieRaterController.js"></script>
   <script type="text/ng-template" id="link-info">
-    <td class="fill-row"><a href="@{{ link.url }}">@{{ link.name }}</a></td>
-    <td><div class="glyphicon glyphicon-pencil link-action"></div></td>
-    <td><div class="glyphicon glyphicon-off link-action" ng-click="postpone(link)"></div></td>
-    <td><div class="glyphicon glyphicon-ok link-action"></div></td>
+    <td class="fill-row"><a href="@{{ link.link }}">@{{ link.name }}</a></td>
+    <td><div class="glyphicon glyphicon-pencil link-action" data-toggle="modal" data-target="#linkModal" ng-click="edit(link)"></div></td>
+    <td><div class="glyphicon glyphicon-off link-action" ng-click="postpone(link, $index)"></div></td>
+    <td><div class="glyphicon glyphicon-ok link-action" ng-click="markAsRead(link, $index)"></div></td>
   </script>
 @stop
