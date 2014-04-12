@@ -97,7 +97,6 @@
     @else
       <h3>Nothing to see here, move along.</h3>
       <img src="/img/whos_awesome.jpg" /><br />
-      {{ $password }}
     @endif
   </div>
 @stop
