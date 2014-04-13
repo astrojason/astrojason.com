@@ -56,8 +56,12 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
     $http.get('/api/links').success(function(data){
       var existing_links = data.links;
       $http.get('/js/data/links.json').success(function(data){
-        for(var i = 0; i < data.links.length; i++) {
-          delete data.links[i].id;
+        var links_to_add = data.links;
+        var links_to_add_length = links_to_add.length;
+        for(var i = 0; i < links_to_add_length; i++) {
+          var this_link = data.links[i];
+          delete this_link.id;
+          delete this_link.updated_at;
           var found = false;
           for(var j = 0; j < existing_links.length; j++) {
             if(data.links[i].link == existing_links[j].link) {
@@ -66,12 +70,11 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
             }
           }
           if(found) {
-            console.log(data.links[i].name + ' already exists, moving on');
+            console.log(this_link.name + ' already exists, moving on');
           } else {
-            console.log('About to add: ' + data.links[i].name);
-            var this_link = data.links[i];
+            console.log('About to add: ' + this_link.name);
             if(this_link) {
-              setTimeout(function(){$scope.saveLink(this_link)}, 5000);
+              setTimeout($scope.saveLink(this_link), 5000);
             }
           }
         }
