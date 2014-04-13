@@ -2,6 +2,8 @@
  * Created by jasonsylvester on 4/2/14.
  */
 astroApp.controller('todayController', ['$scope', '$http', function($scope, $http){
+  $scope.items_to_migrate = [];
+
   $http.get('/api/links/today').success(function(data) {
     $scope.guitar = data.guitar;
     $scope.photography = data.photography;
@@ -72,14 +74,27 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
           if(found) {
             console.log(this_link.name + ' already exists, moving on');
           } else {
-            console.log('About to add: ' + this_link.name);
-            if(this_link) {
-              setTimeout($scope.saveLink(this_link), 5000);
+            if(this_link.name) {
+              console.log('Adding ' + this_link.name + ' to update array.');
+              $scope.items_to_migrate.push(this_link);
+            } else {
+              console.log('Problem with: ');
+              console.log(this_link);
             }
           }
         }
+        $scope.migrateItem();
       });
     });
+  }
+  $scope.migrateItem = function() {
+    var item_to_migrate = $scope.items_to_migrate.pop();
+    $scope.saveLink(item_to_migrate);
+    if($scope.items_to_migrate.length > 0) {
+      setTimeout($scope.migrateItem(), 5000);
+    } else {
+      console.log('Migration complete');
+    }
   }
   $scope.saveLink = function(save_data) {
     console.log('About to add: ');
