@@ -4,6 +4,11 @@
   <div ng-controller="todayController">
     @if(Auth::check())
       <div class="row">
+        <div class="col-md-12">
+          <button ng-click="migrate()">Migrate</button>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-md-8 col-md-offset-1">
           <div class="panel panel-default" ng-show="guitar.length > 0">
             <div class="panel-heading">
@@ -106,7 +111,7 @@
   <script src="/js/controllers/nextBookController.js"></script>
   <script src="/js/controllers/movieRaterController.js"></script>
   <script type="text/ng-template" id="link-info">
-    <td class="fill-row"><a href="@{{ link.link }}">@{{ link.name }}</a></td>
+    <td class="fill-row"><a href="@{{ link.link }}" target="_blank">@{{ link.name }}</a></td>
     <td><div class="glyphicon glyphicon-pencil link-action" data-toggle="modal" data-target="#linkModal" ng-click="edit(link)"></div></td>
     <td><div class="glyphicon glyphicon-off link-action" ng-click="postpone(link, $index)"></div></td>
     <td><div class="glyphicon glyphicon-ok link-action" ng-click="markAsRead(link, $index)"></div></td>

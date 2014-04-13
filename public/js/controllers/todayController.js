@@ -49,8 +49,24 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
       read: $scope.editing_link.read,
       instapaper_id: $scope.editing_link.instapaper_id
     };
+    //TODO: If category is changed, remove this link
+    $scope.saveLink(save_data);
+  }
+  $scope.migrate = function() {
+    $http.get('http://astro.dev/api/links').success(function(data){
+      for(var i = 0; i < data.links.length; i++) {
+        if(i < 10) {
+          delete data.links[i].id;
+          console.log(data.links[i]);
+        }
+      }
+    });
+  }
+  $scope.saveLink = function(save_data) {
     $http({method: 'PUT', url: '/api/link/', data: save_data}).success(function(data){
-      //TODO: If category is changed, remove this link
+      if(data.success) {
+        $('#linkModal').modal('hide');
+      }
     });
   }
 }]);
