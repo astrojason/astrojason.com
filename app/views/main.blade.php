@@ -44,12 +44,12 @@
           </div>
         </div>
         <div class="col-md-3">
-          <div class="caption" ng-controller="nextBookController">
+          <div class="caption" ng-controller="nextBookController" ng-show="book">
             <h4>Next Book to Read</h4>
             <p>@{{ book.title }}<br /><small>by @{{ book.author_fname }}<span ng-show="book.author_lname" > @{{ book.author_lname }}</span></small></p>
             <p><div class="glyphicon glyphicon-ok book-action right" ng-click="read(book)"></div></p>
           </div>
-          <div class="caption" ng-controller="movieRaterController">
+          <div class="caption" ng-controller="movieRaterController" ng-show="movies">
             <h4>Order These Movies</h4>
             <table>
               <!-- TODO: Find out how to organize these -->

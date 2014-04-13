@@ -40,7 +40,7 @@ class ApiController extends BaseController {
 
   public function allLinks() {
     $links = Link::where('user_id', Auth::user()->id)->get();
-    return Response::json(array('links' => $links->toArray()), 200);
+    return Response::json(array('links' => $links->toArray()), 200, array('Access-Control-Allow-Origin' => '*'));
   }
 
   public function todaysLinks() {
@@ -54,7 +54,7 @@ class ApiController extends BaseController {
       'photography' => $photography->toArray(),
       'guitar' => $guitar->toArray(),
       'categories' => $categories->toArray()
-    ), 200, array('Access-Control-Allow-Origin' => '*'));
+    ), 200);
   }
 
   public function saveLink() {
