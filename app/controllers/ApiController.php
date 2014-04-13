@@ -62,7 +62,14 @@ class ApiController extends BaseController {
       if(Input::get('id')) {
         $link = Link::where('id', Input::get('id'))->where('user_id', Auth::user()->id)->get()[0];
       } else {
-        $link = new Link();
+        // Make sure this link doesn't already exist for this user
+        $link = Link::where('user_id', Auth::user()->id)->where('link', Input::get('link'))->get();
+        if(count($link) == 0) {
+          $link = new Link();
+          $link->user_id = Auth::user()->id;
+        } else {
+          unset($link);
+        }
       }
       if(isset($link)) {
         $link->name = Input::get('name');

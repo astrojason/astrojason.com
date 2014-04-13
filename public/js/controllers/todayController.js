@@ -55,9 +55,10 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
   $scope.migrate = function() {
     $http.get('/js/data/links.json').success(function(data){
       for(var i = 0; i < data.links.length; i++) {
-        if(i < 10) {
+        if(i < 1) {
           delete data.links[i].id;
-          console.log(data.links[i]);
+          $scope.saveLink(data.links[i]);
+//          console.log(data.links[i]);
         }
       }
     });
