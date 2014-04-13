@@ -69,13 +69,18 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
             console.log(data.links[i].name + ' already exists, moving on');
           } else {
             console.log('About to add: ' + data.links[i].name);
-            setTimeout(function(){$scope.saveLink(data.links[i])}, 5000);
+            var this_link = data.links[i];
+            if(this_link) {
+              setTimeout(function(){$scope.saveLink(this_link)}, 5000);
+            }
           }
         }
       });
     });
   }
   $scope.saveLink = function(save_data) {
+    console.log('About to add: ');
+    console.log(save_data);
     $http({method: 'PUT', url: '/api/link/', data: save_data}).success(function(data){
       if(data.success) {
         console.log('Link: ' + save_data.name + ' saved.');
