@@ -63,7 +63,10 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
   $scope.saveLink = function(save_data) {
     $http({method: 'PUT', url: '/api/link/', data: save_data}).success(function(data){
       if(data.success) {
+        console.log('Link: ' + save_data.name + ' saved.');
         $('#linkModal').modal('hide');
+      } else {
+        console.log('Link: ' + save_data.name + ' not saved.');
       }
     });
   }

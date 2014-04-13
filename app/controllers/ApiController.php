@@ -45,10 +45,10 @@ class ApiController extends BaseController {
 
   public function todaysLinks() {
     $categories = Link::groupBy('category')->get(array('category'));
-    $links = Link::where('read', 0)->where('category', 'unread')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(20)->get();
-    $programming = Link::where('read', 0)->where('category', 'programming')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
-    $photography = Link::where('read', 0)->where('category', 'photography')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
-    $guitar = Link::where('read', 0)->where('category', 'guitar')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
+    $links = Link::where('read', false)->where('category', 'Unread')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(20)->get();
+    $programming = Link::where('read', false)->where('category', 'Programming')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
+    $photography = Link::where('read', false)->where('category', 'Photography')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
+    $guitar = Link::where('read', false)->where('category', 'Guitar')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
     return Response::json(array('links' => $links->toArray(),
       'programming' => $programming->toArray(),
       'photography' => $photography->toArray(),
