@@ -72,16 +72,20 @@ class ApiController extends BaseController {
         }
       }
       if(isset($link)) {
-        $link->name = Input::get('name');
-        $link->link = Input::get('link');
-        $link->category = Input::get('category');
-        $link->read = Input::get('read');
-        $instapaper_id = Input::get('instapaper_id');
-        if(isset($instapaper_id) && is_int($instapaper_id)) {
-          $link->instapaper_id = $instapaper_id;
+        try {
+          $link->name = Input::get('name');
+          $link->link = Input::get('link');
+          $link->category = Input::get('category');
+          $link->read = Input::get('read');
+          $instapaper_id = Input::get('instapaper_id');
+          if(isset($instapaper_id) && is_int($instapaper_id)) {
+            $link->instapaper_id = $instapaper_id;
+          }
+          $link->save();
+          return Response::json(array('success' => true, 'link' => $link->toArray()), 200);
+        } catch(Exception $exception) {
+          return Response::make($exception->getCode());
         }
-        $link->save();
-        return Response::json(array('success' => true, 'link' => $link->toArray()), 200);
       } else {
         return Response::json(array('success' => false), 200);
       }
