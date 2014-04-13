@@ -89,7 +89,7 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
     var item_to_migrate = $scope.items_to_migrate.pop();
     $scope.saveLink(item_to_migrate);
     if($scope.items_to_migrate.length > 0) {
-      setTimeout($scope.migrateItem(), 5000);
+      setTimeout(function(){$scope.migrateItem()}, 5000);
     } else {
       console.log('Migration complete');
     }
