@@ -76,7 +76,8 @@ class ApiController extends BaseController {
         $link->link = Input::get('link');
         $link->category = Input::get('category');
         $link->read = Input::get('read');
-        if(isset(Input::get('instapaper_id'))) {
+        $instapaper_id = Input::get('instapaper_id');
+        if(isset($instapaper_id) && is_infinite($instapaper_id)) {
           $link->instapaper_id = Input::get('instapaper_id');
         }
         $link->save();
