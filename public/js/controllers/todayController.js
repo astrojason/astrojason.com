@@ -71,9 +71,7 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
               break;
             }
           }
-          if(found) {
-            console.log(this_link.name + ' already exists, moving on');
-          } else {
+          if(!found) {
             if(this_link.name) {
               console.log('Adding ' + this_link.name + ' to update array.');
               $scope.items_to_migrate.push(this_link);
