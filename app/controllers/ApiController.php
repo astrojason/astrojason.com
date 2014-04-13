@@ -40,7 +40,7 @@ class ApiController extends BaseController {
 
   public function allLinks() {
     $links = Link::where('user_id', Auth::user()->id)->get();
-    return Response::json(array('links' => $links->toArray()), 200, array('Access-Control-Allow-Origin' => '*'));
+    return Response::json(array('links' => $links->toArray()), 200);
   }
 
   public function todaysLinks() {

@@ -53,7 +53,7 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
     $scope.saveLink(save_data);
   }
   $scope.migrate = function() {
-    $http.get('http://astro.dev/api/links').success(function(data){
+    $http.get('/js/data/links.json').success(function(data){
       for(var i = 0; i < data.links.length; i++) {
         if(i < 10) {
           delete data.links[i].id;
