@@ -88,11 +88,11 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
   $scope.migrateItem = function() {
     var item_to_migrate = $scope.items_to_migrate.pop();
     $scope.saveLink(item_to_migrate);
-    if($scope.items_to_migrate.length > 0) {
-      setTimeout(function(){$scope.migrateItem()}, 5000);
-    } else {
-      console.log('Migration complete');
-    }
+//    if($scope.items_to_migrate.length > 0) {
+//      setTimeout(function(){$scope.migrateItem()}, 5000);
+//    } else {
+//      console.log('Migration complete');
+//    }
   }
   $scope.saveLink = function(save_data) {
     console.log('About to add: ');
