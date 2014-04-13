@@ -77,14 +77,13 @@ class ApiController extends BaseController {
           $link->link = Input::get('link');
           $link->category = Input::get('category');
           $link->read = Input::get('read');
-          $instapaper_id = Input::get('instapaper_id');
-          if(isset($instapaper_id) && is_int($instapaper_id)) {
-            $link->instapaper_id = $instapaper_id;
+          if(Input::get('instapaper_id')) {
+            $link->instapaper_id = Input::get('instapaper_id');
           }
           $link->save();
           return Response::json(array('success' => true, 'link' => $link->toArray()), 200);
         } catch(Exception $exception) {
-          return Response::make($exception->getCode());
+          return Response::make($exception->getMessage());
         }
       } else {
         return Response::json(array('success' => false), 200);
