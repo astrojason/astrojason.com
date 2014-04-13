@@ -137,13 +137,13 @@ class ApiController extends BaseController {
     return Response::json(array('movies' => $movies), 200);
   }
 
-  //TODO: Create edit functions for movies, books and links
+  //TODO: Create edit functions for movies, books and games
 
   public function getOrderCommand() {
-    if($_SERVER["APPLICATION_ENV"] == 'development') {
-      return 'RAND()';
-    } else {
+//    if($_SERVER["APPLICATION_ENV"] == 'development') {
+//      return 'RAND()';
+//    } else {
       return 'random()';
-    }
+//    }
   }
 } 
