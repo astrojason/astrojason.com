@@ -62,6 +62,9 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
         var links_to_add_length = links_to_add.length;
         for(var i = 0; i < links_to_add_length; i++) {
           var this_link = data.links[i];
+          if(!this_link.instapaper_id) {
+            delete this_link.instapaper_id;
+          }
           delete this_link.id;
           delete this_link.updated_at;
           var found = false;
@@ -73,7 +76,7 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
           }
           if(!found) {
             if(this_link.name) {
-              console.log(typeof this_link.instapaper_id);
+              console.log(this_link.instapaper_id);
               console.log('Adding ' + this_link.name + ' to update array.');
               $scope.items_to_migrate.push(this_link);
             } else {
@@ -88,7 +91,9 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
   }
   $scope.migrateItem = function() {
     var item_to_migrate = $scope.items_to_migrate.pop();
-    $scope.saveLink(item_to_migrate);
+    if(item_to_migrate) {
+      $scope.saveLink(item_to_migrate);
+    }
 //    if($scope.items_to_migrate.length > 0) {
 //      setTimeout(function(){$scope.migrateItem()}, 5000);
 //    } else {
