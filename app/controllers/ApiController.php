@@ -140,10 +140,10 @@ class ApiController extends BaseController {
   //TODO: Create edit functions for movies, books and games
 
   public function getOrderCommand() {
-//    if($_SERVER["APPLICATION_ENV"] == 'development') {
-//      return 'RAND()';
-//    } else {
+    if($_SERVER["APPLICATION_ENV"] == 'development') {
+      return 'RAND()';
+    } else {
       return 'random()';
-//    }
+    }
   }
 } 
