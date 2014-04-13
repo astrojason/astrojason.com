@@ -48,7 +48,7 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 
 App::error(function(Exception $exception, $code)
 {
-  isset($_SERVER["EMAIL_PASSWORD"]) ? mail("jason@astrojason.com", 'Error', $exception) : Log::error($exception);;
+  Log::error($exception);;
 });
 
 /*

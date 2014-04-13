@@ -73,6 +73,7 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
           }
           if(!found) {
             if(this_link.name) {
+              console.log(typeof this_link.instapaper_id);
               console.log('Adding ' + this_link.name + ' to update array.');
               $scope.items_to_migrate.push(this_link);
             } else {
