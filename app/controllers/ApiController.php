@@ -14,11 +14,16 @@ class ApiController extends BaseController {
   }
 
   public function nextBook() {
-    $book = Book::where('read', 0)->where('category', 'Fiction')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get()[0];
-    if($book->seriesorder != 0) {
-      $book = Book::where('user_id', Auth::user()->id)->where('series', $book->series)->where('read', 0)->orderBy('seriesorder')->take(1)->get()[0];
+    $book = Book::where('read', 0)->where('category', 'Fiction')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
+    if(count($book) > 0) {
+      $book = $book[0];
+      if($book->seriesorder != 0) {
+        $book = Book::where('user_id', Auth::user()->id)->where('series', $book->series)->where('read', 0)->orderBy('seriesorder')->take(1)->get()[0];
+      }
+      return Response::json(array('book' => $book->toArray()), 200);
+    } else {
+      return Response::json(array('error' => 'No Books Available'), 200);
     }
-    return Response::json(array('book' => $book->toArray()), 200);
   }
 
   public function markBookAsRead($id) {
@@ -140,10 +145,6 @@ class ApiController extends BaseController {
   //TODO: Create edit functions for movies, books and games
 
   public function getOrderCommand() {
-    if($_SERVER["APPLICATION_ENV"] == 'development') {
-      return 'RAND()';
-    } else {
-      return 'random()';
-    }
+    return isset($_SERVER["DATABASE_URL"]) ? 'random()' : 'RAND()';
   }
 } 
