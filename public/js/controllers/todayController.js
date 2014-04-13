@@ -53,11 +53,26 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
     $scope.saveLink(save_data);
   }
   $scope.migrate = function() {
-    $http.get('/js/data/links.json').success(function(data){
-      for(var i = 0; i < data.links.length; i++) {
-        delete data.links[i].id;
-        $scope.saveLink(data.links[i]);
-      }
+    $http.get('/api/links').success(function(data){
+      var existing_links = data.links;
+      $http.get('/js/data/links.json').success(function(data){
+        for(var i = 0; i < data.links.length; i++) {
+          delete data.links[i].id;
+          var found = false;
+          for(var j = 0; j < existing_links.length; j++) {
+            if(data.links[i].link == existing_links[j].link) {
+              found = true;
+              break;
+            }
+          }
+          if(found) {
+            console.log(data.links[i].name + ' already exists, moving on');
+          } else {
+            console.log('About to add: ' + data.links[i].name);
+            setTimeout(function(){$scope.saveLink(data.links[i])}, 5000);
+          }
+        }
+      });
     });
   }
   $scope.saveLink = function(save_data) {
