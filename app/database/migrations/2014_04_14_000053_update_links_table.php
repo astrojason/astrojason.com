@@ -12,7 +12,7 @@ class UpdateLinksTable extends Migration {
 	 */
 	public function up()
 	{
-    DB::update("ALTER TABLE 'links' MODIFY 'instapaper_id' DROP NOT NULL");
+    DB::update("ALTER TABLE links ALTER COLUMN instapaper_id DROP NOT NULL");
 	}
 
 	/**
