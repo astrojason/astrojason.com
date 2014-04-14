@@ -16,7 +16,7 @@ class UpdateBooksTable extends Migration {
     DB::update("ALTER TABLE books ALTER COLUMN author_lname DROP NOT NULL");
     DB::update("ALTER TABLE books ALTER COLUMN author_lname DROP NOT NULL");
     DB::update("ALTER TABLE books ALTER COLUMN series DROP NOT NULL");
-    DB::update("ALTER TABLE books ALTER COLUMN seriesorder DEFAULT 0");
+    DB::update("ALTER TABLE books ALTER COLUMN seriesorder SET DEFAULT 0");
 	}
 
 	/**
