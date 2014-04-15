@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateLinksTable extends Migration {
+class Update201404151151Table extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,8 @@ class UpdateLinksTable extends Migration {
 	 */
 	public function up()
 	{
-    DB::update("ALTER TABLE links ALTER COLUMN instapaper_id DROP NOT NULL");
+    DB::update("ALTER TABLE books ALTER COLUMN author_fname DROP NOT NULL");
+    DB::update("ALTER TABLE users ADD COLUMN remember_token VARCHAR 320");
 	}
 
 	/**
