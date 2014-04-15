@@ -52,6 +52,7 @@ class ApiController extends BaseController {
       }
       if(isset($book)) {
         try {
+          $book->user_id = Auth::user()->id;
           $book->title = Input::get('title');
           $book->goodreads_id = Input::get('goodreads_id');
           $book->author_fname = Input::get('author_fname');
