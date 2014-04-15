@@ -127,6 +127,22 @@ class ApiController extends BaseController {
     }
   }
 
+  public function addLinkFromBookmarklet() {
+    $link = Link::where('user_id', Input::get('user_id'))->where('link', Input::get('link'))->get();
+    if(count($link) == 0) {
+      $link = new Link();
+      $link->user_id = Input::get('user_id');
+      $link->name = Input::get('name');
+      $link->link = Input::get('link');
+      $link->category = 'Unread';
+      $link->read = false;
+      $link->save();
+      return Response::json(array('success' => true), 200, array('Access-Control-Allow-Origin' => '*'));
+    } else {
+      return Response::json(array('success' => false, 'error' => 'Link already exists'), 200, array('Access-Control-Allow-Origin' => '*'));
+    }
+  }
+
   public function markLinkAsRead($id){
     $link = Link::where('user_id', Auth::user()->id)->where('id', $id)->get();
     if(count($link) > 0) {

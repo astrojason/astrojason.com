@@ -4,8 +4,16 @@
   @if(Auth::check())
     <div ng-controller="todayController">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
           <button ng-click="migrate()">Migrate</button>
+        </div>
+        <div class="col-md-6">
+          <a href="javascript:(
+            function(){
+              var jsCode = document.createElement('script');
+              jsCode.setAttribute('src', 'http://www.astrojason.com/js/bookmarklet.min.js');
+              document.body.appendChild(jsCode);
+              })()">Read Later</a>
         </div>
       </div>
       <div class="row">

@@ -30,6 +30,7 @@ Route::group(array('prefix' => 'api'), function() {
 
   Route::group(array('prefix' => 'link'), function(){
     Route::put('/', 'ApiController@saveLink');
+    Route::put('/add', 'ApiController@addLinkFromBookmarklet');
     Route::get('/{id}/read/', 'ApiController@markLinkAsRead');
   });
 

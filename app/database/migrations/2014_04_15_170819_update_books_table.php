@@ -12,10 +12,8 @@ class UpdateBooksTable extends Migration {
 	 */
 	public function up()
 	{
-    DB::update("ALTER TABLE books ALTER COLUMN goodreads_id DROP NOT NULL");
-    DB::update("ALTER TABLE books ALTER COLUMN author_lname DROP NOT NULL");
-    DB::update("ALTER TABLE books ALTER COLUMN series DROP NOT NULL");
-    DB::update("ALTER TABLE books ALTER COLUMN seriesorder SET DEFAULT 0");
+    DB::update("ALTER TABLE books ALTER COLUMN author_fname DROP NOT NULL");
+    DB::update("ALTER TABLE users ADD COLUMN remember_token VARCHAR 320");
 	}
 
 	/**

@@ -16,7 +16,8 @@ module.exports = function(grunt) {
     uglify: {
      build: {
        files: {
-         'public/js/main.min.js': 'source/javascript/main.js'
+         'public/js/main.min.js': 'source/javascript/main.js',
+         'public/js/bookmarklet.min.js': 'source/javascript/bookmarklet.js',
        }
      }
     },
