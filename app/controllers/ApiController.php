@@ -14,7 +14,7 @@ class ApiController extends BaseController {
   }
 
   public function nextBook() {
-    $book = Book::where('read', 0)->where('category', 'Fiction')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
+    $book = Book::where('read', false)->where('category', 'Fiction')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
     if(count($book) > 0) {
       $book = $book[0];
       if($book->seriesorder != 0) {
