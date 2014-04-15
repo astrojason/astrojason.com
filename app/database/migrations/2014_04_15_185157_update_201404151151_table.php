@@ -13,7 +13,7 @@ class Update201404151151Table extends Migration {
 	public function up()
 	{
     DB::update("ALTER TABLE books ALTER COLUMN author_fname DROP NOT NULL");
-    DB::update("ALTER TABLE users ADD COLUMN remember_token VARCHAR 320");
+    DB::update("ALTER TABLE users ADD COLUMN remember_token VARCHAR(320)");
 	}
 
 	/**
