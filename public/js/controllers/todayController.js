@@ -51,36 +51,40 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
       read: $scope.editing_link.read,
       instapaper_id: $scope.editing_link.instapaper_id
     };
-    //TODO: If category is changed, remove this link
     $scope.saveLink(save_data);
+//    if($scope.editing_link.category_dirty) {
+//      $scope.removeLink(link);
+//    }
   }
   $scope.migrate = function() {
-    $http.get('/api/links').success(function(data){
-      var existing_links = data.links;
-      $http.get('/js/data/links.json').success(function(data){
-        var links_to_add = data.links;
-        var links_to_add_length = links_to_add.length;
-        for(var i = 0; i < links_to_add_length; i++) {
-          var this_link = data.links[i];
-          if(!this_link.instapaper_id) {
-            delete this_link.instapaper_id;
+    $http.get('/api/books').success(function(data){
+      var existing_books = data.books;
+      $http.get('/js/data/books.json').success(function(data){
+        var books_to_add = data.books;
+        var books_to_add_length = books_to_add.length;
+        for(var i = 0; i < books_to_add_length; i++) {
+          var this_book = books_to_add[i];
+          delete this_book.id;
+          delete this_book.updated_at;
+          if(!this_book.goodreads_id) {
+            delete this_book.goodreads_id;
           }
-          delete this_link.id;
-          delete this_link.updated_at;
           var found = false;
-          for(var j = 0; j < existing_links.length; j++) {
-            if(data.links[i].link == existing_links[j].link) {
+          var existing_books_length = existing_books.length;
+          for(var j = 0; j < existing_books_length; j++) {
+            var existing_book = existing_books[j];
+            if((this_book.title === existing_book.title) && (this_book.author_lname === existing_book.author_lname)) {
               found = true;
               break;
             }
           }
           if(!found) {
-            if(this_link.name) {
-              console.log('Adding ' + this_link.name + ' to update array.');
-              $scope.items_to_migrate.push(this_link);
+            if(this_book.name) {
+              console.log('Adding ' + this_book.name + ' to update array.');
+              $scope.items_to_migrate.push(this_book);
             } else {
               console.log('Problem with: ');
-              console.log(this_link);
+              console.log(this_book);
             }
           }
         }
@@ -91,23 +95,29 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
   $scope.migrateItem = function() {
     var item_to_migrate = $scope.items_to_migrate.pop();
     if(item_to_migrate) {
-      $scope.saveLink(item_to_migrate);
+      $scope.saveBook(item_to_migrate);
     }
-    if($scope.items_to_migrate.length > 0) {
-      setTimeout(function(){$scope.migrateItem()}, 5000);
-    } else {
-      console.log('Migration complete');
-    }
+//    if($scope.items_to_migrate.length > 0) {
+//      setTimeout(function(){$scope.migrateItem()}, 5000);
+//    } else {
+//      console.log('Migration complete');
+//    }
   }
   $scope.saveLink = function(save_data) {
-    console.log('About to add: ');
-    console.log(save_data);
     $http({method: 'PUT', url: '/api/link/', data: save_data}).success(function(data){
       if(data.success) {
-        console.log('Link: ' + save_data.name + ' saved.');
         $('#linkModal').modal('hide');
       } else {
         console.log('Link: ' + save_data.name + ' not saved.');
+      }
+    });
+  }
+  $scope.saveBook = function(save_data) {
+    $http({method: 'PUT', url: '/api/book/', data: save_data}).success(function(data){
+      if(data.success) {
+        $('#bookModal').modal('hide');
+      } else {
+        console.log('Book: ' + save_data.title + ' not saved.');
       }
     });
   }

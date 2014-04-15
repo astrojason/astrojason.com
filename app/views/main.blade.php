@@ -1,8 +1,8 @@
 @extends('layouts/layout')
 
 @section('content')
-  <div ng-controller="todayController">
-    @if(Auth::check())
+  @if(Auth::check())
+    <div ng-controller="todayController">
       <div class="row">
         <div class="col-md-12">
           <button ng-click="migrate()">Migrate</button>
@@ -99,21 +99,28 @@
           </div>
         </div>
       </div>
-    @else
-      <h3>Nothing to see here, move along.</h3>
-      <img src="/img/whos_awesome.jpg" /><br />
-    @endif
-  </div>
+      <!-- TODO: Create the book editing modal -->
+    </div>
+  @else
+    <div class="row">
+      <div class="col-lg-12 center-block">
+        <h3>Nothing to see here, move along.</h3>
+        <img src="/img/whos_awesome.jpg" /><br />
+      </div>
+    </div>
+  @endif
 @stop
 
 @section('scripts')
-  <script src="/js/controllers/todayController.js"></script>
-  <script src="/js/controllers/nextBookController.js"></script>
-  <script src="/js/controllers/movieRaterController.js"></script>
-  <script type="text/ng-template" id="link-info">
-    <td class="fill-row"><a href="@{{ link.link }}" target="_blank">@{{ link.name }}</a></td>
-    <td><div class="glyphicon glyphicon-pencil link-action" data-toggle="modal" data-target="#linkModal" ng-click="edit(link)"></div></td>
-    <td><div class="glyphicon glyphicon-off link-action" ng-click="postpone(link, $index)"></div></td>
-    <td><div class="glyphicon glyphicon-ok link-action" ng-click="markAsRead(link, $index)"></div></td>
-  </script>
+  @if(Auth::check())
+    <script src="/js/controllers/todayController.js"></script>
+    <script src="/js/controllers/nextBookController.js"></script>
+    <script src="/js/controllers/movieRaterController.js"></script>
+    <script type="text/ng-template" id="link-info">
+      <td class="fill-row"><a href="@{{ link.link }}" target="_blank">@{{ link.name }}</a></td>
+      <td><div class="glyphicon glyphicon-pencil link-action" data-toggle="modal" data-target="#linkModal" ng-click="edit(link)"></div></td>
+      <td><div class="glyphicon glyphicon-off link-action" ng-click="postpone(link, $index)"></div></td>
+      <td><div class="glyphicon glyphicon-ok link-action" ng-click="markAsRead(link, $index)"></div></td>
+    </script>
+  @endif
 @stop

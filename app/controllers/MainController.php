@@ -6,4 +6,9 @@ class MainController extends BaseController {
 		return View::make('main');
 	}
 
+  public function logout(){
+    Auth::logout();
+    return Redirect::to('/');
+  }
+
 }

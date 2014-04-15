@@ -38,6 +38,37 @@ class ApiController extends BaseController {
     }
   }
 
+  public function saveBook() {
+    if(Auth::check()) {
+      if(Input::get('id')) {
+        $book = Book::where('id', Input::get('id'))->where('user_id', Auth::user()->id)->get()[0];
+      } else {
+        $book = Book::where('user_id', Auth::user()->id)->where('title', Input::get('title'))->where('author_lname', Input::get('author_lname'))->get();
+        if(count($book) == 0) {
+          $book = new Book();
+        } else {
+          return Response::json(array('success' => false), 200);
+        }
+      }
+      if(isset($book)) {
+        $book->title = Input::get('title');
+        $book->goodreads_id = Input::get('goodreads_id');
+        $book->author_fname = Input::get('author_fname');
+        $book->author_lname = Input::get('author_lname');
+        $book->category = Input::get('category');
+        $book->series = Input::get('series');
+        $book->seriesorder = Input::get('seriesorder');
+        $book->read = Input::get('read');
+        $book->save();
+        return Response::json(array('success' => true), 200);
+      } else {
+        return Response::json(array('success' => false), 200);
+      }
+    } else {
+      return Response::json(array('success' => false), 200);
+    }
+  }
+
   public function allLinks() {
     $links = Link::where('user_id', Auth::user()->id)->get();
     return Response::json(array('links' => $links->toArray()), 200);
@@ -121,7 +152,6 @@ class ApiController extends BaseController {
       'username'    => 'required',
       'password' => 'required|alphaNum|min:3'
     );
-    var_dump(Input::all());
     // run the validation rules on the inputs from the form
     $validator = Validator::make(Input::all(), $rules);
     if ($validator->fails()) {
@@ -155,7 +185,9 @@ class ApiController extends BaseController {
     return Response::json(array('movies' => $movies), 200);
   }
 
-  //TODO: Create edit functions for movies, books and games
+  //TODO: Create edit functions for movies
+
+  //TODO: Create functions for games
 
   public function getOrderCommand() {
     return isset($_SERVER["DATABASE_URL"]) ? 'random()' : 'RAND()';

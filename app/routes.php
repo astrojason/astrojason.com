@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'MainController@showMain');
+Route::get('/logout', 'MainController@logout');
 
 Route::group(array('prefix' => 'api'), function() {
   Route::get('/books', 'ApiController@allBooks');
@@ -19,6 +20,7 @@ Route::group(array('prefix' => 'api'), function() {
   Route::group(array('prefix' => 'book'), function(){
     Route::get('/next', 'ApiController@nextBook');
     Route::get('/{id}/read/', 'ApiController@markBookAsRead');
+    Route::put('/', 'ApiController@saveBook');
   });
 
   Route::group(array('prefix' => 'links'), function(){

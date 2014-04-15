@@ -14,6 +14,7 @@ astroApp.controller('loginController', ['$scope', '$http', function($scope, $htt
         data: postData
       })
     .success(function (data, status, headers, config) {
+      console.log(data);
       if(data.success) {
         location.href = '/';
       } else {
