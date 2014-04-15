@@ -80,7 +80,7 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
           }
           if(!found) {
             if(this_book.title) {
-              console.log('Adding ' + this_book.name + ' to update array.');
+              console.log('Adding ' + this_book.title + ' to update array.');
               $scope.items_to_migrate.push(this_book);
             } else {
               console.log('Problem with: ');

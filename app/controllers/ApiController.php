@@ -51,16 +51,20 @@ class ApiController extends BaseController {
         }
       }
       if(isset($book)) {
-        $book->title = Input::get('title');
-        $book->goodreads_id = Input::get('goodreads_id');
-        $book->author_fname = Input::get('author_fname');
-        $book->author_lname = Input::get('author_lname');
-        $book->category = Input::get('category');
-        $book->series = Input::get('series');
-        $book->seriesorder = Input::get('seriesorder');
-        $book->read = Input::get('read');
-        $book->save();
-        return Response::json(array('success' => true), 200);
+        try {
+          $book->title = Input::get('title');
+          $book->goodreads_id = Input::get('goodreads_id');
+          $book->author_fname = Input::get('author_fname');
+          $book->author_lname = Input::get('author_lname');
+          $book->category = Input::get('category');
+          $book->series = Input::get('series');
+          $book->seriesorder = Input::get('seriesorder');
+          $book->read = Input::get('read');
+          $book->save();
+          return Response::json(array('success' => true), 200);
+        } catch(Exception $exception) {
+          return Response::make($exception->getMessage());
+        }
       } else {
         return Response::json(array('success' => false), 200);
       }
