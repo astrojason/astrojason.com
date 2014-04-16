@@ -12,13 +12,15 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
     $scope.categories = data.categories;
   });
   $scope.postpone = function(link, index) {
-    $scope.removeLink(link, index);
+    $scope.removeLink(link.category, index);
   }
-  $scope.edit = function(link) {
+  $scope.edit = function(link, index) {
     $scope.editing_link = link;
+    $scope.editing_index = index;
+    $scope.editing_category = link.category;
   }
-  $scope.removeLink = function(link, index) {
-    switch(link.category) {
+  $scope.removeLink = function(category, index) {
+    switch(category) {
       case('Guitar'):
         $scope.guitar.splice(index, 1);
         break;
@@ -52,9 +54,9 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
       instapaper_id: $scope.editing_link.instapaper_id
     };
     $scope.saveLink(save_data);
-//    if($scope.editing_link.category_dirty) {
-//      $scope.removeLink(link);
-//    }
+    if($scope.editing_category != $scope.editing_link.category) {
+      $scope.removeLink($scope.editing_category, $scope.editing_index);
+    }
   }
   $scope.migrate = function() {
     $http.get('/api/books').success(function(data){

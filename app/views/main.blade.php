@@ -126,7 +126,7 @@
     <script src="/js/controllers/movieRaterController.js"></script>
     <script type="text/ng-template" id="link-info">
       <td class="fill-row"><a href="@{{ link.link }}" target="_blank">@{{ link.name }}</a></td>
-      <td><div class="glyphicon glyphicon-pencil link-action" data-toggle="modal" data-target="#linkModal" ng-click="edit(link)"></div></td>
+      <td><div class="glyphicon glyphicon-pencil link-action" data-toggle="modal" data-target="#linkModal" ng-click="edit(link, $index)"></div></td>
       <td><div class="glyphicon glyphicon-off link-action" ng-click="postpone(link, $index)"></div></td>
       <td><div class="glyphicon glyphicon-ok link-action" ng-click="markAsRead(link, $index)"></div></td>
     </script>
