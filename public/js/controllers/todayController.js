@@ -5,10 +5,19 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
   $scope.items_to_migrate = [];
 
   $http.get('/api/links/today').success(function(data) {
+    $scope.athome = data.athome;
+    $scope.cooking = data.cooking;
+    $scope.exercise = data.exercise;
+    $scope.forreview = data.forreview;
+    $scope.forthehouse = data.forthehouse;
     $scope.guitar = data.guitar;
+    $scope.groups = data.groups;
     $scope.photography = data.photography;
+    $scope.projects = data.projects;
     $scope.programming = data.programming;
-    $scope.links = data.links;
+    $scope.wishlist = data.wishlist;
+    $scope.wordpress = data.wordpress;
+    $scope.unread = data.links;
     $scope.categories = data.categories;
   });
   $scope.postpone = function(link, index) {
@@ -20,20 +29,15 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
     $scope.editing_category = link.category;
   }
   $scope.removeLink = function(category, index) {
-    switch(category) {
-      case('Guitar'):
-        $scope.guitar.splice(index, 1);
-        break;
-      case('Photography'):
-        $scope.photography.splice(index, 1);
-        break;
-      case('Programming'):
-        $scope.programming.splice(index, 1);
-        break;
-      default:
-        $scope.links.splice(index, 1);
-        break;
-    }
+    var category_name = category.toLowerCase().replace(/ /g, '');
+    $scope[category_name].splice(index, 1);
+  }
+  $scope.refreshCategory = function(category) {
+    $http.get('/api/links/' + category + '/1').success(function(data){
+      var category_name = category.toLowerCase().replace(/ /g, '');
+      console.log(category_name);
+      $scope[category_name] = data.links;
+    });
   }
   $scope.markAsRead = function(link, index) {
     $http.get('/api/link/' + link.id + '/read').success(function(data){

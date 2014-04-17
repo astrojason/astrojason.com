@@ -12,6 +12,8 @@
 */
 
 Route::get('/', 'MainController@showMain');
+Route::get('/links', 'MainController@showLinks');
+
 Route::get('/logout', 'MainController@logout');
 
 Route::group(array('prefix' => 'api'), function() {
@@ -26,6 +28,7 @@ Route::group(array('prefix' => 'api'), function() {
   Route::group(array('prefix' => 'links'), function(){
     Route::get('/', 'ApiController@allLinks');
     Route::get('/today', 'ApiController@todaysLinks');
+    Route::get('/{category}/{quantity}', 'ApiController@getRandomLinksAction');
   });
 
   Route::group(array('prefix' => 'link'), function(){

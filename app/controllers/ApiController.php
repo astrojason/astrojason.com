@@ -81,16 +81,40 @@ class ApiController extends BaseController {
 
   public function todaysLinks() {
     $categories = Link::groupBy('category')->get(array('category'));
-    $links = Link::where('read', false)->where('category', 'Unread')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(20)->get();
-    $programming = Link::where('read', false)->where('category', 'Programming')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
-    $photography = Link::where('read', false)->where('category', 'Photography')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
-    $guitar = Link::where('read', false)->where('category', 'Guitar')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
-    return Response::json(array('links' => $links->toArray(),
+    $atHome = $this->getRandomLinks('At Home', 1);
+    $cooking = $this->getRandomLinks('Cooking', 1);
+    $exercise = $this->getRandomLinks('Exercise', 1);
+    $forReview = $this->getRandomLinks('For Review', 1);
+    $forTheHouse = $this->getRandomLinks('For the House', 1);
+    $groups = $this->getRandomLinks('Groups', 1);
+    $guitar = $this->getRandomLinks('Guitar', 1);
+    $photography = $this->getRandomLinks('Photography', 1);
+    $projects = $this->getRandomLinks('Projects', 1);
+    $programming = $this->getRandomLinks('Programming', 1);
+    $wishlist = $this->getRandomLinks('Wishlist', 1);
+    $wordpress = $this->getRandomLinks('Wordpress', 1);
+    $links = $this->getRandomLinks('Unread', 20);
+
+    return Response::json(array(
+      'athome' => $atHome->toArray(),
+      'cooking' => $cooking->toArray(),
+      'exercise' => $exercise->toArray(),
+      'forreview' => $forReview->toArray(),
+      'forthehouse' => $forTheHouse->toArray(),
+      'groups' => $groups->toArray(),
+      'guitar' => $guitar->toArray(),
+      'links' => $links->toArray(),
+      'projects' => $projects->toArray(),
       'programming' => $programming->toArray(),
       'photography' => $photography->toArray(),
-      'guitar' => $guitar->toArray(),
+      'wishlist' => $wishlist->toArray(),
+      'wordpress' => $wordpress->toArray(),
       'categories' => $categories->toArray()
     ), 200);
+  }
+
+  public function getRandomLinksAction($category, $quantity) {
+    return Response::json(array('links' => $this->getRandomLinks($category, $quantity)->toArray()), 200);
   }
 
   public function saveLink() {
@@ -213,4 +237,9 @@ class ApiController extends BaseController {
   public function getOrderCommand() {
     return isset($_SERVER["DATABASE_URL"]) ? 'random()' : 'RAND()';
   }
+
+  public function getRandomLinks($category, $quantity) {
+    return Link::where('read', false)->where('category', $category)->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take($quantity)->get();
+  }
+
 } 
