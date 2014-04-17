@@ -123,7 +123,7 @@
               <tr ng-repeat="link in wordpress" ng-include="'link-info'"></tr>
             </table>
           </div>
-          <div class="panel panel-default" ng-show="links.length > 0">
+          <div class="panel panel-default" ng-show="unread.length > 0">
             <div class="panel-heading clearfix">
               <h3 class="panel-title pull-left">Unread</h3>
             </div>
