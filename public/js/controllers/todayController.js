@@ -24,9 +24,15 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
     $scope.removeLink(link.category, index);
   }
   $scope.edit = function(link, index) {
-    $scope.editing_link = link;
-    $scope.editing_index = index;
-    $scope.editing_category = link.category;
+    if(link) {
+      $scope.editing_link = link;
+      $scope.editing_index = index;
+      $scope.editing_category = link.category;
+    } else {
+      $scope.editing_link = {name: '', link: '', category: 'Unread', instapaper_id: null, read: 0};
+      $scope.editing_index = null;
+      $scope.editing_category = 'Unread';
+    }
   }
   $scope.removeLink = function(category, index) {
     var category_name = category.toLowerCase().replace(/ /g, '');
@@ -50,17 +56,19 @@ astroApp.controller('todayController', ['$scope', '$http', function($scope, $htt
   }
   $scope.save = function() {
     var save_data = {
-      id: $scope.editing_link.id,
       name: $scope.editing_link.name,
       link: $scope.editing_link.link,
       category: $scope.editing_link.category,
       read: $scope.editing_link.read,
       instapaper_id: $scope.editing_link.instapaper_id
     };
-    $scope.saveLink(save_data);
-    if($scope.editing_category != $scope.editing_link.category) {
-      $scope.removeLink($scope.editing_category, $scope.editing_index);
+    if($scope.editing_link.id) {
+      save_data['id'] = $scope.editing_link.id;
+      if($scope.editing_category != $scope.editing_link.category) {
+        $scope.removeLink($scope.editing_category, $scope.editing_index);
+      }
     }
+    $scope.saveLink(save_data);
   }
   $scope.migrate = function() {
     $http.get('/api/books').success(function(data){

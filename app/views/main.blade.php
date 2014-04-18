@@ -8,8 +8,7 @@
           <div class="pull-left">
             <input type="checkbox" id="amhome" ng-model="amhome" /> <label for="amhome">I am at Home</label>
           </div>
-          <!-- TODO: Wire this up -->
-          <a href="#" class="btn pull-right">Add Link</a>
+          <a href="#" class="btn pull-right" data-toggle="modal" data-target="#linkModal" ng-click="edit()">Add Link</a>
         </div>
       </div>
       <div class="row">
@@ -23,7 +22,6 @@
               <tr ng-repeat="link in athome" ng-include="'link-info'"></tr>
             </table>
           </div>
-
           <div class="panel panel-default" ng-show="cooking.length > 0">
             <div class="panel-heading clearfix">
               <h3 class="panel-title pull-left">Cooking</h3>
