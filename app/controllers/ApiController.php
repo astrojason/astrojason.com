@@ -9,7 +9,7 @@
 class ApiController extends BaseController {
 
   public function allBooks() {
-    $books = Book::where('user_id', Auth::user()->id)->orderby('series')->orderBy('seriesOrder', 'DESC')->get();
+    $books = Book::where('user_id', Auth::user()->id)->orderby('series')->orderBy('seriesorder', 'DESC')->get();
     return Response::json(array('books' => $books->toArray()), 200);
   }
 
