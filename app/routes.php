@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'MainController@showMain');
+Route::get('/', 'MainController@showDashboard');
 Route::get('/links', 'MainController@showLinks');
 
 Route::get('/logout', 'MainController@logout');
@@ -21,20 +21,23 @@ Route::group(array('prefix' => 'api'), function() {
 
   Route::group(array('prefix' => 'book'), function(){
     Route::get('/next', 'ApiController@nextBook');
-    Route::get('/{id}/read/', 'ApiController@markBookAsRead');
+    Route::get('/categories', 'ApiController@bookCategories');
+    Route::get('/{id}/read', 'ApiController@markBookAsRead');
     Route::put('/', 'ApiController@saveBook');
   });
 
   Route::group(array('prefix' => 'links'), function(){
     Route::get('/', 'ApiController@allLinks');
     Route::get('/today', 'ApiController@todaysLinks');
+    Route::get('/{query}', 'ApiController@filterLinks');
     Route::get('/{category}/{quantity}', 'ApiController@getRandomLinksAction');
   });
 
   Route::group(array('prefix' => 'link'), function(){
     Route::put('/', 'ApiController@saveLink');
     Route::put('/add', 'ApiController@addLinkFromBookmarklet');
-    Route::get('/{id}/read/', 'ApiController@markLinkAsRead');
+    Route::get('/categories', 'ApiController@linkCategories');
+    Route::get('/{id}/read', 'ApiController@markLinkAsRead');
   });
 
   Route::post('/login', 'ApiController@login');

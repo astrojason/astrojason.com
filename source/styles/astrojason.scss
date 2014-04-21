@@ -19,3 +19,19 @@
     color: #009933;
   }
 }
+
+.navbar {
+  border-radius: 0;
+}
+
+.all-links {
+  .read {
+    color: #CCC;
+    a {
+      color: inherit;
+    }
+  }
+  .postpone {
+    display: none;
+  }
+}

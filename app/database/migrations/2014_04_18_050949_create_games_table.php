@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Update201404151151Table extends Migration {
+class CreateGamesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,8 +12,13 @@ class Update201404151151Table extends Migration {
 	 */
 	public function up()
 	{
-    DB::update("ALTER TABLE books ALTER COLUMN author_fname DROP NOT NULL");
-    DB::update("ALTER TABLE users ADD COLUMN remember_token VARCHAR(320)");
+    Schema::create('games', function($table)
+    {
+      $table->increments('id');
+      $table->string('title');
+      $table->string('platform');
+      $table->timestamps();
+    });
 	}
 
 	/**

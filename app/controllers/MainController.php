@@ -10,6 +10,10 @@ class MainController extends BaseController {
     return View::make('links');
   }
 
+  public function showDashboard(){
+    return View::make('dashboard');
+  }
+
   public function logout(){
     Auth::logout();
     return Redirect::to('/');

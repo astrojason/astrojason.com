@@ -13,6 +13,11 @@ class ApiController extends BaseController {
     return Response::json(array('books' => $books->toArray()), 200);
   }
 
+  public function bookCategories() {
+    $categories = Book::groupBy('category')->get(array('category'));
+    return Response::json(array('categories' => $categories->toArray()), 200);
+  }
+
   public function nextBook() {
     $book = Book::where('read', false)->where('category', 'Fiction')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
     if(count($book) > 0) {
@@ -32,7 +37,7 @@ class ApiController extends BaseController {
       $book = $book[0];
       $book->read = true;
       $book->save();
-      return Redirect::action('ApiController@nextBook');
+      return Response::json(array('success' => true), 200);
     } else {
       return Response::json(array('success' => false), 200);
     }
@@ -74,13 +79,22 @@ class ApiController extends BaseController {
     }
   }
 
+  public function linkCategories() {
+    $categories = Link::groupBy('category')->get(array('category'));
+    return Response::json(array('categories' => $categories->toArray()), 200);
+  }
+
   public function allLinks() {
     $links = Link::where('user_id', Auth::user()->id)->get();
     return Response::json(array('links' => $links->toArray()), 200);
   }
 
+  public function filterLinks($query) {
+    $links = Link::where('user_id', Auth::user()->id)->where('name', 'LIKE', "%$query%")->get();
+    return Response::json(array('links' => $links->toArray()), 200);
+  }
+
   public function todaysLinks() {
-    $categories = Link::groupBy('category')->get(array('category'));
     $atHome = $this->getRandomLinks('At Home', 1);
     $cooking = $this->getRandomLinks('Cooking', 1);
     $exercise = $this->getRandomLinks('Exercise', 1);
@@ -108,8 +122,7 @@ class ApiController extends BaseController {
       'programming' => $programming->toArray(),
       'photography' => $photography->toArray(),
       'wishlist' => $wishlist->toArray(),
-      'wordpress' => $wordpress->toArray(),
-      'categories' => $categories->toArray()
+      'wordpress' => $wordpress->toArray()
     ), 200);
   }
 
