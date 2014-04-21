@@ -24,6 +24,7 @@ Route::group(array('prefix' => 'api'), function() {
     Route::get('/next', 'ApiController@nextBook');
     Route::get('/categories', 'ApiController@bookCategories');
     Route::get('/{id}/read', 'ApiController@markBookAsRead');
+    Route::get('/{id}/delete', 'ApiController@deleteBook');
     Route::put('/', 'ApiController@saveBook');
   });
 

@@ -58,6 +58,7 @@ astroApp.controller('editBookCtrl', function($scope, $http, $rootScope, bookSvc)
 astroApp.controller('allBooksListCtrl', function($scope, $http, bookSvc, $rootScope) {
   $http.get('/api/books').success(function(data) {
     $scope.books = data.books;
+    $scope.sortOrder = 'title';
   });
 
   $scope.edit = function(book){
@@ -69,4 +70,12 @@ astroApp.controller('allBooksListCtrl', function($scope, $http, bookSvc, $rootSc
     bookSvc.set(book);
     $rootScope.$broadcast('READ_BOOK', 'existing');
   };
+
+  $scope.delete = function(book) {
+    $http.get('/api/book/' + book.id + '/delete').success(function(data) {
+      if(data.success) {
+        $scope.books.splice($scope.books.indexOf(book), 1);
+      }
+    });
+  }
 });

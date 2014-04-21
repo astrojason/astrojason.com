@@ -9,7 +9,7 @@
 class ApiController extends BaseController {
 
   public function allBooks() {
-    $books = Book::where('user_id', Auth::user()->id)->orderby('series')->orderBy('seriesorder', 'DESC')->get();
+    $books = Book::where('user_id', Auth::user()->id)->orderby('series')->get();
     return Response::json(array('books' => $books->toArray()), 200);
   }
 
@@ -37,6 +37,17 @@ class ApiController extends BaseController {
       $book = $book[0];
       $book->read = true;
       $book->save();
+      return Response::json(array('success' => true), 200);
+    } else {
+      return Response::json(array('success' => false), 200);
+    }
+  }
+
+  public function deleteBook($id) {
+    $book = Book::where('user_id', Auth::user()->id)->where('id', $id)->get();
+    if(count($book) > 0){
+      $book = $book[0];
+      $book->delete();
       return Response::json(array('success' => true), 200);
     } else {
       return Response::json(array('success' => false), 200);
