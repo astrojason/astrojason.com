@@ -13,6 +13,7 @@
 
 Route::get('/', 'MainController@showDashboard');
 Route::get('/links', 'MainController@showLinks');
+Route::get('/books', 'MainController@showBooks');
 
 Route::get('/logout', 'MainController@logout');
 

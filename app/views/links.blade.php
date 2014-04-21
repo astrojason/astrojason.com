@@ -20,5 +20,5 @@
 @stop
 
 @section('scripts')
-  <script src="/js/controllers/linkControllers.js"></script>
+
 @stop

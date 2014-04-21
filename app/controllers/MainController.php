@@ -10,8 +10,8 @@ class MainController extends BaseController {
     return View::make('links');
   }
 
-  public function showDashboard(){
-    return View::make('dashboard');
+  public function showBooks(){
+    return View::make('books');
   }
 
   public function logout(){

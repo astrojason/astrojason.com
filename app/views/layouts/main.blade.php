@@ -177,6 +177,8 @@
     <script type="text/javascript" src="/js/libs/angular/angular.js"></script>
     <script type="text/javascript" src="/js/modules/astroApp.js"></script>
     <script type="text/javascript" src="/js/controllers/loginController.js"></script>
+    <script type="text/javascript" src="/js/controllers/linkControllers.js"></script>
+    <script type="text/javascript" src="/js/controllers/bookControllers.js"></script>
     <script type="text/javascript" src="/js/main.min.js"></script>
     @yield('scripts')
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

@@ -193,6 +193,5 @@
 @stop
 
 @section('scripts')
-  <script type="text/javascript" src="/js/controllers/linkControllers.js"></script>
-  <script type="text/javascript" src="/js/controllers/bookControllers.js"></script>
+
 @stop

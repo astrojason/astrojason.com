@@ -38,6 +38,7 @@ astroApp.controller('editBookCtrl', function($scope, $http, $rootScope, bookSvc)
   $scope.$on('READ_BOOK', function(response) {
     $scope.book = bookSvc.get();
     $http.get('/api/book/' + $scope.book.id + '/read').success(function(data){
+      $scope.book.read = true;
       $rootScope.$broadcast('BOOK_READ', 'yep');
     });
   });
@@ -51,5 +52,21 @@ astroApp.controller('editBookCtrl', function($scope, $http, $rootScope, bookSvc)
         // TODO: Give a reason for the book to not be saved
       }
     });
+  };
+});
+
+astroApp.controller('allBooksListCtrl', function($scope, $http, bookSvc, $rootScope) {
+  $http.get('/api/books').success(function(data) {
+    $scope.books = data.books;
+  });
+
+  $scope.edit = function(book){
+    bookSvc.set(book);
+    $rootScope.$broadcast('EDITING_BOOK', 'existing');
+  };
+
+  $scope.markAsRead = function(book) {
+    bookSvc.set(book);
+    $rootScope.$broadcast('READ_BOOK', 'existing');
   };
 });
