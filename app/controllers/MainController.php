@@ -3,7 +3,7 @@
 class MainController extends BaseController {
 
 	public function showMain(){
-		return View::make('main');
+		return View::make('dashboard');
 	}
 
   public function showLinks(){
