@@ -274,6 +274,7 @@ class ApiController extends BaseController {
         if(isset($movie)) {
           $movie->title = Input::get('title');
           $movie->save();
+          return Response::json(array('success' => true), 200);
         } else {
           return Response::json(array('success' => false), 200);
         }
