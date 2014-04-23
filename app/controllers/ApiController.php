@@ -255,29 +255,29 @@ class ApiController extends BaseController {
   }
 
   public function saveMovie() {
-    if(Auth::check()) {
-      if(Input::get('id')) {
-        $movie = Movie::where('id', Input::get('id'))->where('user_id', Auth::user()->id)->get()[0];
-      } else {
-        $movie = Movie::where('user_id', Auth::user()->id)->where('title', Input::get('title'))->get();
-        if(count($movie) == 0) {
-          $movie = new Movie();
-          $movie->user_id = Auth::user()->id;
+    try {
+      if(Auth::check()) {
+        if(Input::get('id')) {
+          $movie = Movie::where('id', Input::get('id'))->where('user_id', Auth::user()->id)->get()[0];
         } else {
-          unset($movie);
+          $movie = Movie::where('user_id', Auth::user()->id)->where('title', Input::get('title'))->get();
+          if(count($movie) == 0) {
+            $movie = new Movie();
+            $movie->user_id = Auth::user()->id;
+          } else {
+            unset($movie);
+          }
         }
-      }
-      if(isset($movie)) {
-        try {
+        if(isset($movie)) {
           $movie->title = Input::get('title');
-          $movie->ratingorder = Input::get('rating_order');
+          $movie->rating_order = Input::get('rating_order');
           $movie->save();
-        } catch(Exeption $exception) {
-          return Response::make($exception->getMessage());
+        } else {
+          return Response::json(array('success' => false), 200);
         }
-      } else {
-        return Response::json(array('success' => false), 200);
       }
+    } catch(Exeption $exception) {
+      return Response::make($exception->getMessage());
     }
   }
 
