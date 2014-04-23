@@ -21,4 +21,11 @@ astroApp.controller('editMovieCtrl', function($scope, $http, movieSvc, $rootScop
       console.log('Migration complete');
     }
   };
+
+  $scope.migrate = function() {
+   $http.get('/js/data/movies.json').success(function(data){
+     $scope.movies = data.movies;
+     $scope.save();
+   });
+  }
 });
