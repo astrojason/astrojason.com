@@ -259,11 +259,13 @@ class ApiController extends BaseController {
       if(Auth::check()) {
         if(Input::get('id')) {
           $movie = Movie::where('id', Input::get('id'))->where('user_id', Auth::user()->id)->get()[0];
+          $movie->rating_order = Input::get('rating_order');
         } else {
           $movie = Movie::where('user_id', Auth::user()->id)->where('title', Input::get('title'))->get();
           if(count($movie) == 0) {
             $movie = new Movie();
             $movie->user_id = Auth::user()->id;
+            $movie->rating_order = Movie::max('rating_order') + 10;
           } else {
             unset($movie);
             return Response::json(array('success' => false, 'message' => 'movie exists'), 200);
@@ -271,7 +273,6 @@ class ApiController extends BaseController {
         }
         if(isset($movie)) {
           $movie->title = Input::get('title');
-          $movie->rating_order = Input::get('rating_order');
           $movie->save();
         } else {
           return Response::json(array('success' => false), 200);

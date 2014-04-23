@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <link rel="stylesheet" href="/css/libs/reset.min.css">
+    <link rel="stylesheet" href="css/libs/ui-lightness/jquery-ui-1.10.4.custom.min.css" />
     <link rel="stylesheet" href="/css/libs/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="/css/astrojason.min.css">
     <script src="/js/libs/modernizr.min.js"></script>
@@ -172,7 +173,38 @@
       </div>
     </div>
 
+    <div class="modal fade" id="movieModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="editMovieCtrl">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Movie Edit</h4>
+          </div>
+          <div class="modal-body">
+            <form id="link-edit" data-abide>
+              <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 input-group">
+                  <label class="input-group-addon">Title:</label>
+                  <input class="form-control" type="text" ng-model="movie.title" />
+                </div>
+              </div>
+              <div class="row hide">
+                <div class="col-lg-10 col-lg-offset-1 input-group jqueryui">
+                  <label class="input-group-addon">Date Watched:</label>
+                  <input id="date-watched" class="form-control" type="text" ng-model="movie.date_watched" />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script type="text/javascript" src="/js/libs/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/libs/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/js/libs/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/libs/angular/angular.js"></script>
     <script type="text/javascript" src="/js/modules/astroApp.js"></script>
