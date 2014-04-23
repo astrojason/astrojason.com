@@ -3,12 +3,22 @@
  */
 astroApp.controller('editMovieCtrl', function($scope, $http, movieSvc, $rootScope) {
   $scope.save = function() {
+    if($scope.movies.length > 0) {
+      $scope.movie = $scope.movies.pop();
+      delete $scope.movie['id'];
+      delete $scope.movie['user_id'];
+      delete $scope.movie['created_at'];
+      delete $scope.movie['updated_at'];
     $http({method: 'PUT', url: '/api/movie/', data: $scope.movie}).success(function(data){
-      if(data.success) {
-        console.log($scope.movie.title, 'saved');
-      } else {
-        console.log($scope.movie.title, 'had a problem');
-      }
-    });
+        if(data.success || data.message === 'movie exists') {
+          $scope.save();
+          $('#movieModal').modal('hide');
+        } else {
+          console.log($scope.movie.title, 'had a problem');
+        }
+      });
+    } else {
+      console.log('Migration complete');
+    }
   };
 });
