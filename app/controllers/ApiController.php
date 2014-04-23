@@ -254,7 +254,32 @@ class ApiController extends BaseController {
     return Response::json(array('movies' => $movies), 200);
   }
 
-  //TODO: Create edit functions for movies
+  public function saveMovie() {
+    if(Auth::check()) {
+      if(Input::get('id')) {
+        $movie = Movie::where('id', Input::get('id'))->where('user_id', Auth::user()->id)->get()[0];
+      } else {
+        $movie = Movie::where('user_id', Auth::user()->id)->where('title', Input::get('title'))->get();
+        if(count($movie) == 0) {
+          $movie = new Movie();
+          $movie->user_id = Auth::user()->id;
+        } else {
+          unset($movie);
+        }
+      }
+      if(isset($movie)) {
+        try {
+          $movie->title = Input::get('title');
+          $movie->ratingorder = Input::get('ratingorder');
+          $movie->save();
+        } catch(Exeption $exception) {
+          return Response::make($exception->getMessage());
+        }
+      } else {
+        return Response::json(array('success' => false), 200);
+      }
+    }
+  }
 
   //TODO: Create functions for games
 

@@ -48,4 +48,6 @@ Route::group(array('prefix' => 'api'), function() {
     Route::get('/', 'ApiController@allMovies');
     Route::get('/compare', 'ApiController@compareMovies');
   });
+
+  Route::put('/movie', 'ApiController@saveMovie');
 });

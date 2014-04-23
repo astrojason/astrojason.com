@@ -158,7 +158,7 @@
                   jsCode.setAttribute('src', 'http://www.astrojason.com/js/bookmarklet.min.js');
                   document.body.appendChild(jsCode);
                   })()">Read Later</a>
-            <button class="btn btn-primary btn-xs" href="#" ng-click="migrate()">Run Migration</button>
+            <button ng-controller="editMovieCtrl" class="btn btn-primary btn-xs" ng-click="migrate()">Run Migration</button>
           </p>
         </div>
       </div>

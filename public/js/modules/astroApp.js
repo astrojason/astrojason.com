@@ -27,3 +27,15 @@ astroApp.factory('bookSvc', function(){
     }
   }
 });
+
+astroApp.factory('movieSvc', function(){
+  var editing_movie = {};
+  return {
+    set: function(movie) {
+      editing_movie = movie;
+    },
+    get: function() {
+      return editing_movie;
+    }
+  }
+});
