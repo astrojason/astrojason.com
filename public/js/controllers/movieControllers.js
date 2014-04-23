@@ -10,7 +10,7 @@ astroApp.controller('editMovieCtrl', function($scope, $http, movieSvc, $rootScop
       delete $scope.movie['created_at'];
       delete $scope.movie['updated_at'];
       $http({method: 'PUT', url: '/api/movie/', data: $scope.movie}).success(function(data){
-        if(data.success) {
+        if(data.success || data.message === 'movie exists') {
           $scope.save();
         } else {
           console.log($scope.movie.title, 'had a problem');

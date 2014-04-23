@@ -266,6 +266,7 @@ class ApiController extends BaseController {
             $movie->user_id = Auth::user()->id;
           } else {
             unset($movie);
+            return Response::json(array('success' => false, 'message' => 'movie exists'), 200);
           }
         }
         if(isset($movie)) {
