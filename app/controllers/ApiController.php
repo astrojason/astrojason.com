@@ -270,7 +270,7 @@ class ApiController extends BaseController {
       if(isset($movie)) {
         try {
           $movie->title = Input::get('title');
-          $movie->ratingorder = Input::get('ratingorder');
+          $movie->ratingorder = Input::get('rating_order');
           $movie->save();
         } catch(Exeption $exception) {
           return Response::make($exception->getMessage());
