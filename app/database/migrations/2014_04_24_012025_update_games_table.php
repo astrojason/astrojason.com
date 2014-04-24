@@ -18,7 +18,7 @@ class UpdateGamesTable extends Migration {
       $table->integer('user_id');
       $table->string('title');
       $table->string('platform');
-      $table->boolean('completed');
+      $table->boolean('completed')->default(false);
       $table->timestamps();
     });
 	}
