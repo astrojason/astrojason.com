@@ -49,5 +49,12 @@ Route::group(array('prefix' => 'api'), function() {
     Route::get('/compare', 'ApiController@compareMovies');
   });
 
-  Route::put('/movie', 'ApiController@saveMovie');
+
+
+  Route::group(array('prefix' => 'game'), function(){
+    Route::put('/', 'ApiController@saveMovie');
+    Route::get('/next', 'ApiController@nextGame');
+  });
+
+  Route::put('/game', 'ApiController@saveGame');
 });

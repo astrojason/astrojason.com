@@ -284,7 +284,39 @@ class ApiController extends BaseController {
     }
   }
 
-  //TODO: Create functions for games
+  public function saveGame() {
+    try {
+      if(Auth::check()) {
+        if(Input::get('id')) {
+          $game = Game::where('id', Input::get('id'))->where('user_id', Auth::user()->id)->get()[0];
+        } else {
+          $game = Game::where('user_id', Auth::user()->id)->where('title', Input::get('title'))->get();
+          if(count($game) == 0) {
+            $game = new Game();
+            $game->user_id = Auth::user()->id;
+          } else {
+            unset($game);
+            return Response::json(array('success' => false, 'message' => 'game exists'), 200);
+          }
+        }
+        if(isset($game)) {
+          $game->title = Input::get('title');
+          $game->platform = Input::get('platform');
+          $game->save();
+          return Response::json(array('success' => true), 200);
+        } else {
+          return Response::json(array('success' => false), 200);
+        }
+      }
+    } catch(Exeption $exception) {
+      return Response::make($exception->getMessage());
+    }
+  }
+
+  public function nextGame() {
+    $game = Game::where('completed', false)->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
+    return Response::json(array('game' => $game->toArray()), 200);
+  }
 
   public function getOrderCommand() {
     return isset($_SERVER["DATABASE_URL"]) ? 'random()' : 'RAND()';

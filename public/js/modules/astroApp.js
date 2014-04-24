@@ -39,3 +39,15 @@ astroApp.factory('movieSvc', function(){
     }
   }
 });
+
+astroApp.factory('gameSvc', function(){
+  var editing_game = {};
+  return {
+    set: function(game) {
+      editing_game = game;
+    },
+    get: function() {
+      return editing_game;
+    }
+  }
+});

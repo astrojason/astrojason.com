@@ -203,6 +203,36 @@
       </div>
     </div>
 
+    <div class="modal fade" id="gameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="editGameCtrl">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Game Edit</h4>
+          </div>
+          <div class="modal-body">
+            <form id="link-edit" data-abide>
+              <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 input-group">
+                  <label class="input-group-addon">Title:</label>
+                  <input class="form-control" type="text" ng-model="game.title" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 input-group jqueryui">
+                  <label class="input-group-addon">Platform:</label>
+                  <input class="form-control" type="text" ng-model="game.platform" />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script type="text/javascript" src="/js/libs/jquery.min.js"></script>
     <script type="text/javascript" src="/js/libs/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/js/libs/bootstrap.min.js"></script>
@@ -212,6 +242,7 @@
     <script type="text/javascript" src="/js/controllers/linkControllers.js"></script>
     <script type="text/javascript" src="/js/controllers/bookControllers.js"></script>
     <script type="text/javascript" src="/js/controllers/movieControllers.js"></script>
+    <script type="text/javascript" src="/js/controllers/gameControllers.js"></script>
     <script type="text/javascript" src="/js/main.min.js"></script>
     @yield('scripts')
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
