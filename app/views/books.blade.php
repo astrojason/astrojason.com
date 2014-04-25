@@ -8,7 +8,7 @@
       <span class="pull-right">
         <select ng-model="sortOrder" class="form-control pull-left">
           <option value="title">Title</option>
-          <option value="['series', 'seriesorder']">Series</option>
+          <option value="seriesorder">Series</option>
         </select>
         <input type="text" class="form-control pull-right" ng-model="filter" />
       </span>

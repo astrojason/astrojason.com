@@ -318,6 +318,18 @@ class ApiController extends BaseController {
     return Response::json(array('game' => $game->toArray()), 200);
   }
 
+  public function markGameAsPlayed($id) {
+    $game = Game::where('user_id', Auth::user()->id)->where('id', $id)->get();
+    if(count($game) > 0){
+      $game = $game[0];
+      $game->played = true;
+      $game->save();
+      return Response::json(array('success' => true), 200);
+    } else {
+      return Response::json(array('success' => false), 200);
+    }
+  }
+
   public function getOrderCommand() {
     return isset($_SERVER["DATABASE_URL"]) ? 'random()' : 'RAND()';
   }
