@@ -53,6 +53,10 @@ astroApp.controller('editBookCtrl', function($scope, $http, $rootScope, bookSvc)
       }
     });
   };
+
+  $scope.new = function() {
+    $scope.book = {title: '', author_fname: '', author_lname: '', category: '', series: '', seriesorder: ''}
+  };
 });
 
 astroApp.controller('allBooksListCtrl', function($scope, $http, bookSvc, $rootScope) {
@@ -77,5 +81,5 @@ astroApp.controller('allBooksListCtrl', function($scope, $http, bookSvc, $rootSc
         $scope.books.splice($scope.books.indexOf(book), 1);
       }
     });
-  }
+  };
 });

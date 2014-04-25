@@ -12,4 +12,8 @@ astroApp.controller('editMovieCtrl', function($scope, $http, movieSvc, $rootScop
       }
     });
   };
+
+  $scope.new = function() {
+    $scope.move = {title: ''}
+  }
 });

@@ -125,7 +125,7 @@ astroApp.controller('editLinkCtrl', function($scope, $http, linkSvc, $rootScope)
     });
   };
 
-  $scope.edit = function() {
+  $scope.new = function() {
     linkSvc.set({name: '', link: '', category: 'Unread', instapaper_id: null, read: 0});
     $rootScope.$broadcast('EDITING_LINK', 'new');
   };

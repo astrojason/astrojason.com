@@ -146,10 +146,10 @@
         </div>
         <div class="panel-body">
           <p>
-            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#linkModal" ng-click="edit()" ng-controller="editLinkCtrl">Add Link</button>
-            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#bookModal" ng-click="edit()">Add Book</button>
-            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#movieModal" ng-click="edit()">Add Movie</button>
-            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#gameModal" ng-click="edit()">Add Game</button>
+            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#linkModal" ng-click="new()" ng-controller="editLinkCtrl">Add Link</button>
+            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#bookModal" ng-click="new()" ng-controller="editBookCtrl">Add Book</button>
+            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#movieModal" ng-click="new()" ng-controller="editMovieCtrl">Add Movie</button>
+            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#gameModal" ng-click="new()" ng-controller="editGameCtrl">Add Game</button>
           </p>
           <p>
             <a class="btn btn-primary btn-xs" href="javascript:(
@@ -175,6 +175,22 @@
           <div class="pull-right">
             <div class="glyphicon glyphicon-pencil book-action" data-toggle="modal" data-target="#bookModal" ng-click="edit(book)"></div>
             <div class="glyphicon glyphicon-ok book-action right" ng-click="read(book)"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default" ng-controller="nextGameCtrl" ng-show="game">
+        <div class="panel-heading clearfix">
+          <h4 class="panel-title pull-left">Next Game to Play</h4>
+          <div class="glyphicon glyphicon-refresh game-action pull-right" ng-click="getNextGame()"></div>
+        </div>
+        <div class="panel-body">
+          <p>@{{ game.title }}<br /><small>@{{ game.platform }}</small></p>
+        </div>
+        <div class="panel-footer clearfix">
+          <div class="pull-right">
+            <div class="glyphicon glyphicon-pencil game-action" data-toggle="modal" data-target="#gameModal" ng-click="edit(game)"></div>
+            <div class="glyphicon glyphicon-ok game-action right" ng-click="played(game)"></div>
           </div>
         </div>
       </div>

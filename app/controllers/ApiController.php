@@ -314,7 +314,7 @@ class ApiController extends BaseController {
   }
 
   public function nextGame() {
-    $game = Game::where('completed', false)->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
+    $game = Game::where('completed', false)->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get()[0];
     return Response::json(array('game' => $game->toArray()), 200);
   }
 
