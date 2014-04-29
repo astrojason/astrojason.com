@@ -44,6 +44,8 @@ Route::group(array('prefix' => 'api'), function() {
 
   Route::post('/login', 'ApiController@login');
 
+  Route::put('/movie', 'ApiController@saveMovie');
+
   Route::group(array('prefix' => 'movies'), function(){
     Route::get('/', 'ApiController@allMovies');
     Route::get('/compare', 'ApiController@compareMovies');
