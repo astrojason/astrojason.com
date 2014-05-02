@@ -107,7 +107,7 @@
                 <div class="col-lg-10 col-lg-offset-1 input-group">
                   <label class="input-group-addon">Category:</label>
                   <select class="form-control" ng-model="link.category">
-                    <option ng-repeat="category in link_categories">@{{ category.category }}</option>
+                    <option ng-repeat="category in link_categories | orderBy: category.category">@{{ category.category }}</option>
                   </select>
                 </div>
               </div>
@@ -159,7 +159,7 @@
                 <div class="col-lg-12 input-group">
                   <label class="input-group-addon">Category:</label>
                   <select class="form-control" ng-model="book.category">
-                    <option ng-repeat="category in categories">@{{ category.category }}</option>
+                    <option ng-repeat="category in categories | orderBy: category.category">@{{ category.category }}</option>
                   </select>
                 </div>
               </div>
@@ -220,7 +220,12 @@
               <div class="row">
                 <div class="col-lg-10 col-lg-offset-1 input-group jqueryui">
                   <label class="input-group-addon">Platform:</label>
-                  <input class="form-control" type="text" ng-model="game.platform" />
+                  <select class="form-control" ng-model="game.platform">
+                    <option value="XBox 360">XBox 360</option>
+                    <option value="Playstation 3">Playstation 3</option>
+                    <option value="3DS">3DS</option>
+                    <option value="PC">PC</option>
+                  </select>
                 </div>
               </div>
             </form>

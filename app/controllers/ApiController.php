@@ -322,7 +322,7 @@ class ApiController extends BaseController {
     $game = Game::where('user_id', Auth::user()->id)->where('id', $id)->get();
     if(count($game) > 0){
       $game = $game[0];
-      $game->played = true;
+      $game->completed = true;
       $game->save();
       return Response::json(array('success' => true), 200);
     } else {

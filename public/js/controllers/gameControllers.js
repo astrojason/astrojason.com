@@ -21,7 +21,7 @@ astroApp.controller('nextGameCtrl', function($scope, $http, $rootScope, gameSvc)
   };
 
   $scope.$on('GAME_PLAYED', function(response) {
-    $scope.getNextBook();
+    $scope.getNextGame();
   });
 });
 
@@ -37,8 +37,19 @@ astroApp.controller('editGameCtrl', function($scope, $http, gameSvc, $rootScope)
     });
   };
 
+  $scope.$on('EDITING_GAME', function(resposne){
+    $scope.game = gameSvc.get();
+  });
+
+  $scope.$on('PLAYED_GAME', function(response) {
+    $scope.game = gameSvc.get();
+    $http.get('/api/game/' + $scope.game.id + '/played').success(function(data){
+      $scope.game.played = true;
+      $rootScope.$broadcast('GAME_PLAYED', 'yep');
+    });
+  });
+
   $scope.new = function() {
-    $scope.title = '';
-    $scope.platform = '';
+    $scope.game = {title: '', platform: 'XBox 360'}
   };
 });
