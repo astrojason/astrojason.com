@@ -132,17 +132,17 @@
               <div class="row">
                 <div class="col-lg-12 input-group">
                   <label class="input-group-addon">Title:</label>
-                  <input class="form-control" type="text" ng-model="book.title" />
+                  <input class="form-control" type="text" ng-model="book.title" required />
                 </div>
               </div>
               <div class="row">
                 <div class="col-lg-6 input-group">
                   <label class="input-group-addon">Author First Name:</label>
-                  <input class="form-control" type="text" ng-model="book.author_fname" />
+                  <input class="form-control" type="text" ng-model="book.author_fname" required />
                 </div>
                 <div class="col-lg-6 input-group">
                   <label class="input-group-addon">Author Last Name:</label>
-                  <input class="form-control" type="text" ng-model="book.author_lname" />
+                  <input class="form-control" type="text" ng-model="book.author_lname" required />
                 </div>
               </div>
               <div class="row">
@@ -158,7 +158,7 @@
               <div class="row">
                 <div class="col-lg-12 input-group">
                   <label class="input-group-addon">Category:</label>
-                  <select class="form-control" ng-model="book.category">
+                  <select class="form-control" ng-model="book.category" required>
                     <option ng-repeat="category in categories | orderBy: category.category">@{{ category.category }}</option>
                   </select>
                 </div>
@@ -166,6 +166,7 @@
             </form>
           </div>
           <div class="modal-footer">
+            <div id="book-error" class="hidden alert alert-danger"></div>
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
           </div>

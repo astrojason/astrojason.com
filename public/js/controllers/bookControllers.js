@@ -47,15 +47,22 @@ astroApp.controller('editBookCtrl', function($scope, $http, $rootScope, bookSvc)
     $http({method: 'PUT', url: '/api/book/', data: $scope.book}).success(function(data){
       if(data.success) {
         $('#bookModal').modal('hide');
+        $('#book-error').addClass('hidden');
       } else {
-        console.log('Book: ' + $scope.book.title + ' not saved.');
-        // TODO: Give a reason for the book to not be saved
+        $('#book-error').html(data.error);
+        $('#book-error').removeClass('hidden');
       }
     });
   };
 
   $scope.new = function() {
-    $scope.book = {title: '', author_fname: '', author_lname: '', category: '', series: '', seriesorder: ''}
+    $scope.book.id = 0;
+    $scope.book.title = '';
+    $scope.book.author_fname = '';
+    $scope.book.author_lname = '';
+    $scope.book.category = 'Fiction';
+    $scope.book.series = '';
+    $scope.book.seriesorder = '';
   };
 });
 

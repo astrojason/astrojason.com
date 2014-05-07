@@ -57,36 +57,36 @@ class ApiController extends BaseController {
   public function saveBook() {
     if(Auth::check()) {
       if(Input::get('id')) {
-        $book = Book::where('id', Input::get('id'))->where('user_id', Auth::user()->id)->get()[0];
+        $book = Book::where('id', Input::get('id'))->where('user_id', Auth::user()->id)->get();
+        if(count($book) == 0) {
+          return Response::json(array('success' => false, 'error' => 'Attempting to update a book that does not exist for this user.'), 200);
+        } else {
+          $book = $book[0];
+        }
       } else {
         $book = Book::where('user_id', Auth::user()->id)->where('title', Input::get('title'))->where('author_lname', Input::get('author_lname'))->get();
         if(count($book) == 0) {
           $book = new Book();
+          $book->user_id = Auth::user()->id;
         } else {
-          return Response::json(array('success' => false), 200);
+          return Response::json(array('success' => false, 'error' => 'It appears that this book already exists.'), 200);
         }
       }
-      if(isset($book)) {
-        try {
-          $book->user_id = Auth::user()->id;
-          $book->title = Input::get('title');
-          $book->goodreads_id = Input::get('goodreads_id');
-          $book->author_fname = Input::get('author_fname');
-          $book->author_lname = Input::get('author_lname');
-          $book->category = Input::get('category');
-          $book->series = Input::get('series');
-          $book->seriesorder = Input::get('seriesorder');
-          $book->read = Input::get('read');
-          $book->save();
-          return Response::json(array('success' => true), 200);
-        } catch(Exception $exception) {
-          return Response::make($exception->getMessage());
-        }
-      } else {
-        return Response::json(array('success' => false), 200);
+      try {
+        $book->title = Input::get('title');
+        $book->goodreads_id = Input::get('goodreads_id');
+        $book->author_fname = Input::get('author_fname');
+        $book->author_lname = Input::get('author_lname');
+        $book->category = Input::get('category');
+        $book->series = Input::get('series');
+        $book->seriesorder = Input::get('seriesorder');
+        $book->save();
+        return Response::json(array('success' => true), 200);
+      } catch(Exception $exception) {
+        return Response::json(array('success' => false, 'error' => $exception->getMessage()), 200);
       }
     } else {
-      return Response::json(array('success' => false), 200);
+      return Response::json(array('success' => false, 'error' => 'You must log in to perform this action.'), 200);
     }
   }
 
