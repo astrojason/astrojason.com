@@ -80,6 +80,9 @@ class ApiController extends BaseController {
         $book->category = Input::get('category');
         $book->series = Input::get('series');
         $book->seriesorder = Input::get('seriesorder');
+        if(!isset($book->read)) {
+          $book->read = false;
+        }
         $book->save();
         return Response::json(array('success' => true), 200);
       } catch(Exception $exception) {
