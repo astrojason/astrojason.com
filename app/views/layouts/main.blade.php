@@ -34,7 +34,6 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
             <ul class="nav navbar-nav navbar-left">
-              <li class="active"><a href="/">Home</a></li>
               <li><a href="http://blog.astrojason.com">Blog</a></li>
               <li><a href="http://wiki.astrojason.com">Wiki</a></li>
             </ul>

@@ -163,18 +163,18 @@
         </div>
       </div>
 
-      <div class="panel panel-default" ng-controller="nextBookCtrl" ng-show="book">
+      <div class="panel panel-default" ng-controller="nextBookCtrl" ng-show="next_book">
         <div class="panel-heading clearfix">
           <h4 class="panel-title pull-left">Next Book to Read</h4>
           <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="getNextBook()"></div>
         </div>
         <div class="panel-body">
-          <p>@{{ book.title }}<br /><small>by @{{ book.author_fname }}<span ng-show="book.author_lname" > @{{ book.author_lname }}</span></small></p>
+          <p>@{{ next_book.title }}<span ng-show="next_book.series"> @{{ next_book.series }} #@{{ next_book.seriesorder }}</span><br /><small>by @{{ next_book.author_fname }}<span ng-show="next_book.author_lname" > @{{ next_book.author_lname }}</span></small></p>
         </div>
         <div class="panel-footer clearfix">
           <div class="pull-right">
-            <div class="glyphicon glyphicon-pencil book-action" data-toggle="modal" data-target="#bookModal" ng-click="edit(book)"></div>
-            <div class="glyphicon glyphicon-ok book-action right" ng-click="read(book)"></div>
+            <div class="glyphicon glyphicon-pencil book-action" data-toggle="modal" data-target="#bookModal" ng-click="edit(next_book)"></div>
+            <div class="glyphicon glyphicon-ok book-action right" ng-click="read(next_book)"></div>
           </div>
         </div>
       </div>

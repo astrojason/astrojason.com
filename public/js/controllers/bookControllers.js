@@ -4,7 +4,7 @@
 astroApp.controller('nextBookCtrl', function($scope, $http, $rootScope, bookSvc) {
   $scope.getNextBook = function() {
     $http.get('/api/book/next').success(function(data) {
-      $scope.book = data.book;
+      $scope.next_book = data.book;
       $scope.book_categories = data.categories;
     });
   };
@@ -44,6 +44,12 @@ astroApp.controller('editBookCtrl', function($scope, $http, $rootScope, bookSvc)
   });
 
   $scope.save = function() {
+    if(!$scope.book.read) {
+      $scope.book.read = false;
+    }
+    if(!$scope.book.seriesorder) {
+      $scope.book.seriesorder = 0;
+    }
     $http({method: 'PUT', url: '/api/book/', data: $scope.book}).success(function(data){
       if(data.success) {
         $('#bookModal').modal('hide');
@@ -56,13 +62,8 @@ astroApp.controller('editBookCtrl', function($scope, $http, $rootScope, bookSvc)
   };
 
   $scope.new = function() {
-    $scope.book.id = 0;
-    $scope.book.title = '';
-    $scope.book.author_fname = '';
-    $scope.book.author_lname = '';
-    $scope.book.category = 'Fiction';
-    $scope.book.series = '';
-    $scope.book.seriesorder = '';
+    //TODO: Determine how to clear this out without clearing out the recommended book
+    bookSvc.set({});
   };
 });
 
