@@ -19,7 +19,7 @@ class ApiController extends BaseController {
   }
 
   public function nextBook() {
-    $book = Book::where('read', false)->where('category', 'Fiction')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
+    $book = Book::where('read', false)->where('category', 'To Read')->where('user_id', Auth::user()->id)->orderBy(DB::raw($this->getOrderCommand()))->take(1)->get();
     if(count($book) > 0) {
       $book = $book[0];
       if($book->seriesorder != 0) {
@@ -170,10 +170,10 @@ class ApiController extends BaseController {
           $link->save();
           return Response::json(array('success' => true, 'link' => $link->toArray()), 200);
         } catch(Exception $exception) {
-          return Response::make($exception->getMessage());
+          return Response::json(array('success' => false, 'error' => $exception->getMessage()), 200);
         }
       } else {
-        return Response::json(array('success' => false), 200);
+        return Response::json(array('success' => false, 'error' => 'Link already exists'), 200);
       }
     }
   }
