@@ -9,3 +9,4 @@ Thumbs.db
 .idea
 .sass-cache/
 node_modules
+/app/views/layouts/default.blade.php

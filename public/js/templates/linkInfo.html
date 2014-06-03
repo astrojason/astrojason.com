@@ -2,6 +2,6 @@
  * Created by jasonsylvester on 4/19/14.
  */
 <td class="fill-row"><a href="{{ link.link }}" target="_blank">{{ link.name }}</a></td>
-<td><div class="glyphicon glyphicon-pencil link-action" data-toggle="modal" data-target="#linkModal" ng-click="edit(link, $index)"></div></td>
-<td class="postpone"><div class="glyphicon glyphicon-off link-action" ng-click="postpone(link, $index)"></div></td>
-<td><div class="glyphicon link-action" ng-click="markAsRead(link, $index)" ng-class="link.read ? '' : 'glyphicon-ok'"></div></td>
+<td><div class="glyphicon glyphicon-pencil link-action" data-toggle="modal" data-target="#linkModal" ng-click="linkCtrl.edit(link, $index)"></div></td>
+<td class="postpone"><div class="glyphicon glyphicon-off link-action" ng-click="linkCtrl.postpone(link, $index)"></div></td>
+<td><div class="glyphicon link-action" ng-click="linkCtrl.markAsRead(link, $index)" ng-class="link.read ? '' : 'glyphicon-ok'"></div></td>
