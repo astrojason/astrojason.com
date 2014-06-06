@@ -3,7 +3,7 @@
 @section('content')
   @if(Auth::check())
     <div class="col-md-7 col-md-offset-1">
-      <div ng-controller="todaysLinksListCtrl as linkCtrl" class="row">
+      <div ng-controller="todaysLinksController as linkCtrl" class="row">
         <div class="col-md-12">
           <div class="panel panel-default" ng-show="linkCtrl.unread.length > 0">
             <div class="panel-heading clearfix">
@@ -131,8 +131,8 @@
         </div>
         <div class="panel-body">
           <p>
-            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#linkModal" ng-click="ec.new()" ng-controller="editLinkCtrl as ec">Add Link</button>
-
+            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#linkModal" ng-click="elc.create()" ng-controller="editLinkController as elc">Add Link</button>
+            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#bookModal" ng-click="ebc.create()" ng-controller="editBookController as ebc">Add Book</button>
           </p>
           <p>
             <a class="btn btn-primary btn-xs" href="javascript:(
@@ -144,6 +144,23 @@
           </p>
         </div>
       </div>
+
+      <div class="panel panel-default" ng-controller="nextBookController as bookCtrl" ng-show="bookCtrl.next_book">
+        <div class="panel-heading clearfix">
+          <h4 class="panel-title pull-left">Next Book to Read</h4>
+          <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="bookCtrl.getNextBook()"></div>
+        </div>
+        <div class="panel-body">
+          <p>@{{ bookCtrl.next_book.title }}<span ng-show="bookCtrl.next_book.series"> @{{ bookCtrl.next_book.series }} #@{{ bookCtrl.next_book.seriesorder }}</span><br /><small>by @{{ bookCtrl.next_book.author_fname }}<span ng-show="bookCtrl.next_book.author_lname" > @{{ bookCtrl.next_book.author_lname }}</span></small></p>
+        </div>
+        <div class="panel-footer clearfix">
+          <div class="pull-right">
+            <div class="glyphicon glyphicon-pencil book-action" data-toggle="modal" data-target="#bookModal" ng-click="bookCtrl.edit(bookCtrl.next_book)"></div>
+            <div class="glyphicon glyphicon-ok book-action right" ng-click="bookCtrl.read(bookCtrl.next_book)"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
     <div class="col-md-1">&nbsp;</div>
   @else

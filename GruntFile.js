@@ -19,7 +19,8 @@ module.exports = function(grunt) {
          'public/js/main.min.js': 'source/javascript/main.js',
          'public/js/bookmarklet.min.js': 'source/javascript/bookmarklet.js',
          'public/js/modules/app.min.js': 'source/javascript/modules/app.js',
-         'public/js/controllers/linkControllers.min.js': 'source/javascript/controllers/linkControllers.js'
+         'public/js/controllers/linkControllers.min.js': 'source/javascript/controllers/linkControllers.js',
+         'public/js/controllers/bookControllers.min.js': 'source/javascript/controllers/bookControllers.js'
        }
      }
     },

@@ -56,7 +56,9 @@
       </div>
     </div>
 
-    <div class="modal fade" id="linkModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="editLinkCtrl as el">
+    <!-- Modals -->
+
+    <div class="modal fade" id="linkModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="editLinkController as el">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -95,15 +97,67 @@
       </div>
     </div>
 
+    <div class="modal fade" id="bookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="editBookController as eb">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Book Edit</h4>
+          </div>
+          <div class="modal-body">
+            <form id="book-edit" data-abide>
+              <div class="row">
+                <div class="col-lg-12 input-group">
+                  <label class="input-group-addon">Title:</label>
+                  <input class="form-control" type="text" ng-model="eb.book.title" required />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 input-group">
+                  <label class="input-group-addon">Author First Name:</label>
+                  <input class="form-control" type="text" ng-model="eb.book.author_fname" required />
+                </div>
+                <div class="col-lg-6 input-group">
+                  <label class="input-group-addon">Author Last Name:</label>
+                  <input class="form-control" type="text" ng-model="eb.book.author_lname" required />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-8 input-group">
+                  <label class="input-group-addon">Series:</label>
+                  <input class="form-control" type="text" ng-model="eb.book.series" />
+                </div>
+                <div class="col-lg-4 input-group">
+                  <label class="input-group-addon">Series Order:</label>
+                  <input class="form-control" type="text" ng-model="eb.book.seriesorder" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12 input-group">
+                  <label class="input-group-addon">Category:</label>
+                  <select class="form-control" ng-model="eb.book.category" required>
+                    <option ng-repeat="category in eb.categories | orderBy: category.category">@{{ category.category }}</option>
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <div id="book-error" class="hidden alert alert-danger"></div>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" ng-click="eb.save()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script type="text/javascript" src="/js/libs/jquery.min.js"></script>
     <script type="text/javascript" src="/js/libs/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/js/libs/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/libs/angular/angular.min.js"></script>
     <script type="text/javascript" src="/js/modules/app.min.js"></script>
     <script type="text/javascript" src="/js/controllers/linkControllers.min.js"></script>
+    <script type="text/javascript" src="/js/controllers/bookControllers.min.js"></script>
 <!--    <script type="text/javascript" src="/js/controllers/loginController.js"></script>-->
-<!--    <script type="text/javascript" src="/js/controllers/linkControllers.js"></script>-->
-<!--    <script type="text/javascript" src="/js/controllers/bookControllers.js"></script>-->
 <!--    <script type="text/javascript" src="/js/controllers/movieControllers.js"></script>-->
 <!--    <script type="text/javascript" src="/js/controllers/gameControllers.js"></script>-->
     <script type="text/javascript" src="/js/main.min.js"></script>

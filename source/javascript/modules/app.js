@@ -4,7 +4,7 @@
 var app = angular.module('astroApp', []);
 
 app.factory('linkSvc', ['$http', '$rootScope', function($http, $rootScope){
-  var editing_link = {};
+  this.editing_link = {};
   return {
     remove: function(category, index, controller) {
       var category_name = category.toLowerCase().replace(/ /g, '');
@@ -16,16 +16,16 @@ app.factory('linkSvc', ['$http', '$rootScope', function($http, $rootScope){
     },
 
     get: function() {
-      return editing_link;
+      return this.editing_link;
     },
 
     set: function(link) {
-      editing_link = link;
+      this.editing_link = link;
     },
 
-    new: function() {
-      editing_link = {id: 0, name: '', link: '', category: 'Unread', read: 0};
-      return editing_link;
+    create: function() {
+      this.editing_link = {id: 0, name: '', link: '', category: 'Unread', read: 0};
+      return this.editing_link;
     },
 
     markAsRead: function(link) {
@@ -39,6 +39,41 @@ app.factory('linkSvc', ['$http', '$rootScope', function($http, $rootScope){
     edit: function(link) {
       this.set(link);
       $rootScope.$broadcast('EDITING_LINK');
+    }
+  }
+}]);
+
+app.factory('bookSvc', ['$http', '$rootScope', function($http, $rootScope){
+  this.editing_book = {};
+  return {
+    set: function(book) {
+      this.editing_book = book;
+    },
+
+    get: function() {
+      return this.editing_book;
+    },
+
+    create: function() {
+      this.editing_book = {id: 0, title: '', category: 'To Read'};
+      return this.editing_book;
+    },
+
+    edit: function(book) {
+      this.set(book);
+      $rootScope.$broadcast('EDITING_BOOK');
+    },
+
+    markAsRead: function(book) {
+      $http.get('/api/book/' + book.id + '/read').success(function(data){
+        if(data.success) {
+          $rootScope.$broadcast('BOOK_READ');
+        }
+      });
+    },
+
+    delete: function() {
+
     }
   }
 }]);

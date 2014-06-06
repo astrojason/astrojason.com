@@ -1,7 +1,7 @@
 /**
  * Created by jasonsylvester on 5/29/14.
  */
-app.controller('todaysLinksListCtrl', ['$http', 'linkSvc', '$scope', function($http, linkSvc, $scope){
+app.controller('todaysLinksController', ['$http', 'linkSvc', '$scope', function($http, linkSvc, $scope){
   var todays = this;
   todays.editing = null;
   todays.init = true;
@@ -52,7 +52,7 @@ app.controller('todaysLinksListCtrl', ['$http', 'linkSvc', '$scope', function($h
   });
 }]);
 
-app.controller('editLinkCtrl', ['$http', 'linkSvc', '$scope', '$rootScope', function($http, linkSvc, $scope, $rootScope){
+app.controller('editLinkController', ['$http', 'linkSvc', '$scope', '$rootScope', function($http, linkSvc, $scope, $rootScope){
   var editor = this;
 
   $http.get('/api/link/categories').success(function(data){
@@ -63,8 +63,8 @@ app.controller('editLinkCtrl', ['$http', 'linkSvc', '$scope', '$rootScope', func
     editor.link = linkSvc.get();
   });
 
-  editor.new = function() {
-    linkSvc.edit(linkSvc.new());
+  editor.create = function() {
+    linkSvc.edit(linkSvc.create());
   };
 
   editor.save = function() {
@@ -80,7 +80,7 @@ app.controller('editLinkCtrl', ['$http', 'linkSvc', '$scope', '$rootScope', func
   };
 }]);
 
-app.controller('allLinksListCtrl', ['$http', 'linkSvc', '$scope', function($http, linkSvc, $scope){
+app.controller('allLinksController', ['$http', 'linkSvc', '$scope', function($http, linkSvc, $scope){
   var all = this;
   $http.get('/api/links').success(function(data) {
     all.links = data.links;
