@@ -61,51 +61,37 @@ app.controller('editBookController', ['$http', 'bookSvc', '$scope', function($ht
   };
 }]);
 
+app.controller('allBooksController', ['$http', 'bookSvc', '$scope', function($http, bookSvc, $scope){
+  var bookCtrl = this;
+  bookCtrl.editing = null;
 
-//astroApp.controller('editBookCtrl', function($scope, $http, $rootScope, bookSvc){
+  $http.get('/api/books').success(function(data) {
+    bookCtrl.books = data.books;
+    bookCtrl.sortOrder = 'title';
+  });
 
-//
-//  $scope.$on('EDITING_BOOK', function(response) {
-//    $scope.book = bookSvc.get();
-//  });
-//
-//  $scope.$on('READ_BOOK', function(response) {
-//    $scope.book = bookSvc.get();
-//    $http.get('/api/book/' + $scope.book.id + '/read').success(function(data){
-//      $scope.book.read = true;
-//      $rootScope.$broadcast('BOOK_READ', 'yep');
-//    });
-//  });
-//
+  bookCtrl.edit = function(book) {
+    bookCtrl.editing = book;
+    bookSvc.edit(book);
+  };
 
-//
-//  $scope.new = function() {
-//    //TODO: Determine how to clear this out without clearing out the recommended book
-//    bookSvc.set({});
-//  };
-//});
-//
-//astroApp.controller('allBooksListCtrl', function($scope, $http, bookSvc, $rootScope) {
-//  $http.get('/api/books').success(function(data) {
-//    $scope.books = data.books;
-//    $scope.sortOrder = 'title';
-//  });
-//
-//  $scope.edit = function(book){
-//    bookSvc.set(book);
-//    $rootScope.$broadcast('EDITING_BOOK', 'existing');
-//  };
-//
-//  $scope.markAsRead = function(book) {
-//    bookSvc.set(book);
-//    $rootScope.$broadcast('READ_BOOK', 'existing');
-//  };
-//
-//  $scope.delete = function(book) {
-//    $http.get('/api/book/' + book.id + '/delete').success(function(data) {
-//      if(data.success) {
-//        $scope.books.splice($scope.books.indexOf(book), 1);
-//      }
-//    });
-//  };
-//});
+  bookCtrl.markAsRead = function(book) {
+    bookCtrl.editing = book;
+    bookSvc.markAsRead(book);
+  };
+
+  bookCtrl.delete = function(book) {
+    $http.get('/api/book/' + book.id + '/delete').success(function(data) {
+      if(data.success) {
+        bookCtrl.books.splice(bookCtrl.books.indexOf(book), 1);
+      }
+    });
+  };
+
+  $scope.$on('BOOK_READ', function(){
+    if(bookCtrl.editing != null) {
+      bookCtrl.editing.read = true;
+      bookCtrl.editing = null;
+    }
+  });
+}]);

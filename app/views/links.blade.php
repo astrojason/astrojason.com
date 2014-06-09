@@ -1,9 +1,9 @@
 @extends('layouts/main')
 
 @section('content')
-  <div ng-controller="allLinksListCtrl as linkCtrl">
+  <div ng-controller="allLinksController as linkCtrl">
     <div class="row">
-      <div class="col-md-10 col-md-offset-1 clearfix">
+      <div class="col-md-10 col-md-offset-1 clearfix" ng-show="linkCtrl.links">
         <span class="pull-left" ng-show="filtered">@{{ filtered.length }} total links</span>
         <span class="pull-right"><input type="text" class="form-control" ng-model="filter" /></span>
       </div>
@@ -16,7 +16,6 @@
       </div>
     </div>
   </div>
-  <div ng-controller="editLinkCtrl"></div>
 @stop
 
 @section('scripts')

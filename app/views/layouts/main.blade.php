@@ -34,14 +34,18 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
             <ul class="nav navbar-nav navbar-left">
+              @if(Auth::check())
+                <li><a href="/links">Links</a></li>
+                <li><a href="/books">Books</a></li>
+              @endif
               <li><a href="http://blog.astrojason.com">Blog</a></li>
               <li><a href="http://wiki.astrojason.com">Wiki</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               @if(Auth::check())
-              <li><a>Hello {{ Auth::user()->name }}</a></li>
+                <li><a>Hello {{ Auth::user()->name }}</a></li>
               @else
-              <li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
               @endif
             </ul>
           </div><!-- /.navbar-collapse -->
@@ -154,9 +158,9 @@
     <script type="text/javascript" src="/js/libs/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/js/libs/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/libs/angular/angular.min.js"></script>
-    <script type="text/javascript" src="/js/modules/app.min.js"></script>
-    <script type="text/javascript" src="/js/controllers/linkControllers.min.js"></script>
-    <script type="text/javascript" src="/js/controllers/bookControllers.min.js"></script>
+    <script type="text/javascript" src="/js/modules/app.min.js?v=1"></script>
+    <script type="text/javascript" src="/js/controllers/linkControllers.min.js?v=1"></script>
+    <script type="text/javascript" src="/js/controllers/bookControllers.min.js?v=1"></script>
 <!--    <script type="text/javascript" src="/js/controllers/loginController.js"></script>-->
 <!--    <script type="text/javascript" src="/js/controllers/movieControllers.js"></script>-->
 <!--    <script type="text/javascript" src="/js/controllers/gameControllers.js"></script>-->
