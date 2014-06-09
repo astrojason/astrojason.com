@@ -85,9 +85,7 @@
               <div class="row">
                 <div class="col-lg-10 col-lg-offset-1 input-group">
                   <label class="input-group-addon">Category:</label>
-                  <select class="form-control" ng-model="el.link.category">
-                    <option ng-repeat="category in el.categories | orderBy: category.category">@{{ category.category }}</option>
-                  </select>
+                  <select class="form-control" ng-model="el.link.category" ng-options="category.category as category.category for category in el.categories"></select>
                 </div>
               </div>
             </form>
@@ -138,9 +136,7 @@
               <div class="row">
                 <div class="col-lg-12 input-group">
                   <label class="input-group-addon">Category:</label>
-                  <select class="form-control" ng-model="eb.book.category" required>
-                    <option ng-repeat="category in eb.categories | orderBy: category.category">@{{ category.category }}</option>
-                  </select>
+                  <select class="form-control" ng-model="eb.book.category" required ng-options="category.category as category.category for category in eb.categories"></select>
                 </div>
               </div>
             </form>

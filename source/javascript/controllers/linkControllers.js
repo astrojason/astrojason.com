@@ -35,12 +35,12 @@ app.controller('todaysLinksController', ['$http', 'linkSvc', '$scope', function(
   };
 
   todays.markAsRead = function(link, index) {
-    todays.editing = { link: link, index: index};
+    todays.editing = { link: link, index: index };
     linkSvc.markAsRead(link);
   };
 
   todays.edit = function(link, index) {
-    todays.editing = { link: link, index: index};
+    todays.editing = { link: link, index: index, category: link.category };
     linkSvc.edit(link);
   };
 
@@ -49,6 +49,15 @@ app.controller('todaysLinksController', ['$http', 'linkSvc', '$scope', function(
       linkSvc.remove(todays.editing.link.category, todays.editing.index, todays);
       todays.editing = null;
     }
+  });
+
+  $scope.$on('LINK_EDITED', function(){
+    if(todays.editing != null) {
+      if(todays.editing.link.category != todays.editing.category) {
+        linkSvc.remove(todays.editing.category, todays.editing.index, todays);
+      }
+    }
+    todays.editing = null;
   });
 }]);
 
@@ -71,7 +80,7 @@ app.controller('editLinkController', ['$http', 'linkSvc', '$scope', '$rootScope'
     $http({method: 'PUT', url: '/api/link/', data: editor.link}).success(function(data){
       if(data.success) {
         $('#linkModal').modal('hide');
-        $rootScope.$broadcast('LINK_EDITED', 'existing');
+        $rootScope.$broadcast('LINK_EDITED');
       } else {
         $('#link-error').html(data.error);
         $('#link-error').show();
