@@ -19,6 +19,7 @@ app.controller('todaysLinksController', ['$http', 'linkSvc', '$scope', function(
     todays.wishlist = data.wishlist;
     todays.wordpress = data.wordpress;
     todays.unread = data.links;
+    todays.daily = data.daily;
     todays.init = false;
   });
 

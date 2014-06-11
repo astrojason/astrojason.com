@@ -5,6 +5,15 @@
     <div class="col-md-7 col-md-offset-1">
       <div ng-controller="todaysLinksController as linkCtrl" class="row">
         <div class="col-md-12">
+          <div class="panel panel-default" ng-show="linkCtrl.daily.length > 0">
+            <div class="panel-heading clearfix">
+              <h3 class="panel-title pull-left">Daily</h3>
+            </div>
+            <table class="table table-striped">
+              <tr ng-repeat="link in linkCtrl.daily" ng-include src="'js/templates/linkInfo.html'"></tr>
+            </table>
+          </div>
+
           <div class="panel panel-default" ng-show="linkCtrl.unread.length > 0">
             <div class="panel-heading clearfix">
               <h3 class="panel-title pull-left">Unread</h3>
