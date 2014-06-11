@@ -122,7 +122,7 @@ class ApiController extends BaseController {
     $wishlist = $this->getRandomLinks('Wishlist', 1);
     $wordpress = $this->getRandomLinks('Wordpress', 1);
     $links = $this->getRandomLinks('Unread', 20);
-    $daily = Link::where('read', false)->where('category', 'Daily')->where('user_id', Auth::user()->id);
+    $daily = Link::where('read', false)->where('category', 'Daily')->where('user_id', Auth::user()->id)->get();
 
     return Response::json(array(
       'athome' => $atHome->toArray(),
