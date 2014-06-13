@@ -13,7 +13,14 @@
               <tr ng-repeat="link in linkCtrl.daily" ng-include src="'js/templates/linkInfo.html'"></tr>
             </table>
           </div>
-
+          <div class="panel panel-default" ng-show="linkCtrl.hockey.length > 0">
+            <div class="panel-heading clearfix">
+              <h3 class="panel-title pull-left">Hockey Exercise</h3>
+            </div>
+            <table class="table table-striped">
+              <tr ng-repeat="link in linkCtrl.hockey" ng-include src="'js/templates/linkInfo.html'"></tr>
+            </table>
+          </div>
           <div class="panel panel-default" ng-show="linkCtrl.unread.length > 0">
             <div class="panel-heading clearfix">
               <h3 class="panel-title pull-left">Unread</h3>

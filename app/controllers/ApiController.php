@@ -121,6 +121,7 @@ class ApiController extends BaseController {
     $programming = $this->getRandomLinks('Programming', 1);
     $wishlist = $this->getRandomLinks('Wishlist', 1);
     $wordpress = $this->getRandomLinks('Wordpress', 1);
+    $hockey = $this->getRandomLinks('Hockey Exercise', 1);
     $links = $this->getRandomLinks('Unread', 20);
     $daily = Link::where('read', false)->where('category', 'Daily')->where('user_id', Auth::user()->id)->get();
 
@@ -138,7 +139,8 @@ class ApiController extends BaseController {
       'photography' => $photography->toArray(),
       'wishlist' => $wishlist->toArray(),
       'wordpress' => $wordpress->toArray(),
-      'daily' => $daily->toArray()
+      'daily' => $daily->toArray(),
+      'hockey' => $hockey->toArray()
     ), 200);
   }
 

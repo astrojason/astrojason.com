@@ -20,6 +20,7 @@ app.controller('todaysLinksController', ['$http', 'linkSvc', '$scope', function(
     todays.wordpress = data.wordpress;
     todays.unread = data.links;
     todays.daily = data.daily;
+    todays.hockey = data.hockey;
     todays.init = false;
   });
 
