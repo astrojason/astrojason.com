@@ -192,9 +192,9 @@ class ApiController extends BaseController {
       $link->category = 'Unread';
       $link->read = false;
       $link->save();
-      return Response::json(array('success' => true), 200, array('Access-Control-Allow-Origin' => '*'));
+      return Response::json(array('success' => true), 200);
     } else {
-      return Response::json(array('success' => false, 'error' => 'Link already exists'), 200, array('Access-Control-Allow-Origin' => '*'));
+      return Response::json(array('success' => false, 'error' => 'Link already exists'), 200);
     }
   }
 

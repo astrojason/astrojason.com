@@ -1,8 +1,4 @@
-/**
- * Created by jasonsylvester on 4/15/14.
- */
-
-if (!($ = window.jQuery)) { // typeof jQuery=='undefined' works too
+if (!($ = window.jQuery)) {
   script = document.createElement( 'script' );
   script.src = 'http://www.astrojason.com/js/libs/jquery.min.js';
   script.onload=addTheLink;
@@ -22,6 +18,7 @@ function addTheLink() {
     url: 'http://www.astrojason.com/api/link/add',
     data: save_data,
     type: 'PUT',
+    headers: {'X-Requested-With': 'XMLHttpRequest'},
     success: function(data) {
       if(data.success) {
         alert('Added');

@@ -151,12 +151,7 @@
             <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#bookModal" ng-click="ebc.create()" ng-controller="editBookController as ebc">Add Book</button>
           </p>
           <p>
-            <a class="btn btn-primary btn-xs" href="javascript:(
-                  function(){
-                  var jsCode = document.createElement('script');
-                  jsCode.setAttribute('src', 'http://www.astrojason.com/js/bookmarklet.min.js');
-                  document.body.appendChild(jsCode);
-                  })()">Read Later</a>
+            <a class="btn btn-primary btn-xs" href="javascript:(function(){var jsCode = document.createElement('script');jsCode.setAttribute('src', 'http://www.astrojason.com/js/bookmarklet.min.js');document.body.appendChild(jsCode);})()">Read Later</a>
           </p>
         </div>
       </div>
