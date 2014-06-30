@@ -20,7 +20,8 @@ module.exports = function(grunt) {
          'public/js/bookmarklet.min.js': 'source/javascript/bookmarklet.js',
          'public/js/modules/app.min.js': 'source/javascript/modules/app.js',
          'public/js/controllers/linkControllers.min.js': 'source/javascript/controllers/linkControllers.js',
-         'public/js/controllers/bookControllers.min.js': 'source/javascript/controllers/bookControllers.js'
+         'public/js/controllers/bookControllers.min.js': 'source/javascript/controllers/bookControllers.js',
+         'public/js/controllers/gameControllers.min.js': 'source/javascript/controllers/gameControllers.js'
        }
      }
     },

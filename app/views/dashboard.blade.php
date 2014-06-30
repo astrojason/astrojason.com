@@ -155,7 +155,6 @@
           </p>
         </div>
       </div>
-
       <div class="panel panel-default" ng-controller="nextBookController as bookCtrl" ng-show="bookCtrl.next_book">
         <div class="panel-heading clearfix">
           <h4 class="panel-title pull-left">Next Book to Read</h4>
@@ -168,6 +167,22 @@
           <div class="pull-right">
             <div class="glyphicon glyphicon-pencil book-action" data-toggle="modal" data-target="#bookModal" ng-click="bookCtrl.edit(bookCtrl.next_book)"></div>
             <div class="glyphicon glyphicon-ok book-action right" ng-click="bookCtrl.read(bookCtrl.next_book)"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default" ng-controller="nextGameController as gameCtrl" ng-show="gameCtrl.game">
+        <div class="panel-heading clearfix">
+          <h4 class="panel-title pull-left">Next Game to Play</h4>
+          <div class="glyphicon glyphicon-refresh game-action pull-right" ng-click="gameCtrl.getNextGame()"></div>
+        </div>
+        <div class="panel-body">
+          <p>@{{ gameCtrl.game.title }}<br /><small>@{{ gameCtrl.game.platform }}</small></p>
+        </div>
+        <div class="panel-footer clearfix">
+          <div class="pull-right">
+            <div class="glyphicon glyphicon-pencil game-action" data-toggle="modal" data-target="#gameModal" ng-click="gameCtrl.edit(game)"></div>
+            <div class="glyphicon glyphicon-ok game-action right" ng-click="gameCtrl.played(game)"></div>
           </div>
         </div>
       </div>

@@ -157,9 +157,9 @@
     <script type="text/javascript" src="/js/modules/app.min.js?v=1"></script>
     <script type="text/javascript" src="/js/controllers/linkControllers.min.js?v=1"></script>
     <script type="text/javascript" src="/js/controllers/bookControllers.min.js?v=1"></script>
+    <script type="text/javascript" src="/js/controllers/gameControllers.min.js"></script>
 <!--    <script type="text/javascript" src="/js/controllers/loginController.js"></script>-->
 <!--    <script type="text/javascript" src="/js/controllers/movieControllers.js"></script>-->
-<!--    <script type="text/javascript" src="/js/controllers/gameControllers.js"></script>-->
     <script type="text/javascript" src="/js/main.min.js"></script>
     @yield('scripts')
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

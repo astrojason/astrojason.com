@@ -23,7 +23,7 @@ function addTheLink() {
       if(data.success) {
         alert('Added');
       } else {
-        alert('There was a problem');
+        alert('There was a problem.\n' + data.error);
       }
     }
    });

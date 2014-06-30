@@ -13,7 +13,7 @@ return array(
   ),
 
   'paths' => array(
-      'api/*' => array(
+      'api/link/add' => array(
           'allow_origin'=> array('*'),
           'allow_headers'=> array('*'),
           'allow_methods'=> array('PUT'),
