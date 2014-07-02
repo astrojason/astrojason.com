@@ -125,8 +125,8 @@ class ApiController extends BaseController {
       $hockey = $this->getRandomLinks('Hockey Exercise', 1);
       $links = $this->getRandomLinks('Unread', 20);
       $daily = Link::where('read', false)->where('category', 'Daily')->where('user_id', Auth::user()->id)->get();
-      $total_added = Link::where($this->getDateCommand('created_at'), 'LIKE', date('Y-m-d') . '%')->where('user_id', Auth::user()->id)->count();
-      $total_read = Link::where($this->getDateCommand('updated_at'), 'LIKE', date('Y-m-d') . '%')->where('user_id', Auth::user()->id)->where('read', true)->count();
+      $total_added = Link::where(isset($_SERVER["DATABASE_URL"]) ? DB::raw('created_at::text LIKE \'' . date('Y-m-d') . '%\'') : 'created_at', date('Y-m-d'))->where('user_id', Auth::user()->id)->count();
+      $total_read = Link::where(isset($_SERVER["DATABASE_URL"]) ? DB::raw('updated_at::text LIKE \'' . date('Y-m-d') . '%\'') : 'updated_at', date('Y-m-d'))->where('user_id', Auth::user()->id)->where('read', true)->count();
 
       return Response::json(array(
         'success' => true,
@@ -348,10 +348,6 @@ class ApiController extends BaseController {
 
   public function getOrderCommand() {
     return isset($_SERVER["DATABASE_URL"]) ? 'random()' : 'RAND()';
-  }
-
-  public function getDateCommand($column) {
-    return isset($_SERVER["DATABASE_URL"]) ? $column . '::text' : $column;
   }
 
   public function getRandomLinks($category, $quantity) {
