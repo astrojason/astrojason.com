@@ -125,8 +125,8 @@ class ApiController extends BaseController {
       $hockey = $this->getRandomLinks('Hockey Exercise', 1);
       $links = $this->getRandomLinks('Unread', 20);
       $daily = Link::where('read', false)->where('category', 'Daily')->where('user_id', Auth::user()->id)->get();
-      $total_added = Link::where('created_at', date('Y-m-d'))->where('user_id', Auth::user()->id)->count();
-      $total_read = Link::where('updated_at', date('Y-m-d'))->where('user_id', Auth::user()->id)->where('read', true)->count();
+      $total_added = Link::where('created_at', 'LIKE', date('Y-m-d') . '%')->where('user_id', Auth::user()->id)->count();
+      $total_read = Link::where('updated_at', 'LIKE', date('Y-m-d') . '%')->where('user_id', Auth::user()->id)->where('read', true)->count();
 
       return Response::json(array(
         'success' => true,
