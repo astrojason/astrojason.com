@@ -4,10 +4,10 @@
   @if(Auth::check())
     <div class="col-md-7 col-md-offset-1">
       <div ng-controller="todaysLinksController as linkCtrl" class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" ng-show="linkCtrl.success">
           <div class="panel panel-default">
             <div class="panel-heading clearfix">
-              <h3 class="panel-title pull-left">Added today: @{{ linkCtrl.added }}, read today: @{{ linkCtrl.read }}</h3>
+              <h3 class="panel-title pull-left">Added today: @{{ linkCtrl.added || 0 }}, read today: @{{ linkCtrl.read || 0 }}</h3>
             </div>
           </div>
           <div class="panel panel-default" ng-show="linkCtrl.daily.length > 0">
@@ -142,6 +142,9 @@
               <tr ng-repeat="link in linkCtrl.athome" ng-include src="'js/templates/linkInfo.html'"></tr>
             </table>
           </div>
+        </div>
+        <div class="col-md-12" ng-show="!linkCtrl.success">
+          @{{ linkCtrl.error }}
         </div>
       </div>
     </div>

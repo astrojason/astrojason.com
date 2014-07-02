@@ -109,43 +109,48 @@ class ApiController extends BaseController {
   }
 
   public function todaysLinks() {
-    $atHome = $this->getRandomLinks('At Home', 1);
-    $cooking = $this->getRandomLinks('Cooking', 1);
-    $exercise = $this->getRandomLinks('Exercise', 1);
-    $forReview = $this->getRandomLinks('For Review', 1);
-    $forTheHouse = $this->getRandomLinks('For the House', 1);
-    $groups = $this->getRandomLinks('Groups', 1);
-    $guitar = $this->getRandomLinks('Guitar', 1);
-    $photography = $this->getRandomLinks('Photography', 1);
-    $projects = $this->getRandomLinks('Projects', 1);
-    $programming = $this->getRandomLinks('Programming', 1);
-    $wishlist = $this->getRandomLinks('Wishlist', 1);
-    $wordpress = $this->getRandomLinks('Wordpress', 1);
-    $hockey = $this->getRandomLinks('Hockey Exercise', 1);
-    $links = $this->getRandomLinks('Unread', 20);
-    $daily = Link::where('read', false)->where('category', 'Daily')->where('user_id', Auth::user()->id)->get();
-    $total_added = Link::where('created_at', date('y-m-d'))->where('user_id', Auth::user()->id)->count();
-    $total_read = Link::where('updated_at', date('y-m-d'))->where('user_id', Auth::user()->id)->where('read', true)->count();
+    try {
+      $atHome = $this->getRandomLinks('At Home', 1);
+      $cooking = $this->getRandomLinks('Cooking', 1);
+      $exercise = $this->getRandomLinks('Exercise', 1);
+      $forReview = $this->getRandomLinks('For Review', 1);
+      $forTheHouse = $this->getRandomLinks('For the House', 1);
+      $groups = $this->getRandomLinks('Groups', 1);
+      $guitar = $this->getRandomLinks('Guitar', 1);
+      $photography = $this->getRandomLinks('Photography', 1);
+      $projects = $this->getRandomLinks('Projects', 1);
+      $programming = $this->getRandomLinks('Programming', 1);
+      $wishlist = $this->getRandomLinks('Wishlist', 1);
+      $wordpress = $this->getRandomLinks('Wordpress', 1);
+      $hockey = $this->getRandomLinks('Hockey Exercise', 1);
+      $links = $this->getRandomLinks('Unread', 20);
+      $daily = Link::where('read', false)->where('category', 'Daily')->where('user_id', Auth::user()->id)->get();
+      $total_added = Link::where('created_at', date('y-m-d'))->where('user_id', Auth::user()->id)->count();
+      $total_read = Link::where('updated_at', date('y-m-d'))->where('user_id', Auth::user()->id)->where('read', true)->count();
 
-    return Response::json(array(
-      'athome' => $atHome->toArray(),
-      'cooking' => $cooking->toArray(),
-      'exercise' => $exercise->toArray(),
-      'forreview' => $forReview->toArray(),
-      'forthehouse' => $forTheHouse->toArray(),
-      'groups' => $groups->toArray(),
-      'guitar' => $guitar->toArray(),
-      'links' => $links->toArray(),
-      'projects' => $projects->toArray(),
-      'programming' => $programming->toArray(),
-      'photography' => $photography->toArray(),
-      'wishlist' => $wishlist->toArray(),
-      'wordpress' => $wordpress->toArray(),
-      'daily' => $daily->toArray(),
-      'hockey' => $hockey->toArray(),
-      'total_added' => $total_added,
-      'total_read' => $total_read
-    ), 200);
+      return Response::json(array(
+        'success' => true,
+        'athome' => $atHome->toArray(),
+        'cooking' => $cooking->toArray(),
+        'exercise' => $exercise->toArray(),
+        'forreview' => $forReview->toArray(),
+        'forthehouse' => $forTheHouse->toArray(),
+        'groups' => $groups->toArray(),
+        'guitar' => $guitar->toArray(),
+        'links' => $links->toArray(),
+        'projects' => $projects->toArray(),
+        'programming' => $programming->toArray(),
+        'photography' => $photography->toArray(),
+        'wishlist' => $wishlist->toArray(),
+        'wordpress' => $wordpress->toArray(),
+        'daily' => $daily->toArray(),
+        'hockey' => $hockey->toArray(),
+        'total_added' => $total_added,
+        'total_read' => $total_read
+      ), 200);
+    } catch(Exception $exception) {
+      return Response::json(array('success' => false, 'error' => $exception->getMessage()), 200);
+    }
   }
 
   public function getRandomLinksAction($category, $quantity) {

@@ -6,23 +6,28 @@ app.controller('todaysLinksController', ['$http', 'linkSvc', '$scope', function(
   todays.editing = null;
   todays.init = true;
   $http.get('/api/links/today').success(function(data){
-    todays.athome = data.athome;
-    todays.cooking = data.cooking;
-    todays.exercise = data.exercise;
-    todays.forreview = data.forreview;
-    todays.forthehouse = data.forthehouse;
-    todays.guitar = data.guitar;
-    todays.groups = data.groups;
-    todays.photography = data.photography;
-    todays.projects = data.projects;
-    todays.programming = data.programming;
-    todays.wishlist = data.wishlist;
-    todays.wordpress = data.wordpress;
-    todays.unread = data.links;
-    todays.daily = data.daily;
-    todays.hockey = data.hockey;
-    todays.read = data.total_read;
-    todays.added = data.total_added;
+    todays.success = data.success;
+    if(todays.success) {
+      todays.athome = data.athome;
+      todays.cooking = data.cooking;
+      todays.exercise = data.exercise;
+      todays.forreview = data.forreview;
+      todays.forthehouse = data.forthehouse;
+      todays.guitar = data.guitar;
+      todays.groups = data.groups;
+      todays.photography = data.photography;
+      todays.projects = data.projects;
+      todays.programming = data.programming;
+      todays.wishlist = data.wishlist;
+      todays.wordpress = data.wordpress;
+      todays.unread = data.links;
+      todays.daily = data.daily;
+      todays.hockey = data.hockey;
+      todays.read = data.total_read;
+      todays.added = data.total_added;
+    } else {
+      todays.error = data.error;
+    }
     todays.init = false;
   });
 
