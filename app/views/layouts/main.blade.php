@@ -150,6 +150,41 @@
       </div>
     </div>
 
+    <div class="modal fade" id="gameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="editGameController as eg">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Game Edit</h4>
+          </div>
+          <div class="modal-body">
+            <form id="link-edit" data-abide>
+              <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 input-group">
+                  <label class="input-group-addon">Title:</label>
+                  <input class="form-control" type="text" ng-model="eg.game.title" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 input-group jqueryui">
+                  <label class="input-group-addon">Platform:</label>
+                  <select class="form-control" ng-model="eg.game.platform">
+                    <option value="XBox 360">XBox 360</option>
+                    <option value="Playstation 3">Playstation 3</option>
+                    <option value="3DS">3DS</option>
+                    <option value="PC">PC</option>
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" ng-click="eg.save()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script type="text/javascript" src="/js/libs/jquery.min.js"></script>
     <script type="text/javascript" src="/js/libs/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/js/libs/bootstrap.min.js"></script>

@@ -1,4 +1,4 @@
-app.controller('nextGameController', ['$http', function($http) {
+app.controller('nextGameController', ['$http', '$scope', 'gameSvc', function($http, $scope, gameSvc) {
   var next = this;
 
   next.getNextGame = function() {
@@ -9,46 +9,39 @@ app.controller('nextGameController', ['$http', function($http) {
 
   next.getNextGame();
 
-//  $scope.edit = function(game) {
-//    gameSvc.set(game);
-//    $rootScope.$broadcast('EDITING_GAME', 'existing');
-//  };
-//
-//  $scope.played = function(game) {
-//    gameSvc.set(game);
-//    $rootScope.$broadcast('PLAYED_GAME', 'existing');
-//  };
-//
-//  $scope.$on('GAME_PLAYED', function(response) {
-//    $scope.getNextGame();
-//  });
+  next.edit = function(game) {
+    gameSvc.edit(game);
+  };
+
+  next.played = function(game) {
+    gameSvc.markAsPlayed(game);
+  };
+
+  $scope.$on('GAME_PLAYED', function(){
+    next.getNextGame();
+  });
 }]);
 
-//app.controller('editGameCtrl', function($scope, $http, gameSvc, $rootScope) {
-//  $scope.save = function() {
-//    $http({method: 'PUT', url: '/api/game/', data: $scope.game}).success(function(data){
-//      if(data.success) {
-//        $('#gameModal').modal('hide');
-//      } else {
-//        console.log($scope.game.title, 'had a problem');
-//        console.log(data.message === 'movie exists');
-//      }
-//    });
-//  };
-//
-//  $scope.$on('EDITING_GAME', function(resposne){
-//    $scope.game = gameSvc.get();
-//  });
-//
-//  $scope.$on('PLAYED_GAME', function(response) {
-//    $scope.game = gameSvc.get();
-//    $http.get('/api/game/' + $scope.game.id + '/played').success(function(data){
-//      $scope.game.played = true;
-//      $rootScope.$broadcast('GAME_PLAYED', 'yep');
-//    });
-//  });
-//
-//  $scope.new = function() {
-//    $scope.game = {title: '', platform: 'XBox 360'}
-//  };
-//});
+app.controller('editGameController', ['$http', 'gameSvc', '$scope', function($http, gameSvc, $scope){
+  var editor = this;
+  editor.game = gameSvc.create();
+
+  $scope.$on('EDITING_GAME', function(){
+    editor.game = gameSvc.get();
+  });
+
+  editor.create = function() {
+    gameSvc.edit(gameSvc.create());
+  };
+
+  editor.save = function() {
+    $http({method: 'PUT', url: '/api/game/', data: editor.game}).success(function(data){
+      if(data.success) {
+        $('#gameModal').modal('hide');
+      } else {
+        console.log(editor.game.title, 'had a problem');
+        console.log(data.message);
+      }
+    });
+  }
+}]);

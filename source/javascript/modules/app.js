@@ -77,3 +77,38 @@ app.factory('bookSvc', ['$http', '$rootScope', function($http, $rootScope){
     }
   }
 }]);
+
+app.factory('gameSvc', ['$http', '$rootScope', function($http, $rootScope){
+  this.editing_game = {};
+  return {
+    set: function(game) {
+      this.editing_game = game;
+    },
+
+    get: function() {
+      return this.editing_game;
+    },
+
+    create: function() {
+      this.editing_game = {id: 0, title: '', platform: ''};
+      return this.editing_game;
+    },
+
+    edit: function(game) {
+      this.set(game);
+      $rootScope.$broadcast('EDITING_GAME');
+    },
+
+    markAsPlayed: function(game) {
+      $http.get('/api/game/' + game.id + '/played').success(function(data){
+        if(data.success) {
+          $rootScope.$broadcast('GAME_PLAYED');
+        }
+      });
+    },
+
+    delete: function() {
+
+    }
+  }
+}]);

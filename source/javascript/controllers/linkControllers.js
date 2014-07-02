@@ -21,11 +21,12 @@ app.controller('todaysLinksController', ['$http', 'linkSvc', '$scope', function(
     todays.unread = data.links;
     todays.daily = data.daily;
     todays.hockey = data.hockey;
+    todays.read = data.total_read;
+    todays.added = data.total_added;
     todays.init = false;
   });
 
   todays.refreshCategory = function(category) {
-    console.log(category);
     $http.get('/api/links/' + category + '/1').success(function(data){
       var category_name = category.toLowerCase().replace(/ /g, '');
       todays[category_name] = data.links;
@@ -48,6 +49,7 @@ app.controller('todaysLinksController', ['$http', 'linkSvc', '$scope', function(
 
   $scope.$on('LINK_READ', function(){
     if(todays.editing != null) {
+      todays.read++;
       linkSvc.remove(todays.editing.link.category, todays.editing.index, todays);
       todays.editing = null;
     }

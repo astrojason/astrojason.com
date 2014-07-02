@@ -124,6 +124,8 @@ class ApiController extends BaseController {
     $hockey = $this->getRandomLinks('Hockey Exercise', 1);
     $links = $this->getRandomLinks('Unread', 20);
     $daily = Link::where('read', false)->where('category', 'Daily')->where('user_id', Auth::user()->id)->get();
+    $total_added = Link::where('created_at', date('y-m-d'))->where('user_id', Auth::user()->id)->count();
+    $total_read = Link::where('updated_at', date('y-m-d'))->where('user_id', Auth::user()->id)->where('read', true)->count();
 
     return Response::json(array(
       'athome' => $atHome->toArray(),
@@ -140,7 +142,9 @@ class ApiController extends BaseController {
       'wishlist' => $wishlist->toArray(),
       'wordpress' => $wordpress->toArray(),
       'daily' => $daily->toArray(),
-      'hockey' => $hockey->toArray()
+      'hockey' => $hockey->toArray(),
+      'total_added' => $total_added,
+      'total_read' => $total_read
     ), 200);
   }
 

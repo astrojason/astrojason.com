@@ -5,6 +5,11 @@
     <div class="col-md-7 col-md-offset-1">
       <div ng-controller="todaysLinksController as linkCtrl" class="row">
         <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-heading clearfix">
+              <h3 class="panel-title pull-left">Added today: @{{ linkCtrl.added }}, read today: @{{ linkCtrl.read }}</h3>
+            </div>
+          </div>
           <div class="panel panel-default" ng-show="linkCtrl.daily.length > 0">
             <div class="panel-heading clearfix">
               <h3 class="panel-title pull-left">Daily</h3>
@@ -149,6 +154,7 @@
           <p>
             <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#linkModal" ng-click="elc.create()" ng-controller="editLinkController as elc">Add Link</button>
             <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#bookModal" ng-click="ebc.create()" ng-controller="editBookController as ebc">Add Book</button>
+            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#gameModal" ng-click="egc.create()" ng-controller="editGameController as egc">Add Game</button>
           </p>
           <p>
             <a class="btn btn-primary btn-xs" href="javascript:(function(){var jsCode = document.createElement('script');jsCode.setAttribute('src', 'http://www.astrojason.com/js/bookmarklet.min.js');document.body.appendChild(jsCode);})()">Read Later</a>
@@ -181,7 +187,7 @@
         </div>
         <div class="panel-footer clearfix">
           <div class="pull-right">
-            <div class="glyphicon glyphicon-pencil game-action" data-toggle="modal" data-target="#gameModal" ng-click="gameCtrl.edit(game)"></div>
+            <div class="glyphicon glyphicon-pencil game-action" data-toggle="modal" data-target="#gameModal" ng-click="gameCtrl.edit(gameCtrl.game)"></div>
             <div class="glyphicon glyphicon-ok game-action right" ng-click="gameCtrl.played(game)"></div>
           </div>
         </div>
