@@ -125,9 +125,13 @@ class ApiController extends BaseController {
       $hockey = $this->getRandomLinks('Hockey Exercise', 1);
       $links = $this->getRandomLinks('Unread', 20);
       $daily = Link::where('read', false)->where('category', 'Daily')->where('user_id', Auth::user()->id)->get();
-      $total_added = Link::where(isset($_SERVER["DATABASE_URL"]) ? DB::raw('created_at::text LIKE \'' . date('Y-m-d') . '%\'') : 'created_at', date('Y-m-d'))->where('user_id', Auth::user()->id)->count();
-      $total_read = Link::where(isset($_SERVER["DATABASE_URL"]) ? DB::raw('updated_at::text LIKE \'' . date('Y-m-d') . '%\'') : 'updated_at', date('Y-m-d'))->where('user_id', Auth::user()->id)->where('read', true)->count();
-
+      if(isset($_SERVER["DATABASE_URL"])) {
+        $total_added = Link::where(DB::raw('created_at::text LIKE \'' . date('Y-m-d') . '%\''))->where('user_id', Auth::user()->id)->count();
+        $total_read = Link::where(DB::raw('updated_at::text LIKE \'' . date('Y-m-d') . '%\''))->where('read', true)->where('user_id', Auth::user()->id)->count();
+      } else {
+        $total_added = Link::where('created_at', date('Y-m-d'))->where('user_id', Auth::user()->id)->count();
+        $total_read = Link::where('updated_at', date('Y-m-d'))->where('read', true)->where('user_id', Auth::user()->id)->count();
+      }
       return Response::json(array(
         'success' => true,
         'athome' => $atHome->toArray(),
