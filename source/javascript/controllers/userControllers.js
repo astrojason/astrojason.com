@@ -1,12 +1,13 @@
 /**
  * Created by jasonsylvester on 4/5/14.
  */
-astroApp.controller('loginController', ['$scope', '$http', function($scope, $http){
+app.controller('userController', ['$scope', '$http', function($scope, $http){
+  var user = this;
   //TODO: Find out why this ran twice
-  $scope.login = function() {
+  user.login = function() {
     var postData = {
-      username: $scope.username,
-      password: $scope.password
+      username: user.username,
+      password: user.password
     }
     $http({
         url: '/api/login',

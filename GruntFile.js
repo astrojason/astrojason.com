@@ -21,7 +21,8 @@ module.exports = function(grunt) {
          'public/js/modules/app.min.js': 'source/javascript/modules/app.js',
          'public/js/controllers/linkControllers.min.js': 'source/javascript/controllers/linkControllers.js',
          'public/js/controllers/bookControllers.min.js': 'source/javascript/controllers/bookControllers.js',
-         'public/js/controllers/gameControllers.min.js': 'source/javascript/controllers/gameControllers.js'
+         'public/js/controllers/gameControllers.min.js': 'source/javascript/controllers/gameControllers.js',
+         'public/js/controllers/userControllers.min.js': 'source/javascript/controllers/userControllers.js'
        }
      }
     },

@@ -37,6 +37,7 @@
               @if(Auth::check())
                 <li><a href="/links">Links</a></li>
                 <li><a href="/books">Books</a></li>
+                <li><a href="/games">Games</a></li>
               @endif
               <li><a href="http://blog.astrojason.com">Blog</a></li>
               <li><a href="http://wiki.astrojason.com">Wiki</a></li>
@@ -44,6 +45,7 @@
             <ul class="nav navbar-nav navbar-right">
               @if(Auth::check())
                 <li><a>Hello {{ Auth::user()->name }}</a></li>
+                <li><a href="/logout/">Logout</a></li>
               @else
                 <li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
               @endif
@@ -185,6 +187,31 @@
       </div>
     </div>
 
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Login</h4>
+          </div>
+          <form id="login-form" ng-controller="userController as uc" ng-submit="uc.login">
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-lg-12 input-group"><label class="input-group-addon" for="username">Username:</label><input type="text" class="form-control" id="username" name="username" ng-model="uc.username" /></div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12 input-group"><label class="input-group-addon" for="password">Password:</label><input type="password" class="form-control" id="password" name="password" ng-model="uc.password" /></div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" ng-click="uc.login()">Login</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <script type="text/javascript" src="/js/libs/jquery.min.js"></script>
     <script type="text/javascript" src="/js/libs/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/js/libs/bootstrap.min.js"></script>
@@ -193,7 +220,7 @@
     <script type="text/javascript" src="/js/controllers/linkControllers.min.js?v=1"></script>
     <script type="text/javascript" src="/js/controllers/bookControllers.min.js?v=1"></script>
     <script type="text/javascript" src="/js/controllers/gameControllers.min.js"></script>
-<!--    <script type="text/javascript" src="/js/controllers/loginController.js"></script>-->
+    <script type="text/javascript" src="/js/controllers/userControllers.min.js"></script>
 <!--    <script type="text/javascript" src="/js/controllers/movieControllers.js"></script>-->
     <script type="text/javascript" src="/js/main.min.js"></script>
     @yield('scripts')
