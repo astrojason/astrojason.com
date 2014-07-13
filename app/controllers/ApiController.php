@@ -350,6 +350,11 @@ class ApiController extends BaseController {
     }
   }
 
+  public function allGamesAction() {
+    $games = Game::where('user_id', Auth::user()->id)->get();
+    return Response::json(array('games' => $games->toArray()));
+  }
+
   public function getOrderCommand() {
     return isset($_SERVER["DATABASE_URL"]) ? 'random()' : 'RAND()';
   }

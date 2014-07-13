@@ -45,3 +45,18 @@ app.controller('editGameController', ['$http', 'gameSvc', '$scope', function($ht
     });
   }
 }]);
+
+app.controller('allGamesController', ['$http', 'gameSvc', function($http, gameSvc){
+  var all = this;
+  $http.get('/api/games').success(function(data) {
+    all.games = data.games;
+  });
+
+  all.edit = function(game){
+    gameSvc.edit(game);
+  };
+
+  all.markAsRead = function(game) {
+    gameSvc.markAsPlayed(game);
+  };
+}]);

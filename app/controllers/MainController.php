@@ -14,6 +14,10 @@ class MainController extends BaseController {
     return View::make('books');
   }
 
+  public function showGames(){
+    return View::make('games');
+  }
+
   public function logout(){
     Auth::logout();
     return Redirect::to('/');

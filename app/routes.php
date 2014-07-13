@@ -14,6 +14,7 @@
 Route::get('/', 'MainController@showMain');
 Route::get('/links', 'MainController@showLinks');
 Route::get('/books', 'MainController@showBooks');
+Route::get('/games', 'MainController@showGames');
 
 Route::get('/logout', 'MainController@logout');
 
@@ -51,6 +52,7 @@ Route::group(array('prefix' => 'api'), function() {
     Route::get('/compare', 'ApiController@compareMovies');
   });
 
+  Route::get('/games', 'ApiController@allGamesAction');
 
   Route::group(array('prefix' => 'game'), function(){
     Route::put('/', 'ApiController@saveGame');
