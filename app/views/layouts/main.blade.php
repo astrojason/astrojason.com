@@ -56,9 +56,30 @@
     </header>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-7 col-md-offset-1">
           @yield('content')
         </div>
+        <div class="col-md-3">
+          @if(Auth::check())
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">Controls</h4>
+              </div>
+              <div class="panel-body">
+                <p>
+                  <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#linkModal" ng-click="elc.create()" ng-controller="editLinkController as elc">Add Link</button>
+                  <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#bookModal" ng-click="ebc.create()" ng-controller="editBookController as ebc">Add Book</button>
+                  <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#gameModal" ng-click="egc.create()" ng-controller="editGameController as egc">Add Game</button>
+                </p>
+                <p>
+                  <a class="btn btn-primary btn-xs" href="javascript:(function(){var jsCode = document.createElement('script');jsCode.setAttribute('src', 'http://www.astrojason.com/js/bookmarklet.min.js');document.body.appendChild(jsCode);})()">Read Later</a>
+                </p>
+              </div>
+            </div>
+          @endif
+          @yield('rightrail')
+        </div>
+        <div class="col-md-1">&nbsp;</div>
       </div>
     </div>
 

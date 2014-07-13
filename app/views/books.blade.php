@@ -3,7 +3,7 @@
 @section('content')
   <div ng-controller="allBooksController as bookCtrl">
     <div class="row">
-      <div class="col-md-10 col-md-offset-1 clearfix">
+      <div class="col-md-12 clearfix page-controls">
         <span class="pull-left" ng-show="filtered">@{{ filtered.length }} total books</span>
         <span class="pull-right">
           <form class="form-inline" role="form">
@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-10 col-md-offset-1">
+      <div class="col-md-12">
         <table class="table table-striped all-links">
           <tr ng-repeat="book in filtered = (bookCtrl.books | filter:filter) | orderBy: sortOrder" ng-class="book.read ? 'read' : ''">
             <td>@{{ book.title }}</td>
