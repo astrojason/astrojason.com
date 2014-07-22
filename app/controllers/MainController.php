@@ -23,4 +23,8 @@ class MainController extends BaseController {
     return Redirect::to('/');
   }
 
+  public function register() {
+    return View::make('register');
+  }
+
 }

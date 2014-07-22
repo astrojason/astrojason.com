@@ -15,6 +15,12 @@ Route::get('/', 'MainController@showMain');
 Route::get('/links', 'MainController@showLinks');
 Route::get('/books', 'MainController@showBooks');
 Route::get('/games', 'MainController@showGames');
+Route::get('/register', 'MainController@register');
+
+Route::post('/register', array('before' => 'csrf', function()
+{
+  //
+}));
 
 Route::get('/logout', 'MainController@logout');
 
