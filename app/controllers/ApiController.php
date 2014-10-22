@@ -148,7 +148,7 @@ class ApiController extends BaseController {
         'wishlist' => $wishlist->toArray(),
         'wordpress' => $wordpress->toArray(),
         'daily' => $daily->toArray(),
-        'hockey' => $hockey->toArray(),
+        'hockeyexercise' => $hockeyexercise->toArray(),
         'total_added' => $total_added,
         'total_read' => $total_read
       ), 200);
