@@ -20,6 +20,7 @@
         <div class="panel panel-default" ng-show="linkCtrl.hockey.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Hockey Exercise</h3>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Hockey')"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.hockey" ng-include src="'js/templates/linkInfo.html'"></tr>
@@ -28,6 +29,7 @@
         <div class="panel panel-default" ng-show="linkCtrl.unread.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Unread</h3>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Unread')"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.unread" ng-include src="'js/templates/linkInfo.html'"></tr>
