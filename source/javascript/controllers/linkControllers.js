@@ -22,7 +22,7 @@ app.controller('todaysLinksController', ['$http', 'linkSvc', '$scope', function(
       todays.wordpress = data.wordpress;
       todays.unread = data.links;
       todays.daily = data.daily;
-      todays.hockey = data.hockey;
+      todays.hockeyexercise = data.hockeyexercise;
       todays.read = data.total_read;
       todays.added = data.total_added;
     } else {

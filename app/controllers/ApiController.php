@@ -122,7 +122,7 @@ class ApiController extends BaseController {
       $programming = $this->getRandomLinks('Programming', 3);
       $wishlist = $this->getRandomLinks('Wishlist', 1);
       $wordpress = $this->getRandomLinks('Wordpress', 1);
-      $hockey = $this->getRandomLinks('Hockey Exercise', 3);
+      $hockeyexercise = $this->getRandomLinks('Hockey Exercise', 3);
       $links = $this->getRandomLinks('Unread', 20);
       $daily = Link::where('read', false)->where('category', 'Daily')->where('user_id', Auth::user()->id)->get();
       if(isset($_SERVER["DATABASE_URL"])) {

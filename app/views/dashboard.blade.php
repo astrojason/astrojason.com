@@ -23,7 +23,7 @@
             <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Hockey Exercise', 3)"></div>
           </div>
           <table class="table table-striped">
-            <tr ng-repeat="link in linkCtrl.hockey" ng-include src="'js/templates/linkInfo.html'"></tr>
+            <tr ng-repeat="link in linkCtrl.hockeyexercise" ng-include src="'js/templates/linkInfo.html'"></tr>
           </table>
         </div>
         <div class="panel panel-default" ng-show="linkCtrl.programming.length > 0">
