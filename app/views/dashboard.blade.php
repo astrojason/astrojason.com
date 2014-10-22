@@ -17,7 +17,7 @@
             <tr ng-repeat="link in linkCtrl.daily" ng-include src="'js/templates/linkInfo.html'"></tr>
           </table>
         </div>
-        <div class="panel panel-default" ng-show="linkCtrl.hockey.length > 0">
+        <div class="panel panel-default" ng-show="linkCtrl.hockeyexercise.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Hockey Exercise</h3>
             <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Hockey Exercise', 3)"></div>
