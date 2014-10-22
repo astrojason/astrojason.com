@@ -31,8 +31,8 @@ app.controller('todaysLinksController', ['$http', 'linkSvc', '$scope', function(
     todays.init = false;
   });
 
-  todays.refreshCategory = function(category) {
-    $http.get('/api/links/' + category + '/1').success(function(data){
+  todays.refreshCategory = function(category, number) {
+    $http.get('/api/links/' + category + '/' + number).success(function(data){
       var category_name = category.toLowerCase().replace(/ /g, '');
       todays[category_name] = data.links;
     });

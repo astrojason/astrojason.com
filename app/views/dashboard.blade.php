@@ -20,16 +20,25 @@
         <div class="panel panel-default" ng-show="linkCtrl.hockey.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Hockey Exercise</h3>
-            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Hockey')"></div>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Hockey', 3)"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.hockey" ng-include src="'js/templates/linkInfo.html'"></tr>
           </table>
         </div>
+        <div class="panel panel-default" ng-show="linkCtrl.programming.length > 0">
+          <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left">Programming</h3>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Programming', 3)"></div>
+          </div>
+          <table class="table table-striped">
+            <tr ng-repeat="link in linkCtrl.programming" ng-include src="'js/templates/linkInfo.html'"></tr>
+          </table>
+        </div>
         <div class="panel panel-default" ng-show="linkCtrl.unread.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Unread</h3>
-            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Unread')"></div>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Unread', 10)"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.unread" ng-include src="'js/templates/linkInfo.html'"></tr>
@@ -38,7 +47,7 @@
         <div class="panel panel-default" ng-show="linkCtrl.cooking.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Cooking</h3>
-            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Cooking')"></div>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Cooking', 1)"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.cooking" ng-include src="'js/templates/linkInfo.html'"></tr>
@@ -47,7 +56,7 @@
         <div class="panel panel-default" ng-show="linkCtrl.exercise.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Exercise</h3>
-            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Exercise')"></div>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Exercise', 1)"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.exercise" ng-include src="'js/templates/linkInfo.html'"></tr>
@@ -56,7 +65,7 @@
         <div class="panel panel-default" ng-show="linkCtrl.forreview.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">For Review</h3>
-            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('For Review')"></div>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('For Review', 1)"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.forreview" ng-include src="'js/templates/linkInfo.html'"></tr>
@@ -65,7 +74,7 @@
         <div class="panel panel-default" ng-show="linkCtrl.forthehouse.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">For the House</h3>
-            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('For the House')"></div>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('For the House', 1)"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.forthehouse" ng-include src="'js/templates/linkInfo.html'"></tr>
@@ -74,7 +83,7 @@
         <div class="panel panel-default" ng-show="linkCtrl.groups.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Groups</h3>
-            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Groups')"></div>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Groups', 1)"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.groups" ng-include src="'js/templates/linkInfo.html'"></tr>
@@ -83,7 +92,7 @@
         <div class="panel panel-default" ng-show="linkCtrl.guitar.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Guitar</h3>
-            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Guitar')"></div>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Guitar', 1)"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.guitar" ng-include src="'js/templates/linkInfo.html'"></tr>
@@ -92,7 +101,7 @@
         <div class="panel panel-default" ng-show="linkCtrl.photography.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Photography</h3>
-            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Photography')"></div>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Photography', 1)"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.photography" ng-include src="'js/templates/linkInfo.html'"></tr>
@@ -101,25 +110,16 @@
         <div class="panel panel-default" ng-show="linkCtrl.projects.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Projects</h3>
-            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Projects')"></div>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Projects', 1)"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.projects" ng-include src="'js/templates/linkInfo.html'"></tr>
           </table>
         </div>
-        <div class="panel panel-default" ng-show="linkCtrl.programming.length > 0">
-          <div class="panel-heading clearfix">
-            <h3 class="panel-title pull-left">Programming</h3>
-            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Programming')"></div>
-          </div>
-          <table class="table table-striped">
-            <tr ng-repeat="link in linkCtrl.programming" ng-include src="'js/templates/linkInfo.html'"></tr>
-          </table>
-        </div>
         <div class="panel panel-default" ng-show="linkCtrl.wishlist.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Wishlist</h3>
-            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Wishlist')"></div>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Wishlist', 1)"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.wishlist" ng-include src="'js/templates/linkInfo.html'"></tr>
@@ -128,7 +128,7 @@
         <div class="panel panel-default" ng-show="linkCtrl.wordpress.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Wordpress</h3>
-            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Wordpress')"></div>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Wordpress', 1)"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.wordpress" ng-include src="'js/templates/linkInfo.html'"></tr>
@@ -137,7 +137,7 @@
         <div class="panel panel-default" ng-show="linkCtrl.athome.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">At Home</h3>
-            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('At Home')"></div>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('At Home', 1)"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.athome" ng-include src="'js/templates/linkInfo.html'"></tr>
