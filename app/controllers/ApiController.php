@@ -104,8 +104,12 @@ class ApiController extends BaseController {
   }
 
   public function filterLinks($query) {
-    $links = Link::where('user_id', Auth::user()->id)->where('LOWER(name)', 'LIKE', "%$query%")->get();
-    return Response::json(array('links' => $links->toArray()), 200);
+    try {
+      $links = Link::where('user_id', Auth::user()->id)->where('lower(name)', 'LIKE', "%$query%")->get();
+      return Response::json(array('links' => $links->toArray()), 200);
+    } catch(Exception $exception) {
+      return Response::json(array('success' => false, 'error' => $exception->getMessage()), 200);
+    }
   }
 
   public function todaysLinks() {
