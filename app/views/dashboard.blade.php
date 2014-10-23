@@ -38,7 +38,7 @@
         <div class="panel panel-default" ng-show="linkCtrl.unread.length > 0">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Unread</h3>
-            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Unread', 10)"></div>
+            <div class="glyphicon glyphicon-refresh link-action pull-right" ng-click="linkCtrl.refreshCategory('Unread', 20)"></div>
           </div>
           <table class="table table-striped">
             <tr ng-repeat="link in linkCtrl.unread" ng-include src="'js/templates/linkInfo.html'"></tr>
