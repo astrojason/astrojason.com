@@ -4,7 +4,7 @@
   <div ng-controller="allLinksController as linkCtrl">
     <div class="row">
       <div class="col-md-12 clearfix page-controls">
-        <span class="pull-left" ng-show="linkCtrl.links">@{{ filtered.length }} total links</span>
+        <span class="pull-left" ng-show="linkCtrl.links">@{{ linkCtrl.links.length }} total links</span>
         <span class="pull-right"><input type="text" class="form-control" ng-model="filter" /></span>
       </div>
     </div>

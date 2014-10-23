@@ -106,7 +106,7 @@ app.controller('allLinksController', ['$http', 'linkSvc', '$scope', function($ht
   $scope.$watch('filter', function(){
     if($scope.filter.length > 2) {
       $http.get('/api/links/' + $scope.filter, function(data){
-        all.links = data;
+        all.links = data.links;
       });
     }
   });

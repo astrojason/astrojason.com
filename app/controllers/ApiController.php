@@ -104,7 +104,7 @@ class ApiController extends BaseController {
   }
 
   public function filterLinks($query) {
-    $links = Link::where('user_id', Auth::user()->id)->where('name', 'LIKE', "%$query%")->get();
+    $links = Link::where('user_id', Auth::user()->id)->where('LOWER(name)', 'LIKE', "%$query%")->get();
     return Response::json(array('links' => $links->toArray()), 200);
   }
 
