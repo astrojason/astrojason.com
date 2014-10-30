@@ -1,13 +1,10 @@
-@extends('layouts/main')
+@extends('layouts/layout')
 
-@section('content')
-  {{ Form::open(array('url' => 'register','method' => 'POST')) }}
-  {{ Form::label('username', 'Username') }} {{ Form::text('username', '', array('placeholder' => 'username')) }}
-  {{ Form::label('password', 'Password') }} {{ Form::password('password') }}
-  {{ Form::submit('Register') }}
-  {{ Form::close() }}
+@section('title')
+  Registration
 @stop
 
-@section('scripts')
+@section('content')
+  <h1>User Registration</h1>
 
 @stop

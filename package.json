@@ -1,23 +1,12 @@
 {
-  "name": "astrojason.com",
-  "version": "0.1.0",
-  "description": "Laravel backend, Angular/Bootstrap Frontend",
-  "engines": {
-    "node": "0.10.x"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@heroku.com:astrojason.git"
-  },
-  "author": "Jason Sylvester",
-  "license": "ISC",
-  "dependencies": {
-    "mysql": "*"
-  },
+  "name"   : "astrojason.com",
+  "version": "0.0.1",
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-uglify": "~0.2.4",
-    "grunt-contrib-compass": "~0.5.0"
+    "grunt": "*",
+    "grunt-contrib-coffee": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-compass": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-bower-task": "*"
   }
 }

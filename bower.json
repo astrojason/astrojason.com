@@ -1,0 +1,16 @@
+{
+  "name": "astrojason.com",
+  "version": "0.0.1",
+  "authors": [
+    "Jason Sylvester <jason@astrojason.com>"
+  ],
+  "license": "MIT",
+  "homepage": "http://www.astrojason.com",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.3.0",
+    "bootstrap-sass-official": "~3.2.0+2",
+    "html5shiv": "~3.7.2",
+    "respond": "~1.4.2"
+  }
+}
