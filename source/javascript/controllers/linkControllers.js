@@ -98,15 +98,20 @@ app.controller('editLinkController', ['$http', 'linkSvc', '$scope', '$rootScope'
   };
 }]);
 
-app.controller('allLinksController', ['$http', 'linkSvc', '$scope', function($http, linkSvc, $scope, $timeout){
+app.controller('allLinksController', ['$http', 'linkSvc', '$scope', '$timeout', function($http, linkSvc, $scope, $timeout){
   var all = this;
   $scope.$watch('filter', function(){
-    if($scope.filter.length > 2) {
-      $http.get('/api/links/' + $scope.filter).success(function(data){
-        all.links = data.links;
-      });
+    if($scope.filter && $scope.filter.length > 2) {
+      $timeout.cancel($scope.linksearch);
+      $scope.linksearch = $timeout(function(){all.getLinks();}, 1000)
     }
   });
+
+  all.getLinks = function() {
+    $http.get('/api/links/' + $scope.filter).success(function(data){
+      all.links = data.links;
+    });
+  };
 
   all.edit = function(link, index){
     all.editing = { link: link, index: index};

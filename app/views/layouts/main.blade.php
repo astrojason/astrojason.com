@@ -112,6 +112,15 @@
                   <select class="form-control" ng-model="el.link.category" ng-options="category.category as category.category for category in el.categories | orderBy: 'category'"></select>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 input-group">
+                  <label class="input-group-addon">Status:</label>
+                  <select class="form-control" ng-model="el.link.read">
+                    <option value="0">Unread</option>
+                    <option value="1">Read</option>
+                  </select>
+                </div>
+              </div>
             </form>
           </div>
           <div class="modal-footer">
