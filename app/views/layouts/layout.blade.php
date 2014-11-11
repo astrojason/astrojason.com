@@ -58,7 +58,7 @@
                     <input type="password" placeholder="Password" class="form-control">
                   </div>
                   <button type="submit" class="btn btn-success">Sign in</button>
-                  <a href="/register" class="btn btn-default">Register</a>
+                  <a href="/register" class="btn btn-default" data-toggle="modal" data-target="#registrationModal">Register</a>
                 </form>
               @endif
             </li>
@@ -72,6 +72,34 @@
         @yield('content')
       </div>
     </div> <!-- /container -->
+
+    <div class="modal fade" id="registrationModal" ng-controller="UserController">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">User Registration</h4>
+          </div>
+          <div class="modal-body">
+            <form role="form" class="form-inline">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="First Name" ng-model="first_name" />
+                <input type="text" class="form-control" placeholder="Last Name" ng-model="last_name" />
+                <input type="email" class="form-control" placeholder="Email address" ng-model="email" />
+                <input type="text" class="form-control" placeholder="Username" ng-model="username" />
+                <input type="password" class="form-control" placeholder="Password" ng-model="password" />
+                <input type="confirm_password" class="form-control" placeholder="Confirm Password" ng-model="confirm_password" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success">Register</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script type="text/javascript" src="assets/bower/jquery/dist/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
