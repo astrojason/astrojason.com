@@ -14,7 +14,7 @@
     <![endif]-->
   </head>
   <body ng-app="astroApp" ng-controller="MasterController">
-    <div id="overlay" ng-show="init"></div>
+    <div id="overlay" ng-show="init" class="overlay"></div>
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
@@ -46,21 +46,23 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li class="active">
+            <li class="active"
               @if(Auth::check())
-                Logged in
-              @else
-                <form class="navbar-form navbar-right" role="form">
-                  <div class="form-group">
-                    <input type="text" placeholder="Username" class="form-control">
-                  </div>
-                  <div class="form-group">
-                    <input type="password" placeholder="Password" class="form-control">
-                  </div>
-                  <button type="submit" class="btn btn-success">Sign in</button>
-                  <a href="/register" class="btn btn-default" data-toggle="modal" data-target="#registrationModal">Register</a>
-                </form>
+                ng-init="user = '{{ Auth::user()->firstname }}'"
               @endif
+              >
+              <li>
+              <a ng-show="user" ng-cloak>Hello <span>@{{ user }}</span> <span class="glyphicon glyphicon-remove-circle" ng-click="logout()" data-toggle="tooltip" data-placement="top" title="Log out"></span></a></li>
+              <form ng-show="!user" class="navbar-form navbar-right" role="form" ng-submit="login()" ng-cloak>
+                <div class="form-group">
+                  <input type="text" placeholder="Username" class="form-control" ng-model="username">
+                </div>
+                <div class="form-group">
+                  <input type="password" placeholder="Password" class="form-control" ng-model="password">
+                </div>
+                <button type="submit" class="btn btn-success">Sign in</button>
+                <a href="#" class="btn btn-default" data-toggle="modal" data-target="#registrationModal">Register</a>
+              </form>
             </li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -74,30 +76,53 @@
     </div> <!-- /container -->
 
     <div class="modal fade" id="registrationModal" ng-controller="UserController">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title">User Registration</h4>
-          </div>
-          <div class="modal-body">
-            <form role="form" class="form-inline">
+      <form role="form" name="registrationForm" class="form-inline" ng-submit="registerUser()">
+        <div class="modal-dialog">
+          <div id="register_overlay" class="overlay" ng-show="submitting"></div>
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title">User Registration</h4>
+            </div>
+            <div class="modal-body">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="First Name" ng-model="first_name" />
-                <input type="text" class="form-control" placeholder="Last Name" ng-model="last_name" />
-                <input type="email" class="form-control" placeholder="Email address" ng-model="email" />
-                <input type="text" class="form-control" placeholder="Username" ng-model="username" />
-                <input type="password" class="form-control" placeholder="Password" ng-model="password" />
-                <input type="confirm_password" class="form-control" placeholder="Confirm Password" ng-model="confirm_password" />
+                <label class="sr-only" for="first_name">First Name</label>
+                <input type="text" class="form-control" placeholder="First Name" ng-model="first_name" required />
+                <div>&nbsp;</div>
               </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-success">Register</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
+              <div class="form-group">
+                <label class="sr-only" for="last_name">Last Name</label>
+                <input type="text" class="form-control" placeholder="Last Name" ng-model="last_name" required />
+                <div>&nbsp;</div>
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="email">Email Address</label>
+                <input type="email" name="email" class="form-control" placeholder="Email address" ng-model="email" required check-availibility />
+                <div><span ng-show="registrationForm.email.$error.unique" class="error">Email address already in use</span>&nbsp;</div>
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="username">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="Username" ng-model="username" required check-availibility />
+                <div><span ng-show="registrationForm.username.$error.unique" class="error">Username already in use</span>&nbsp;</div>
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="password">Password</label>
+                <input type="password" class="form-control" placeholder="Password" ng-model="password" required />
+                <div>&nbsp;</div>
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="confirm_password">Confirm Password</label>
+                <input type="password" class="form-control" placeholder="Confirm Password" ng-model="confirm_password" required compare-to="password" />
+                <div>&nbsp;</div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <input type="submit" class="btn" value="Register" ng-disabled="!registrationForm.$valid" ng-class="(!registrationForm.$valid) ? 'btn-disabled' : 'btn-success'">
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </form>
     </div><!-- /.modal -->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -107,5 +132,6 @@
     <script type="text/javascript" src="assets/coffee/build/min/vendor/bootstrap.min.js"></script>
     <script type="text/javascript" src="assets/bower/angular/angular.min.js"></script>
     <script type="text/javascript" src="assets/coffee/build/min/app.min.js"></script>
+    <script type="text/javascript" src="assets/coffee/build/min/UserController.min.js"></script>
   </body>
 </html>

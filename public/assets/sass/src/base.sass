@@ -1,6 +1,17 @@
 @import "../../bower/bootstrap-sass-official/assets/stylesheets/bootstrap"
 
-#overlay
+.main
+  margin-top: 70px
+
+input.ng-invalid.ng-dirty
+  border: 1px solid darkred
+  color: darkred
+
+input.ng-valid.ng-dirty
+  border: 1px solid darkgreen
+  color: darkgreen
+
+.overlay
   position: absolute
   top: 0
   bottom: 0
@@ -9,5 +20,5 @@
   background-color: rgba(0,0,0,0.6)
   z-index: 2e9
 
-.main
-  margin-top: 70px
+.error
+  color: darkred

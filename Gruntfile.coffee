@@ -39,6 +39,7 @@ module.exports = (grunt) ->
         files: {
           'public/assets/coffee/build/min/vendor/bootstrap.min.js': 'public/assets/bower/bootstrap-sass-official/assets/javascripts/bootstrap.js'
           'public/assets/coffee/build/min/app.min.js': 'public/assets/coffee/build/app.js'
+          'public/assets/coffee/build/min/UserController.min.js': 'public/assets/coffee/build/UserController.js'
         }
 
     watch:

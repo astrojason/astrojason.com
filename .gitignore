@@ -8,4 +8,6 @@ Thumbs.db
 .idea
 .sass-cache/
 node_modules
-/app/views/layouts/default.blade.php
+public/assets/bower
+public/assets/coffee/build/
+

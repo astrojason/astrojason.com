@@ -12,3 +12,11 @@
 */
 
 Route::get('/', 'HomeController@showIndex');
+
+Route::group(array('prefix' => 'api'), function() {
+  Route::post('/register', 'ApiController@processRegistration');
+  Route::post('/checkusername', 'ApiController@checkUsername');
+  Route::post('/checkemail', 'ApiController@checkEmail');
+  Route::post('/login', 'ApiController@login');
+  Route::post('/logout', 'ApiController@logout');
+});
