@@ -14,9 +14,16 @@
 Route::get('/', 'HomeController@showIndex');
 
 Route::group(array('prefix' => 'api'), function() {
-  Route::post('/register', 'ApiController@processRegistration');
-  Route::post('/checkusername', 'ApiController@checkUsername');
-  Route::post('/checkemail', 'ApiController@checkEmail');
-  Route::post('/login', 'ApiController@login');
-  Route::post('/logout', 'ApiController@logout');
+  Route::post('/register', 'UserController@processRegistration');
+  Route::post('/checkusername', 'UserController@checkUsername');
+  Route::post('/checkemail', 'UserController@checkEmail');
+  Route::post('/login', 'UserController@login');
+  Route::post('/logout', 'UserController@logout');
+  Route::group(array('prefix' => 'links'), function(){
+    Route::post('/add', 'LinksController@add');
+  });
+});
+
+Route::group(array('prefix' => 'templates'), function(){
+  Route::get('/linkForm', 'TemplateController@linkForm');
 });

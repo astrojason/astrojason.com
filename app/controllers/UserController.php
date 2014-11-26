@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jasonsylvester
- * Date: 11/6/14
- * Time: 8:30 PM
- */
 
-class ApiController extends BaseController {
-
+class UserController extends BaseController {
   public function processRegistration(){
     try {
       $user = new User;
@@ -73,5 +66,4 @@ class ApiController extends BaseController {
     $response = array('success' => true);
     return Response::json($response);
   }
-
 } 
