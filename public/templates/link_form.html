@@ -9,8 +9,9 @@
   </div>
   <div class="form-group">
     <label for="category">Category</label>
-    <select name="category">
-      <!-- TODO: Set Unread as the default -->
+    <select name="category" ng-model="category">
+      <option value="new">New</option>
+      <option value="{{ category }}" ng-repeat="category in categories">{{ category }}</option>
     </select>
     <input type="text" name="new_category" class="form-control" placeholder="Category Name" ng-show="category == 'new'" />
   </div>

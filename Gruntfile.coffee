@@ -3,13 +3,6 @@ module.exports = (grunt) ->
   grunt.initConfig
     pkg: grunt.file.readJSON 'package.json'
 
-    bower:
-      install:
-        options:
-          verbose: true
-          bowerOptions:
-            production: true
-
     coffee:
       files:
         expand: true
@@ -37,17 +30,16 @@ module.exports = (grunt) ->
         preserveComments: false
       build:
         files: {
-          'public/assets/coffee/build/min/vendor/bootstrap.min.js': 'public/assets/bower/bootstrap-sass-official/assets/javascripts/bootstrap.js'
-          'public/assets/coffee/build/min/app.min.js': 'public/assets/coffee/build/app.js'
-          'public/assets/coffee/build/min/UserController.min.js': 'public/assets/coffee/build/UserController.js'
+          'public/assets/js/vendor/bootstrap.min.js': 'public/assets/bower/bootstrap-sass-official/assets/javascripts/bootstrap.js'
+          'public/assets/js/app.min.js': 'public/assets/coffee/build/app.js'
+          'public/assets/js/models.min.js': 'public/assets/coffee/build/models/*'
+          'public/assets/js/controllers.min.js': 'public/assets/coffee/build/controllers/*'
+          'public/assets/js/directives.min.js': 'public/assets/coffee/build/directives/*'
         }
 
     watch:
       options:
         atBegin: true
-      bower:
-        files: 'bower.json'
-        tasks: 'bower:install'
       coffee:
         files: 'public/assets/coffee/src/**/*.coffee'
         tasks: 'coffee'
@@ -58,8 +50,6 @@ module.exports = (grunt) ->
         files: 'public/assets/coffee/build/**/*.js'
         tasks: 'uglify'
 
-
-  grunt.loadNpmTasks 'grunt-bower-task'
   grunt.loadNpmTasks 'grunt-contrib-compass'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
