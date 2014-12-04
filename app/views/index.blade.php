@@ -6,5 +6,5 @@
 
 @section('content')
   {{ App::environment() }}
-  <link-form></link-form>
+  <link-form id="0"></link-form>
 @stop

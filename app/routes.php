@@ -25,5 +25,5 @@ Route::group(array('prefix' => 'api'), function() {
 });
 
 Route::group(array('prefix' => 'templates'), function(){
-  Route::get('/linkForm', 'TemplateController@linkForm');
+  Route::get('/link-form', 'TemplateController@linkForm');
 });
