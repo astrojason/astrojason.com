@@ -21,7 +21,7 @@ class LinksController extends BaseController {
           $link->name = Input::get('name');
           $link->link = Input::get('link');
           $link->category = Input::get('category');
-          $link->read = Input::get('read');
+          $link->is_read = Input::get('read') || false;
           if(Input::get('instapaper_id')) {
             $link->instapaper_id = Input::get('instapaper_id');
           }
