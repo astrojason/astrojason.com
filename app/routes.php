@@ -18,12 +18,24 @@ Route::group(array('prefix' => 'api'), function() {
   Route::post('/checkusername', 'UserController@checkUsername');
   Route::post('/checkemail', 'UserController@checkEmail');
   Route::post('/login', 'UserController@login');
-  Route::post('/logout', 'UserController@logout');
-  Route::group(array('prefix' => 'links'), function(){
-    Route::post('/add', 'LinksController@add');
+  Route::group(array('before' => 'auth'), function() {
+    Route::post('/logout', 'UserController@logout');
+    Route::group(array('prefix' => 'links'), function(){
+      Route::post('/save', 'LinksController@save');
+      Route::post('/search', 'LinksController@search');
+      Route::post('/read/{id}', 'LinksController@read');
+      Route::post('/unread/{id}', 'LinksController@unread');
+      Route::post('/delete/{id}', 'LinksController@delete');
+      Route::get('/dashboard', 'LinksController@getDashboard');
+      Route::get('/dashboard/{category}', 'LinksController@getRandomLinks');
+    });
   });
 });
 
 Route::group(array('prefix' => 'templates'), function(){
   Route::get('/link-form', 'TemplateController@linkForm');
+});
+
+Route::filter('auth', function() {
+  if (Auth::guest()) return App::abort(404);
 });

@@ -2,7 +2,9 @@
 
 class TemplateController extends BaseController {
   public function linkForm() {
-    $dbCategories = Link::groupBy('category')->get(array('category'));
+    $dbCategories = Link::groupBy('category')
+      ->where('user_id', Auth::user()->id)
+      ->get(array('category'));
     $categories = "['New'";
     foreach($dbCategories as $category) {
       $categories .= ", '" . $category->category . "'";

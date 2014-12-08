@@ -1,26 +1,45 @@
-<form role="form" name="link_form" ng-submit="save()" novalidate>
+<div class="row" ng-show="!editing">
+  <div class="col-lg-12">
+    <div class="alert alert-danger" ng-show="deleting == true">
+      <h4>Delete Link</h4>
+      <p>Deleting the link cannot be undone.</p>
+      <p>
+        <a class="btn btn-danger" ng-click="delete()">Yes I want to delete</a>
+        <a class="btn btn-default" ng-click="deleting = false">No, do not delete</a>
+      </p>
+    </div>
+    <a ng-href="@{{ link.link }}" ng-click="linkOpened()" target="_blank">@{{ link.name }}</a>
+    <div class="pull-right">
+      <span class="glyphicon glyphicon-pencil tool" ng-click="editing = true"></span>
+      <span class="glyphicon glyphicon-ok tool" ng-click="markAsRead()" ng-show="!link.is_read"></span>
+      <span class="glyphicon glyphicon-book tool" ng-click="markAsUnread()" ng-show="link.is_read"></span>
+      <span class="glyphicon glyphicon-remove tool" ng-click="deleting = true"></span>
+    </div>
+  </div>
+</div>
+<form role="form" name="link_form" ng-submit="save()" novalidate ng-show="editing">
   <div class="form-group">
     <label for="name">Name</label>
-    <input type="text" name="name" ng-model="link.name" class="form-control" placeholder="Link name" required>
-    <div class="alert alert-danger" ng-show="link_form.name.$error.required">Link name is required</div>
+    <input type="text" name="name" ng-model="link.name" class="form-control" placeholder="Link Name" required>
+    <div class="alert alert-danger" ng-show="saving && link_form.name.$error.required">Link name is required</div>
   </div>
   <div class="form-group">
     <label for="url">URL</label>
-    <input type="text" name="url" ng-model="link.link" class="form-control" placeholder="url" required>
-    <div class="alert alert-danger" ng-show="link_form.link.$error.required">URL is required</div>
+    <input type="text" name="link" ng-model="link.link" class="form-control" placeholder="Link URL" required>
+    <div class="alert alert-danger" ng-show="saving && link_form.link.$error.required">URL is required</div>
   </div>
   <div class="form-group">
     <label for="category">Category</label>
     <select name="category" ng-model="link.category" ng-init="categories = {{ $categories }}" ng-options="category for category in categories"></select>
     <input type="text" name="new_category" class="form-control" ng-model="new_category" placeholder="Category Name" ng-show="link.category == 'new'" ng-required="link.category == 'new'" />
-    <div class="alert alert-danger" ng-show="link_form.new_category.$error.required">Category is required</div>
+    <div class="alert alert-danger" ng-show="saving && link_form.new_category.$error.required">Category is required</div>
   </div>
   <div class="form-group">
-    <input type="checkbox" ng-model="link.read" /> Read
+    <input type="checkbox" ng-model="link.is_read" /> Read
   </div>
   <div class="form-group">
     <button class="btn btn-primary" ng-disabled="!link_form.$valid">Save</button>
-    <button class="btn btn-default">Cancel</button>
+    <a class="btn btn-default" ng-click="editing = false">Cancel</a>
   </div>
   <div class="form-group" ng-show="error">
     <div class="alert alert-danger"></div>

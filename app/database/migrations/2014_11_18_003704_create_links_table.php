@@ -14,12 +14,13 @@ class CreateLinksTable extends Migration {
   {
     Schema::create('links', function($table) {
       $table->increments('id');
-      $table->string('name', 20);
-      $table->string('link', 20);
-      $table->string('category', 20);
-      $table->boolean('read');
-      $table->integer('instapaper_id');
+      $table->string('name', 255);
+      $table->text('link');
+      $table->string('category', 100);
+      $table->boolean('is_read')->default(false);
+      $table->integer('instapaper_id')->nullable();
       $table->integer('user_id')->references('id')->on('users');
+      $table->integer('times_loaded')->default(0);
       $table->timestamps();
     });
   }
