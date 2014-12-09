@@ -6,6 +6,7 @@
  * Time: 6:26 PM
  */
 class Link extends Eloquent {
+
   public function name() {
     return $this->name;
   }

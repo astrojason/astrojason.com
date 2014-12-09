@@ -11,8 +11,8 @@
     <a ng-href="@{{ link.link }}" ng-click="linkOpened()" target="_blank">@{{ link.name }}</a>
     <div class="pull-right">
       <span class="glyphicon glyphicon-pencil tool" ng-click="editing = true"></span>
-      <span class="glyphicon glyphicon-ok tool" ng-click="markAsRead()" ng-show="!link.is_read"></span>
-      <span class="glyphicon glyphicon-book tool" ng-click="markAsUnread()" ng-show="link.is_read"></span>
+      <span class="glyphicon glyphicon-ok tool" ng-click="markAsRead()" ng-show="!isRead()"></span>
+      <span class="glyphicon glyphicon-book tool" ng-click="markAsUnread()" ng-show="isRead()"></span>
       <span class="glyphicon glyphicon-remove tool" ng-click="deleting = true"></span>
     </div>
   </div>

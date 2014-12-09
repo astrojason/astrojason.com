@@ -5,6 +5,11 @@ window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
   $scope.linkOpened = ->
     console.log 'Opened the link'
 
+  $scope.isRead = ->
+    switch $scope.link.is_read
+      when '1' then true
+      else false
+
   $scope.markAsRead = ->
     read_Promise = $http.post '/api/links/read/' + $scope.link.id
     read_Promise.success (response)->
