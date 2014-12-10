@@ -35,6 +35,7 @@ module.exports = (grunt) ->
           'public/assets/js/models.min.js': 'public/assets/coffee/build/models/*'
           'public/assets/js/controllers.min.js': 'public/assets/coffee/build/controllers/*'
           'public/assets/js/directives.min.js': 'public/assets/coffee/build/directives/*'
+          'public/assets/js/filters.min.js': 'public/assets/coffee/build/filters/*'
         }
 
     watch:

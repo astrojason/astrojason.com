@@ -22,7 +22,7 @@ class LinksController extends BaseController {
   }
 
   public function read($id) {
-    $link = Link::where('id', $id)->where('user_id', Auth::user()->id)->get();
+    $link = Link::where('id', $id)->where('user_id', Auth::user()->id)->first();
     if(isset($link)){
       $link->is_read = true;
       $link->save();
