@@ -36,6 +36,8 @@ window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
     link_Promise = $http.post '/api/links/save', $.param data
     link_Promise.success (response)->
       if response.success
+        if $scope.link_form.category.$dirty
+          $scope.link.category_changed = true
         if $scope.link.category == $scope.new_category
           $scope.categories.push $scope.new_category
         $scope.editing = false

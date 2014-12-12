@@ -14,7 +14,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="link in daily_links" ng-show="!link.deleted && !(link.is_read | phpbool)">
+          <tr ng-repeat="link in daily_links" ng-show="!link.deleted && !(link.is_read | phpbool) && !link.category_changed">
             <td><link-form link="@{{ link }}"></link-form></td>
           </tr>
         </tbody>
@@ -29,7 +29,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="link in selected_links" ng-class="link.times_loaded > 10 ? (link.times_loaded > 50 ? 'danger' : 'warning') : ''" ng-show="!link.deleted && !(link.is_read | phpbool)">
+          <tr
+            ng-repeat="link in selected_links"
+            ng-class="link.times_loaded > 10 ? (link.times_loaded > 50 ? 'danger' : 'warning') : ''"
+            ng-show="!link.deleted && !(link.is_read | phpbool) && !link.category_changed">
             <td><link-form link="@{{ link }}"></link-form></td>
           </tr>
         </tbody>

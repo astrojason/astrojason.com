@@ -21,18 +21,17 @@
   <div class="form-group">
     <label for="name">Name</label>
     <input type="text" name="name" ng-model="link.name" class="form-control" placeholder="Link Name" required>
-    <div class="alert alert-danger" ng-show="saving && link_form.name.$error.required">Link name is required</div>
   </div>
   <div class="form-group">
     <label for="url">URL</label>
     <input type="text" name="link" ng-model="link.link" class="form-control" placeholder="Link URL" required>
-    <div class="alert alert-danger" ng-show="saving && link_form.link.$error.required">URL is required</div>
   </div>
   <div class="form-group">
     <label for="category">Category</label>
-    <select name="category" ng-model="link.category" ng-init="categories = {{ $categories }}" ng-options="category for category in categories"></select>
-    <input type="text" name="new_category" class="form-control" ng-model="new_category" placeholder="Category Name" ng-show="link.category == 'new'" ng-required="link.category == 'new'" />
-    <div class="alert alert-danger" ng-show="saving && link_form.new_category.$error.required">Category is required</div>
+    <select name="category" ng-model="link.category" ng-init="categories = {{ $categories }}" ng-options="category for category in categories" class="form-control"></select>
+  </div>
+  <div class="form-group" ng-show="link.category == 'New'">
+    <input type="text" name="new_category" class="form-control" ng-model="new_category" placeholder="Category Name" ng-required="link.category == 'New'" />
   </div>
   <div class="form-group">
     <input type="checkbox" ng-model="link.is_read" /> Read
