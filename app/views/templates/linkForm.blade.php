@@ -1,4 +1,4 @@
-<div class="row" ng-show="!editing">
+<div class="row" ng-show="!editing && link.name">
   <div class="col-lg-12">
     <div class="alert alert-danger" ng-show="deleting == true">
       <h4>Delete Link</h4>
@@ -11,8 +11,8 @@
     <a ng-href="@{{ link.link }}" ng-click="linkOpened()" target="_blank">@{{ link.name }}</a>
     <div class="pull-right">
       <span class="glyphicon glyphicon-pencil tool" ng-click="editing = true"></span>
-      <span class="glyphicon glyphicon-ok tool" ng-click="markAsRead()" ng-show="!is_read | phpbool"></span>
-      <span class="glyphicon glyphicon-book tool" ng-click="markAsUnread()" ng-show="is_read | phpbool"></span>
+      <span class="glyphicon glyphicon-ok tool" ng-click="markAsRead()" ng-show="!link.is_read | phpbool"></span>
+      <span class="glyphicon glyphicon-book tool" ng-click="markAsUnread()" ng-show="link.is_read | phpbool"></span>
       <span class="glyphicon glyphicon-remove tool" ng-click="deleting = true"></span>
     </div>
   </div>

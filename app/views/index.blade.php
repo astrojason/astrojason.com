@@ -14,8 +14,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="link in daily_links" ng-show="!link.deleted && !(link.is_read | phpbool) && !link.category_changed">
-            <td><link-form link="@{{ link }}"></link-form></td>
+          <tr ng-repeat="link in daily_links">
+            <td><link-form link="@{{ link }}" editing="false"></link-form></td>
           </tr>
         </tbody>
       </table>
@@ -31,9 +31,8 @@
         <tbody>
           <tr
             ng-repeat="link in selected_links"
-            ng-class="link.times_loaded > 10 ? (link.times_loaded > 50 ? 'danger' : 'warning') : ''"
-            ng-show="!link.deleted && !(link.is_read | phpbool) && !link.category_changed">
-            <td><link-form link="@{{ link }}"></link-form></td>
+            ng-class="link.times_loaded > 10 ? (link.times_loaded > 50 ? 'danger' : 'warning') : ''">
+            <td><link-form link="@{{ link }}" editing="false"></link-form></td>
           </tr>
         </tbody>
       </table>
@@ -47,8 +46,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="link in search_results" ng-show="!link.deleted">
-            <td ng-class="link.is_read | phpbool ? 'read' : ''"><link-form link="@{{ link }}"></link-form></td>
+          <tr ng-repeat="link in search_results">
+            <td ng-class="(link.is_read | phpbool) ? 'read' : ''"><link-form link="@{{ link }}" editing="false"></link-form></td>
           </tr>
         </tbody>
       </table>

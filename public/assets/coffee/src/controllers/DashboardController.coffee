@@ -1,6 +1,10 @@
 window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$timeout', ($scope, $http, $location, $timeout)->
   $scope.display_category = $location.search().category || 'Unread';
   $scope.search_timeout = null
+  $scope.daily_links = []
+  $scope.selected_links = []
+  $scope.search_results = []
+
   $scope.$emit 'initStarted'
 
   $scope.$watch 'display_category', (oldValue, newValue)->
@@ -41,6 +45,33 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       $scope.$emit 'initComplete'
       if response.success
         $scope.search_results = response.links
+
+  $scope.deleteItem = (link)->
+    index = $scope.daily_links.indexOf(link)
+    if index >= 0
+      $scope.daily_links.splice index, 1
+    index = $scope.selected_links.indexOf(link)
+    if index >= 0
+      $scope.selected_links.splice index, 1
+    index = $scope.search_results.indexOf(link)
+    if index >= 0
+      $scope.search_results.splice index, 1
+
+  $scope.changeCategory = (link)->
+    index = $scope.daily_links.indexOf(link)
+    if index >= 0
+      $scope.daily_links.splice index, 1
+    index = $scope.selected_links.indexOf(link)
+    if index >= 0
+      $scope.selected_links.splice index, 1
+
+  $scope.markAsRead = (link)->
+    index = $scope.daily_links.indexOf(link)
+    if index >= 0
+      $scope.daily_links.splice index, 1
+    index = $scope.selected_links.indexOf(link)
+    if index >= 0
+      $scope.selected_links.splice index, 1
 
   daily_Promise = $http.get '/api/links/dashboard'
   daily_Promise.success (response)->
