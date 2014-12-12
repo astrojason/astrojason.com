@@ -18,7 +18,8 @@ window.app.controller 'UserController', ['$scope', '$http', ($scope, $http)->
       password: $scope.password
     $scope.submitting = true
     registration_Promise = $http.post '/api/register', $.param data
-    registration_Promise.success((data)->
+    registration_Promise.success (data)->
       console.log data
-    )
+    registration_Promise.error ->
+      $scope.$emit 'errorOccurred', 'Problem with registration'
 ]

@@ -9,6 +9,8 @@ window.app.controller 'AdminController', ['$scope', '$http', ($scope, $http)->
           sql += ', \'instapaper_id\' => ' + link.instapaper_id
         sql += "));\n"
       $scope.importSql = sql
+    migration_Promise.error ->
+      $scope.$emit 'errorOccurred', 'Problem loading links to migrate'
 
   $scope.stripChars = (value)->
     invalid_chars = [['"', ''], [';', ':']]

@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title') :: astrojason.com</title>
-    <link href="assets/sass/build/base.css" rel="stylesheet">
+    <link href="assets/bower/alertifyjs/dist/css/alertify.css" rel="stylesheet" />
+    <link href="assets/sass/build/base.css" rel="stylesheet" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -48,11 +49,11 @@
           <ul class="nav navbar-nav navbar-right">
             <li class="active"
               @if(Auth::check())
-                ng-init="user = '{{ Auth::user()->firstname }}'"
+                ng-init="user = {firstname: '{{ Auth::user()->firstname }}', id: {{ Auth::user()->id }}}"
               @endif
               >
               <li>
-              <a ng-show="user" ng-cloak>Hello <span>@{{ user }}</span> <span class="glyphicon glyphicon-remove-circle" ng-click="logout()" data-toggle="tooltip" data-placement="top" title="Log out"></span></a></li>
+              <a ng-show="user" ng-cloak>Hello <span>@{{ user.firstname }}</span> <span class="glyphicon glyphicon-remove-circle" ng-click="logout()" data-toggle="tooltip" data-placement="top" title="Log out"></span></a></li>
               <form ng-show="!user" class="navbar-form navbar-right" role="form" ng-submit="login()" ng-cloak>
                 <div class="form-group">
                   <input type="text" placeholder="Username" class="form-control" ng-model="username">
@@ -69,6 +70,7 @@
       </div>
     </nav>
     <div class="container main">
+      <div class="alert alert-danger" ng-show="show_error" ng-cloak>@{{ error_message }}</div>
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
         @yield('content')
@@ -138,6 +140,7 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script type="text/javascript" src="assets/bower/angular/angular.min.js"></script>
     <script type="text/javascript" src="assets/js/vendor/spin.min.js"></script>
+    <script type="text/javascript" src="assets/bower/alertifyjs/dist/js/alertify.js"></script>
     <script type="text/javascript" src="assets/js/vendor/bootstrap.min.js"></script>
     <script type="text/javascript" src="assets/js/app.min.js"></script>
     <script type="text/javascript" src="assets/js/models.min.js"></script>

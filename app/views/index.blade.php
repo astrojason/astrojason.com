@@ -7,6 +7,12 @@
 @section('content')
   @if(Auth::user())
     <div ng-controller="DashboardController">
+      <div class="row">
+        <div class="col-lg-12 btn-group">
+          <button ng-click="addLink()" class="btn btn-toolbar">Add Link</button>
+        </div>
+        <link-form editing="addingLink" link="newLink"></link-form>
+      </div>
       <table class="table table-condensed table-striped table-hover">
         <thead>
           <tr>
@@ -15,7 +21,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="link in daily_links">
-            <td><link-form link="@{{ link }}" editing="false"></link-form></td>
+            <td><link-form link="link" editing="false"></link-form></td>
           </tr>
         </tbody>
       </table>
@@ -32,7 +38,7 @@
           <tr
             ng-repeat="link in selected_links"
             ng-class="link.times_loaded > 10 ? (link.times_loaded > 50 ? 'danger' : 'warning') : ''">
-            <td><link-form link="@{{ link }}" editing="false"></link-form></td>
+            <td><link-form link="link" editing="false"></link-form></td>
           </tr>
         </tbody>
       </table>
@@ -47,7 +53,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="link in search_results">
-            <td ng-class="(link.is_read | phpbool) ? 'read' : ''"><link-form link="@{{ link }}" editing="false"></link-form></td>
+            <td ng-class="(link.is_read | phpbool) ? 'read' : ''"><link-form link="link" editing="false"></link-form></td>
           </tr>
         </tbody>
       </table>

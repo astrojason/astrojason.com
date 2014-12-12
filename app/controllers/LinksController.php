@@ -5,6 +5,9 @@ class LinksController extends BaseController {
   public function save() {
     if(Input::get('id')) {
       $link = Link::where('id', Input::get('id'))->where('user_id', Auth::user()->id)->first();
+    } else {
+      $link = new Link;
+      $link->user_id = Input::get('user_id');
     }
     try {
       $link->name = Input::get('name');

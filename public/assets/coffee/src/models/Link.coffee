@@ -1,7 +1,9 @@
-window.Link =
+window.Link = (userId)->
+  id: 0
   name: ''
-  url: ''
+  link: ''
   category: 'Unread',
   read: false,
   instapaper_id: '',
-  user_id: 0
+  user_id: userId,
+  deleting: false

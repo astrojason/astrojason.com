@@ -5,11 +5,6 @@ window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
     #TODO: Update the read count
     console.log 'Opened the link'
 
-  $scope.isRead = ->
-    switch $scope.link.is_read
-      when '1' then true
-      else false
-
   $scope.markAsRead = ->
     read_Promise = $http.post '/api/links/read/' + $scope.link.id
     read_Promise.success (response)->
@@ -42,6 +37,8 @@ window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
         if $scope.link.category == $scope.new_category
           $scope.categories.push $scope.new_category
         $scope.editing = false
+        $scope.$parent.linkAdded()
+        alertify.success "Link " + (if 0 == parseInt $scope.link.id then "added" else "updated") + " successfully"
     link_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem ' + ($scope.link.id ? 'updating' : 'adding') + ' link'
 ]

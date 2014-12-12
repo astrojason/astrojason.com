@@ -20,17 +20,19 @@ window.app.controller 'MasterController', ['$scope', '$http', ($scope, $http) ->
       username: $scope.username
       password: $scope.password
     login_Promise = $http.post '/api/login', $.param data
-    login_Promise.success((data)->
+    login_Promise.success (data)->
       $scope.init = false
       $scope.user = data.user
-    )
+    login_Promise.error ->
+      $scope.$emit 'errorOccurred', 'Problem logging in'
 
   $scope.logout = ->
     $scope.init = true
     login_Promise = $http.post '/api/logout'
-    login_Promise.success(->
+    login_Promise.success ->
       $scope.init = false
       $scope.user = null
-    )
+    login_Promise.error ->
+      $scope.$emit 'errorOccurred', 'Problem logging out'
 
 ]
