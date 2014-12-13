@@ -77,8 +77,8 @@
       </div>
       @if(Auth::user() && Auth::user()->hasRole('Admin'))
         <div ng-controller="AdminController">
-          <button class="btn btn-toolbar" ng-click="migrateLinks()">Migrate Links</button>
-          <div ng-show="importSql">
+          <button class="btn btn-toolbar" ng-click="migrate()">Migrate</button>
+          <div ng-show="importSql" ng-cloak>
             <textarea class="col-lg-12">@{{ importSql }}</textarea>
           </div>
         </div>

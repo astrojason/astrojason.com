@@ -76,6 +76,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       $scope.selected_links.splice index, 1
 
   $scope.markAsRead = (link)->
+    $scope.total_read++
     index = $scope.daily_links.indexOf(link)
     if index >= 0
       $scope.daily_links.splice index, 1
@@ -95,7 +96,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     if response.success
       $scope.$emit 'initComplete'
       $scope.daily_links = response.links
-      $scope.total_read = response.total_read
+      $scope.total_read = parseInt response.total_read
     else
       $scope.$emit 'errorOccurred', response.error
   daily_Promise.error ->

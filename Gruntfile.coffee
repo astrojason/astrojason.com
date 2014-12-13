@@ -26,7 +26,8 @@ module.exports = (grunt) ->
 
     uglify:
       options:
-        mangle: true
+        mangle:
+          except: ['Link']
         preserveComments: false
       build:
         files: {

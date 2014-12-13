@@ -10,7 +10,6 @@ window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
     read_Promise.success (response)->
       if response.success
         $scope.link.is_read = true
-        $scope.$parent.total_read++
         $scope.$parent.markAsRead $scope.link
 
   $scope.markAsUnread = ->
