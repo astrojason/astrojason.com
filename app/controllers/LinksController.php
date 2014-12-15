@@ -6,6 +6,10 @@ class LinksController extends BaseController {
     if(Input::get('id')) {
       $link = Link::where('id', Input::get('id'))->where('user_id', Auth::user()->id)->first();
     } else {
+      $link = Link::where('link', Input::get('link'))->where('user_id', Auth::user()->id)->first();
+      if(isset($link)) {
+        return Response::json(array('success' => false, 'error' => 'Link already exists'), 200);
+      }
       $link = new Link;
       $link->user_id = Input::get('user_id');
     }

@@ -1,5 +1,10 @@
 window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
   $scope.deleting = false
+  $scope.errorMessage = false
+
+  $scope.$watch 'link.link', (oldValue, newValue)->
+    if oldValue != newValue
+      $scope.errorMessage = false
 
   $scope.linkOpened = ->
     #TODO: Update the read count
@@ -38,6 +43,8 @@ window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
         $scope.editing = false
         $scope.$parent.linkAdded()
         alertify.success "Link " + (if 0 == parseInt $scope.link.id then "added" else "updated") + " successfully"
+      else
+        $scope.errorMessage = response.error
     link_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem ' + ($scope.link.id ? 'updating' : 'adding') + ' link'
 ]

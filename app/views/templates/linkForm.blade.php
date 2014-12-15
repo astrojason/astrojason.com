@@ -1,3 +1,7 @@
+<div class="clearfix"></div>
+<div class="row" ng-show="errorMessage">
+  <div class="alert alert-danger">@{{ errorMessage }}</div>
+</div>
 <div class="row" ng-show="!editing && link.name">
   <div class="col-lg-12">
     <div class="alert alert-danger" ng-show="deleting == true">

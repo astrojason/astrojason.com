@@ -1,3 +1,6 @@
+<?php
+  $bookmarklet = str_replace('"', "'", file_get_contents('assets/js/bookmarkletLoader.min.js'));
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -70,21 +73,19 @@
       </div>
     </nav>
     <div class="container main">
-      <div class="alert alert-danger" ng-show="show_error" ng-cloak>@{{ error_message }}</div>
-      <!-- Main component for a primary marketing message or call to action -->
+      <div class="row">
+        <div class="alert alert-danger" ng-show="show_error" ng-cloak>@{{ error_message }}</div>
+        <!-- Main component for a primary marketing message or call to action -->
+        <div class="btn-group" ng-show="user" ng-cloak>
+          <a
+            href="javascript:<?= $bookmarklet; ?>"
+            class="btn btn-info btn-xs">Read Later</a>
+        </div>
+      </div>
       <div class="jumbotron">
         @yield('content')
       </div>
-      @if(Auth::user() && Auth::user()->hasRole('Admin'))
-        <div ng-controller="AdminController">
-          <button class="btn btn-toolbar" ng-click="migrate()">Migrate</button>
-          <div ng-show="importSql" ng-cloak>
-            <textarea class="col-lg-12">@{{ importSql }}</textarea>
-          </div>
-        </div>
-      @endif
     </div> <!-- /container -->
-
     <div class="modal fade" id="registrationModal" ng-controller="UserController">
       <form role="form" name="registrationForm" class="form-inline" ng-submit="registerUser()">
         <div class="modal-dialog">

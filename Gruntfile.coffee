@@ -33,6 +33,8 @@ module.exports = (grunt) ->
         files: {
           'public/assets/js/vendor/bootstrap.min.js': 'public/assets/bower/bootstrap-sass-official/assets/javascripts/bootstrap.js'
           'public/assets/js/app.min.js': 'public/assets/coffee/build/app.js'
+          'public/assets/js/bookmarklet.min.js': 'public/assets/coffee/build/bookmarklet.js'
+          'public/assets/js/bookmarkletLoader.min.js': 'public/assets/coffee/build/bookmarkletLoader.js'
           'public/assets/js/models.min.js': 'public/assets/coffee/build/models/*'
           'public/assets/js/controllers.min.js': 'public/assets/coffee/build/controllers/*'
           'public/assets/js/directives.min.js': 'public/assets/coffee/build/directives/*'
