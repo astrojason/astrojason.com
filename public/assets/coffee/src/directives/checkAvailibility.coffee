@@ -19,5 +19,5 @@ window.app.directive 'checkAvailibility', ['$http', ($http)->
             else
               ngModel.$setValidity 'unique', false
         check_Promise.error ->
-          $scope.$emit 'errorOccurred', 'Problem checking availability'
+          scope.$emit 'errorOccurred', 'Problem checking availability'
 ]

@@ -1,5 +1,5 @@
 console.log 'Pulled the bookmarklet'
-if not $ = window.jQuery
+if not $ == window.jQuery
   # TODO: Load jQuery
   console.log 'Need to load jQuery'
   script = document.createElement 'script'
