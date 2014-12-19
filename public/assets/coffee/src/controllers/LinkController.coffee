@@ -45,6 +45,11 @@ window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
         alertify.success "Link " + (if 0 == parseInt $scope.link.id then "added" else "updated") + " successfully"
       else
         $scope.errorMessage = response.error
+        $scope.$parent.saveError response.error
     link_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem ' + ($scope.link.id ? 'updating' : 'adding') + ' link'
+
+  $scope.cancelEdit = ->
+    $scope.editing = false
+    $scope.$parent.linkCancelled()
 ]

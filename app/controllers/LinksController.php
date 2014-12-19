@@ -98,4 +98,10 @@ class LinksController extends BaseController {
     return Response::json(array('success' => true, 'links' => $links->toArray()), 200);
   }
 
+
+  public function readLater() {
+    $title = Input::get('title');
+    $link = Input::get('link');
+    return View::make('readlater')->with('title', $title)->with('link', $link);
+  }
 } 

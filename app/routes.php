@@ -13,6 +13,8 @@
 
 Route::get('/', 'HomeController@showIndex');
 
+Route::get('/readlater', 'LinksController@readLater');
+
 Route::group(array('prefix' => 'api'), function() {
   Route::post('/register', 'UserController@processRegistration');
   Route::post('/checkusername', 'UserController@checkUsername');

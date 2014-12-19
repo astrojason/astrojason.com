@@ -1,15 +1,9 @@
-console.log 'Pulled the bookmarklet'
-if not $ == window.jQuery
-  # TODO: Load jQuery
-  console.log 'Need to load jQuery'
-  script = document.createElement 'script'
-  script.src = '//code.jquery.com/jquery-1.11.1.min.js'
-  script.onload addTheLink
-  document.body.appendChild script
+container = null
+
+window.addEventListener 'message', (e)->
+  container.remove()
 
 addTheLink = ->
-  # TODO: Build the bookmarklet
-  console.log 'Adding the link'
   title = document.title
   link = location.href
   containerStyle =
@@ -19,7 +13,25 @@ addTheLink = ->
     left: 0
     right: 0
     zIndex: 2147483638
-    backgroundColor: rgba(0,0,0,0.6)
-  console.log title, link
-  container = $('<div />').css containerStyle
-  $(document).append(container)
+    backgroundColor: 'rgba(0,0,0,0.6)'
+  frameStyle =
+    backgroundColor: '#FFF'
+    width: '400px'
+    marginLeft: 'calc(50% - 200px)'
+    marginTop: '100px'
+    padding: '10px'
+    height: '325px'
+  container = $('<div />').attr('id', 'readlaterwrapper').css containerStyle
+  container.on 'click', ->
+    container.remove()
+  iframe = $('<iframe />').attr 'src', "http://astrojason.com/readlater?title=" + title + "&link=" + link
+  iframe.css frameStyle
+  container.append iframe
+  $('body').append container
+if not $ == window.jQuery
+  script = document.createElement 'script'
+  script.src = '//code.jquery.com/jquery-1.11.1.min.js'
+  script.onload addTheLink()
+  document.body.appendChild script
+else
+  addTheLink()
