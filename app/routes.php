@@ -25,6 +25,7 @@ Route::group(array('prefix' => 'api'), function() {
     Route::group(array('prefix' => 'links'), function(){
       Route::post('/save', 'LinksController@save');
       Route::post('/search', 'LinksController@search');
+      Route::post('/open/{id}', 'LinksController@open');
       Route::post('/read/{id}', 'LinksController@read');
       Route::post('/unread/{id}', 'LinksController@unread');
       Route::post('/delete/{id}', 'LinksController@delete');

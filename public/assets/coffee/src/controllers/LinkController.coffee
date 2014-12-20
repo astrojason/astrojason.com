@@ -7,8 +7,14 @@ window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
       $scope.errorMessage = false
 
   $scope.linkOpened = ->
-    #TODO: Update the read count
-    console.log 'Opened the link'
+    open_Promise = $http.post '/api/links/open/' + $scope.link.id
+    open_Promise.success (response)->
+      if response.success
+        console.log 'Read count updated'
+      else
+        console.log 'Read count update problem'
+    open_Promise.error ->
+      $scope.$emit 'errorOccurred', 'Problem updating read count'
 
   $scope.markAsRead = ->
     read_Promise = $http.post '/api/links/read/' + $scope.link.id

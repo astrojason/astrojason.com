@@ -60,6 +60,17 @@ class LinksController extends BaseController {
     }
   }
 
+  public function open($id) {
+    $link = Link::where('id', $id)->where('user_id', Auth::user()->id)->first();
+    if(isset($link)){
+      $link->times_read = $link->times_read + 1;
+      $link->save();
+      return Response::json(array('success' => true), 200);
+    } else {
+      return Response::json(array('success' => false, 'error' => 'No link with that id exists'), 200);
+    }
+  }
+
   public function getDashboard() {
     $links = Link::where('is_read', false)
       ->where('category', 'Daily')
@@ -90,7 +101,6 @@ class LinksController extends BaseController {
     $links = $query->get();
     return Response::json(array('success' => true, 'links' => $links->toArray()), 200);
   }
-
 
   public function readLater() {
     $title = Input::get('title');
