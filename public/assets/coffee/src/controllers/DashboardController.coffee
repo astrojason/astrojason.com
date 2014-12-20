@@ -1,5 +1,5 @@
 window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$timeout', ($scope, $http, $location, $timeout)->
-  $scope.display_category = $location.search().category || 'Unread';
+  $scope.display_category = $location.search().category || ''
   $scope.search_timeout = null
   $scope.daily_links = []
   $scope.selected_links = []
@@ -9,11 +9,11 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
 
   $scope.$emit 'initStarted'
 
-  $scope.$watch 'display_category', (oldValue, newValue)->
+  $scope.$watch 'display_category', (newValue, oldValue)->
     if newValue != ''
       $scope.getCategoryArticles()
 
-  $scope.$watch 'search_query', (oldValue, newValue)->
+  $scope.$watch 'search_query', (newValue, oldValue)->
     $timeout.cancel $scope.search_timeout
     if newValue?.length >= 3
       $scope.search_timeout = $timeout ->
@@ -96,6 +96,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     if response.success
       $scope.$emit 'initComplete'
       $scope.daily_links = response.links
+      $scope.unread_links = response.unread
       $scope.total_read = parseInt response.total_read
     else
       $scope.$emit 'errorOccurred', response.error

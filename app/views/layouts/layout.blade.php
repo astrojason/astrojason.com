@@ -1,6 +1,3 @@
-<?php
-  $bookmarklet = str_replace('"', "'", file_get_contents('assets/js/bookmarkletLoader.min.js'));
-?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -75,12 +72,6 @@
     <div class="container main">
       <div class="row">
         <div class="alert alert-danger" ng-show="show_error" ng-cloak>@{{ error_message }}</div>
-        <!-- Main component for a primary marketing message or call to action -->
-        <div class="btn-group" ng-show="user" ng-cloak>
-          <a
-            href="javascript:<?= $bookmarklet; ?>"
-            class="btn btn-info btn-xs">Read Later</a>
-        </div>
       </div>
       <div class="jumbotron">
         @yield('content')

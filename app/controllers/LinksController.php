@@ -65,20 +65,13 @@ class LinksController extends BaseController {
       ->where('category', 'Daily')
       ->where('user_id', Auth::user()->id)
       ->get();
+    $unread = self::getLinksToRead('Unread', 20);
     $total_read = Link::where('updated_at', 'LIKE', date('Y-m-d') . '%')->where('is_read', true)->where('user_id', Auth::user()->id)->count();
-    return Response::json(array('success' => true, 'links' => $links->toArray(), 'total_read' => $total_read), 200);
+    return Response::json(array('success' => true, 'links' => $links->toArray(), 'total_read' => $total_read, 'unread' => $unread->toArray()), 200);
   }
 
   public function getRandomLinks($category) {
-    $links = Link::where('is_read', false)
-      ->where('category', $category)
-      ->where('user_id', Auth::user()->id)
-      ->orderBy(DB::raw('RAND()'))
-      ->take(10)->get();
-    foreach($links as $link) {
-      $link->times_loaded = $link->times_loaded + 1;
-      $link->save();
-    }
+    $links = self::getLinksToRead($category, 10);
     return Response::json(array('success' => true, 'links' => $links->toArray()), 200);
   }
 
@@ -103,5 +96,18 @@ class LinksController extends BaseController {
     $title = Input::get('title');
     $link = Input::get('link');
     return View::make('readlater')->with('title', $title)->with('link', $link);
+  }
+
+  public function getLinksToRead($category, $numResults = 10) {
+    $links = Link::where('is_read', false)
+      ->where('category', $category)
+      ->where('user_id', Auth::user()->id)
+      ->orderBy(DB::raw('RAND()'))
+      ->take($numResults)->get();
+    foreach($links as $link) {
+      $link->times_loaded = $link->times_loaded + 1;
+      $link->save();
+    }
+    return $links;
   }
 } 

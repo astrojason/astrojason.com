@@ -17,12 +17,11 @@
   <body ng-app="astroApp" ng-controller="MasterController">
     <div id="overlay" ng-show="init" class="overlay"></div>
     <div ng-controller="ReadLaterController"@if(Auth::check()) ng-init="createLink({{ Auth::user()->id }}, '{{ $title }}', '{{ $link }}')"@endif>
-      <div class="alert alert-success" ng-show="success" ng-cloak>Link added successfully.</div>
       <div class="alert alert-danger" ng-show="error" ng-cloak>@{{ error }} <span class="glyphicon glyphicon-remove-sign pull-right" ng-click="closeWindow()"></span></div>
       <link-form
         link="newLink"
         editing="editing"
-        ng-show="!error">
+        ng-show="!error && editing">
       </link-form>
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

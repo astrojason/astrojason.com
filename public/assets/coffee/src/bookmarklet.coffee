@@ -1,7 +1,8 @@
 container = null
 
 window.addEventListener 'message', (e)->
-  container.remove()
+  if e.data == 'closeWindow'
+    container.remove()
 
 addTheLink = ->
   title = document.title
@@ -28,10 +29,18 @@ addTheLink = ->
   iframe.css frameStyle
   container.append iframe
   $('body').append container
-if not $ == window.jQuery
+loadJQuery = ->
   script = document.createElement 'script'
   script.src = '//code.jquery.com/jquery-1.11.1.min.js'
-  script.onload addTheLink()
+  script.onload = ->
+    addTheLink()
   document.body.appendChild script
-else
-  addTheLink()
+try
+  loaded = $ || $ != window.jQuery
+  if loaded
+    addTheLink()
+  else
+    loadJQuery()
+catch
+  loadJQuery()
+

@@ -40,13 +40,13 @@ module.exports = (grunt) ->
           'public/assets/js/directives.min.js': 'public/assets/coffee/build/directives/*'
           'public/assets/js/filters.min.js': 'public/assets/coffee/build/filters/*'
         }
-
+    clean: ['public/assets/coffee/build/']
     watch:
       options:
         atBegin: true
       coffee:
         files: 'public/assets/coffee/src/**/*.coffee'
-        tasks: 'coffee'
+        tasks: ['clean', 'coffee']
       compass:
         files: 'public/assets/sass/src/**/*.s{a,c}ss'
         tasks: 'compass'
@@ -58,3 +58,4 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-contrib-clean'
