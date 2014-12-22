@@ -1,4 +1,4 @@
-<div class="clearfix"></div>
+<div class="clearfix"
 <div class="row" ng-show="errorMessage">
   <div class="alert alert-danger">@{{ errorMessage }}</div>
 </div>
@@ -32,7 +32,7 @@
   </div>
   <div class="form-group">
     <label for="category">Category</label>
-    <select name="category" ng-model="link.category" ng-init="categories = {{ $categories }}" ng-options="category for category in categories" class="form-control"></select>
+    <select name="category" ng-model="link.category" ng-init="setCategories({{ $categories }})" ng-options="category for category in categories" class="form-control"></select>
   </div>
   <div class="form-group" ng-show="link.category == 'New'">
     <input type="text" name="new_category" class="form-control" ng-model="new_category" placeholder="Category Name" ng-required="link.category == 'New'" />
@@ -42,7 +42,7 @@
   </div>
   <div class="form-group">
     <button class="btn btn-primary" ng-disabled="!link_form.$valid">Save</button>
-    <a class="btn btn-default" ng-click="cancelEdit()">Cancel</a>
+    <a class="btn btn-default" ng-click="editing = false">Cancel</a>
   </div>
   <div class="form-group" ng-show="error">
     <div class="alert alert-danger"></div>

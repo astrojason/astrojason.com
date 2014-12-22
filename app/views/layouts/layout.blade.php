@@ -14,7 +14,7 @@
       <script type="text/javascript" src="assets/bower/respond/dest/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body ng-app="astroApp" ng-controller="MasterController">
+  <body ng-app="astroApp" ng-controller="MasterController"@if(Auth::user()) ng-init="initUser({ id: {{ Auth::user()->id }}, username: '{{ Auth::user()->username }}', firstname: '{{ Auth::user()->firstname }}', lastname: '{{ Auth::user()->lastname }}', email: '{{ Auth::user()->email }}' })"@endif>
     <div id="overlay" ng-show="init" class="overlay"></div>
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -47,11 +47,7 @@
 <!--            </li>-->
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li class="active"
-              @if(Auth::check())
-                ng-init="user = {firstname: '{{ Auth::user()->firstname }}', id: {{ Auth::user()->id }}}"
-              @endif
-              >
+            <li class="active">
               <li>
               <a ng-show="user" ng-cloak>Hello <span>@{{ user.firstname }}</span> <span class="glyphicon glyphicon-remove-circle" ng-click="logout()" data-toggle="tooltip" data-placement="top" title="Log out"></span></a></li>
               <form ng-show="!user" class="navbar-form navbar-right" role="form" ng-submit="login()" ng-cloak>
@@ -138,6 +134,7 @@
     <script type="text/javascript" src="assets/js/models.min.js"></script>
     <script type="text/javascript" src="assets/js/directives.min.js"></script>
     <script type="text/javascript" src="assets/js/filters.min.js"></script>
+    <script type="text/javascript" src="assets/js/services.min.js"></script>
     <script type="text/javascript" src="assets/js/controllers.min.js"></script>
   </body>
 </html>

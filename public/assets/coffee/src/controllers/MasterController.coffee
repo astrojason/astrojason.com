@@ -1,4 +1,4 @@
-window.app.controller 'MasterController', ['$scope', '$http', ($scope, $http) ->
+window.app.controller 'MasterController', ['$scope', '$http', 'UserService', ($scope, $http, UserService) ->
   $scope.initItems = 0
 
   $scope.$on 'initStarted', ->
@@ -23,6 +23,7 @@ window.app.controller 'MasterController', ['$scope', '$http', ($scope, $http) ->
     login_Promise.success (data)->
       $scope.init = false
       $scope.user = data.user
+      UserService.setUser $scope.user
     login_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem logging in'
 
@@ -32,7 +33,12 @@ window.app.controller 'MasterController', ['$scope', '$http', ($scope, $http) ->
     login_Promise.success ->
       $scope.init = false
       $scope.user = null
+      UserService.setUser $scope.user
     login_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem logging out'
+
+  $scope.initUser = (user)->
+    $scope.user = user
+    UserService.setUser $scope.user
 
 ]

@@ -39,8 +39,9 @@ module.exports = (grunt) ->
           'public/assets/js/controllers.min.js': 'public/assets/coffee/build/controllers/*'
           'public/assets/js/directives.min.js': 'public/assets/coffee/build/directives/*'
           'public/assets/js/filters.min.js': 'public/assets/coffee/build/filters/*'
+          'public/assets/js/services.min.js': 'public/assets/coffee/build/services/*'
         }
-    clean: ['public/assets/coffee/build/']
+    clean: ['public/assets/coffee/build/*', 'public/assets/js/*.js']
     watch:
       options:
         atBegin: true

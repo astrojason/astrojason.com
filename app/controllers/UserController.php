@@ -52,7 +52,7 @@ class UserController extends BaseController {
       );
       if (Auth::attempt($userdata, true)) {
         $response['success'] = true;
-        $response['user'] = Auth::user()->firstname;
+        $response['user'] = Auth::user()->toArray();
         return Response::json($response);
       } else {
         $response['reason'] = 'Auth failed';

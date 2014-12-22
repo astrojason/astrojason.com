@@ -58,4 +58,7 @@ window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
   $scope.cancelEdit = ->
     $scope.editing = false
     $scope.$parent.linkCancelled()
+
+  $scope.setCategories = (categories)->
+    console.log categories
 ]
