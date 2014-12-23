@@ -24,6 +24,7 @@ window.app.controller 'MasterController', ['$scope', '$http', 'UserService', ($s
       $scope.init = false
       $scope.user = data.user
       UserService.setUser $scope.user
+      $scope.$broadcast 'userLoggedIn'
     login_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem logging in'
 
@@ -34,6 +35,7 @@ window.app.controller 'MasterController', ['$scope', '$http', 'UserService', ($s
       $scope.init = false
       $scope.user = null
       UserService.setUser $scope.user
+      $scope.$broadcast 'userLoggedOut'
     login_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem logging out'
 

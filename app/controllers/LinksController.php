@@ -76,9 +76,24 @@ class LinksController extends BaseController {
       ->where('category', 'Daily')
       ->where('user_id', Auth::user()->id)
       ->get();
+    $categories = [];
+    $dbCategories = Link::groupBy('category')
+      ->where('category', '<>', 'Daily')
+      ->where('category', '<>', 'Unread')
+      ->where('user_id', Auth::user()->id)
+      ->get(array('category'));
+    foreach($dbCategories as $category) {
+      array_push($categories, $category->category);
+    }
     $unread = self::getLinksToRead('Unread', 20);
     $total_read = Link::where('updated_at', 'LIKE', date('Y-m-d') . '%')->where('is_read', true)->where('user_id', Auth::user()->id)->count();
-    return Response::json(array('success' => true, 'links' => $links->toArray(), 'total_read' => $total_read, 'unread' => $unread->toArray()), 200);
+    return Response::json(array(
+      'success' => true,
+      'links' => $links->toArray(),
+      'total_read' => $total_read,
+      'unread' => $unread->toArray(),
+      'categories' => $categories
+    ), 200);
   }
 
   public function getRandomLinks($category) {

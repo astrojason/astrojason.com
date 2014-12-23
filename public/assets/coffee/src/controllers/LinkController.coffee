@@ -60,5 +60,5 @@ window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
     $scope.$parent.linkCancelled()
 
   $scope.setCategories = (categories)->
-    console.log categories
+    $scope.categories = categories
 ]

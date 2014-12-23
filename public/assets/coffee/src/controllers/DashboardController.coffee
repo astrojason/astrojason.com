@@ -6,7 +6,11 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
   $scope.search_results = []
   $scope.addingLink = false
 
-  $scope.$emit 'initStarted'
+  $scope.$on 'userLoggedIn', ->
+    $scope.initDashboard()
+
+  $scope.$on 'userLoggedOut', ->
+    $scope.initDashboard()
 
   $scope.$watch 'display_category', (newValue, oldValue)->
     if newValue != ''
@@ -27,11 +31,9 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       , 500
 
   $scope.getCategoryArticles = ->
-    $scope.$emit 'initStarted'
     category_Promise = $http.get '/api/links/dashboard/' + $scope.display_category
     category_Promise.success (response)->
       if response.success
-        $scope.$emit 'initComplete'
         $scope.selected_links = response.links
       else
         $scope.$emit 'errorOccurred', response.error
@@ -39,7 +41,6 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       $scope.$emit 'errorOccurred', 'Problem loading category results'
 
   $scope.search_articles = ->
-    $scope.$emit 'initStarted'
     $scope.search_results = []
     data =
       q: $scope.search_query
@@ -47,7 +48,6 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       data.include_read = true
     search_Promise = $http.post '/api/links/search', $.param data
     search_Promise.success (response)->
-      $scope.$emit 'initComplete'
       if response.success
         $scope.search_results = response.links
       else
@@ -82,28 +82,35 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     index = $scope.selected_links.indexOf(link)
     if index >= 0
       $scope.selected_links.splice index, 1
+    index = $scope.unread_links.indexOf(link)
+    if index >= 0
+      $scope.unread_links.splice index, 1
 
   $scope.addLink = ->
     $scope.addingLink = true
 
   $scope.linkAdded = ->
     $scope.addingLink = false
-    $scope.newLink = window.Link($scope.$parent.user.id)
+    $scope.newLink = window.Link $scope.$parent.user.id
 
   $scope.initDashboard = ->
-    console.log UserService.getUser()
-#      $scope.newLink = window.Link($scope.$parent.user.id)
-#      daily_Promise = $http.get '/api/links/dashboard'
-#      daily_Promise.success (response)->
-#        if response.success
-#          $scope.$emit 'initComplete'
-#          $scope.daily_links = response.links
-#          $scope.unread_links = response.unread
-#          $scope.total_read = parseInt response.total_read
-#        else
-#          $scope.$emit 'errorOccurred', response.error
-#      daily_Promise.error ->
-#        $scope.$emit 'errorOccurred', 'Problem loading daily results'
+    $scope.user = UserService.getUser()
+    if $scope.user?.id
+      $scope.loadDashboard()
+
+  $scope.loadDashboard = ->
+    $scope.newLink = window.Link($scope.user.id)
+    daily_Promise = $http.get '/api/links/dashboard'
+    daily_Promise.success (response)->
+      if response.success
+        $scope.daily_links = response.links
+        $scope.unread_links = response.unread
+        $scope.total_read = parseInt response.total_read
+        $scope.categories = response.categories
+      else
+        $scope.$emit 'errorOccurred', response.error
+    daily_Promise.error ->
+      $scope.$emit 'errorOccurred', 'Problem loading daily results'
 
   $scope.initDashboard()
 ]

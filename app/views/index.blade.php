@@ -5,8 +5,11 @@
 @stop
 
 @section('content')
-  <div ng-controller="DashboardController" ng-show="user">
-    <div class="row">
+  <div ng-controller="DashboardController">
+    <div class="row" ng-show="!user.id">
+      Do you have too much stuff to read, paralyzed by choices. Let me decide! Create an account now.
+    </div>
+    <div class="row" ng-show="user.id">
       <div class="col-lg-11">
         <div ng-show="addingLink" ng-cloak>
           <link-form editing="addingLink" link="newLink"></link-form>
@@ -22,7 +25,7 @@
           </thead>
           <tbody>
             <tr ng-repeat="link in search_results">
-              <td ng-class="(link.is_read | phpbool) ? 'read' : ''"><link-form link="link" editing="false"></link-form></td>
+              <td ng-class="(link.is_read | boolparse) ? 'read' : ''"><link-form link="link" editing="false"></link-form></td>
             </tr>
           </tbody>
         </table>
@@ -54,7 +57,7 @@
           <thead>
             <tr>
               <th class="input-group">
-                <select name="category" ng-model="display_category" ng-init="categories = {{ $categories }}" ng-options="category for category in categories" class="form-control">
+                <select name="category" ng-model="display_category" ng-options="category for category in categories" class="form-control">
                   <option value="">Select category</option>
                 </select>
                 <div class="input-group-addon"><span class="glyphicon glyphicon-refresh tool" ng-click="getCategoryArticles()"></span></div>
