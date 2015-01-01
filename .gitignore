@@ -10,6 +10,6 @@ Thumbs.db
 node_modules
 public/assets/bower
 public/assets/coffee/build/
-app/config/local
+app/config/development
 app/config/app.php
 app/config/database.php

@@ -1,4 +1,3 @@
-<div class="clearfix"
 <div class="row" ng-show="errorMessage">
   <div class="alert alert-danger">@{{ errorMessage }}</div>
 </div>

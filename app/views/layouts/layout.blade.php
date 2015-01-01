@@ -58,7 +58,7 @@
                   <input type="password" placeholder="Password" class="form-control" ng-model="password">
                 </div>
                 <button type="submit" class="btn btn-success">Sign in</button>
-                <a href="#" class="btn btn-default" data-toggle="modal" data-target="#registrationModal">Register</a>
+                <a href="register" class="btn btn-default">Register</a>
               </form>
             </li>
           </ul>
@@ -72,57 +72,7 @@
       <div class="jumbotron">
         @yield('content')
       </div>
-    </div> <!-- /container -->
-    <div class="modal fade" id="registrationModal" ng-controller="UserController">
-      <form role="form" name="registrationForm" class="form-inline" ng-submit="registerUser()">
-        <div class="modal-dialog">
-          <div id="register_overlay" class="overlay" ng-show="submitting"></div>
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-              <h4 class="modal-title">User Registration</h4>
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-                <label class="sr-only" for="first_name">First Name</label>
-                <input type="text" class="form-control" placeholder="First Name" ng-model="first_name" required />
-                <div>&nbsp;</div>
-              </div>
-              <div class="form-group">
-                <label class="sr-only" for="last_name">Last Name</label>
-                <input type="text" class="form-control" placeholder="Last Name" ng-model="last_name" required />
-                <div>&nbsp;</div>
-              </div>
-              <div class="form-group">
-                <label class="sr-only" for="email">Email Address</label>
-                <input type="email" name="email" class="form-control" placeholder="Email address" ng-model="email" required check-availibility />
-                <div><span ng-show="registrationForm.email.$error.unique" class="error">Email address already in use</span>&nbsp;</div>
-              </div>
-              <div class="form-group">
-                <label class="sr-only" for="username">Username</label>
-                <input type="text" name="username" class="form-control" placeholder="Username" ng-model="username" required check-availibility />
-                <div><span ng-show="registrationForm.username.$error.unique" class="error">Username already in use</span>&nbsp;</div>
-              </div>
-              <div class="form-group">
-                <label class="sr-only" for="password">Password</label>
-                <input type="password" class="form-control" placeholder="Password" ng-model="password" required />
-                <div>&nbsp;</div>
-              </div>
-              <div class="form-group">
-                <label class="sr-only" for="confirm_password">Confirm Password</label>
-                <input type="password" class="form-control" placeholder="Confirm Password" ng-model="confirm_password" required compare-to="password" />
-                <div>&nbsp;</div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <input type="submit" class="btn" value="Register" ng-disabled="!registrationForm.$valid" ng-class="(!registrationForm.$valid) ? 'btn-disabled' : 'btn-success'">
-            </div>
-          </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-      </form>
-    </div><!-- /.modal -->
-
+    </div><!-- /container -->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script type="text/javascript" src="assets/bower/jquery/dist/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

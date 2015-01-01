@@ -9,4 +9,8 @@ class HomeController extends BaseController {
     }
 		return View::make('index')->with('bookmarklet', $bookmarklet);
 	}
+
+	public function register() {
+		return View::make('register');
+	}
 }

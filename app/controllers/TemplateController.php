@@ -23,4 +23,27 @@ class TemplateController extends BaseController {
     $categoriesString .= ']';
     return View::make('templates/linkForm')->with('categories', $categoriesString);
   }
-} 
+
+  public function bookForm() {
+    $categories = ['New', 'Unread'];
+    if(Auth::user()){
+      $dbCategories = Book::groupBy('category')
+        ->where('user_id', Auth::user()->id)
+        ->where('category' <> 'Unread')
+        ->get(array('category'));
+      foreach($dbCategories as $category) {
+        $categories[] = $category->category;
+      }
+      $lastElement = end($categories);
+      $categoriesString = '[';
+      foreach($categories as $category) {
+        $categoriesString .= '\'' . $category . '\'';
+        if($category != $lastElement) {
+          $categoriesString .= ',';
+        }
+      }
+      $categoriesString .= ']';
+      return View::make('templates/bookForm')->with('categories', $categoriesString);
+    }
+  }
+}

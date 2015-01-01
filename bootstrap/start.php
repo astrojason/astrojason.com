@@ -24,11 +24,9 @@ $app = new Illuminate\Foundation\Application;
 |
 */
 
-$env = $app->detectEnvironment(array(
-
-	'local' => array('astromac.local'),
-
-));
+$env = $app->detectEnvironment(function() {
+	return $_SERVER['APPLICATION_ENV'];
+});
 
 /*
 |--------------------------------------------------------------------------

@@ -24,12 +24,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="link in search_results">
+            <tr ng-show="search_query && search_results.length == 0 && !searching">
+              <td>No results for <strong>@{{ search_query }}</strong>
+            </tr>
+            <tr ng-repeat="link in search_results" ng-show="search_results.length > 0" ng-cloak>
               <td ng-class="(link.is_read | boolparse) ? 'read' : ''"><link-form link="link" editing="false"></link-form></td>
             </tr>
           </tbody>
         </table>
-        <table class="table table-condensed table-striped table-hover">
+        <table class="table table-condensed table-striped table-hover" ng-show="daily_links > 0" ng-cloak>
           <thead>
             <tr>
               <th>Daily <small class="pull-right" ng-class="total_read < 10 ? (total_read < 5 ? 'text-danger' : 'text-warning') : 'text-success'">@{{ total_read }} marked as read today</small></th>
@@ -41,7 +44,7 @@
             </tr>
           </tbody>
         </table>
-        <table class="table table-condensed table-striped table-hover">
+        <table class="table table-condensed table-striped table-hover" ng-show="unread_links.length > 0" ng-cloak>
           <thead>
             <tr>
               <th>Unread</th>
@@ -53,7 +56,7 @@
             </tr>
           </tbody>
         </table>
-        <table class="table table-condensed table-striped table-hover">
+        <table class="table table-condensed table-striped table-hover" ng-show="categories.length > 0" ng-cloak>
           <thead>
             <tr>
               <th class="input-group">

@@ -7,7 +7,4 @@
  */
 class Link extends Eloquent {
 
-  public function name() {
-    return $this->name;
-  }
 }

@@ -17,6 +17,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       $scope.getCategoryArticles()
 
   $scope.$watch 'search_query', (newValue, oldValue)->
+    $scope.searching = true
     $timeout.cancel $scope.search_timeout
     if newValue?.length >= 3
       $scope.search_timeout = $timeout ->
@@ -49,6 +50,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     search_Promise = $http.post '/api/links/search', $.param data
     search_Promise.success (response)->
       if response.success
+        $scope.searching = false
         $scope.search_results = response.links
       else
         $scope.$emit 'errorOccurred', response.error

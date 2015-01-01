@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'HomeController@showIndex');
+Route::get('/register', 'HomeController@register');
 
 Route::get('/readlater', 'LinksController@readLater');
 
@@ -37,6 +38,7 @@ Route::group(array('prefix' => 'api'), function() {
 
 Route::group(array('prefix' => 'templates'), function(){
   Route::get('/link-form', 'TemplateController@linkForm');
+  Route::get('/book-form', 'TemplateController@bookForm');
 });
 
 Route::filter('auth', function() {

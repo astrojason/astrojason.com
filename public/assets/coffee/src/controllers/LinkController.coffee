@@ -21,7 +21,8 @@ window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
     read_Promise.success (response)->
       if response.success
         $scope.link.is_read = true
-        $scope.$parent.markAsRead $scope.link
+        if $scope.$parent.markAsRead
+          $scope.$parent.markAsRead $scope.link
 
   $scope.markAsUnread = ->
     read_Promise = $http.post '/api/links/unread/' + $scope.link.id
@@ -33,7 +34,8 @@ window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
     read_Promise = $http.post '/api/links/delete/' + $scope.link.id
     read_Promise.success (response)->
       if response.success
-        $scope.$parent.deleteItem $scope.link
+        if $scope.$parent.deleteItem
+          $scope.$parent.deleteItem $scope.link
 
   $scope.save = ->
     data = $scope.link
@@ -43,21 +45,25 @@ window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
     link_Promise.success (response)->
       if response.success
         if $scope.link_form.category.$dirty
-          $scope.$parent.changeCategory $scope.link
+          if $scope.$parent.changeCategory
+            $scope.$parent.changeCategory $scope.link
         if $scope.link.category == $scope.new_category
           $scope.categories.push $scope.new_category
         $scope.editing = false
-        $scope.$parent.linkAdded()
+        if $scope.$parent.linkAdded
+          $scope.$parent.linkAdded()
         alertify.success "Link " + (if 0 == parseInt $scope.link.id then "added" else "updated") + " successfully"
       else
         $scope.errorMessage = response.error
-        $scope.$parent.saveError response.error
+        if $scope.$parent.saveError
+          $scope.$parent.saveError response.error
     link_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem ' + ($scope.link.id ? 'updating' : 'adding') + ' link'
 
   $scope.cancelEdit = ->
     $scope.editing = false
-    $scope.$parent.linkCancelled()
+    if $scope.$parent.linkCancelled
+      $scope.$parent.linkCancelled()
 
   $scope.setCategories = (categories)->
     $scope.categories = categories
