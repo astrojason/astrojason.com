@@ -1,6 +1,7 @@
 <?php
 
 class TemplateController extends BaseController {
+
   public function linkForm() {
     $categories = ['New', 'Unread'];
     if(Auth::user()) {
@@ -29,7 +30,7 @@ class TemplateController extends BaseController {
     if(Auth::user()){
       $dbCategories = Book::groupBy('category')
         ->where('user_id', Auth::user()->id)
-        ->where('category' <> 'Unread')
+        ->where('category', '<>', 'Unread')
         ->get(array('category'));
       foreach($dbCategories as $category) {
         $categories[] = $category->category;

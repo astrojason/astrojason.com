@@ -41,6 +41,10 @@ Route::group(array('prefix' => 'templates'), function(){
   Route::get('/book-form', 'TemplateController@bookForm');
 });
 
+Route::group(array('prefix' => 'migrations', 'before' => 'auth'), function(){
+  Route::get('/books', 'MigrationsController@books');
+});
+
 Route::filter('auth', function() {
   if (Auth::guest()) return App::abort(404);
 });
