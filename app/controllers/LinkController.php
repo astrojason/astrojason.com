@@ -1,6 +1,6 @@
 <?php
 
-class LinksController extends BaseController {
+class LinkController extends BaseController {
 
   public function save() {
     if(Input::get('id')) {
@@ -135,4 +135,4 @@ class LinksController extends BaseController {
     }
     return $links;
   }
-} 
+}

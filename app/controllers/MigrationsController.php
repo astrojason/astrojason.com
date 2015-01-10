@@ -11,8 +11,8 @@ class MigrationsController extends BaseController {
   public function links() {
     $linksJson = json_decode(File::get(public_path() . '/assets/seeds/links.json'));
     $migrationCounter = 0;
-    foreach($linksJson->books as $jsonLink) {
-      $link = Book::where('link', $jsonLink->link)
+    foreach($linksJson->links as $jsonLink) {
+      $link = Link::where('link', $jsonLink->link)
         ->where('user_id', Auth::user()->id)
         ->first();
       if(!isset($link)){
@@ -72,4 +72,4 @@ class MigrationsController extends BaseController {
     }
   }
 
-} 
+}

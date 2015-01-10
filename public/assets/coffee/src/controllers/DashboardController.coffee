@@ -61,6 +61,9 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     index = $scope.daily_links.indexOf(link)
     if index >= 0
       $scope.daily_links.splice index, 1
+    index = $scope.unread_links.indexOf(link)
+    if index >= 0
+      $scope.unread_links.splice index, 1
     index = $scope.selected_links.indexOf(link)
     if index >= 0
       $scope.selected_links.splice index, 1
@@ -72,6 +75,9 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     index = $scope.daily_links.indexOf(link)
     if index >= 0
       $scope.daily_links.splice index, 1
+    index = $scope.unread_links.indexOf(link)
+    if index >= 0
+      $scope.unread_links.splice index, 1
     index = $scope.selected_links.indexOf(link)
     if index >= 0
       $scope.selected_links.splice index, 1
@@ -81,6 +87,9 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     index = $scope.daily_links.indexOf(link)
     if index >= 0
       $scope.daily_links.splice index, 1
+    index = $scope.unread_links.indexOf(link)
+    if index >= 0
+      $scope.unread_links.splice index, 1
     index = $scope.selected_links.indexOf(link)
     if index >= 0
       $scope.selected_links.splice index, 1

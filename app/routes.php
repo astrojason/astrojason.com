@@ -24,14 +24,17 @@ Route::group(array('prefix' => 'api'), function() {
   Route::group(array('before' => 'auth'), function() {
     Route::post('/logout', 'UserController@logout');
     Route::group(array('prefix' => 'links'), function(){
-      Route::post('/save', 'LinksController@save');
-      Route::post('/search', 'LinksController@search');
-      Route::post('/open/{id}', 'LinksController@open');
-      Route::post('/read/{id}', 'LinksController@read');
-      Route::post('/unread/{id}', 'LinksController@unread');
-      Route::post('/delete/{id}', 'LinksController@delete');
-      Route::get('/dashboard', 'LinksController@getDashboard');
-      Route::get('/dashboard/{category}', 'LinksController@getRandomLinks');
+      Route::post('/save', 'LinkController@save');
+      Route::post('/search', 'LinkController@search');
+      Route::post('/open/{id}', 'LinkController@open');
+      Route::post('/read/{id}', 'LinkController@read');
+      Route::post('/unread/{id}', 'LinkController@unread');
+      Route::post('/delete/{id}', 'LinkController@delete');
+      Route::get('/dashboard', 'LinkController@getDashboard');
+      Route::get('/dashboard/{category}', 'LinkController@getRandomLinks');
+    });
+    Route::group(array('prefix' => 'books'), function(){
+      Route::get('/next/{category}', 'BookController@nextToRead');
     });
   });
 });
@@ -43,6 +46,7 @@ Route::group(array('prefix' => 'templates'), function(){
 
 Route::group(array('prefix' => 'migrations', 'before' => 'auth'), function(){
   Route::get('/books', 'MigrationsController@books');
+  Route::get('/links', 'MigrationsController@links');
 });
 
 Route::filter('auth', function() {
