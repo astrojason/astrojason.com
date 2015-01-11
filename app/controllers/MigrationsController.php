@@ -48,7 +48,7 @@ class MigrationsController extends BaseController {
         $book->author_lname = $jsonBook->author_lname;
         $book->category = $jsonBook->category;
         if(isset($jsonBook->series)) $book->series = $jsonBook->series;
-        if(isset($jsonBook->series_order)) $book->series_order = $jsonBook->series_order;
+        if(isset($jsonBook->seriesorder)) $book->series_order = $jsonBook->seriesorder;
         $book->is_read = $jsonBook->read;
         $book->owned = $jsonBook->owned;
         $book->title = $jsonBook->title;
