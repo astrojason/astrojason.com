@@ -3,7 +3,9 @@
 @section('title')
   Welcome
 @stop
-
+<!--TODO: Add form for new books -->
+<!--TODO: Add ability to get book recommendation -->
+<!--TODO: Add the ability to populate the recommendations for a user without any-->
 @section('content')
   <div ng-controller="DashboardController">
     <div class="row" ng-show="!user.id">
