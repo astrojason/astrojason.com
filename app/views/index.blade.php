@@ -32,7 +32,7 @@
             </tr>
           </tbody>
         </table>
-        <table class="table table-condensed table-striped table-hover" ng-show="daily_links > 0" ng-cloak>
+        <table class="table table-condensed table-striped table-hover" ng-show="daily_links.length > 0" ng-cloak>
           <thead>
             <tr>
               <th>Daily <small class="pull-right" ng-class="total_read < 10 ? (total_read < 5 ? 'text-danger' : 'text-warning') : 'text-success'">@{{ total_read }} marked as read today</small></th>
