@@ -2,21 +2,29 @@
   <div class="alert alert-danger">@{{ errorMessage }}</div>
 </div>
 <div class="row" ng-show="!editing && link.name">
-  <div class="col-lg-12">
-    <div class="alert alert-danger" ng-show="deleting == true">
-      <h4>Delete Link</h4>
-      <p>Deleting the link cannot be undone.</p>
-      <p>
-        <a class="btn btn-danger" ng-click="delete()">Yes I want to delete</a>
-        <a class="btn btn-default" ng-click="deleting = false">No, do not delete</a>
-      </p>
+  <div class="col-md-12">
+    <div class="row alert alert-danger" ng-show="deleting == true">
+      <div class="col-md-12">
+        <h4>Delete Link</h4>
+        <p>Deleting the link cannot be undone.</p>
+        <p>
+          <a class="btn btn-danger" ng-click="delete()">Yes I want to delete</a>
+          <a class="btn btn-default" ng-click="deleting = false">No, do not delete</a>
+        </p>
+      </div>
     </div>
-    <a ng-href="@{{ link.link }}" ng-click="linkOpened()" target="_blank">@{{ link.name }}</a>
-    <div class="pull-right">
-      <span class="glyphicon glyphicon-pencil tool" ng-click="editing = true"></span>
-      <span class="glyphicon glyphicon-ok tool" ng-click="markAsRead()" ng-show="!(link.is_read | boolparse)"></span>
-      <span class="glyphicon glyphicon-book tool" ng-click="markAsUnread()" ng-show="(link.is_read | boolparse)"></span>
-      <span class="glyphicon glyphicon-remove tool" ng-click="deleting = true"></span>
+    <div class="row">
+      <div class="col-md-10">
+        <a ng-href="@{{ link.link }}" ng-click="linkOpened()" target="_blank">@{{ link.name }}</a>
+      </div>
+      <div class="col-md-2">
+        <div class="pull-right">
+          <span class="glyphicon glyphicon-pencil tool" ng-click="editing = true"></span>
+          <span class="glyphicon glyphicon-ok tool" ng-click="markAsRead()" ng-show="!(link.is_read | boolparse)"></span>
+          <span class="glyphicon glyphicon-book tool" ng-click="markAsUnread()" ng-show="(link.is_read | boolparse)"></span>
+          <span class="glyphicon glyphicon-remove tool" ng-click="deleting = true"></span>
+        </div>
+      </div>
     </div>
   </div>
 </div>

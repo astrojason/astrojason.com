@@ -34,7 +34,7 @@ Route::group(array('prefix' => 'api'), function() {
       Route::get('/dashboard/{category}', 'LinkController@getRandomLinks');
     });
     Route::group(array('prefix' => 'books'), function(){
-      Route::get('/next/{category}', 'BookController@nextToRead');
+      Route::get('/recommendation/{category}', 'BookController@recommendation');
     });
   });
 });

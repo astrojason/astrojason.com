@@ -3,6 +3,6 @@ window.app.directive 'bookForm', ->
   restrict: 'E',
   controller: 'BookController',
   scope: {
-    link: '=',
+    book: '=',
     editing: '='
   }

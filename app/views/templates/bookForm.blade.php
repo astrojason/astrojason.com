@@ -2,23 +2,31 @@
   <div class="alert alert-danger">@{{ errorMessage }}</div>
 </div>
 <div class="row" ng-show="!editing && book.title">
-  <div class="col-lg-12">
-    <div class="alert alert-danger" ng-show="deleting == true">
-      <h4>Delete Link</h4>
-      <p>Deleting the link cannot be undone.</p>
-      <p>
-        <a class="btn btn-danger" ng-click="delete()">Yes I want to delete</a>
-        <a class="btn btn-default" ng-click="deleting = false">No, do not delete</a>
-      </p>
+  <div class="col-md-12">
+    <div class="alert alert-danger row" ng-show="deleting == true">
+      <div class="col-md-12">
+        <h4>Delete Book</h4>
+        <p>Deleting the book cannot be undone.</p>
+        <p>
+          <a class="btn btn-danger" ng-click="delete()">Yes I want to delete</a>
+          <a class="btn btn-default" ng-click="deleting = false">No, do not delete</a>
+        </p>
+      </div>
     </div>
-    @{{ book.title }}
-    <span ng-show="book.author_fname || book.author_lname" ng-cloak>@{{ book.author_fname }} @{{ book.author_lname }}</span>
-    <span class="small" ng-show="book.series" ng-cloak>@{{ book.series }} @{{ book.series_order }}</span>
-    <div class="pull-right">
-      <span class="glyphicon glyphicon-pencil tool" ng-click="editing = true"></span>
-      <span class="glyphicon glyphicon-ok tool" ng-click="markAsRead()" ng-show="!(book.is_read | boolparse)"></span>
-      <span class="glyphicon glyphicon-book tool" ng-click="markAsUnread()" ng-show="(book.is_read | boolparse)"></span>
-      <span class="glyphicon glyphicon-remove tool" ng-click="deleting = true"></span>
+    <div class="row">
+      <div class="col-md-10">
+        <u>@{{ book.title }}</u>
+        <span ng-show="book.author_fname || book.author_lname" ng-cloak>@{{ book.author_fname }} @{{ book.author_lname }}</span>
+        <span class="small" ng-show="book.series" ng-cloak>@{{ book.series }} @{{ book.series_order }}</span>
+      </div>
+      <div class="col-md-2">
+        <div class="pull-right">
+          <span class="glyphicon glyphicon-pencil tool" ng-click="editing = true"></span>
+          <span class="glyphicon glyphicon-ok tool" ng-click="markAsRead()" ng-show="!(book.is_read | boolparse)"></span>
+          <span class="glyphicon glyphicon-book tool" ng-click="markAsUnread()" ng-show="(book.is_read | boolparse)"></span>
+          <span class="glyphicon glyphicon-remove tool" ng-click="deleting = true"></span>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -12,7 +12,7 @@
       Do you have too much stuff to read, paralyzed by choices. Let me decide! Create an account now.
     </div>
     <div class="row" ng-show="user.id">
-      <div class="col-lg-11">
+      <div class="col-lg-10">
         <div ng-show="addingLink" ng-cloak>
           <link-form editing="addingLink" link="newLink"></link-form>
         </div>
@@ -78,7 +78,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-lg-1">
+      <div class="col-lg-2">
         <table class="table table-condensed table-hover">
           <thead>
             <tr>
@@ -96,8 +96,44 @@
             <tr>
               <td><button ng-click="addLink()" class="btn btn-success btn-xs">Add Link</button></td>
             </tr>
+            <tr>
+              <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#bookModal">Book Recommendation</button></td>
+            </tr>
           </tbody>
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="bookModal" ng-controller="BookController" ng-init="setCategories({{ $book_categories }})">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Get a Book Recommendation</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-inline">
+            <div class="row">
+              <div class="col-md-8">
+                <select ng-model="recommendation_category" class="form-control">
+                  <option ng-repeat="book_category in book_categories">@{{ book_category }}</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <button class="btn btn-primary" ng-click="getRecommendation()" ng-disabled="!recommendation_category">Get Recommendation</button>
+              </div>
+            </div>
+            <div class="row" ng-show="recommended_book">
+              <div class="col-md-12">
+                <book-form book="recommended_book" editing="false"></book-form>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 @stop
