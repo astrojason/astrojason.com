@@ -4,7 +4,6 @@
   Welcome
 @stop
 <!--TODO: Add form for new books -->
-<!--TODO: Add ability to get book recommendation -->
 <!--TODO: Add the ability to populate the recommendations for a user without any-->
 @section('content')
   <div ng-controller="DashboardController">
@@ -49,7 +48,7 @@
         <table class="table table-condensed table-striped table-hover" ng-show="unread_links.length > 0" ng-cloak>
           <thead>
             <tr>
-              <th>Unread</th>
+              <th>Unread<span class="glyphicon glyphicon-refresh tool pull-right" ng-click="refreshUnreadArticles()"></span></th>
             </tr>
           </thead>
           <tbody>
@@ -116,16 +115,16 @@
             <div class="row">
               <div class="col-md-8">
                 <select ng-model="recommendation_category" class="form-control">
-                  <option ng-repeat="book_category in book_categories">@{{ book_category }}</option>
+                  <option ng-repeat="category in categories">@{{ category }}</option>
                 </select>
               </div>
               <div class="col-md-4">
                 <button class="btn btn-primary" ng-click="getRecommendation()" ng-disabled="!recommendation_category">Get Recommendation</button>
               </div>
             </div>
-            <div class="row" ng-show="recommended_book">
-              <div class="col-md-12">
-                <book-form book="recommended_book" editing="false"></book-form>
+            <div class="row" ng-show="book">
+              <div class="col-md-12 top-margin">
+                <book-form book="book" editing="false"></book-form>
               </div>
             </div>
           </form>

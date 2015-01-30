@@ -123,5 +123,15 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     daily_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem loading daily results'
 
+  $scope.refreshUnreadArticles = ->
+    category_Promise = $http.get '/api/links/dashboard/unread/20'
+    category_Promise.success (response)->
+      if response.success
+        $scope.unread_links = response.links
+      else
+        $scope.$emit 'errorOccurred', response.error
+    category_Promise.error ->
+      $scope.$emit 'errorOccurred', 'Problem loading unread results'
+
   $scope.initDashboard()
 ]

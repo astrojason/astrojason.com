@@ -96,8 +96,8 @@ class LinkController extends BaseController {
     ), 200);
   }
 
-  public function getRandomLinks($category) {
-    $links = self::getLinksToRead($category, 10);
+  public function getRandomLinks($category, $quantity = 10) {
+    $links = self::getLinksToRead($category, $quantity);
     return Response::json(array('success' => true, 'links' => $links->toArray()), 200);
   }
 

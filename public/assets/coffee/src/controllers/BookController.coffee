@@ -1,12 +1,54 @@
 window.app.controller 'BookController', ['$scope', '$http', ($scope, $http)->
 
   $scope.setCategories = (categories)->
-    $scope.book_categories = categories
+    $scope.categories = categories
     if categories.length > 0
       $scope.recommendation_category = categories[0]
 
   $scope.getRecommendation = ->
     reco_Promise = $http.get '/api/books/recommendation/' + $scope.recommendation_category
     reco_Promise.success (response)->
-      $scope.recommended_book = response.book
+      $scope.book = response.book
+
+  $scope.markAsRead = ->
+    read_Promise = $http.post '/api/books/read/' + $scope.book.id
+    read_Promise.success (success)->
+      if response.success
+        $scope.book.is_read = true
+        # TODO: Call the parent markasread
+
+  $scope.markAsUnread = ->
+    read_Promise = $http.post '/api/books/unread/' + $scope.book.id
+    read_Promise.success (success)->
+      if response.success
+        $scope.book.is_read = true
+
+  $scope.delete = ->
+    console.log 'Delete called'
+
+  $scope.save = ->
+    data = $scope.book
+    if $scope.book.category == 'New'
+      $scope.book.category = $scope.new_category
+    book_Promise = $http.post '/api/books/save', $.param data
+    book_Promise.success (response)->
+      if response.success
+        if $scope.book_form.category.$dirty
+          if $scope.$parent.changeBookCategory
+            $scope.$parent.changeBookCategory $scope.book
+        if $scope.book.category == $scope.new_category
+          $scope.categories.push $scope.new_category
+        $scope.editing = false
+        if $scope.$parent.bookAdded
+          $scope.$parent.bookAdded()
+        alertify.success "Book " + (if 0 == parseInt $scope.book.id then "added" else "updated") + " successfully"
+      else
+        $scope.errorMessage = response.error
+        if $scope.$parent.saveError
+          $scope.$parent.saveError response.error
+    book_Promise.error ->
+      $scope.$emit 'errorOccurred', 'Problem ' + ($scope.book.id ? 'updating' : 'adding') + ' link'
+
+  $scope.cancelEdit = ->
+    console.log 'Cancel edit called'
 ]

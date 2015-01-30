@@ -32,9 +32,13 @@ Route::group(array('prefix' => 'api'), function() {
       Route::post('/delete/{id}', 'LinkController@delete');
       Route::get('/dashboard', 'LinkController@getDashboard');
       Route::get('/dashboard/{category}', 'LinkController@getRandomLinks');
+      Route::get('/dashboard/{category}/{quantity}', 'LinkController@getRandomLinks');
     });
     Route::group(array('prefix' => 'books'), function(){
       Route::get('/recommendation/{category}', 'BookController@recommendation');
+      Route::post('/read/{id}', 'BookController@read');
+      Route::post('/unread/{id}', 'BookController@unread');
+      Route::post('/save', 'BookController@save');
     });
   });
 });
