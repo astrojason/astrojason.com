@@ -39,6 +39,7 @@ Route::group(array('prefix' => 'api'), function() {
       Route::post('/read/{id}', 'BookController@read');
       Route::post('/unread/{id}', 'BookController@unread');
       Route::post('/save', 'BookController@save');
+      Route::post('/delete/{id}', 'BookController@delete');
     });
   });
 });
