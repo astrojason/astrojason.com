@@ -47,4 +47,8 @@ class TemplateController extends BaseController {
       return View::make('templates/bookForm')->with('categories', $categoriesString);
     }
   }
+
+  public function loader() {
+    return View::make('templates/loader');
+  }
 }

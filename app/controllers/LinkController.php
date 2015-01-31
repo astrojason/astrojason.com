@@ -71,31 +71,6 @@ class LinkController extends BaseController {
     }
   }
 
-  public function getDashboard() {
-    $links = Link::where('is_read', false)
-      ->where('category', 'Daily')
-      ->where('user_id', Auth::user()->id)
-      ->get();
-    $categories = [];
-    $dbCategories = Link::groupBy('category')
-      ->where('category', '<>', 'Daily')
-      ->where('category', '<>', 'Unread')
-      ->where('user_id', Auth::user()->id)
-      ->get(array('category'));
-    foreach($dbCategories as $category) {
-      array_push($categories, $category->category);
-    }
-    $unread = self::getLinksToRead('Unread', 20);
-    $total_read = Link::where('updated_at', 'LIKE', date('Y-m-d') . '%')->where('is_read', true)->where('user_id', Auth::user()->id)->count();
-    return Response::json(array(
-      'success' => true,
-      'links' => $links->toArray(),
-      'total_read' => $total_read,
-      'unread' => $unread->toArray(),
-      'categories' => $categories
-    ), 200);
-  }
-
   public function getRandomLinks($category, $quantity = 10) {
     $links = self::getLinksToRead($category, $quantity);
     return Response::json(array('success' => true, 'links' => $links->toArray()), 200);
@@ -123,7 +98,7 @@ class LinkController extends BaseController {
     return View::make('readlater')->with('title', $title)->with('link', $link);
   }
 
-  public function getLinksToRead($category, $numResults = 10) {
+  public static function getLinksToRead($category, $numResults = 10) {
     $links = Link::where('is_read', false)
       ->where('category', $category)
       ->where('user_id', Auth::user()->id)

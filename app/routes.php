@@ -21,6 +21,7 @@ Route::group(array('prefix' => 'api'), function() {
   Route::post('/checkusername', 'UserController@checkUsername');
   Route::post('/checkemail', 'UserController@checkEmail');
   Route::post('/login', 'UserController@login');
+  Route::get('/dashboard', 'HomeController@getDashboard');
   Route::group(array('before' => 'auth'), function() {
     Route::post('/logout', 'UserController@logout');
     Route::group(array('prefix' => 'links'), function(){
@@ -30,7 +31,6 @@ Route::group(array('prefix' => 'api'), function() {
       Route::post('/read/{id}', 'LinkController@read');
       Route::post('/unread/{id}', 'LinkController@unread');
       Route::post('/delete/{id}', 'LinkController@delete');
-      Route::get('/dashboard', 'LinkController@getDashboard');
       Route::get('/dashboard/{category}', 'LinkController@getRandomLinks');
       Route::get('/dashboard/{category}/{quantity}', 'LinkController@getRandomLinks');
     });
@@ -47,13 +47,10 @@ Route::group(array('prefix' => 'api'), function() {
 Route::group(array('prefix' => 'templates'), function(){
   Route::get('/link-form', 'TemplateController@linkForm');
   Route::get('/book-form', 'TemplateController@bookForm');
+  Route::get('/loader', 'TemplateController@loader');
 });
 
 Route::group(array('prefix' => 'migrations', 'before' => 'auth'), function(){
   Route::get('/books', 'MigrationsController@books');
   Route::get('/links', 'MigrationsController@links');
-});
-
-Route::filter('auth', function() {
-  if (Auth::guest()) return App::abort(404);
 });

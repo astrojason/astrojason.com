@@ -6,9 +6,12 @@ window.app.controller 'BookController', ['$scope', '$http', ($scope, $http)->
       $scope.recommendation_category = categories[0]
 
   $scope.getRecommendation = ->
+    $scope.getting_recomendation = true
     reco_Promise = $http.get '/api/books/recommendation/' + $scope.recommendation_category
     reco_Promise.success (response)->
       $scope.book = response.book
+    reco_Promise.finally ->
+      $scope.getting_recomendation = false
 
   $scope.markAsRead = ->
     read_Promise = $http.post '/api/books/read/' + $scope.book.id

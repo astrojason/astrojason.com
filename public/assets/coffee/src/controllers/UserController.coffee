@@ -1,6 +1,3 @@
-target = document.getElementById('register_overlay');
-spinner = new Spinner(spin_opts).spin(target)
-
 window.app.controller 'UserController', ['$scope', '$http', ($scope, $http)->
 
   $scope.$on 'checkingAvailibility', ->

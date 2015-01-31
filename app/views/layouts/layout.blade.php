@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title') :: astrojason.com</title>
     <link href="assets/bower/alertifyjs/dist/css/alertify.css" rel="stylesheet" />
+    <link href="assets/sass/build/vendor/loader.css" rel="stylesheet" />
     <link href="assets/sass/build/base.css" rel="stylesheet" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -15,7 +16,6 @@
     <![endif]-->
   </head>
   <body ng-app="astroApp" ng-controller="MasterController"@if(Auth::user()) ng-init="initUser({ id: {{ Auth::user()->id }}, username: '{{ Auth::user()->username }}', firstname: '{{ Auth::user()->firstname }}', lastname: '{{ Auth::user()->lastname }}', email: '{{ Auth::user()->email }}' })"@endif>
-    <div id="overlay" ng-show="init" class="overlay"></div>
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
@@ -77,7 +77,6 @@
     <script type="text/javascript" src="assets/bower/jquery/dist/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script type="text/javascript" src="assets/bower/angular/angular.min.js"></script>
-    <script type="text/javascript" src="assets/js/vendor/spin.min.js"></script>
     <script type="text/javascript" src="assets/bower/alertifyjs/dist/js/alertify.js"></script>
     <script type="text/javascript" src="assets/js/vendor/bootstrap.min.js"></script>
     <script type="text/javascript" src="assets/js/app.min.js"></script>

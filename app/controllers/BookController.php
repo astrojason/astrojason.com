@@ -51,7 +51,7 @@ class BookController extends BaseController {
     }
   }
 
-  public function(save) {
+  public function save() {
     if(Input::get('id')) {
       $book = Book::where('id', Input::get('id'))->where('user_id', Auth::user()->id)->first();
     } else {

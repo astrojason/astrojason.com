@@ -5,6 +5,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
   $scope.selected_links = []
   $scope.search_results = []
   $scope.addingLink = false
+  $scope.loading_unread = false
 
   $scope.$on 'userLoggedIn', ->
     $scope.initDashboard()
@@ -32,6 +33,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       , 500
 
   $scope.getCategoryArticles = ->
+    $scope.loading_category = true
     category_Promise = $http.get '/api/links/dashboard/' + $scope.display_category
     category_Promise.success (response)->
       if response.success
@@ -40,8 +42,11 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
         $scope.$emit 'errorOccurred', response.error
     category_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem loading category results'
+    category_Promise.finally ->
+      $scope.loading_category = false
 
   $scope.search_articles = ->
+    $scope.loading_search = true
     $scope.search_results = []
     data =
       q: $scope.search_query
@@ -56,6 +61,8 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
         $scope.$emit 'errorOccurred', response.error
     search_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem loading search results'
+    search_Promise.finally ->
+      $scope.loading_search = false
 
   $scope.deleteItem = (link)->
     index = $scope.daily_links.indexOf(link)
@@ -111,19 +118,24 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
 
   $scope.loadDashboard = ->
     $scope.newLink = window.Link($scope.user.id)
-    daily_Promise = $http.get '/api/links/dashboard'
+    daily_Promise = $http.get '/api/dashboard'
     daily_Promise.success (response)->
       if response.success
         $scope.daily_links = response.links
         $scope.unread_links = response.unread
         $scope.total_read = parseInt response.total_read
         $scope.categories = response.categories
+        $scope.total_links = response.total_links
+        $scope.links_read = response.links_read
+        $scope.total_books = response.total_books
+        $scope.books_read = response.books_read
       else
         $scope.$emit 'errorOccurred', response.error
     daily_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem loading daily results'
 
   $scope.refreshUnreadArticles = ->
+    $scope.loading_unread = true
     category_Promise = $http.get '/api/links/dashboard/unread/20'
     category_Promise.success (response)->
       if response.success
@@ -132,6 +144,8 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
         $scope.$emit 'errorOccurred', response.error
     category_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem loading unread results'
+    category_Promise.finally ->
+      $scope.loading_unread = false
 
   $scope.initDashboard()
 ]
