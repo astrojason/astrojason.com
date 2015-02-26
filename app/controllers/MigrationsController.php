@@ -60,6 +60,27 @@ class MigrationsController extends BaseController {
     return 'Migrated ' . $migrationCounter . ' books.';
   }
 
+  public function movies() {
+    $moviesJson = json_decode(File::get(public_path() . '/assets/seeds/movies.json'));
+    $migrationCounter = 0;
+    foreach($moviesJson->movies as $jsonMovie) {
+      $movie = Movie::where('title', $jsonMovie->title)
+        ->where('user_id', Auth::user()->id)
+        ->first();
+      if(!isset($movie)){
+        $movie = new Movie();
+        $movie->user_id = Auth::user()->id;
+        $movie->rating_order = $jsonMovie->rating_order;
+        $movie->title = $jsonMovie->title;
+        $movie->is_watched = true;
+        $movie->save();
+        $migrationCounter++;
+        print('Added ' . $movie->title . '.<br />');
+      }
+    }
+    return 'Migrated ' . $migrationCounter . ' movies.';
+  }
+
   public function games() {
     $gamesJson = json_decode(File::get(public_path() . '/assets/seeds/games.json'));
     foreach($gamesJson as $jsonGame) {

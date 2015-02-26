@@ -55,4 +55,5 @@ Route::group(array('prefix' => 'templates'), function(){
 Route::group(array('prefix' => 'migrations', 'before' => 'auth'), function(){
   Route::get('/books', 'MigrationsController@books');
   Route::get('/links', 'MigrationsController@links');
+  Route::get('/movies', 'MigrationsController@movies');
 });
