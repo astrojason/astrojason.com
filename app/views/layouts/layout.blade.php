@@ -29,9 +29,10 @@
           <a class="navbar-brand" href="/">astrojason.com</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-<!--            <li class="active"><a href="/">Home</a></li>-->
-<!--            <li><a href="#about">About</a></li>-->
+          <ul class="nav navbar-nav" ng-show="user" ng-cloak>
+            @foreach($userNav as $navItem)
+              <li @if($navItem->active) class="active"@endif><a href="{{ $navItem->href }}">{{ $navItem->name }}</a></li>
+            @endforeach
 <!--            <li><a href="#contact">Contact</a></li>-->
 <!--            <li class="dropdown">-->
 <!--              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>-->
@@ -78,6 +79,7 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script type="text/javascript" src="assets/bower/angular/angular.min.js"></script>
     <script type="text/javascript" src="assets/bower/alertifyjs/dist/js/alertify.js"></script>
+    <script type="text/javascript" src="assets/bower/angular-messages/angular-messages.min.js"></script>
     <script type="text/javascript" src="assets/js/vendor/bootstrap.min.js"></script>
     <script type="text/javascript" src="assets/js/app.min.js"></script>
     <script type="text/javascript" src="assets/js/models.min.js"></script>

@@ -59,7 +59,12 @@
     <input type="text" name="new_category" class="form-control" ng-model="new_category" placeholder="Category Name" ng-required="book.category == 'New'" />
   </div>
   <div class="form-group">
-    <input type="checkbox" ng-model="link.is_read" /> Read
+    <label class="checkbox-inline">
+      <input type="checkbox" ng-model="book.owned" /> Owned
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" ng-model="book.is_read" /> Read
+    </label>
   </div>
   <div class="form-group">
     <button class="btn btn-primary" ng-disabled="!book_form.$valid">Save</button>

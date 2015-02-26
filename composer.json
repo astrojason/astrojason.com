@@ -4,7 +4,8 @@
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
 	"require": {
-		"laravel/framework": "4.1.*"
+		"laravel/framework": "4.1.*",
+		"doctrine/dbal": "~2.6@dev"
 	},
 	"require-dev": {
 		"barryvdh/laravel-ide-helper": "~1.11"
@@ -25,6 +26,7 @@
 		],
 		"post-update-cmd": [
 			"php artisan clear-compiled",
+		  	"php artisan ide-helper:generate",
 			"php artisan optimize"
 		],
 		"post-create-project-cmd": [

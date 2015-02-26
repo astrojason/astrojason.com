@@ -13,6 +13,7 @@
 
 Route::get('/', 'HomeController@showIndex');
 Route::get('/register', 'HomeController@register');
+Route::get('/books', 'BookController@index');
 
 Route::get('/readlater', 'LinkController@readLater');
 
@@ -40,6 +41,7 @@ Route::group(array('prefix' => 'api'), function() {
       Route::post('/unread/{id}', 'BookController@unread');
       Route::post('/save', 'BookController@save');
       Route::post('/delete/{id}', 'BookController@delete');
+      Route::post('/search', 'BookController@search');
     });
   });
 });

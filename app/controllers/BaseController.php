@@ -2,6 +2,13 @@
 
 class BaseController extends Controller {
 
+	public function __construct() {
+		$userNav = [];
+		$userNav[] = new NavItem('Home', '/', Route::current()->getPath() == '/');
+		$userNav[] = new NavItem('Books', '/books', Route::current()->getPath() == 'books');
+		View::share('userNav', $userNav);
+	}
+
 	/**
 	 * Setup the layout used by the controller.
 	 *

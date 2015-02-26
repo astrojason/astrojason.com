@@ -111,6 +111,9 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     $scope.addingLink = false
     $scope.newLink = window.Link $scope.$parent.user.id
 
+  $scope.bookAdded = ->
+    $scope.addingBook = false
+
   $scope.initDashboard = ->
     $scope.user = UserService.getUser()
     if $scope.user?.id

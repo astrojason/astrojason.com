@@ -1,4 +1,4 @@
-window.app.controller 'BookController', ['$scope', '$http', ($scope, $http)->
+window.app.controller 'BookController', ['$scope', '$http', '$timeout', ($scope, $http, $timeout)->
 
   $scope.setCategories = (categories)->
     $scope.categories = categories
@@ -54,4 +54,19 @@ window.app.controller 'BookController', ['$scope', '$http', ($scope, $http)->
 
   $scope.cancelEdit = ->
     console.log 'Cancel edit called'
+
+  $scope.$watch 'search_query', (newValue, oldValue)->
+    $scope.searching = true
+    $timeout.cancel $scope.search_timeout
+    if newValue?.length >= 3
+      $scope.search_timeout = $timeout ->
+        $scope.search_books()
+      , 500
+
+  $scope.search_books = ->
+    data =
+      q: $scope.search_query
+    search_promise = $http.post '/api/books/search', $.param data
+    search_promise.success (response)->
+      $scope.search_results = response.books
 ]

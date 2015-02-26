@@ -1,9 +1,8 @@
-@extends('layouts/layout')
+@extends('layouts.layout')
 
 @section('title')
   Welcome
 @stop
-<!--TODO: Add form for new books -->
 <!--TODO: Add the ability to populate the recommendations for a user without any-->
 @section('content')
   <div ng-controller="DashboardController">
@@ -112,6 +111,9 @@
               <td><button ng-click="addLink()" class="btn btn-success btn-xs">Add Link</button></td>
             </tr>
             <tr>
+              <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addBookModal">Add Book</button></td>
+            </tr>
+            <tr>
               <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#bookModal">Book Recommendation</button></td>
             </tr>
             <tr>
@@ -153,6 +155,23 @@
               </div>
             </div>
           </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div class="modal fade" id="addBookModal" ng-controller="BookController" ng-init="setCategories({{ $book_categories }})">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Add a Book</h4>
+        </div>
+        <div class="modal-body">
+          <book-form book="{}" editing="true"></book-form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
