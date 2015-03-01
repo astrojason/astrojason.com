@@ -43,6 +43,10 @@ Route::group(array('prefix' => 'api'), function() {
       Route::post('/delete/{id}', 'BookController@delete');
       Route::post('/search', 'BookController@search');
     });
+    Route::group(array('prefix' => 'movies'), function(){
+      Route::get('/widget', 'MovieController@widget');
+      Route::post('/save', 'MovieController@save');
+    });
   });
 });
 
@@ -56,4 +60,5 @@ Route::group(array('prefix' => 'migrations', 'before' => 'auth'), function(){
   Route::get('/books', 'MigrationsController@books');
   Route::get('/links', 'MigrationsController@links');
   Route::get('/movies', 'MigrationsController@movies');
+  Route::get('/movies/randomize', 'MigrationsController@reorder');
 });

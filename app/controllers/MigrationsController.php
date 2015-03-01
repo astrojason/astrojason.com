@@ -73,12 +73,32 @@ class MigrationsController extends BaseController {
         $movie->rating_order = $jsonMovie->rating_order;
         $movie->title = $jsonMovie->title;
         $movie->is_watched = true;
+        $movie->times_watched = 1;
         $movie->save();
         $migrationCounter++;
         print('Added ' . $movie->title . '.<br />');
       }
     }
     return 'Migrated ' . $migrationCounter . ' movies.';
+  }
+
+  public function reorder() {
+    $movies = Movie::where('user_id', Auth::user()->id)->get();
+    foreach($movies as $movie) {
+      $movie->rating_order = rand();
+      $movie->is_watched = true;
+      $movie->times_watched = 1;
+      $movie->save();
+    }
+    $movies = Movie::where('user_id', Auth::user()->id)
+      ->orderBy('rating_order')
+      ->get();
+    $counter = 1;
+    foreach($movies as $movie) {
+      $movie->rating_order = $counter;
+      $movie->save();
+      $counter++;
+    }
   }
 
   public function games() {

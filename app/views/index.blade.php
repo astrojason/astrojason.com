@@ -10,7 +10,7 @@
       Do you have too much stuff to read, paralyzed by choices. Let me decide! Create an account now.
     </div>
     <div class="row" ng-show="user.id">
-      <div class="col-lg-10">
+      <div class="col-lg-9">
         <div ng-show="addingLink" ng-cloak>
           <link-form editing="addingLink" link="newLink"></link-form>
         </div>
@@ -92,7 +92,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-2">
+      <div class="col-lg-3">
         <table class="table table-condensed table-hover">
           <thead>
             <tr>
@@ -119,9 +119,30 @@
             <tr>
               <td>
                 <h7>Links Read</h7><br />
-                <small>@{{ links_read }} of @{{ total_links }} (@{{ (links_read / total_links) * 100 | number:2 }}%)</small>
+                <small>@{{ links_read }} of @{{ total_links }} (@{{ (links_read / total_links) * 100 | number:2 }}%)</small><br />
                 <h7>Books Read</h7><br />
                 <small>@{{ books_read }} of @{{ total_books }} (@{{ (books_read / total_books) * 100 | number:2 }}%)</small>
+              </td>
+            </tr>
+            <tr>
+              <td ng-controller="MovieController" ng-init="getWidget()">
+                <h7>
+                  <strong>Movies</strong>
+                  <span class="glyphicon glyphicon-refresh tool pull-right" ng-click="getWidget()"></span>
+                </h7>
+                <div ng-repeat="movie in movies | orderBy: 'rating_order'">
+                  @{{ movie.title }}
+                  <span
+                    class="glyphicon glyphicon-chevron-up tool pull-right"
+                    ng-class="$index > 0 ? '' : 'disabled'"
+                    ng-click="$index > 0 ? changeRating(movie, -1) : null">
+                  </span>
+                  <span
+                    class="glyphicon glyphicon-chevron-down tool pull-right"
+                    ng-class="$index < movies.length - 1 ? '' : 'disabled'"
+                    ng-click="$index < movies.length - 1 ? changeRating(movie, 1) : null">
+                  </span>
+                </div>
               </td>
             </tr>
           </tbody>
