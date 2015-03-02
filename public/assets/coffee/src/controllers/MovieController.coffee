@@ -1,4 +1,8 @@
 window.app.controller 'MovieController', ['$scope', '$http', ($scope, $http)->
+
+  $scope.$on 'dateChanged', (e, m)->
+    $scope.movie.date_watched = m
+
   $scope.getWidget = ->
     widget_promise = $http.get '/api/movies/widget'
     widget_promise.success (response) ->
@@ -10,5 +14,8 @@ window.app.controller 'MovieController', ['$scope', '$http', ($scope, $http)->
       return v.rating_order == new_rating
     current_movie[0].rating_order = movie.rating_order
     movie.rating_order = new_rating
-    rating_promise = $http.post '/api/movies/save', $.param movie
+    $scope.save()
+
+  $scope.save = ->
+    movie_promise = $http.post '/api/movies/save', $.param $scope.movie
 ]

@@ -48,6 +48,10 @@ class TemplateController extends BaseController {
     }
   }
 
+  public function movieForm() {
+    return View::make('templates/movieForm');
+  }
+
   public function loader() {
     return View::make('templates/loader');
   }

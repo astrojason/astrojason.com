@@ -15,6 +15,8 @@ class MovieController extends BaseController {
 
   public function save() {
     $title = Input::get('title');
+    $is_watched = filter_var(Input::get('is_watched'), FILTER_VALIDATE_BOOLEAN);
+    $date_watched = strtotime(Input::get('date_watched'));
     if(Input::get('id')) {
       $movie = Movie::where('user_id', Auth::user()->id)->where('id', Input::get('id'))->first();
       if(Input::get('rating_order')) {
@@ -26,8 +28,16 @@ class MovieController extends BaseController {
     } else {
       $movie = new Movie();
       $movie->user_id = Auth::user()->id;
+      $movie->rating_order = DB::table('movies')->max('rating_order') + 1;
+      if($is_watched) {
+        $movie->times_watched = 1;
+      }
     }
     $movie->title = $title;
+    $movie->is_watched = $is_watched;
+    if($date_watched) {
+      $movie->date_watched = date('Y-m-d',$date_watched);
+    }
     $movie->save();
   }
 }

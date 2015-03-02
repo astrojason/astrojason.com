@@ -53,6 +53,7 @@ Route::group(array('prefix' => 'api'), function() {
 Route::group(array('prefix' => 'templates'), function(){
   Route::get('/link-form', 'TemplateController@linkForm');
   Route::get('/book-form', 'TemplateController@bookForm');
+  Route::get('/movie-form', 'TemplateController@movieForm');
   Route::get('/loader', 'TemplateController@loader');
 });
 

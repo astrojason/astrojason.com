@@ -17,7 +17,7 @@ class LinkController extends BaseController {
       $link->name = Input::get('name');
       $link->link = Input::get('link');
       $link->category = Input::get('category');
-      $link->is_read = Input::get('is_read') || false;
+      $link->is_read = filter_var(Input::get('is_read'), FILTER_VALIDATE_BOOLEAN);
       if(Input::get('instapaper_id')) {
         $link->instapaper_id = Input::get('instapaper_id');
       }

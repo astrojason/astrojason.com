@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title') :: astrojason.com</title>
     <link href="assets/bower/alertifyjs/dist/css/alertify.css" rel="stylesheet" />
+    <link href="assets/bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="assets/sass/build/vendor/loader.css" rel="stylesheet" />
     <link href="assets/sass/build/base.css" rel="stylesheet" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -80,6 +81,8 @@
     <script type="text/javascript" src="assets/bower/angular/angular.min.js"></script>
     <script type="text/javascript" src="assets/bower/alertifyjs/dist/js/alertify.js"></script>
     <script type="text/javascript" src="assets/bower/angular-messages/angular-messages.min.js"></script>
+    <script type="text/javascript" src="assets/bower/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="assets/bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="assets/js/vendor/bootstrap.min.js"></script>
     <script type="text/javascript" src="assets/js/app.min.js"></script>
     <script type="text/javascript" src="assets/js/models.min.js"></script>

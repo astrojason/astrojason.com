@@ -117,6 +117,9 @@
               <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#bookModal">Book Recommendation</button></td>
             </tr>
             <tr>
+              <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addMovieModal">Add Movie</button></td>
+            </tr>
+            <tr>
               <td>
                 <h7>Links Read</h7><br />
                 <small>@{{ links_read }} of @{{ total_links }} (@{{ (links_read / total_links) * 100 | number:2 }}%)</small><br />
@@ -193,6 +196,23 @@
         </div>
         <div class="modal-body">
           <book-form book="{}" editing="true"></book-form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div class="modal fade" id="addMovieModal" ng-controller="MovieController">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Add a Movie</h4>
+        </div>
+        <div class="modal-body">
+          <movie-form movie="{}" editing="true"></movie-form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
