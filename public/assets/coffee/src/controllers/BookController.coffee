@@ -15,14 +15,14 @@ window.app.controller 'BookController', ['$scope', '$http', '$timeout', ($scope,
 
   $scope.markAsRead = ->
     read_Promise = $http.post '/api/books/read/' + $scope.book.id
-    read_Promise.success (success)->
+    read_Promise.success (response)->
       if response.success
         $scope.book.is_read = true
         # TODO: Call the parent markasread
 
   $scope.markAsUnread = ->
     read_Promise = $http.post '/api/books/unread/' + $scope.book.id
-    read_Promise.success (success)->
+    read_Promise.success (response)->
       if response.success
         $scope.book.is_read = true
 
