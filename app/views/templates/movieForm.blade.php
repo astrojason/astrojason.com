@@ -28,7 +28,7 @@
     </div>
   </div>
 </div>
-<form role="form" name="movie_form" ng-submit="save()" novalidate ng-show="editing">
+<form role="form" name="movie_form" ng-submit="save(movie)" novalidate ng-show="editing">
   <div class="form-group">
     <label for="title">Title</label>
     <input type="text" name="title" ng-model="movie.title" class="form-control" placeholder="Movie Title" required />

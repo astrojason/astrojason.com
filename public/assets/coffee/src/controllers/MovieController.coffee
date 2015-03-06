@@ -14,8 +14,8 @@ window.app.controller 'MovieController', ['$scope', '$http', ($scope, $http)->
       return v.rating_order == new_rating
     current_movie[0].rating_order = movie.rating_order
     movie.rating_order = new_rating
-    $scope.save()
+    $scope.save(movie)
 
-  $scope.save = ->
-    movie_promise = $http.post '/api/movies/save', $.param $scope.movie
+  $scope.save = (movie)->
+    movie_promise = $http.post '/api/movies/save', $.param movie
 ]
