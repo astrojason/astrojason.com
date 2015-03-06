@@ -5,12 +5,16 @@ class MovieController extends BaseController {
   public function widget() {
     $rand_movie = Movie::where('user_id', Auth::user()->id)
       ->orderBy(DB::raw('RAND()'))->first();
-    $movies = Movie::where('user_id', Auth::user()->id)
-      ->where('rating_order', '>=', $rand_movie->rating_order)
-      ->orderBy('rating_order')
-      ->take(5)
-      ->get();
-    return Response::json(array('success' => true, 'movies' => $movies->toArray()), 200);
+    if(isset($rand_movie)) {
+      $movies = Movie::where('user_id', Auth::user()->id)
+        ->where('rating_order', '>=', $rand_movie->rating_order)
+        ->orderBy('rating_order')
+        ->take(5)
+        ->get();
+      return Response::json(array('success' => true, 'movies' => $movies->toArray()), 200);
+    } else {
+      return Response::json(array('success' => true, 'movies' => array()), 200);
+    }
   }
 
   public function save() {

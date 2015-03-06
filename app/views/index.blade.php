@@ -15,7 +15,7 @@
           <link-form editing="addingLink" link="newLink"></link-form>
         </div>
         <div ng-show="total_links == 0" ng-cloak>
-          You do not have any links, would you like me to <button class="btn btn-default">Randomize</button> some for you?
+          You do not have any links, would you like me to <button class="btn btn-default" ng-click="populateLinks()">Randomize</button> some for you?
         </div>
         <div ng-show="total_links > 0" ng-cloak>
           <div id="search_links" class="link_container">
@@ -113,22 +113,26 @@
             <tr>
               <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addBookModal">Add Book</button></td>
             </tr>
-            <tr>
+            <tr ng-show="books_toread" ng-cloak>
               <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#bookModal">Book Recommendation</button></td>
             </tr>
             <tr>
               <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addMovieModal">Add Movie</button></td>
             </tr>
-            <tr>
+            <tr ng-show="total_books || total_books" ng-cloak>
               <td>
-                <h7>Links Read</h7><br />
-                <small>@{{ links_read }} of @{{ total_links }} (@{{ (links_read / total_links) * 100 | number:2 }}%)</small><br />
-                <h7>Books Read</h7><br />
-                <small>@{{ books_read }} of @{{ total_books }} (@{{ (books_read / total_books) * 100 | number:2 }}%)</small>
+                <div ng-show="total_links" ng-cloak>
+                  <h7>Links Read</h7><br />
+                  <small>@{{ links_read }} of @{{ total_links }} (@{{ (links_read / total_links) * 100 | number:2 }}%)</small><br />
+                </div>
+                <div ng-show="total_books" ng-cloak>
+                  <h7>Books Read</h7><br />
+                  <small>@{{ books_read }} of @{{ total_books }} (@{{ (books_read / total_books) * 100 | number:2 }}%)</small>
+                </div>
               </td>
             </tr>
             <tr>
-              <td ng-controller="MovieController" ng-init="getWidget()">
+              <td ng-controller="MovieController" ng-init="getWidget()" ng-show="movies.length > 0" ng-cloak>
                 <h7>
                   <strong>Movies</strong>
                   <span class="glyphicon glyphicon-refresh tool pull-right" ng-click="getWidget()"></span>

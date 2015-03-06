@@ -98,6 +98,20 @@ class LinkController extends BaseController {
     return View::make('readlater')->with('title', $title)->with('link', $link);
   }
 
+  public function populateLinks() {
+    $links = Link::where('category', '<>', 'At Home')
+      ->orderBy(DB::raw('RAND()'))
+      ->take(40)->get();
+    foreach($links as $link) {
+      $new_link = new Link();
+      $new_link->name = $link->name;
+      $new_link->link = $link->link;
+      $new_link->category = 'Unread';
+      $new_link->save();
+    }
+    return Response::json(array('success' => true), 200);
+  }
+
   public static function getLinksToRead($category, $numResults = 10) {
     $links = Link::where('is_read', false)
       ->where('category', $category)

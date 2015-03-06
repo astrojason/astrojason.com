@@ -8,13 +8,16 @@ class HomeController extends BaseController {
     if(Auth::user()) {
       $bookmarklet = str_replace('"', "'", file_get_contents('assets/js/bookmarkletLoader.min.js'));
 			// TODO: Make this a shared function
+			$categories = [];
 			$dbCategories = Book::groupBy('category')
-			->where('user_id', Auth::user()->id)
-			->get(array('category'));
+				->where('user_id', Auth::user()->id)
+				->get(array('category'));
 			foreach($dbCategories as $category) {
 				$categories[] = $category->category;
 			}
-			$lastElement = end($categories);
+			if($categories) {
+				$lastElement = end($categories);
+			}
 			$categoriesString = '[';
 			foreach($categories as $category) {
 				$categoriesString .= '\'' . $category . '\'';
@@ -32,6 +35,7 @@ class HomeController extends BaseController {
     $links_read = Link::where('user_id', Auth::user()->id)->where('is_read', true)->count();
     $total_books = Book::where('user_id', Auth::user()->id)->count();
     $books_read = Book::where('user_id', Auth::user()->id)->where('is_read', true)->count();
+		$books_unread = Book::where('user_id', Auth::user()->id)->where('is_read', false)->count();
     $links = Link::where('is_read', false)
       ->where('category', 'Daily')
       ->where('user_id', Auth::user()->id)
@@ -56,7 +60,8 @@ class HomeController extends BaseController {
       'total_links' => $total_links,
       'links_read' => $links_read,
       'total_books' => $total_books,
-      'books_read' => $books_read
+      'books_read' => $books_read,
+			'books_toread' => $books_unread
     ), 200);
   }
 

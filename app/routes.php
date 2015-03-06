@@ -34,6 +34,7 @@ Route::group(array('prefix' => 'api'), function() {
       Route::post('/delete/{id}', 'LinkController@delete');
       Route::get('/dashboard/{category}', 'LinkController@getRandomLinks');
       Route::get('/dashboard/{category}/{quantity}', 'LinkController@getRandomLinks');
+      Route::get('/populate', 'LinkController@populateLinks');
     });
     Route::group(array('prefix' => 'books'), function(){
       Route::get('/recommendation/{category}', 'BookController@recommendation');

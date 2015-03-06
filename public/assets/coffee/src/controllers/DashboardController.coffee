@@ -132,6 +132,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
         $scope.links_read = response.links_read
         $scope.total_books = response.total_books
         $scope.books_read = response.books_read
+        $scope.books_toread = response.books_toread
       else
         $scope.$emit 'errorOccurred', response.error
     daily_Promise.error ->
@@ -149,6 +150,12 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       $scope.$emit 'errorOccurred', 'Problem loading unread results'
     category_Promise.finally ->
       $scope.loading_unread = false
+
+  $scope.populateLinks = ->
+    populate_promise = $http.get '/api/links/populate'
+    populate_promise.success (response)->
+      if response.success
+        $scope.loadDashboard()
 
   $scope.initDashboard()
 ]
