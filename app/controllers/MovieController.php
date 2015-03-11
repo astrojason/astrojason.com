@@ -2,6 +2,10 @@
 
 class MovieController extends BaseController {
 
+  public function index() {
+    return View::make('movies.index');
+  }
+
   public function widget() {
     $rand_movie = Movie::where('user_id', Auth::user()->id)
       ->orderBy(DB::raw('RAND()'))->first();
@@ -15,6 +19,13 @@ class MovieController extends BaseController {
     } else {
       return Response::json(array('success' => true, 'movies' => array()), 200);
     }
+  }
+
+  public function all() {
+    $movies = Movie::where('user_id', Auth::user()->id)
+      ->orderBy('rating_order')
+      ->get();
+    return Response::json(array('success' => true, 'movies' => $movies->toArray()), 200);
   }
 
   public function save() {

@@ -91,8 +91,8 @@ class BookController extends BaseController {
 
   public function search() {
     $q = Input::get('q');
-    $include_read = Input::get('include_read', false);
-    $query =Book::query();
+    $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
+    $query = Book::query();
     if(!$include_read) {
       $query->where('is_read', false);
     }

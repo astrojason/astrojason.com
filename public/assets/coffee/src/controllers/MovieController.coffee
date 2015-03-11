@@ -1,5 +1,8 @@
 window.app.controller 'MovieController', ['$scope', '$http', ($scope, $http)->
 
+  if not $scope.movie?.id
+    $scope.movie = new Movie()
+
   $scope.$on 'dateChanged', (e, m)->
     $scope.movie.date_watched = m
 
@@ -18,4 +21,16 @@ window.app.controller 'MovieController', ['$scope', '$http', ($scope, $http)->
 
   $scope.save = (movie)->
     movie_promise = $http.post '/api/movies/save', $.param movie
+    movie_promise.success (response)->
+      if response.success
+        if $scope.$parent.movieSaved
+          $scope.$parent.movieSaved()
+      else
+        $scope.errorMessage = response.error
+
+  $scope.all = ->
+    movie_promise = $http.get '/api/movies'
+    movie_promise.success (response)->
+      if response.success
+        $scope.movies = response.movies
 ]

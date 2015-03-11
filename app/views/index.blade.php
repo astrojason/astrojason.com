@@ -3,7 +3,6 @@
 @section('title')
   Welcome
 @stop
-<!--TODO: Add the ability to populate the recommendations for a user without any-->
 @section('content')
   <div ng-controller="DashboardController">
     <div class="row" ng-show="!user.id">
@@ -216,7 +215,7 @@
           <h4 class="modal-title">Add a Movie</h4>
         </div>
         <div class="modal-body">
-          <movie-form movie="{}" editing="true"></movie-form>
+          <movie-form movie="newMovie" editing="true"></movie-form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

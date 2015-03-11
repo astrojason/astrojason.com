@@ -45,7 +45,7 @@
     <input type="text" name="new_category" class="form-control" ng-model="new_category" placeholder="Category Name" ng-required="link.category == 'New'" />
   </div>
   <div class="form-group">
-    <input type="checkbox" ng-model="link.is_read" /> Read
+    <input type="checkbox" ng-model="link.is_read" ng-checked="link.is_read | boolparse" /> Read
   </div>
   <div class="form-group">
     <button class="btn btn-primary" ng-disabled="!link_form.$valid">Save</button>

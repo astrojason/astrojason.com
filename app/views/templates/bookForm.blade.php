@@ -47,7 +47,7 @@
     <label for="series">Series</label>
     <input type="text" name="series" ng-model="book.series" class="form-control" placeholder="Series" />
   </div>
-  <div class="form-group">
+  <div class="form-group" ng-show="book.series">
     <label for="series">Series Number</label>
     <input type="number" name="series" ng-model="book.series_order" class="form-control" placeholder="Series Number" ng-required="book.series" />
   </div>
@@ -60,10 +60,10 @@
   </div>
   <div class="form-group">
     <label class="checkbox-inline">
-      <input type="checkbox" ng-model="book.owned" /> Owned
+      <input type="checkbox" ng-model="book.owned" ng-checked="book.owned | boolparse" /> Owned
     </label>
     <label class="checkbox-inline">
-      <input type="checkbox" ng-model="book.is_read" /> Read
+      <input type="checkbox" ng-model="book.is_read" ng-checked="book.is_read | boolparse" /> Read
     </label>
   </div>
   <div class="form-group">

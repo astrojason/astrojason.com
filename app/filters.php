@@ -34,7 +34,7 @@ App::after(function($request, $response)
 */
 
 Route::filter('auth', function() {
-  if (Auth::guest()) return App::abort(404);
+  if (Auth::guest()) return Response::json(array('success' => false, 'message' => 'noaccess'), 200);
 });
 
 Route::filter('auth.basic', function()

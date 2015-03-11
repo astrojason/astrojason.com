@@ -33,12 +33,12 @@
     <label for="title">Title</label>
     <input type="text" name="title" ng-model="movie.title" class="form-control" placeholder="Movie Title" required />
   </div>
-  <div class="form-group">
+  <div class="form-group" style="position: relative">
     <label for="date_watched">Date watched</label>
-    <input type="text" name="link" ng-model="movie.date_watched" class="form-control" placeholder="Date Watched" />
+    <input type="text" name="link" ng-model="movie.date_watched" class="form-control" placeholder="Date Watched" datetime-picker />
   </div>
   <div class="form-group">
-    <input type="checkbox" ng-model="movie.is_watched" /> Seen
+    <input type="checkbox" ng-model="movie.is_watched" ng-checked="movie.is_watched | boolparse" /> Seen
   </div>
   <div class="form-group">
     <button class="btn btn-primary" ng-disabled="!movie_form.$valid">Save</button>

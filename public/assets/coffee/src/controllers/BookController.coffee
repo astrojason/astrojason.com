@@ -2,7 +2,7 @@ window.app.controller 'BookController', ['$scope', '$http', '$timeout', ($scope,
 
   $scope.setCategories = (categories)->
     $scope.categories = categories
-    if categories.length > 0
+    if categories?.length > 0
       $scope.recommendation_category = categories[0]
 
   $scope.getRecommendation = ->
@@ -63,9 +63,14 @@ window.app.controller 'BookController', ['$scope', '$http', '$timeout', ($scope,
         $scope.search_books()
       , 500
 
+  $scope.$watch 'is_read', ->
+    if $scope.search_query?.length >= 3
+      $scope.search_books()
+
   $scope.search_books = ->
     data =
       q: $scope.search_query
+      include_read: $scope.is_read
     search_promise = $http.post '/api/books/search', $.param data
     search_promise.success (response)->
       $scope.search_results = response.books

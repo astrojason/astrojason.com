@@ -14,6 +14,7 @@
 Route::get('/', 'HomeController@showIndex');
 Route::get('/register', 'HomeController@register');
 Route::get('/books', 'BookController@index');
+Route::get('/movies', 'MovieController@index');
 
 Route::get('/readlater', 'LinkController@readLater');
 
@@ -45,6 +46,7 @@ Route::group(array('prefix' => 'api'), function() {
       Route::post('/search', 'BookController@search');
     });
     Route::group(array('prefix' => 'movies'), function(){
+      Route::get('/', 'MovieController@all');
       Route::get('/widget', 'MovieController@widget');
       Route::post('/save', 'MovieController@save');
     });
