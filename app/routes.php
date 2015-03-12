@@ -49,6 +49,7 @@ Route::group(array('prefix' => 'api'), function() {
       Route::get('/', 'MovieController@all');
       Route::get('/widget', 'MovieController@widget');
       Route::post('/save', 'MovieController@save');
+      Route::post('/delete/{id}', 'MovieController@delete');
     });
   });
 });

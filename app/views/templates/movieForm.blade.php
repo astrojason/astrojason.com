@@ -5,8 +5,8 @@
   <div class="col-md-12">
     <div class="row alert alert-danger" ng-show="deleting == true">
       <div class="col-md-12">
-        <h4>Delete Link</h4>
-        <p>Deleting the link cannot be undone.</p>
+        <h4>Delete Movie</h4>
+        <p>Deleting the movie cannot be undone.</p>
         <p>
           <a class="btn btn-danger" ng-click="delete()">Yes I want to delete</a>
           <a class="btn btn-default" ng-click="deleting = false">No, do not delete</a>

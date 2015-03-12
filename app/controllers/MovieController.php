@@ -55,4 +55,21 @@ class MovieController extends BaseController {
     }
     $movie->save();
   }
+
+  public function delete($id) {
+    $movie = Movie::where('id', $id)->where('user_id', Auth::user()->id)->first();
+    if(isset($movie)){
+      $movies_after = Movie::where('user_id', Auth::user()->id)
+        ->where('rating_order', '>', $movie->rating_order)
+        ->get();
+      foreach($movies_after as $update_movie) {
+        $update_movie->rating_order -= 1;
+        $update_movie->save();
+      }
+      $movie->delete();
+      return Response::json(array('success' => true), 200);
+    } else {
+      return Response::json(array('success' => false, 'error' => 'No movie with that id exists'), 200);
+    }
+  }
 }
