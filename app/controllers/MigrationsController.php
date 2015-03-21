@@ -103,14 +103,23 @@ class MigrationsController extends BaseController {
 
   public function games() {
     $gamesJson = json_decode(File::get(public_path() . '/assets/seeds/games.json'));
-    foreach($gamesJson as $jsonGame) {
+    $migrationCounter = 0;
+    foreach($gamesJson->games as $jsonGame) {
       $game = Game::where('user_id', Auth::user()->id)
         ->where('title', $jsonGame->title)
+        ->where('platform', $jsonGame->platform)
         ->first();
       if(!isset($game)){
-
+        $migrationCounter++;
+        $game = new Game();
+        $game->title = $jsonGame->title;
+        $game->platform = $jsonGame->platform;
+        $game->completed = $jsonGame->completed;
+        $game->save();
+        print('Added ' . $game->title . '.<br />');
       }
     }
+    return 'Migrated ' . $migrationCounter . ' games.';
   }
 
 }

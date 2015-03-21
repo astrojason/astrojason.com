@@ -16,7 +16,7 @@
       <script type="text/javascript" src="assets/bower/respond/dest/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body ng-app="astroApp" ng-controller="MasterController"@if(Auth::user()) ng-init="initUser({ id: {{ Auth::user()->id }}, username: '{{ Auth::user()->username }}', firstname: '{{ Auth::user()->firstname }}', lastname: '{{ Auth::user()->lastname }}', email: '{{ Auth::user()->email }}' })"@endif>
+  <body ng-app="astroApp" ng-controller="MasterController"@if(Auth::user()) ng-init="initUser({ id: <% Auth::user()->id %>, username: '<% Auth::user()->username %>', firstname: '<% Auth::user()->firstname %>', lastname: '<% Auth::user()->lastname %>', email: '<% Auth::user()->email %>' })"@endif>
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
@@ -32,7 +32,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav" ng-show="user" ng-cloak>
             @foreach($userNav as $navItem)
-              <li @if($navItem->active) class="active"@endif><a href="{{ $navItem->href }}">{{ $navItem->name }}</a></li>
+              <li @if($navItem->active) class="active"@endif><a href="<% $navItem->href %>"><% $navItem->name %></a></li>
             @endforeach
 <!--            <li><a href="#contact">Contact</a></li>-->
 <!--            <li class="dropdown">-->
@@ -51,7 +51,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li class="active">
               <li>
-              <a ng-show="user" ng-cloak>Hello <span>@{{ user.firstname }}</span> <span class="glyphicon glyphicon-remove-circle" ng-click="logout()" data-toggle="tooltip" data-placement="top" title="Log out"></span></a></li>
+              <a ng-show="user" ng-cloak>Hello <span>{{ user.firstname }}</span> <span class="glyphicon glyphicon-remove-circle" ng-click="logout()" data-toggle="tooltip" data-placement="top" title="Log out"></span></a></li>
               <form ng-show="!user" class="navbar-form navbar-right" role="form" ng-submit="login()" ng-cloak>
                 <div class="form-group">
                   <input type="text" placeholder="Username" class="form-control" ng-model="username">
@@ -69,7 +69,7 @@
     </nav>
     <div class="container main">
       <div class="row">
-        <div class="alert alert-danger" ng-show="show_error" ng-cloak>@{{ error_message }}</div>
+        <div class="alert alert-danger" ng-show="show_error" ng-cloak>{{ error_message }}</div>
       </div>
       <div class="jumbotron">
         @yield('content')

@@ -58,11 +58,13 @@ Route::group(array('prefix' => 'templates'), function(){
   Route::get('/link-form', 'TemplateController@linkForm');
   Route::get('/book-form', 'TemplateController@bookForm');
   Route::get('/movie-form', 'TemplateController@movieForm');
+  Route::get('/game-form', 'TemplateController@gameForm');
   Route::get('/loader', 'TemplateController@loader');
 });
 
 Route::group(array('prefix' => 'migrations', 'before' => 'auth'), function(){
   Route::get('/books', 'MigrationsController@books');
+  Route::get('/games', 'MigrationsController@games');
   Route::get('/links', 'MigrationsController@links');
   Route::get('/movies', 'MigrationsController@movies');
   Route::get('/movies/randomize', 'MigrationsController@reorder');

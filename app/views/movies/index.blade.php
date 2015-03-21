@@ -16,7 +16,7 @@
       </thead>
       <tbody>
         <tr ng-show="search_query && search_results.length == 0 && !searching">
-          <td>No results for <strong>@{{ search_query }}</strong>
+          <td>No results for <strong>{{ search_query }}</strong>
         </tr>
         <tr ng-repeat="movie in search_results" ng-show="search_results.length > 0" ng-cloak>
           <td><movie-form movie="movie" editing="false"></movie-form></td>

@@ -52,6 +52,28 @@ class TemplateController extends BaseController {
     return View::make('templates/movieForm');
   }
 
+  public function gameForm() {
+    $platforms = ['New'];
+    if(Auth::user()){
+      $dbPlatforms = Game::groupBy('platform')
+        ->where('user_id', Auth::user()->id)
+        ->get(array('platform'));
+      foreach($dbPlatforms as $platform) {
+        $platforms[] = $platform->platform;
+      }
+      $lastElement = end($platforms);
+      $platformsString = '[';
+      foreach($platforms as $platform) {
+        $platformsString .= '\'' . $platform . '\'';
+        if($platform != $lastElement) {
+          $platformsString .= ',';
+        }
+      }
+      $platformsString .= ']';
+      return View::make('templates/gameForm')->with('platforms', $platformsString);
+    }
+  }
+
   public function loader() {
     return View::make('templates/loader');
   }

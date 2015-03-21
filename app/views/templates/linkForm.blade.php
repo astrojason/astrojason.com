@@ -1,5 +1,5 @@
 <div class="row" ng-show="errorMessage">
-  <div class="alert alert-danger">@{{ errorMessage }}</div>
+  <div class="alert alert-danger">{{ errorMessage }}</div>
 </div>
 <div class="row" ng-show="!editing && link.name">
   <div class="col-md-12">
@@ -15,7 +15,7 @@
     </div>
     <div class="row">
       <div class="col-md-10">
-        <a ng-href="@{{ link.link }}" ng-click="linkOpened()" target="_blank">@{{ link.name }}</a>
+        <a ng-href="{{ link.link }}" ng-click="linkOpened()" target="_blank">{{ link.name }}</a>
       </div>
       <div class="col-md-2">
         <div class="pull-right">
@@ -39,7 +39,7 @@
   </div>
   <div class="form-group">
     <label for="category">Category</label>
-    <select name="category" ng-model="link.category" ng-init="setCategories({{ $categories }})" ng-options="category for category in categories" class="form-control"></select>
+    <select name="category" ng-model="link.category" ng-init="setCategories(<%% $categories %%>)" ng-options="category for category in categories" class="form-control"></select>
   </div>
   <div class="form-group" ng-show="link.category == 'New'">
     <input type="text" name="new_category" class="form-control" ng-model="new_category" placeholder="Category Name" ng-required="link.category == 'New'" />

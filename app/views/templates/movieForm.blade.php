@@ -1,5 +1,5 @@
 <div class="row" ng-show="errorMessage">
-  <div class="alert alert-danger">@{{ errorMessage }}</div>
+  <div class="alert alert-danger">{{ errorMessage }}</div>
 </div>
 <div class="row" ng-show="!editing && movie.title">
   <div class="col-md-12">
@@ -15,7 +15,7 @@
     </div>
     <div class="row">
       <div class="col-md-10">
-        @{{ movie.title }}
+        {{ movie.title }}
       </div>
       <div class="col-md-2">
         <div class="pull-right">

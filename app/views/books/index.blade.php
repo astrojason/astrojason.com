@@ -17,7 +17,7 @@
       </thead>
       <tbody>
       <tr ng-show="search_query && search_results.length == 0 && !searching">
-        <td>No results for <strong>@{{ search_query }}</strong>
+        <td>No results for <strong>{{ search_query }}</strong>
       </tr>
       <tr ng-repeat="book in search_results" ng-show="search_results.length > 0" ng-cloak>
         <td ng-class="(book.is_read | boolparse) ? 'read' : ''"><book-form book="book" editing="false"></book-form></td>

@@ -10,9 +10,6 @@
     </div>
     <div class="row" ng-show="user.id">
       <div class="col-lg-9">
-        <div ng-show="addingLink" ng-cloak>
-          <link-form editing="addingLink" link="newLink"></link-form>
-        </div>
         <div ng-show="total_links == 0" ng-cloak>
           You do not have any links, would you like me to <button class="btn btn-default" ng-click="populateLinks()">Randomize</button> some for you?
         </div>
@@ -30,7 +27,7 @@
               </thead>
               <tbody>
                 <tr ng-show="search_query && search_results.length == 0 && !searching">
-                  <td>No results for <strong>@{{ search_query }}</strong>
+                  <td>No results for <strong>{{ search_query }}</strong>
                 </tr>
                 <tr ng-repeat="link in search_results" ng-show="search_results.length > 0" ng-cloak>
                   <td ng-class="(link.is_read | boolparse) ? 'read' : ''"><link-form link="link" editing="false"></link-form></td>
@@ -42,7 +39,7 @@
             <table class="table table-condensed table-striped table-hover" ng-show="daily_links.length > 0" ng-cloak>
               <thead>
                 <tr>
-                  <th>Daily <small class="pull-right" ng-class="total_read < 10 ? (total_read < 5 ? 'text-danger' : 'text-warning') : 'text-success'">@{{ total_read }} marked as read today</small></th>
+                  <th>Daily <small class="pull-right" ng-class="total_read < 10 ? (total_read < 5 ? 'text-danger' : 'text-warning') : 'text-success'">{{ total_read }} marked as read today</small></th>
                 </tr>
               </thead>
               <tbody>
@@ -102,31 +99,34 @@
             <tr>
               <td>
                 <a
-                  href="javascript:{{ $bookmarklet }}"
+                  href="javascript:<% $bookmarklet %>"
                   class="btn btn-info btn-xs">Read Later</a>
               </td>
             </tr>
             <tr>
-              <td><button ng-click="addLink()" class="btn btn-success btn-xs">Add Link</button></td>
+              <td>
+                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addLinkModal">Add Link</button>
+                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addBookModal">Add Book</button>
+                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addMovieModal">Add Movie</button>
+              </td>
             </tr>
             <tr>
-              <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addBookModal">Add Book</button></td>
+              <td>
+                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addGameModal">Add Game</button>
+              </td>
             </tr>
             <tr ng-show="books_toread" ng-cloak>
               <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#bookModal">Book Recommendation</button></td>
-            </tr>
-            <tr>
-              <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addMovieModal">Add Movie</button></td>
             </tr>
             <tr ng-show="total_books || total_books" ng-cloak>
               <td>
                 <div ng-show="total_links" ng-cloak>
                   <h7>Links Read</h7><br />
-                  <small>@{{ links_read }} of @{{ total_links }} (@{{ (links_read / total_links) * 100 | number:2 }}%)</small><br />
+                  <small>{{ links_read }} of {{ total_links }} ({{ (links_read / total_links) * 100 | number:2 }}%)</small><br />
                 </div>
                 <div ng-show="total_books" ng-cloak>
                   <h7>Books Read</h7><br />
-                  <small>@{{ books_read }} of @{{ total_books }} (@{{ (books_read / total_books) * 100 | number:2 }}%)</small>
+                  <small>{{ books_read }} of {{ total_books }} ({{ (books_read / total_books) * 100 | number:2 }}%)</small>
                 </div>
               </td>
             </tr>
@@ -137,7 +137,7 @@
                   <span class="glyphicon glyphicon-refresh tool pull-right" ng-click="getWidget()"></span>
                 </h7>
                 <div ng-repeat="movie in movies | orderBy: 'rating_order'">
-                  @{{ movie.title }}
+                  {{ movie.title }}
                   <span
                     class="glyphicon glyphicon-chevron-up tool pull-right"
                     ng-class="$index > 0 ? '' : 'disabled'"
@@ -156,7 +156,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="bookModal" ng-controller="BookController" ng-init="setCategories({{ $book_categories }})">
+  <div class="modal fade" id="bookModal" ng-controller="BookController" ng-init="setCategories(<% $book_categories %>)">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -169,7 +169,7 @@
             <div class="row">
               <div class="col-md-8">
                 <select ng-model="recommendation_category" class="form-control">
-                  <option ng-repeat="category in categories">@{{ category }}</option>
+                  <option ng-repeat="category in categories">{{ category }}</option>
                 </select>
               </div>
               <div class="col-md-4">
@@ -190,7 +190,24 @@
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
 
-  <div class="modal fade" id="addBookModal" ng-controller="BookController" ng-init="setCategories({{ $book_categories }})">
+  <div class="modal fade" id="addLinkModal" ng-controller="LinkController">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Add a Link</h4>
+        </div>
+        <div class="modal-body">
+          <link-form editing="true" link="newLink"></link-form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div class="modal fade" id="addBookModal" ng-controller="BookController">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -216,6 +233,23 @@
         </div>
         <div class="modal-body">
           <movie-form movie="newMovie" editing="true"></movie-form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div class="modal fade" id="addGameModal" ng-controller="GameController">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Add a Game</h4>
+        </div>
+        <div class="modal-body">
+          <game-form game="{}" editing="true"></game-form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
