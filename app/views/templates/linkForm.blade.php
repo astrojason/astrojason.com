@@ -49,7 +49,7 @@
   </div>
   <div class="form-group">
     <button class="btn btn-primary" ng-disabled="!link_form.$valid">Save</button>
-    <a class="btn btn-default" ng-click="editing = false">Cancel</a>
+    <a class="btn btn-default" ng-click="cancelEdit()" data-dismiss="modal">Cancel</a>
   </div>
   <div class="form-group" ng-show="error">
     <div class="alert alert-danger"></div>

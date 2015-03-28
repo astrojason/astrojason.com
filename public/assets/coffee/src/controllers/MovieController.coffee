@@ -1,4 +1,6 @@
-window.app.controller 'MovieController', ['$scope', '$http', ($scope, $http)->
+window.app.controller 'MovieController', ['$scope', '$http', '$controller', ($scope, $http, $controller)->
+
+  $controller 'FormMasterController', $scope: $scope
 
   if not $scope.movie?.id
     $scope.movie = new Movie()

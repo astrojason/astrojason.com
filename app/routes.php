@@ -15,6 +15,7 @@ Route::get('/', 'HomeController@showIndex');
 Route::get('/register', 'HomeController@register');
 Route::get('/books', 'BookController@index');
 Route::get('/movies', 'MovieController@index');
+Route::get('/games', 'MovieController@games');
 
 Route::get('/readlater', 'LinkController@readLater');
 

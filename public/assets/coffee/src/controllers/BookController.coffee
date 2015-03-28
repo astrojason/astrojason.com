@@ -1,4 +1,6 @@
-window.app.controller 'BookController', ['$scope', '$http', '$timeout', ($scope, $http, $timeout)->
+window.app.controller 'BookController', ['$scope', '$http', '$timeout', '$controller', ($scope, $http, $timeout, $controller)->
+
+  $controller 'FormMasterController', $scope: $scope
 
   $scope.setCategories = (categories)->
     $scope.categories = categories
@@ -51,9 +53,6 @@ window.app.controller 'BookController', ['$scope', '$http', '$timeout', ($scope,
           $scope.$parent.saveError response.error
     book_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem ' + ($scope.book.id ? 'updating' : 'adding') + ' link'
-
-  $scope.cancelEdit = ->
-    console.log 'Cancel edit called'
 
   $scope.$watch 'search_query', (newValue, oldValue)->
     $scope.searching = true

@@ -1,4 +1,7 @@
-window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
+window.app.controller 'LinkController', ['$scope', '$http', '$controller', ($scope, $http, $controller)->
+
+  $controller 'FormMasterController', $scope: $scope
+
   $scope.deleting = false
   $scope.errorMessage = false
 
@@ -59,11 +62,6 @@ window.app.controller 'LinkController', ['$scope', '$http', ($scope, $http)->
           $scope.$parent.saveError response.error
     link_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem ' + ($scope.link.id ? 'updating' : 'adding') + ' link'
-
-  $scope.cancelEdit = ->
-    $scope.editing = false
-    if $scope.$parent.linkCancelled
-      $scope.$parent.linkCancelled()
 
   $scope.setCategories = (categories)->
     $scope.categories = categories
