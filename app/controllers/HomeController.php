@@ -36,6 +36,7 @@ class HomeController extends BaseController {
     $total_books = Book::where('user_id', Auth::user()->id)->count();
     $books_read = Book::where('user_id', Auth::user()->id)->where('is_read', true)->count();
 		$books_unread = Book::where('user_id', Auth::user()->id)->where('is_read', false)->count();
+		$games_unplayed = Game::where('user_id', Auth::user()->id)->where('completed', false)->count();
     $links = Link::where('is_read', false)
       ->where('category', 'Daily')
       ->where('user_id', Auth::user()->id)
@@ -61,7 +62,8 @@ class HomeController extends BaseController {
       'links_read' => $links_read,
       'total_books' => $total_books,
       'books_read' => $books_read,
-			'books_toread' => $books_unread
+			'books_toread' => $books_unread,
+			'games_toplay' => $games_unplayed
     ), 200);
   }
 

@@ -118,6 +118,9 @@
             <tr ng-show="books_toread" ng-cloak>
               <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#bookModal">Book Recommendation</button></td>
             </tr>
+            <tr ng-show="games_toplay" ng-cloak>
+              <td><button class="btn btn-success btn-xs" ng-click="getGameRecommendation()">Game Recommendation</button></td>
+            </tr>
             <tr ng-show="total_books || total_books" ng-cloak>
               <td>
                 <div ng-show="total_links" ng-cloak>
@@ -209,7 +212,7 @@
           <h4 class="modal-title">Add a Book</h4>
         </div>
         <div class="modal-body">
-          <book-form book="{}" editing="true"></book-form>
+          <book-form book="newBook" editing="true"></book-form>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -237,7 +240,7 @@
           <h4 class="modal-title">Add a Game</h4>
         </div>
         <div class="modal-body">
-          <game-form game="{}" editing="true"></game-form>
+          <game-form game="newGame" editing="true"></game-form>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

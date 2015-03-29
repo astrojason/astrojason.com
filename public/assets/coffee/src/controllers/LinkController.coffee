@@ -61,7 +61,7 @@ window.app.controller 'LinkController', ['$scope', '$http', '$controller', ($sco
         if $scope.$parent.saveError
           $scope.$parent.saveError response.error
     link_Promise.error ->
-      $scope.$emit 'errorOccurred', 'Problem ' + ($scope.link.id ? 'updating' : 'adding') + ' link'
+      $scope.$emit 'errorOccurred', 'Problem ' + ($scope.link.id ? 'updating' : 'adding') + ' link.'
 
   $scope.setCategories = (categories)->
     $scope.categories = categories

@@ -120,7 +120,12 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       $scope.loadDashboard()
 
   $scope.loadDashboard = ->
-    $scope.newLink = window.Link($scope.user.id)
+    $scope.newLink = new window.Link($scope.user.id)
+    $scope.newBook = new window.Book()
+    $scope.newMovie = new window.Movie()
+    $scope.newGame = new window.Game()
+    $scope.newSong = new window.Song()
+
     daily_Promise = $http.get '/api/dashboard'
     daily_Promise.success (response)->
       if response.success
@@ -133,6 +138,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
         $scope.total_books = response.total_books
         $scope.books_read = response.books_read
         $scope.books_toread = response.books_toread
+        $scope.games_toplay = response.games_toplay
       else
         $scope.$emit 'errorOccurred', response.error
     daily_Promise.error ->
@@ -156,6 +162,11 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     populate_promise.success (response)->
       if response.success
         $scope.loadDashboard()
+
+  $scope.getGameRecommendation = ->
+    game_promise = $http.get '/api/games/recommendation'
+    game_promise.success (response)->
+      alert(response.game.title + ' - ' + response.game.platform)
 
   $scope.initDashboard()
 ]

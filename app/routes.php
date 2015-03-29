@@ -52,6 +52,10 @@ Route::group(array('prefix' => 'api'), function() {
       Route::post('/save', 'MovieController@save');
       Route::post('/delete/{id}', 'MovieController@delete');
     });
+    Route::group(array('prefix' => 'games'), function(){
+      Route::post('/save', 'GameController@save');
+      Route::get('/recommendation', 'GameController@recommend');
+    });
   });
 });
 
