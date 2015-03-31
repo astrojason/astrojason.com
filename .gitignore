@@ -9,7 +9,7 @@ app/storage/
 app/config/app.php
 app/config/database.php
 bootstrap/compiled.php
-composer.*
+composer.lock
 .env.local.php
 .env.php
 .DS_Store
