@@ -166,7 +166,8 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
   $scope.getGameRecommendation = ->
     game_promise = $http.get '/api/games/recommendation'
     game_promise.success (response)->
-      alert(response.game.title + ' - ' + response.game.platform)
+      $scope.recommended_game = response.game
+      angular.element('#recommendGameModal').modal('show')
 
   $scope.initDashboard()
 ]

@@ -37,6 +37,9 @@ window.app.controller 'GameController', ['$scope', '$http', '$controller', '$tim
         if $scope.$parent.deleteItem
           $scope.$parent.deleteItem $scope.game
 
+  $scope.deleteItem = (game)->
+    $scope.search_results.splice($scope.search_results.indexOf(game), 1)
+
   $scope.search_games = ->
     data =
       q: $scope.search_query
@@ -44,4 +47,7 @@ window.app.controller 'GameController', ['$scope', '$http', '$controller', '$tim
     search_promise = $http.post '/api/games/search', $.param data
     search_promise.success (response)->
       $scope.search_results = response.games
+
+  $scope.cancelEdit = ->
+    $scope.editing = false
 ]

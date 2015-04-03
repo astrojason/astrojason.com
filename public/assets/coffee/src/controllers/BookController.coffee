@@ -22,6 +22,9 @@ window.app.controller 'BookController', ['$scope', '$http', '$timeout', '$contro
         $scope.book.is_read = true
         # TODO: Call the parent markasread
 
+  $scope.deleteItem = (book)->
+    $scope.search_results.splice($scope.search_results.indexOf(book), 1)
+
   $scope.markAsUnread = ->
     read_Promise = $http.post '/api/books/unread/' + $scope.book.id
     read_Promise.success (response)->
