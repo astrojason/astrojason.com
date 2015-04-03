@@ -29,7 +29,11 @@ window.app.controller 'BookController', ['$scope', '$http', '$timeout', '$contro
         $scope.book.is_read = true
 
   $scope.delete = ->
-    console.log 'Delete called'
+    read_Promise = $http.post '/api/books/delete/' + $scope.book.id
+    read_Promise.success (response)->
+      if response.success
+        if $scope.$parent.deleteItem
+          $scope.$parent.deleteItem $scope.book
 
   $scope.save = ->
     data = $scope.book

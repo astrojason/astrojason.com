@@ -1,4 +1,6 @@
-window.app.controller 'GameController', ['$scope', '$http', '$controller', ($scope, $http, $controller)->
+window.app.controller 'GameController', ['$scope', '$http', '$controller', '$timeout', ($scope, $http, $controller, $timeout)->
+
+  $scope.search_timeout = null
 
   $controller 'FormMasterController', $scope: $scope
 
@@ -19,4 +21,27 @@ window.app.controller 'GameController', ['$scope', '$http', '$controller', ($sco
           $scope.$parent.saveError response.error
     game_promise.error ->
       $scope.$emit 'errorOccurred', 'Problem ' + ($scope.game.id ? 'updating' : 'adding') + ' game.'
+
+  $scope.$watch 'search_query', (newValue, oldValue)->
+    $scope.searching = true
+    $timeout.cancel $scope.search_timeout
+    if newValue?.length >= 3
+      $scope.search_timeout = $timeout ->
+        $scope.search_games()
+      , 500
+
+  $scope.delete = ->
+    read_Promise = $http.post '/api/games/delete/' + $scope.game.id
+    read_Promise.success (response)->
+      if response.success
+        if $scope.$parent.deleteItem
+          $scope.$parent.deleteItem $scope.game
+
+  $scope.search_games = ->
+    data =
+      q: $scope.search_query
+      include_read: $scope.is_read
+    search_promise = $http.post '/api/games/search', $.param data
+    search_promise.success (response)->
+      $scope.search_results = response.games
 ]

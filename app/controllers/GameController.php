@@ -2,6 +2,18 @@
 
 class GameController extends BaseController {
 
+  public function index() {
+    return View::make('games.index');
+  }
+
+  public function search(){
+    $q = Input::get('q');
+    $games = Game::where('user_id', Auth::user()->id)
+      ->where('title', 'LIKE', '%' . $q . '%')
+      ->get();
+    return Response::json(array('success' => true, 'games' => $games->toArray()));
+  }
+
   public function save() {
     $title = Input::get('title');
     $platform = Input::get('platform');
@@ -25,6 +37,16 @@ class GameController extends BaseController {
     $game->completed = filter_var(Input::get('completed'), FILTER_VALIDATE_BOOLEAN);
     $game->save();
     return Response::json(array('success' => true), 200);
+  }
+
+  public function delete($id) {
+    $game = Game::where('id', $id)->where('user_id', Auth::user()->id)->first();
+    if(isset($game)){
+      $game->delete();
+      return Response::json(array('success' => true), 200);
+    } else {
+      return Response::json(array('success' => false, 'error' => 'No game with that id exists'), 200);
+    }
   }
 
   public function recommend() {

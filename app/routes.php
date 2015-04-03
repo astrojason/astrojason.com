@@ -11,66 +11,68 @@
 |
 */
 
-Route::get('/', 'HomeController@showIndex');
-Route::get('/register', 'HomeController@register');
-Route::get('/books', 'BookController@index');
-Route::get('/movies', 'MovieController@index');
-Route::get('/games', 'MovieController@games');
+Route::get('', 'HomeController@showIndex');
+Route::get('register', 'HomeController@register');
+Route::get('books', 'BookController@index');
+Route::get('movies', 'MovieController@index');
+Route::get('games', 'GameController@index');
 
-Route::get('/readlater', 'LinkController@readLater');
+Route::get('readlater', 'LinkController@readLater');
 
 Route::group(array('prefix' => 'api'), function() {
-  Route::post('/register', 'UserController@processRegistration');
-  Route::post('/checkusername', 'UserController@checkUsername');
-  Route::post('/checkemail', 'UserController@checkEmail');
-  Route::post('/login', 'UserController@login');
-  Route::get('/dashboard', 'HomeController@getDashboard');
+  Route::post('register', 'UserController@processRegistration');
+  Route::post('checkusername', 'UserController@checkUsername');
+  Route::post('checkemail', 'UserController@checkEmail');
+  Route::post('login', 'UserController@login');
+  Route::get('dashboard', 'HomeController@getDashboard');
   Route::group(array('before' => 'auth'), function() {
-    Route::post('/logout', 'UserController@logout');
+    Route::post('logout', 'UserController@logout');
     Route::group(array('prefix' => 'links'), function(){
-      Route::post('/save', 'LinkController@save');
-      Route::post('/search', 'LinkController@search');
-      Route::post('/open/{id}', 'LinkController@open');
-      Route::post('/read/{id}', 'LinkController@read');
-      Route::post('/unread/{id}', 'LinkController@unread');
-      Route::post('/delete/{id}', 'LinkController@delete');
-      Route::get('/dashboard/{category}', 'LinkController@getRandomLinks');
-      Route::get('/dashboard/{category}/{quantity}', 'LinkController@getRandomLinks');
-      Route::get('/populate', 'LinkController@populateLinks');
+      Route::post('save', 'LinkController@save');
+      Route::post('search', 'LinkController@search');
+      Route::post('open/{id}', 'LinkController@open');
+      Route::post('read/{id}', 'LinkController@read');
+      Route::post('unread/{id}', 'LinkController@unread');
+      Route::post('delete/{id}', 'LinkController@delete');
+      Route::get('dashboard/{category}', 'LinkController@getRandomLinks');
+      Route::get('dashboard/{category}/{quantity}', 'LinkController@getRandomLinks');
+      Route::get('populate', 'LinkController@populateLinks');
     });
     Route::group(array('prefix' => 'books'), function(){
-      Route::get('/recommendation/{category}', 'BookController@recommendation');
-      Route::post('/read/{id}', 'BookController@read');
-      Route::post('/unread/{id}', 'BookController@unread');
-      Route::post('/save', 'BookController@save');
-      Route::post('/delete/{id}', 'BookController@delete');
-      Route::post('/search', 'BookController@search');
+      Route::get('recommendation/{category}', 'BookController@recommendation');
+      Route::post('read/{id}', 'BookController@read');
+      Route::post('unread/{id}', 'BookController@unread');
+      Route::post('save', 'BookController@save');
+      Route::post('delete/{id}', 'BookController@delete');
+      Route::post('search', 'BookController@search');
     });
     Route::group(array('prefix' => 'movies'), function(){
-      Route::get('/', 'MovieController@all');
-      Route::get('/widget', 'MovieController@widget');
-      Route::post('/save', 'MovieController@save');
-      Route::post('/delete/{id}', 'MovieController@delete');
+      Route::get('', 'MovieController@all');
+      Route::get('widget', 'MovieController@widget');
+      Route::post('save', 'MovieController@save');
+      Route::post('delete/{id}', 'MovieController@delete');
     });
     Route::group(array('prefix' => 'games'), function(){
-      Route::post('/save', 'GameController@save');
-      Route::get('/recommendation', 'GameController@recommend');
+      Route::post('save', 'GameController@save');
+      Route::get('recommendation', 'GameController@recommend');
+      Route::post('search', 'GameController@search');
+      Route::post('delete/{id}', 'GameController@delete');
     });
   });
 });
 
 Route::group(array('prefix' => 'templates'), function(){
-  Route::get('/link-form', 'TemplateController@linkForm');
-  Route::get('/book-form', 'TemplateController@bookForm');
-  Route::get('/movie-form', 'TemplateController@movieForm');
-  Route::get('/game-form', 'TemplateController@gameForm');
-  Route::get('/loader', 'TemplateController@loader');
+  Route::get('link-form', 'TemplateController@linkForm');
+  Route::get('book-form', 'TemplateController@bookForm');
+  Route::get('movie-form', 'TemplateController@movieForm');
+  Route::get('game-form', 'TemplateController@gameForm');
+  Route::get('loader', 'TemplateController@loader');
 });
 
 Route::group(array('prefix' => 'migrations', 'before' => 'auth'), function(){
-  Route::get('/books', 'MigrationsController@books');
-  Route::get('/games', 'MigrationsController@games');
-  Route::get('/links', 'MigrationsController@links');
-  Route::get('/movies', 'MigrationsController@movies');
-  Route::get('/movies/randomize', 'MigrationsController@reorder');
+  Route::get('books', 'MigrationsController@books');
+  Route::get('games', 'MigrationsController@games');
+  Route::get('links', 'MigrationsController@links');
+  Route::get('movies', 'MigrationsController@movies');
+  Route::get('movies/randomize', 'MigrationsController@reorder');
 });
