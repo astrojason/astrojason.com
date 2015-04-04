@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * Blade extensions.
  *
