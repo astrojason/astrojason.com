@@ -119,7 +119,7 @@
               <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#bookModal">Book Recommendation</button></td>
             </tr>
             <tr ng-show="games_toplay" ng-cloak>
-              <td><button class="btn btn-success btn-xs" ng-click="getGameRecommendation()">Game Recommendation</button></td>
+              <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#recommendGameModal">Game Recommendation</button></td>
             </tr>
             <tr ng-show="total_books || total_books" ng-cloak>
               <td>
@@ -155,11 +155,12 @@
               </td>
             </tr>
           </tbody>
+        </table>
       </div>
     </div>
   </div>
 
-  <div class="modal fade" id="bookModal" ng-controller="BookController" ng-init="setCategories(<% $book_categories %>)">
+  <div class="modal fade" id="bookModal" ng-controller="BookController" ng-init="setCategories(<% $book_categories %>); recommendation_category = 'To Read'">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -246,15 +247,15 @@
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
 
-  <div class="modal fade" id="recommendGameModal" ng-controller="GameController">
+  <div class="modal fade" id="recommendGameModal" ng-controller="GameController" ng-init="getGameRecommendation()">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Recommended Game</h4>
+          <h4 class="modal-title">Recommended Game <span class="glyphicon glyphicon-refresh tool" ng-click="getGameRecommendation()"></span></h4>
         </div>
         <div class="modal-body">
-          <game-form game="recommended_game" editing="false"></game-form>
+          <game-form game="game" editing="false"></game-form>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

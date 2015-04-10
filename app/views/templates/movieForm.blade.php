@@ -42,7 +42,7 @@
   </div>
   <div class="form-group">
     <button class="btn btn-primary" ng-disabled="!movie_form.$valid">Save</button>
-    <a class="btn btn-default" ng-click="cancelEdit()" data-dismiss="modal">Cancel</a>
+    <a class="btn btn-default" ng-click="cancelEdit()">Cancel</a>
   </div>
   <div class="form-group" ng-show="error">
     <div class="alert alert-danger"></div>

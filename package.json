@@ -7,6 +7,10 @@
     "grunt-contrib-uglify": "*",
     "grunt-contrib-compass": "*",
     "grunt-contrib-watch": "*",
-    "grunt-contrib-clean": "~0.6.0"
+    "grunt-contrib-clean": "~0.6.0",
+    "load-grunt-config": "^0.16.0",
+    "grunt-concurrent": "^1.0.0",
+    "grunt-contrib-imagemin": "^0.9.4",
+    "grunt-contrib-jshint": "^0.11.1"
   }
 }

@@ -56,4 +56,11 @@ window.app.controller 'MovieController', ['$scope', '$http', '$controller', ($sc
   $scope.deleteMovie = (movie)->
     current_index = $scope.movies.indexOf movie
     $scope.movies.splice current_index, 1
+
+  $scope.cancelEdit = ->
+    if $scope.movie.id
+      $scope.editing = false
+    else
+      angular.element('#addMovieModal').modal('hide')
+      false
 ]

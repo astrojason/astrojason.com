@@ -49,5 +49,14 @@ window.app.controller 'GameController', ['$scope', '$http', '$controller', '$tim
       $scope.search_results = response.games
 
   $scope.cancelEdit = ->
-    $scope.editing = false
+    if $scope.game.id
+      $scope.editing = false
+    else
+      angular.element('#addGameModal').modal('hide')
+      false
+
+  $scope.getGameRecommendation = ->
+    game_promise = $http.get '/api/games/recommendation'
+    game_promise.success (response)->
+      $scope.game = response.game
 ]

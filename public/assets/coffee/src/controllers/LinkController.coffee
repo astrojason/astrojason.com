@@ -65,4 +65,11 @@ window.app.controller 'LinkController', ['$scope', '$http', '$controller', ($sco
 
   $scope.setCategories = (categories)->
     $scope.categories = categories
+
+  $scope.cancelEdit = ->
+    if $scope.link.id
+      $scope.editing = false
+    else
+      angular.element('#addLinkModal').modal('hide')
+      false
 ]

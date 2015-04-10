@@ -2,6 +2,18 @@ window.app.controller 'BookController', ['$scope', '$http', '$timeout', '$contro
 
   $controller 'FormMasterController', $scope: $scope
 
+  $scope.$watch 'search_query', (newValue, oldValue)->
+    $scope.searching = true
+    $timeout.cancel $scope.search_timeout
+    if newValue?.length >= 3
+      $scope.search_timeout = $timeout ->
+        $scope.search_books()
+      , 500
+
+  $scope.$watch 'is_read', ->
+    if $scope.search_query?.length >= 3
+      $scope.search_books()
+
   $scope.setCategories = (categories)->
     $scope.categories = categories
     if categories?.length > 0
@@ -61,18 +73,6 @@ window.app.controller 'BookController', ['$scope', '$http', '$timeout', '$contro
     book_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem ' + ($scope.book.id ? 'updating' : 'adding') + ' link'
 
-  $scope.$watch 'search_query', (newValue, oldValue)->
-    $scope.searching = true
-    $timeout.cancel $scope.search_timeout
-    if newValue?.length >= 3
-      $scope.search_timeout = $timeout ->
-        $scope.search_books()
-      , 500
-
-  $scope.$watch 'is_read', ->
-    if $scope.search_query?.length >= 3
-      $scope.search_books()
-
   $scope.search_books = ->
     data =
       q: $scope.search_query
@@ -80,4 +80,11 @@ window.app.controller 'BookController', ['$scope', '$http', '$timeout', '$contro
     search_promise = $http.post '/api/books/search', $.param data
     search_promise.success (response)->
       $scope.search_results = response.books
+
+  $scope.cancelEdit = ->
+    if $scope.book.id
+      $scope.editing = false
+    else
+      angular.element('#addBookModal').modal('hide')
+      false
 ]
