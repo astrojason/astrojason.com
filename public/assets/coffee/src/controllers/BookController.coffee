@@ -14,18 +14,24 @@ window.app.controller 'BookController', ['$scope', '$http', '$timeout', '$contro
     if $scope.search_query?.length >= 3
       $scope.search_books()
 
+  $scope.$watch 'triggerBookRec', (newValue)->
+    if newValue
+      $scope.getRecommendation()
+
   $scope.setCategories = (categories)->
     $scope.categories = categories
     if categories?.length > 0
       $scope.recommendation_category = categories[0]
 
   $scope.getRecommendation = ->
-    $scope.getting_recomendation = true
-    reco_Promise = $http.get '/api/books/recommendation/' + $scope.recommendation_category
-    reco_Promise.success (response)->
-      $scope.book = response.book
-    reco_Promise.finally ->
-      $scope.getting_recomendation = false
+    if $scope.recommendation_category
+      $scope.editing = false
+      $scope.getting_recomendation = true
+      reco_Promise = $http.get '/api/books/recommendation/' + $scope.recommendation_category
+      reco_Promise.success (response)->
+        $scope.book = response.book
+      reco_Promise.finally ->
+        $scope.getting_recomendation = false
 
   $scope.markAsRead = ->
     read_Promise = $http.post '/api/books/read/' + $scope.book.id

@@ -4,6 +4,10 @@ window.app.controller 'GameController', ['$scope', '$http', '$controller', '$tim
 
   $controller 'FormMasterController', $scope: $scope
 
+  $scope.$watch 'triggerGameRec', (newValue)->
+    if newValue
+      $scope.getRecommendation()
+
   $scope.setPlatforms = (platforms)->
     $scope.platforms = platforms
 
@@ -55,7 +59,7 @@ window.app.controller 'GameController', ['$scope', '$http', '$controller', '$tim
       angular.element('#addGameModal').modal('hide')
       false
 
-  $scope.getGameRecommendation = ->
+  $scope.getRecommendation = ->
     game_promise = $http.get '/api/games/recommendation'
     game_promise.success (response)->
       $scope.game = response.game

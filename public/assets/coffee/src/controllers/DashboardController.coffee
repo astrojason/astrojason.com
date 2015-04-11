@@ -6,6 +6,8 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
   $scope.search_results = []
   $scope.addingLink = false
   $scope.loading_unread = false
+  $scope.triggerBookRec = false
+  $scope.triggerGameRec = false
 
   $scope.$on 'userLoggedIn', ->
     $scope.initDashboard()
@@ -120,12 +122,6 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       $scope.loadDashboard()
 
   $scope.loadDashboard = ->
-    $scope.newLink = new window.Link($scope.user.id)
-    $scope.newBook = new window.Book()
-    $scope.newMovie = new window.Movie()
-    $scope.newGame = new window.Game()
-    $scope.newSong = new window.Song()
-
     daily_Promise = $http.get '/api/dashboard'
     daily_Promise.success (response)->
       if response.success
@@ -163,8 +159,15 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       if response.success
         $scope.loadDashboard()
 
+  $scope.getBookRecommendation = ->
+    $scope.triggerBookRec = true
+    angular.element('#recommendBookModal').modal('show')
+    false
+
   $scope.getGameRecommendation = ->
+    $scope.triggerGameRec = true
     angular.element('#recommendGameModal').modal('show')
+    false
 
   $scope.initDashboard()
 ]

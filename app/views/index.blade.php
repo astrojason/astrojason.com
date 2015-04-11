@@ -116,10 +116,10 @@
               </td>
             </tr>
             <tr ng-show="books_toread" ng-cloak>
-              <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#bookModal">Book Recommendation</button></td>
+              <td><button class="btn btn-success btn-xs" ng-click="getBookRecommendation()">Book Recommendation</button></td>
             </tr>
             <tr ng-show="games_toplay" ng-cloak>
-              <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#recommendGameModal">Game Recommendation</button></td>
+              <td><button class="btn btn-success btn-xs" ng-click="getGameRecommendation()">Game Recommendation</button></td>
             </tr>
             <tr ng-show="total_books || total_books" ng-cloak>
               <td>
@@ -158,106 +158,109 @@
         </table>
       </div>
     </div>
-  </div>
-
-  <div class="modal fade" id="bookModal" ng-controller="BookController" ng-init="setCategories(<% $book_categories %>); recommendation_category = 'To Read'">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Get a Book Recommendation</h4>
-        </div>
-        <div class="modal-body">
-          <loader ng-show="getting_recomendation" ng-cloak></loader>
-          <form class="form-inline">
-            <div class="row">
-              <div class="col-md-8">
-                <select ng-model="recommendation_category" class="form-control">
-                  <option ng-repeat="category in categories">{{ category }}</option>
-                </select>
+    <div
+        class="modal fade"
+        id="recommendBookModal"
+        ng-controller="BookController"
+        ng-init="setCategories(<% $book_categories %>); recommendation_category = 'To Read'">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Get a Book Recommendation</h4>
+          </div>
+          <div class="modal-body">
+            <loader ng-show="getting_recomendation" ng-cloak></loader>
+            <form name="book_reco_form" class="form-inline" novalidate>
+              <div class="row">
+                <div class="col-md-8">
+                  <select ng-model="recommendation_category" class="form-control">
+                    <option ng-repeat="category in categories">{{ category }}</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <button class="btn btn-primary" ng-click="getRecommendation()" ng-disabled="!recommendation_category">Get Recommendation</button>
+                </div>
               </div>
-              <div class="col-md-4">
-                <button class="btn btn-primary" ng-click="getRecommendation()" ng-disabled="!recommendation_category">Get Recommendation</button>
-              </div>
-            </div>
+            </form>
             <div class="row" ng-show="book">
               <div class="col-md-12 top-margin">
                 <book-form book="book" editing="false"></book-form>
               </div>
             </div>
-          </form>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
-  <div class="modal fade" id="addLinkModal" ng-controller="LinkController">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Add a Link</h4>
-        </div>
-        <div class="modal-body">
-          <link-form editing="true" link="newLink"></link-form>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+    <div class="modal fade" id="addLinkModal" ng-controller="LinkController">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Add a Link</h4>
+          </div>
+          <div class="modal-body">
+            <link-form editing="true" link="{}"></link-form>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
-  <div class="modal fade" id="addBookModal" ng-controller="BookController">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Add a Book</h4>
-        </div>
-        <div class="modal-body">
-          <book-form book="newBook" editing="true"></book-form>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+    <div class="modal fade" id="addBookModal" ng-controller="BookController">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Add a Book</h4>
+          </div>
+          <div class="modal-body">
+            <book-form book="{}" editing="true"></book-form>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
-  <div class="modal fade" id="addMovieModal" ng-controller="MovieController">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Add a Movie</h4>
-        </div>
-        <div class="modal-body">
-          <movie-form movie="newMovie" editing="true"></movie-form>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+    <div class="modal fade" id="addMovieModal" ng-controller="MovieController">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Add a Movie</h4>
+          </div>
+          <div class="modal-body">
+            <movie-form movie="{}" editing="true"></movie-form>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
-  <div class="modal fade" id="addGameModal" ng-controller="GameController">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Add a Game</h4>
-        </div>
-        <div class="modal-body">
-          <game-form game="newGame" editing="true"></game-form>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+    <div class="modal fade" id="addGameModal" ng-controller="GameController">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Add a Game</h4>
+          </div>
+          <div class="modal-body">
+            <game-form game="{}" editing="true"></game-form>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
-  <div class="modal fade" id="recommendGameModal" ng-controller="GameController" ng-init="getGameRecommendation()">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Recommended Game <span class="glyphicon glyphicon-refresh tool" ng-click="getGameRecommendation()"></span></h4>
-        </div>
-        <div class="modal-body">
-          <game-form game="game" editing="false"></game-form>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+    <div class="modal fade" id="recommendGameModal" ng-controller="GameController">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Recommended Game <span class="glyphicon glyphicon-refresh tool" ng-click="getRecommendation()"></span></h4>
+          </div>
+          <div class="modal-body">
+            <game-form game="game" editing="false"></game-form>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </div>
 @stop

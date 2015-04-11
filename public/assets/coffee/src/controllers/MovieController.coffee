@@ -2,9 +2,6 @@ window.app.controller 'MovieController', ['$scope', '$http', '$controller', ($sc
 
   $controller 'FormMasterController', $scope: $scope
 
-  if not $scope.movie?.id
-    $scope.movie = new Movie()
-
   $scope.$on 'dateChanged', (e, m)->
     $scope.movie.date_watched = m
 
