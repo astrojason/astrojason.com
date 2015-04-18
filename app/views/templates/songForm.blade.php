@@ -5,8 +5,8 @@
   <div class="col-md-12">
     <div class="row alert alert-danger" ng-show="deleting == true">
       <div class="col-md-12">
-        <h4>Delete Movie</h4>
-        <p>Deleting the movie cannot be undone.</p>
+        <h4>Delete Song</h4>
+        <p>Deleting the song cannot be undone.</p>
         <p>
           <a class="btn btn-danger" ng-click="delete()">Yes I want to delete</a>
           <a class="btn btn-default" ng-click="deleting = false">No, do not delete</a>
@@ -27,7 +27,7 @@
     </div>
   </div>
 </div>
-<form role="form" name="song_form" ng-submit="save(song)" novalidate ng-show="editing">
+<form role="form" name="song_form" ng-submit="save()" novalidate ng-show="editing">
   <div class="form-group">
     <label for="title">Title</label>
     <input type="text" name="title" ng-model="song.title" class="form-control" placeholder="Title" required />

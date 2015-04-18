@@ -62,6 +62,7 @@ Route::group(array('prefix' => 'api'), function() {
     Route::group(array('prefix' => 'songs'), function(){
       Route::get('/', 'SongController@all');
       Route::post('/', 'SongController@save');
+      Route::delete('/', 'SongController@delete');
     });
   });
 });

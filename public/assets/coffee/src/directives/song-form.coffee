@@ -4,5 +4,6 @@ window.app.directive 'songForm', ->
   controller: 'SongController',
   scope: {
     song: '=',
-    editing: '='
+    editing: '=',
+    index: '='
   }
