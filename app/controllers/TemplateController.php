@@ -74,6 +74,10 @@ class TemplateController extends BaseController {
     }
   }
 
+  public function songForm() {
+    return View::make('templates/songForm');
+  }
+
   public function loader() {
     return View::make('templates/loader');
   }

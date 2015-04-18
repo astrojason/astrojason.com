@@ -113,6 +113,7 @@
             <tr>
               <td>
                 <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addGameModal">Add Game</button>
+                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addSongModal">Add Song</button>
               </td>
             </tr>
             <tr ng-show="books_toread" ng-cloak>
@@ -120,6 +121,9 @@
             </tr>
             <tr ng-show="games_toplay" ng-cloak>
               <td><button class="btn btn-success btn-xs" ng-click="getGameRecommendation()">Game Recommendation</button></td>
+            </tr>
+            <tr ng-show="songs_toplay" ng-cloak>
+              <td><button class="btn btn-success btn-xs" ng-click="getSongRecommendation()">Song Recommendation</button></td>
             </tr>
             <tr ng-show="total_books || total_books" ng-cloak>
               <td>
@@ -262,5 +266,20 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <div class="modal fade" id="addSongModal" ng-controller="SongController">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Add a Song</h4>
+          </div>
+          <div class="modal-body">
+            <song-form song="{}" editing="true"></song-form>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
   </div>
 @stop

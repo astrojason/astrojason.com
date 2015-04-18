@@ -16,6 +16,7 @@ Route::get('register', 'HomeController@register');
 Route::get('books', 'BookController@index');
 Route::get('movies', 'MovieController@index');
 Route::get('games', 'GameController@index');
+Route::get('songs', 'SongController@index');
 
 Route::get('readlater', 'LinkController@readLater');
 
@@ -58,6 +59,10 @@ Route::group(array('prefix' => 'api'), function() {
       Route::post('search', 'GameController@search');
       Route::post('delete/{id}', 'GameController@delete');
     });
+    Route::group(array('prefix' => 'songs'), function(){
+      Route::get('/', 'SongController@all');
+      Route::post('/', 'SongController@save');
+    });
   });
 });
 
@@ -66,6 +71,7 @@ Route::group(array('prefix' => 'templates'), function(){
   Route::get('book-form', 'TemplateController@bookForm');
   Route::get('movie-form', 'TemplateController@movieForm');
   Route::get('game-form', 'TemplateController@gameForm');
+  Route::get('song-form', 'TemplateController@songForm');
   Route::get('loader', 'TemplateController@loader');
 });
 
