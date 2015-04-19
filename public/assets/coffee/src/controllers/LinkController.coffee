@@ -55,13 +55,11 @@ window.app.controller 'LinkController', ['$scope', '$http', '$controller', ($sco
         $scope.editing = false
         if $scope.$parent.linkAdded
           $scope.$parent.linkAdded()
-        alertify.success "Link " + (if 0 == parseInt $scope.link.id then "added" else "updated") + " successfully"
+        alertify.success "Link " + ($scope.link.id ? "updated" : "added") + " successfully"
       else
         $scope.errorMessage = response.error
         if $scope.$parent.saveError
           $scope.$parent.saveError response.error
-    link_Promise.error ->
-      $scope.$emit 'errorOccurred', 'Problem ' + ($scope.link.id ? 'updating' : 'adding') + ' link.'
 
   $scope.setCategories = (categories)->
     $scope.categories = categories
