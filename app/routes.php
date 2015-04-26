@@ -28,7 +28,7 @@ Route::group(array('prefix' => 'api'), function() {
   Route::get('dashboard', 'HomeController@getDashboard');
   Route::group(array('before' => 'auth'), function() {
     Route::post('logout', 'UserController@logout');
-    Route::group(array('prefix' => 'links'), function(){
+    Route::group(array('prefix' => 'link'), function(){
       Route::post('save', 'LinkController@save');
       Route::post('search', 'LinkController@search');
       Route::post('open/{id}', 'LinkController@open');
@@ -44,26 +44,21 @@ Route::group(array('prefix' => 'api'), function() {
       Route::post('/', 'BookController@save');
       Route::delete('/', 'BookController@delete');
       Route::get('recommendation/{category}', 'BookController@recommendation');
-//      Route::post('read/{id}', 'BookController@read');
-//      Route::post('unread/{id}', 'BookController@unread');
-//      Route::post('save', 'BookController@save');
-//      Route::post('delete/{id}', 'BookController@delete');
-//      Route::post('search', 'BookController@search');
     });
-    Route::group(array('prefix' => 'movies'), function(){
+    Route::group(array('prefix' => 'movie'), function(){
       Route::get('', 'MovieController@all');
       Route::get('widget', 'MovieController@widget');
       Route::post('save', 'MovieController@save');
       Route::post('delete/{id}', 'MovieController@delete');
     });
-    Route::group(array('prefix' => 'games'), function(){
-      Route::post('save', 'GameController@save');
+    Route::group(array('prefix' => 'game'), function(){
+      Route::get('/', 'GameController@query');
+      Route::post('/', 'GameController@save');
+      Route::delete('/', 'GameController@delete');
       Route::get('recommendation', 'GameController@recommend');
-      Route::post('search', 'GameController@search');
-      Route::post('delete/{id}', 'GameController@delete');
     });
-    Route::group(array('prefix' => 'songs'), function(){
-      Route::get('/', 'SongController@all');
+    Route::group(array('prefix' => 'song'), function(){
+      Route::get('/', 'SongController@query');
       Route::post('/', 'SongController@save');
       Route::delete('/', 'SongController@delete');
     });

@@ -7,8 +7,7 @@ class BookController extends BaseController {
   }
 
   public function query() {
-    $query = Book::query();
-    $query->where('user_id', Auth::user()->id);
+    $query = Book::query()->where('user_id', Auth::user()->id);
     $q = Input::get('q');
     $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
     if(isset($q)) {

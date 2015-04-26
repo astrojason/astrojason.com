@@ -1,4 +1,4 @@
-window.app.controller 'GameController', ['$scope', '$http', '$controller', '$timeout', ($scope, $http, $controller, $timeout)->
+window.app.controller 'GameController', ['$scope', 'Game', '$controller', '$timeout', ($scope, Game, $controller, $timeout)->
 
   $scope.search_timeout = null
 
@@ -10,25 +10,7 @@ window.app.controller 'GameController', ['$scope', '$http', '$controller', '$tim
     if newValue
       $scope.getRecommendation()
 
-  $scope.setPlatforms = (platforms)->
-    $scope.platforms = platforms
-
-  $scope.save = ->
-    data = $scope.game
-    if $scope.game.category == 'New'
-      $scope.game.category = $scope.new_category
-    game_promise = $http.post '/api/games/save', $.param data
-    game_promise.success (response)->
-      if response.success
-        alertify.success "Game " + (if 0 == parseInt $scope.game.id then "added" else "updated") + " successfully"
-      else
-        $scope.errorMessage = response.error
-        if $scope.$parent.saveError
-          $scope.$parent.saveError response.error
-    game_promise.error ->
-      $scope.$emit 'errorOccurred', 'Problem ' + ($scope.game.id ? 'updating' : 'adding') + ' game.'
-
-  $scope.$watch 'search_query', (newValue, oldValue)->
+  $scope.$watch 'search_query', (newValue)->
     $scope.searching = true
     $timeout.cancel $scope.search_timeout
     if newValue?.length >= 3
@@ -36,26 +18,65 @@ window.app.controller 'GameController', ['$scope', '$http', '$controller', '$tim
         $scope.search_games()
       , 500
 
-  $scope.delete = ->
-    read_Promise = $http.post '/api/games/delete/' + $scope.game.id
-    read_Promise.success (response)->
-      if response.success
-        if $scope.$parent.deleteItem
-          $scope.$parent.deleteItem $scope.game
-
-  $scope.deleteItem = (game)->
-    $scope.search_results.splice($scope.search_results.indexOf(game), 1)
+  $scope.all = ->
+    Game.query (response)->
+      $scope.games = response.games
 
   $scope.search_games = ->
     data =
       q: $scope.search_query
       include_read: $scope.is_read
-    search_promise = $http.post '/api/games/search', $.param data
-    search_promise.success (response)->
+    Game.query data, (response)->
       $scope.search_results = response.games
+      $scope.searching = false
+
+  $scope.save = ->
+    if $scope.game.category == 'New'
+      $scope.game.category = $scope.new_category
+
+    success = ->
+      alertify.success "Game " + (if $scope.game.id then "updated" else "added") + " successfully"
+
+    error = ->
+      $scope.errorMessage = response.data.error
+
+    game_promise = Game.save $.param $scope.game
+    game_promise.then success, error
+
+  $scope.togglePlayed = ->
+    $scope.game.played = !$scope.game.played
+    $scope.save()
+
+  $scope.delete = ->
+    success = ->
+      alertify.success 'Game deleted successfully'
+      $scope.deleting = false
+      $scope.editing = false
+      if $scope.$parent.removeGame
+        $scope.$parent.removeGame $scope.index
+
+    error = (response)->
+      $scope.errorMessage = response.data.error
+
+    song_promise = Game.remove id: $scope.game.id
+    song_promise.$promise.then success, error
+
+  $scope.setPlatforms = (platforms)->
+    $scope.platforms = platforms
+
+  $scope.checkEditing = ->
+    return $scope.game?.id
+
+  $scope.removeGame = (index)->
+    $scope.games.splice index, 1
 
   $scope.getRecommendation = ->
-    game_promise = $http.get '/api/games/recommendation'
-    game_promise.success (response)->
+    success = (response)->
       $scope.game = response.game
+    error = ->
+      console.log 'Something went wrong'
+
+    game_promise = Game.recommend()
+    game_promise.$promise.then success, error
+
 ]

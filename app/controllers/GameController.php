@@ -6,11 +6,13 @@ class GameController extends BaseController {
     return View::make('games.index');
   }
 
-  public function search(){
+  public function query(){
+    $query = Game::query()->where('user_id', Auth::user()->id);
     $q = Input::get('q');
-    $games = Game::where('user_id', Auth::user()->id)
-      ->where('title', 'LIKE', '%' . $q . '%')
-      ->get();
+    if(isset($q)){
+      $query->where('title', 'LIKE', '%' . $q . '%');
+    }
+    $games = $query->get();
     return Response::json(array('success' => true, 'games' => $games->toArray()));
   }
 
@@ -39,7 +41,8 @@ class GameController extends BaseController {
     return Response::json(array('success' => true), 200);
   }
 
-  public function delete($id) {
+  public function delete() {
+    $id = Input::get('id');
     $game = Game::where('id', $id)->where('user_id', Auth::user()->id)->first();
     if(isset($game)){
       $game->delete();

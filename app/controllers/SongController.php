@@ -6,13 +6,17 @@ class SongController extends BaseController {
     return View::make('songs.index');
   }
 
-  public function all() {
-    if(Auth::user()) {
-      $songs = Song::where('user_id', Auth::user()->id)->get();
-      return Response::json(array('songs' => $songs->toArray()), 200);
-    } else {
-      return Response::json(array('error' => 'You must be logged in to access this resource.'), 403);
+  public function query() {
+    $query = Song::where('user_id', Auth::user()->id);
+    $q = Input::get('q');
+    if(isset($q)){
+      $query->where(function($query) use ($q) {
+        $query->where('title', 'LIKE', '%' . $q . '%')
+          ->orwhere('artist', 'LIKE', '%' . $q . '%');
+      });
     }
+    $songs = $query->get();
+    return Response::json(array('songs' => $songs->toArray()), 200);
   }
 
   public function save() {

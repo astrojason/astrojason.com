@@ -48,7 +48,7 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', 'B
 
   $scope.toggleRead = ->
     $scope.book.is_read = !$scope.book.is_read
-    $scope.save $scope.book
+    $scope.save()
 
   $scope.delete = ->
     success = ->

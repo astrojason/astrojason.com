@@ -8,7 +8,7 @@ window.app.controller 'MovieController', ['$scope', '$http', '$controller', ($sc
     $scope.movie.date_watched = m
 
   $scope.getWidget = ->
-    widget_promise = $http.get '/api/movies/widget'
+    widget_promise = $http.get '/api/movie/widget'
     widget_promise.success (response) ->
       $scope.movies = response.movies
 
@@ -31,7 +31,7 @@ window.app.controller 'MovieController', ['$scope', '$http', '$controller', ($sc
     movie.rating_order = new_rating
 
   $scope.save = (movie)->
-    movie_promise = $http.post '/api/movies/save', $.param movie
+    movie_promise = $http.post '/api/movie/save', $.param movie
     movie_promise.success (response)->
       if response.success
         if $scope.$parent.movieSaved
@@ -40,14 +40,14 @@ window.app.controller 'MovieController', ['$scope', '$http', '$controller', ($sc
         $scope.errorMessage = response.error
 
   $scope.delete = ->
-    movie_promise = $http.post '/api/movies/delete/' + $scope.movie.id
+    movie_promise = $http.post '/api/movie/delete/' + $scope.movie.id
     movie_promise.success (response)->
       if response.success
         if $scope.$parent.deleteMovie
           $scope.$parent.deleteMovie($scope.movie)
 
   $scope.all = ->
-    movie_promise = $http.get '/api/movies'
+    movie_promise = $http.get '/api/movie'
     movie_promise.success (response)->
       if response.success
         $scope.movies = response.movies

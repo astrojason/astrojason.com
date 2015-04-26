@@ -1,3 +1,10 @@
 window.app.factory 'Game', ['$resource', ($resource)->
-  return $resource('/api/game', {}, {'query': {method: 'GET', isArray: false }});
+  resource_options =
+    query:
+      method: 'GET'
+      isArray: false
+    recommend:
+      method: 'GET'
+      url: '/api/game/recommendation'
+  return $resource '/api/games', {}, resource_options
 ]
