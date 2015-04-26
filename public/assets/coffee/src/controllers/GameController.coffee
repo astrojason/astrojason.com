@@ -4,6 +4,8 @@ window.app.controller 'GameController', ['$scope', '$http', '$controller', '$tim
 
   $controller 'FormMasterController', $scope: $scope
 
+  $scope.modal = '#addGameModal'
+
   $scope.$watch 'triggerGameRec', (newValue)->
     if newValue
       $scope.getRecommendation()
@@ -51,13 +53,6 @@ window.app.controller 'GameController', ['$scope', '$http', '$controller', '$tim
     search_promise = $http.post '/api/games/search', $.param data
     search_promise.success (response)->
       $scope.search_results = response.games
-
-  $scope.cancelEdit = ->
-    if $scope.game.id
-      $scope.editing = false
-    else
-      angular.element('#addGameModal').modal('hide')
-      false
 
   $scope.getRecommendation = ->
     game_promise = $http.get '/api/games/recommendation'

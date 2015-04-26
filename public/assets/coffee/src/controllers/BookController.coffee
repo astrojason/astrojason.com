@@ -1,8 +1,10 @@
-window.app.controller 'BookController', ['$scope', '$http', '$timeout', '$controller', ($scope, $http, $timeout, $controller)->
+window.app.controller 'BookController', ['$scope', '$controller', '$timeout', 'Book', ($scope, $controller, $timeout, Book)->
 
   $controller 'FormMasterController', $scope: $scope
 
-  $scope.$watch 'search_query', (newValue, oldValue)->
+  $scope.modal = '#addBookModal'
+
+  $scope.$watch 'search_query', (newValue)->
     $scope.searching = true
     $timeout.cancel $scope.search_timeout
     if newValue?.length >= 3
@@ -18,79 +20,67 @@ window.app.controller 'BookController', ['$scope', '$http', '$timeout', '$contro
     if newValue
       $scope.getRecommendation()
 
+  $scope.all = ->
+    Book.query (response)->
+      $scope.books = response.books
+
+  $scope.search_books = ->
+    $scope.searching = true
+    data =
+      q: $scope.search_query
+      include_read: $scope.is_read
+    Book.query data, (response)->
+      $scope.search_results = response.books
+      $scope.searching = false
+
+  $scope.save = ->
+    if $scope.book.category == 'New'
+      $scope.book.category = $scope.new_category
+
+    success = ->
+      alertify.success "Book " + (if $scope.book.id then "updated" else "added") + " successfully"
+
+    error = (response)->
+      $scope.errorMessage = response.data.error
+
+    book_promise = Book.save $.param $scope.book
+    book_promise.$promise.then success, error
+
+  $scope.toggleRead = ->
+    $scope.book.is_read = !$scope.book.is_read
+    $scope.save $scope.book
+
+  $scope.delete = ->
+    success = ->
+      alertify.success 'Book deleted successfully'
+      $scope.deleting = false
+      $scope.editing = false
+      if $scope.$parent.removeBook
+        $scope.$parent.removeBook $scope.index
+
+    error = (response)->
+      $scope.errorMessage = response.data.error
+
+    song_promise = Book.remove id: $scope.book.id
+    song_promise.$promise.then success, error
+
+  $scope.removeBook = (index)->
+    $scope.books.splice index, 1
+
+  $scope.getRecommendation = ->
+    if $scope.recommendation_category
+      success = (response)->
+        $scope.book = response.book
+      error = ->
+        console.log 'Something went wrong'
+      book_promise = Book.recommend category: $scope.recommendation_category
+      book_promise.$promise.then success, error
+
   $scope.setCategories = (categories)->
     $scope.categories = categories
     if categories?.length > 0
       $scope.recommendation_category = categories[0]
 
-  $scope.getRecommendation = ->
-    if $scope.recommendation_category
-      $scope.editing = false
-      $scope.getting_recomendation = true
-      reco_Promise = $http.get '/api/books/recommendation/' + $scope.recommendation_category
-      reco_Promise.success (response)->
-        $scope.book = response.book
-      reco_Promise.finally ->
-        $scope.getting_recomendation = false
-
-  $scope.markAsRead = ->
-    read_Promise = $http.post '/api/books/read/' + $scope.book.id
-    read_Promise.success (response)->
-      if response.success
-        $scope.book.is_read = true
-        # TODO: Call the parent markasread
-
-  $scope.deleteItem = (book)->
-    $scope.search_results.splice($scope.search_results.indexOf(book), 1)
-
-  $scope.markAsUnread = ->
-    read_Promise = $http.post '/api/books/unread/' + $scope.book.id
-    read_Promise.success (response)->
-      if response.success
-        $scope.book.is_read = true
-
-  $scope.delete = ->
-    read_Promise = $http.post '/api/books/delete/' + $scope.book.id
-    read_Promise.success (response)->
-      if response.success
-        if $scope.$parent.deleteItem
-          $scope.$parent.deleteItem $scope.book
-
-  $scope.save = ->
-    data = $scope.book
-    if $scope.book.category == 'New'
-      $scope.book.category = $scope.new_category
-    book_Promise = $http.post '/api/books/save', $.param data
-    book_Promise.success (response)->
-      if response.success
-        if $scope.book_form.category.$dirty
-          if $scope.$parent.changeBookCategory
-            $scope.$parent.changeBookCategory $scope.book
-        if $scope.book.category == $scope.new_category
-          $scope.categories.push $scope.new_category
-        $scope.editing = false
-        if $scope.$parent.bookAdded
-          $scope.$parent.bookAdded()
-        alertify.success "Book " + (if 0 == parseInt $scope.book.id then "added" else "updated") + " successfully"
-      else
-        $scope.errorMessage = response.error
-        if $scope.$parent.saveError
-          $scope.$parent.saveError response.error
-    book_Promise.error ->
-      $scope.$emit 'errorOccurred', 'Problem ' + ($scope.book.id ? 'updating' : 'adding') + ' link'
-
-  $scope.search_books = ->
-    data =
-      q: $scope.search_query
-      include_read: $scope.is_read
-    search_promise = $http.post '/api/books/search', $.param data
-    search_promise.success (response)->
-      $scope.search_results = response.books
-
-  $scope.cancelEdit = ->
-    if $scope.book.id
-      $scope.editing = false
-    else
-      angular.element('#addBookModal').modal('hide')
-      false
+  $scope.checkEditing = ->
+    return $scope.book?.id
 ]

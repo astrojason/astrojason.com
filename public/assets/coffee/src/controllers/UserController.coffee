@@ -1,9 +1,9 @@
 window.app.controller 'UserController', ['$scope', '$http', ($scope, $http)->
 
-  $scope.$on 'checkingAvailibility', ->
+  $scope.$on 'checkingAvailability', ->
     $scope.submitting = true
 
-  $scope.$on 'checkedAvailibility', ->
+  $scope.$on 'checkedAvailability', ->
     $scope.submitting = false
 
   $scope.registerUser = ->

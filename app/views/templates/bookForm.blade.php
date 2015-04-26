@@ -22,8 +22,7 @@
       <div class="col-md-2">
         <div class="pull-right">
           <span class="glyphicon glyphicon-pencil tool" ng-click="editing = true"></span>
-          <span class="glyphicon glyphicon-ok tool" ng-click="markAsRead()" ng-show="!(book.is_read | boolparse)"></span>
-          <span class="glyphicon glyphicon-book tool" ng-click="markAsUnread()" ng-show="(book.is_read | boolparse)"></span>
+          <span class="glyphicon  tool" ng-click="toggleRead()" ng-class="!(book.is_read | boolparse) ? 'glyphicon-ok' : 'glyphicon-book'"></span>
           <span class="glyphicon glyphicon-remove tool" ng-click="deleting = true"></span>
         </div>
       </div>

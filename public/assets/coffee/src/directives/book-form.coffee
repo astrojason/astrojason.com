@@ -4,5 +4,6 @@ window.app.directive 'bookForm', ->
   controller: 'BookController',
   scope: {
     book: '=',
-    editing: '='
+    editing: '=',
+    index: '='
   }

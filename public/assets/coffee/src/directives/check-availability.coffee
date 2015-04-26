@@ -1,4 +1,4 @@
-window.app.directive 'checkAvailibility', ['$http', ($http)->
+window.app.directive 'checkAvailability', ['$http', ($http)->
   require: "ngModel"
   link: (scope, element, attributes, ngModel)->
     element.on 'keyup', ->
@@ -6,13 +6,13 @@ window.app.directive 'checkAvailibility', ['$http', ($http)->
 
     element.on 'blur', ->
       if ngModel.$dirty and ngModel.$valid
-        scope.$broadcast 'checkingAvailibility'
+        scope.$broadcast 'checkAvailability'
         if ngModel.$name == 'username'
           check_Promise = $http.post '/api/checkusername', $.param username: ngModel.$modelValue
         else
           check_Promise = $http.post '/api/checkemail', $.param email: ngModel.$modelValue
         check_Promise.success (data)->
-          scope.$broadcast 'checkedAvailibility'
+          scope.$broadcast 'checkedAvailability'
           if data.success
             if data.available
               ngModel.$setValidity 'unique', true

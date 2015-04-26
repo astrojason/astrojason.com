@@ -39,13 +39,16 @@ Route::group(array('prefix' => 'api'), function() {
       Route::get('dashboard/{category}/{quantity}', 'LinkController@getRandomLinks');
       Route::get('populate', 'LinkController@populateLinks');
     });
-    Route::group(array('prefix' => 'books'), function(){
+    Route::group(array('prefix' => 'book'), function(){
+      Route::get('/', 'BookController@query');
+      Route::post('/', 'BookController@save');
+      Route::delete('/', 'BookController@delete');
       Route::get('recommendation/{category}', 'BookController@recommendation');
-      Route::post('read/{id}', 'BookController@read');
-      Route::post('unread/{id}', 'BookController@unread');
-      Route::post('save', 'BookController@save');
-      Route::post('delete/{id}', 'BookController@delete');
-      Route::post('search', 'BookController@search');
+//      Route::post('read/{id}', 'BookController@read');
+//      Route::post('unread/{id}', 'BookController@unread');
+//      Route::post('save', 'BookController@save');
+//      Route::post('delete/{id}', 'BookController@delete');
+//      Route::post('search', 'BookController@search');
     });
     Route::group(array('prefix' => 'movies'), function(){
       Route::get('', 'MovieController@all');

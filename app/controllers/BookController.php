@@ -6,21 +6,44 @@ class BookController extends BaseController {
     return View::make('books.index');
   }
 
+  public function query() {
+    $query = Book::query();
+    $query->where('user_id', Auth::user()->id);
+    $q = Input::get('q');
+    $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
+    if(isset($q)) {
+      $query->where(function($query) use ($q) {
+        $query->where('title', 'LIKE', '%' . $q . '%')
+          ->orwhere('series', 'LIKE', '%' . $q . '%')
+          ->orwhere('author_lname', 'LIKE', '%' . $q . '%');
+      });
+    }
+    if(!$include_read) {
+      $query->where('is_read', false);
+    }
+    $books = $query->get();
+    return Response::json(array('books' => $books->toArray()), 200);
+  }
+
   public function recommendation($category) {
     $book = Book::where('is_read', false)
-    ->where('category', $category)
-    ->where('user_id', Auth::user()->id)
-    ->orderBy(DB::raw('RAND()'))->first();
-    if($book->series_order > 0) {
-      $book = Book::where('is_read', false)
+      ->where('category', $category)
       ->where('user_id', Auth::user()->id)
-      ->where('series', $book->series)
-      ->orderBy('series_order')
-      ->first();
+      ->orderBy(DB::raw('RAND()'))->first();
+    if($book) {
+      if ($book->series_order > 0) {
+        $book = Book::where('is_read', false)
+          ->where('user_id', Auth::user()->id)
+          ->where('series', $book->series)
+          ->orderBy('series_order')
+          ->first();
+      }
+      $book->times_loaded = $book->times_loaded + 1;
+      $book->save();
+      return Response::json(array('success' => true, 'book' => $book->toArray()), 200);
+    } else {
+      return Response::json(array('success' => false, 'error' => 'No book found'), 200);
     }
-    $book->times_loaded = $book->times_loaded + 1;
-    $book->save();
-    return Response::json(array('success' => true, 'book' => $book->toArray()), 200);
   }
 
   public function read($id) {
@@ -45,7 +68,8 @@ class BookController extends BaseController {
     }
   }
 
-  public function delete($id) {
+  public function delete() {
+    $id = Input::get('id');
     $book = Book::where('id', $id)->where('user_id', Auth::user()->id)->first();
     if(isset($book)) {
       $book->delete();
@@ -55,8 +79,7 @@ class BookController extends BaseController {
     }
   }
 
-  public function save()
-  {
+  public function save() {
     $title = Input::get('title');
     $fname = Input::get('author_fname');
     $lname = Input::get('author_lname');
@@ -87,23 +110,6 @@ class BookController extends BaseController {
     }
     $book->save();
     return Response::json(array('success' => true, 'book' => $book->toArray()), 200);
-  }
-
-  public function search() {
-    $q = Input::get('q');
-    $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
-    $query = Book::query();
-    if(!$include_read) {
-      $query->where('is_read', false);
-    }
-    $query->where('user_id', Auth::user()->id);
-    $query->where(function($query) use ($q) {
-      $query->where('title', 'LIKE', '%' . $q . '%')
-        ->orwhere('series', 'LIKE', '%' . $q . '%')
-        ->orwhere('author_lname', 'LIKE', '%' . $q . '%');
-    });
-    $books = $query->get();
-    return Response::json(array('success' => true, 'books' => $books->toArray()), 200);
   }
 
 }

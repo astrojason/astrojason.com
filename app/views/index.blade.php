@@ -162,11 +162,13 @@
         </table>
       </div>
     </div>
+
     <div
         class="modal fade"
         id="recommendBookModal"
         ng-controller="BookController"
-        ng-init="setCategories(<% $book_categories %>); recommendation_category = 'To Read'">
+        ng-init="setCategories(<% $book_categories %>); recommendation_category = 'To Read'"
+        modal>
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -197,7 +199,7 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" id="addLinkModal" ng-controller="LinkController">
+    <div class="modal fade" id="addLinkModal" ng-controller="LinkController" >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">

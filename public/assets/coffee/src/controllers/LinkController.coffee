@@ -2,6 +2,8 @@ window.app.controller 'LinkController', ['$scope', '$http', '$controller', ($sco
 
   $controller 'FormMasterController', $scope: $scope
 
+  $scope.modal = '#addLinkModal'
+
   $scope.deleting = false
   $scope.errorMessage = false
 
@@ -63,11 +65,4 @@ window.app.controller 'LinkController', ['$scope', '$http', '$controller', ($sco
 
   $scope.setCategories = (categories)->
     $scope.categories = categories
-
-  $scope.cancelEdit = ->
-    if $scope.link.id
-      $scope.editing = false
-    else
-      angular.element('#addLinkModal').modal('hide')
-      false
 ]

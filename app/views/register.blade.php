@@ -19,12 +19,12 @@
     </div>
     <div class="form-group">
       <label class="sr-only" for="email">Email Address</label>
-      <input type="email" name="email" class="form-control" placeholder="Email address" ng-model="email" required check-availibility />
+      <input type="email" name="email" class="form-control" placeholder="Email address" ng-model="email" required check-availability />
       <div><span ng-show="registrationForm.email.$error.unique" class="error">Email address already in use</span>&nbsp;</div>
     </div>
     <div class="form-group">
       <label class="sr-only" for="username">Username</label>
-      <input type="text" name="username" class="form-control" placeholder="Username" ng-model="username" required check-availibility />
+      <input type="text" name="username" class="form-control" placeholder="Username" ng-model="username" required check-availability />
       <div><span ng-show="registrationForm.username.$error.unique" class="error">Username already in use</span>&nbsp;</div>
     </div>
     <div class="form-group">

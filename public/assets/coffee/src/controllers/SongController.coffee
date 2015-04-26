@@ -1,15 +1,11 @@
-window.app.controller 'SongController', ['$scope', 'Song', ($scope, Song)->
+window.app.controller 'SongController', ['$scope', 'Song', '$controller', ($scope, Song, $controller)->
+
+  $controller 'FormMasterController', $scope: $scope
+
+  $scope.modal = '#addSongModal'
 
   $scope.$watch '[song.title, song.artist]', ->
     $scope.errorMessage = ''
-
-  $scope.cancelEdit = ->
-    if $scope.song.id
-      $scope.editing = false
-    else
-#      TODO: Make this angularly
-      angular.element('#addSongModal').modal('hide')
-      false
 
   $scope.all = ->
     Song.query (response)->
@@ -27,7 +23,7 @@ window.app.controller 'SongController', ['$scope', 'Song', ($scope, Song)->
 
   $scope.toggleLearned = ->
     $scope.song.learned = !$scope.song.learned
-    $scope.save $scope.song
+    $scope.save()
 
   $scope.delete = ->
     success = ->
@@ -42,7 +38,6 @@ window.app.controller 'SongController', ['$scope', 'Song', ($scope, Song)->
 
     song_promise = Song.remove id: $scope.song.id
     song_promise.$promise.then success, error
-
 
   $scope.removeSong = (index)->
     $scope.songs.splice index, 1
