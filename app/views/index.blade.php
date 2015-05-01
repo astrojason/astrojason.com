@@ -137,27 +137,6 @@
                 </div>
               </td>
             </tr>
-            <tr>
-              <td ng-controller="MovieController" ng-init="getWidget()" ng-show="movies.length > 0" ng-cloak>
-                <h7>
-                  <strong>Movies</strong>
-                  <span class="glyphicon glyphicon-refresh tool pull-right" ng-click="getWidget()"></span>
-                </h7>
-                <div ng-repeat="movie in movies | orderBy: 'rating_order'">
-                  {{ movie.title }}
-                  <span
-                    class="glyphicon glyphicon-chevron-up tool pull-right"
-                    ng-class="$index > 0 ? '' : 'disabled'"
-                    ng-click="$index > 0 ? changeRating(movie, -1) : null">
-                  </span>
-                  <span
-                    class="glyphicon glyphicon-chevron-down tool pull-right"
-                    ng-class="$index < movies.length - 1 ? '' : 'disabled'"
-                    ng-click="$index < movies.length - 1 ? changeRating(movie, 1) : null">
-                  </span>
-                </div>
-              </td>
-            </tr>
           </tbody>
         </table>
       </div>

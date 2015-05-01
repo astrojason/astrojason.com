@@ -46,10 +46,11 @@ Route::group(array('prefix' => 'api'), function() {
       Route::get('recommendation/{category}', 'BookController@recommendation');
     });
     Route::group(array('prefix' => 'movie'), function(){
-      Route::get('', 'MovieController@all');
+      Route::get('', 'MovieController@query');
+      Route::post('', 'MovieController@save');
+      Route::delete('', 'MovieController@delete');
+
       Route::get('widget', 'MovieController@widget');
-      Route::post('save', 'MovieController@save');
-      Route::post('delete/{id}', 'MovieController@delete');
     });
     Route::group(array('prefix' => 'game'), function(){
       Route::get('/', 'GameController@query');
@@ -58,9 +59,9 @@ Route::group(array('prefix' => 'api'), function() {
       Route::get('recommendation', 'GameController@recommend');
     });
     Route::group(array('prefix' => 'song'), function(){
-      Route::get('/', 'SongController@query');
-      Route::post('/', 'SongController@save');
-      Route::delete('/', 'SongController@delete');
+      Route::get('', 'SongController@query');
+      Route::post('', 'SongController@save');
+      Route::delete('', 'SongController@delete');
     });
   });
 });

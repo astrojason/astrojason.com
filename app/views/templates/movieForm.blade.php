@@ -20,8 +20,7 @@
       <div class="col-md-2">
         <div class="pull-right">
           <span class="glyphicon glyphicon-pencil tool" ng-click="editing = true"></span>
-          <span class="glyphicon glyphicon-ok tool" ng-click="markAsWatched()" ng-show="!(movie.is_watched | boolparse)"></span>
-          <span class="glyphicon glyphicon-book tool" ng-click="markAsUnwatched()" ng-show="(movie.is_watched | boolparse)"></span>
+          <span class="glyphicon tool" ng-click="toggleWatched()" ng-class="!(movie.is_watched | boolparse) ? 'glyphicon-eye-open' : 'glyphicon-eye-close'"></span>
           <span class="glyphicon glyphicon-remove tool" ng-click="deleting = true"></span>
         </div>
       </div>

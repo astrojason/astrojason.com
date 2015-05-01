@@ -6,5 +6,5 @@ window.app.factory 'Game', ['$resource', ($resource)->
     recommend:
       method: 'GET'
       url: '/api/game/recommendation'
-  return $resource '/api/games', {}, resource_options
+  return $resource '/api/game', {}, resource_options
 ]

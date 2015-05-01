@@ -1,4 +1,4 @@
-window.app.controller 'MovieController', ['$scope', '$http', '$controller', ($scope, $http, $controller)->
+window.app.controller 'MovieController', ['$scope',  '$controller', 'Movie', ($scope, $controller, Movie)->
 
   $controller 'FormMasterController', $scope: $scope
 
@@ -7,52 +7,43 @@ window.app.controller 'MovieController', ['$scope', '$http', '$controller', ($sc
   $scope.$on 'dateChanged', (e, m)->
     $scope.movie.date_watched = m
 
-  $scope.getWidget = ->
-    widget_promise = $http.get '/api/movie/widget'
-    widget_promise.success (response) ->
-      $scope.movies = response.movies
-
-  $scope.changeRating = (movie, rating)->
-    new_rating = movie.rating_order + rating
-    if $scope.movies
-      console.log 'calling update display order in current scope'
-      $scope.updateDisplayOrder(movie, new_rating)
-    else
-      if $scope.$parent.movies
-        console.log 'calling update display order in parent'
-        $scope.$parent.updateDisplayOrder movie, new_rating
-    $scope.save(movie)
-
-  $scope.updateDisplayOrder = (movie, new_rating)->
-    console.log 'updating display order'
-    current_movie = $scope.movies.filter (v)->
-      return v.rating_order == new_rating
-    current_movie[0].rating_order = movie.rating_order
-    movie.rating_order = new_rating
+  $scope.toggleWatched = ->
+    $scope.movie.is_watched = !$scope.movie.is_watched
+    $scope.save $scope.movie
 
   $scope.save = (movie)->
-    movie_promise = $http.post '/api/movie/save', $.param movie
-    movie_promise.success (response)->
-      if response.success
-        if $scope.$parent.movieSaved
-          $scope.$parent.movieSaved()
-      else
-        $scope.errorMessage = response.error
+    success = ->
+      alertify.success "Movie " + (if movie.id then "updated" else "added") + " successfully"
+      if $scope.$parent.movieSaved
+        $scope.$parent.movieSaved()
+
+    error = ->
+      $scope.errorMessage = response.data.error
+
+    movie_promise = Movie.save $.param movie
+    movie_promise.$promise.then success, error
 
   $scope.delete = ->
-    movie_promise = $http.post '/api/movie/delete/' + $scope.movie.id
-    movie_promise.success (response)->
-      if response.success
-        if $scope.$parent.deleteMovie
-          $scope.$parent.deleteMovie($scope.movie)
+    success = ->
+      alertify.success 'Movie deleted successfully'
+      $scope.deleting = false
+      $scope.editing = false
+      if $scope.$parent.removeMovie
+        $scope.$parent.removeMovie $scope.index
+
+    error = (response)->
+      $scope.errorMessage = response.data.error
+
+    movie_promise = Movie.remove id: $scope.movie.id
+    movie_promise.$promise.then success, error
 
   $scope.all = ->
-    movie_promise = $http.get '/api/movie'
-    movie_promise.success (response)->
-      if response.success
-        $scope.movies = response.movies
+    Movie.query (response)->
+      $scope.movies = response.movies
 
-  $scope.deleteMovie = (movie)->
-    current_index = $scope.movies.indexOf movie
-    $scope.movies.splice current_index, 1
+  $scope.removeMovie = (index)->
+    $scope.movies.splice index, 1
+
+  $scope.checkEditing = ->
+    return $scope.movie?.id
 ]

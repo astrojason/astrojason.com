@@ -27,18 +27,6 @@
       <tbody>
         <tr ng-repeat="movie in movies">
           <td>
-            <span
-              class="glyphicon glyphicon-chevron-up tool pull-left"
-              ng-class="$index > 0 ? '' : 'disabled'"
-              ng-click="$index > 0 ? changeRating(movie, -1) : null">
-            </span>
-            <span
-              class="glyphicon glyphicon-chevron-down tool pull-left"
-              ng-class="$index < movies.length - 1 ? '' : 'disabled'"
-              ng-click="$index < movies.length - 1 ? changeRating(movie, 1) : null">
-            </span>
-          </td>
-          <td>
             <movie-form movie="movie" editing="false"></movie-form>
           </td>
         </tr>

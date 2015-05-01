@@ -58,8 +58,8 @@ window.app.controller 'GameController', ['$scope', 'Game', '$controller', '$time
     error = (response)->
       $scope.errorMessage = response.data.error
 
-    song_promise = Game.remove id: $scope.game.id
-    song_promise.$promise.then success, error
+    game_promise = Game.remove id: $scope.game.id
+    game_promise.$promise.then success, error
 
   $scope.setPlatforms = (platforms)->
     $scope.platforms = platforms

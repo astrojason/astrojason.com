@@ -6,26 +6,16 @@ class MovieController extends BaseController {
     return View::make('movies.index');
   }
 
-  public function widget() {
-    $rand_movie = Movie::where('user_id', Auth::user()->id)
-      ->orderBy(DB::raw('RAND()'))->first();
-    if(isset($rand_movie)) {
-      $movies = Movie::where('user_id', Auth::user()->id)
-        ->where('rating_order', '>=', $rand_movie->rating_order)
-        ->orderBy('rating_order')
-        ->take(5)
-        ->get();
-      return Response::json(array('success' => true, 'movies' => $movies->toArray()), 200);
-    } else {
-      return Response::json(array('success' => true, 'movies' => array()), 200);
+  public function query() {
+    $q = Input::get('q');
+    $query = Movie::where('user_id', Auth::user()->id);
+    if(isset($q)) {
+      $query->where(function($query) use ($q) {
+        $query->where('title', 'LIKE', '%' . $q . '%');
+      });
     }
-  }
-
-  public function all() {
-    $movies = Movie::where('user_id', Auth::user()->id)
-      ->orderBy('rating_order')
-      ->get();
-    return Response::json(array('success' => true, 'movies' => $movies->toArray()), 200);
+    $movies = $query->orderBy('rating_order')->get();
+    return Response::json(array('movies' => $movies->toArray()), 200);
   }
 
   public function save() {
@@ -54,9 +44,11 @@ class MovieController extends BaseController {
       $movie->date_watched = date('Y-m-d',$date_watched);
     }
     $movie->save();
+    return Response::json(array('movie' => $movie->toArray()), 200);
   }
 
-  public function delete($id) {
+  public function delete() {
+    $id = Input::get('id');
     $movie = Movie::where('id', $id)->where('user_id', Auth::user()->id)->first();
     if(isset($movie)){
       $movies_after = Movie::where('user_id', Auth::user()->id)
@@ -69,7 +61,7 @@ class MovieController extends BaseController {
       $movie->delete();
       return Response::json(array('success' => true), 200);
     } else {
-      return Response::json(array('success' => false, 'error' => 'No movie with that id exists'), 200);
+      return Response::json(array('error' => 'No movie with that id exists'), 404);
     }
   }
 }
