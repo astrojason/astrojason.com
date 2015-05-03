@@ -13,21 +13,21 @@
         <div ng-show="total_links == 0" ng-cloak>
           You do not have any links, would you like me to <button class="btn btn-default" ng-click="populateLinks()">Randomize</button> some for you?
         </div>
-        <div ng-show="total_links > 0" ng-cloak>
+        <div>
           <div id="search_links" class="link_container">
             <loader ng-show="loading_search" ng-cloak></loader>
             <table class="table table-condensed table-striped table-hover">
               <thead>
                 <tr>
                   <th class="input-group">
-                    <input type="text" ng-model="search_query" class="form-control" placeholder="Search Query" />
+                    <input type="text" ng-model="article_search" class="form-control" placeholder="Search Query" />
                     <div class="input-group-addon"><input type="checkbox" ng-model="is_read" /> <label>Include read</label></div>
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <tr ng-show="search_query && search_results.length == 0 && !searching">
-                  <td>No results for <strong>{{ search_query }}</strong>
+                <tr ng-show="article_search && search_results.length == 0 && !searching">
+                  <td>No results for <strong>{{ article_search }}</strong>
                 </tr>
                 <tr ng-repeat="link in search_results" ng-show="search_results.length > 0" ng-cloak>
                   <td ng-class="(link.is_read | boolparse) ? 'read' : ''"><link-form link="link" editing="false"></link-form></td>

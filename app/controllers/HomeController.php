@@ -37,10 +37,12 @@ class HomeController extends BaseController {
     $books_read = Book::where('user_id', Auth::user()->id)->where('is_read', true)->count();
 		$books_unread = Book::where('user_id', Auth::user()->id)->where('is_read', false)->count();
 		$games_unplayed = Game::where('user_id', Auth::user()->id)->where('completed', false)->count();
+
     $links = Link::where('is_read', false)
       ->where('category', 'Daily')
       ->where('user_id', Auth::user()->id)
       ->get();
+
     $categories = [];
     $dbCategories = Link::groupBy('category')
       ->where('category', '<>', 'Daily')
@@ -50,13 +52,10 @@ class HomeController extends BaseController {
     foreach($dbCategories as $category) {
       array_push($categories, $category->category);
     }
-    $unread = LinkController::getLinksToRead('Unread', 20);
     $total_read = Link::where('updated_at', 'LIKE', date('Y-m-d') . '%')->where('is_read', true)->where('user_id', Auth::user()->id)->count();
     return Response::json(array(
       'success' => true,
-      'links' => $links->toArray(),
       'total_read' => $total_read,
-      'unread' => $unread->toArray(),
       'categories' => $categories,
       'total_links' => $total_links,
       'links_read' => $links_read,

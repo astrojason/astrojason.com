@@ -29,6 +29,8 @@ Route::group(array('prefix' => 'api'), function() {
   Route::group(array('before' => 'auth'), function() {
     Route::post('logout', 'UserController@logout');
     Route::group(array('prefix' => 'link'), function(){
+      Route::get('', 'LinkController@query');
+
       Route::post('save', 'LinkController@save');
       Route::post('search', 'LinkController@search');
       Route::post('open/{id}', 'LinkController@open');
@@ -40,9 +42,9 @@ Route::group(array('prefix' => 'api'), function() {
       Route::get('populate', 'LinkController@populateLinks');
     });
     Route::group(array('prefix' => 'book'), function(){
-      Route::get('/', 'BookController@query');
-      Route::post('/', 'BookController@save');
-      Route::delete('/', 'BookController@delete');
+      Route::get('', 'BookController@query');
+      Route::post('', 'BookController@save');
+      Route::delete('', 'BookController@delete');
       Route::get('recommendation/{category}', 'BookController@recommendation');
     });
     Route::group(array('prefix' => 'movie'), function(){

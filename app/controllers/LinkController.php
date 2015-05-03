@@ -1,6 +1,46 @@
 <?php
 
-class LinkController extends BaseController {
+/**
+ * Class LinkController
+ */
+class LinkController extends AstroBaseController {
+
+  /**
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function query() {
+    $q = Input::get('q');
+    $category = Input::get('category');
+    $limit = Input::get('limit');
+    $page = Input::get('page');
+    $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
+    $randomize = filter_var(Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
+    $query = Link::query()->where('user_id', Auth::user()->id);
+    if(!$include_read) {
+      $query->where('is_read', false);
+    }
+    if(isset($q)) {
+      $query->where(function ($query) use ($q) {
+        $query->where('name', 'LIKE', '%' . $q . '%')
+          ->orwhere('link', 'LIKE', '%' . $q . '%');
+      });
+    }
+    if(isset($category)) {
+      $query->where('category', $category);
+    }
+    $total = $query->count();
+    if($randomize){
+      $query->orderBy(DB::raw('RAND()'));
+    }
+    if (isset($limit)) {
+      $query->take($limit);
+      if (isset($page) && $page > 1 && !$randomize) {
+        $query->skip($limit * ($page - 1));
+      }
+    }
+    $links = $query->get();
+    return $this->successResponse(array('links' => $this->transformCollection($links), 'total' => $total));
+  }
 
   public function save() {
     if(Input::get('id')) {
@@ -71,27 +111,6 @@ class LinkController extends BaseController {
     }
   }
 
-  public function getRandomLinks($category, $quantity = 10) {
-    $links = self::getLinksToRead($category, $quantity);
-    return Response::json(array('success' => true, 'links' => $links->toArray()), 200);
-  }
-
-  public function search() {
-    $q = Input::get('q');
-    $include_read = Input::get('include_read', false);
-    $query =Link::query();
-    if(!$include_read) {
-      $query->where('is_read', false);
-    }
-    $query->where('user_id', Auth::user()->id);
-    $query->where(function($query) use ($q) {
-      $query->where('name', 'LIKE', '%' . $q . '%')
-        ->orwhere('link', 'LIKE', '%' . $q . '%');
-    });
-    $links = $query->get();
-    return Response::json(array('success' => true, 'links' => $links->toArray()), 200);
-  }
-
   public function readLater() {
     $title = Input::get('title');
     $link = Input::get('link');
@@ -112,16 +131,19 @@ class LinkController extends BaseController {
     return Response::json(array('success' => true), 200);
   }
 
-  public static function getLinksToRead($category, $numResults = 10) {
-    $links = Link::where('is_read', false)
-      ->where('category', $category)
-      ->where('user_id', Auth::user()->id)
-      ->orderBy(DB::raw('RAND()'))
-      ->take($numResults)->get();
-    foreach($links as $link) {
-      $link->times_loaded = $link->times_loaded + 1;
-      $link->save();
-    }
-    return $links;
+  /**
+   * @param Link $link
+   * @return array
+   */
+  public function transform($link) {
+    return [
+      'id' => (int) $link['id'],
+      'name' => $link['name'],
+      'link' => $link['link'],
+      'is_read' => (boolean) $link['is_read'],
+      'category' => $link['category'],
+      'times_loaded' => (int) $link['times_loaded'],
+      'times_read' => (int) $link['times_read']
+    ];
   }
 }

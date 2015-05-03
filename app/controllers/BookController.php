@@ -9,6 +9,8 @@ class BookController extends BaseController {
   public function query() {
     $query = Book::query()->where('user_id', Auth::user()->id);
     $q = Input::get('q');
+    $limit = Input::get('limit');
+    $randomize = filter_var(Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
     $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
     if(isset($q)) {
       $query->where(function($query) use ($q) {
@@ -20,6 +22,12 @@ class BookController extends BaseController {
     if(!$include_read) {
       $query->where('is_read', false);
     }
+    if($randomize){
+      $query->orderBy(DB::raw('RAND()'));
+    }
+    if(isset($limit)){
+      $query->take($limit);
+    }
     $books = $query->get();
     return Response::json(array('books' => $books->toArray()), 200);
   }
@@ -28,7 +36,8 @@ class BookController extends BaseController {
     $book = Book::where('is_read', false)
       ->where('category', $category)
       ->where('user_id', Auth::user()->id)
-      ->orderBy(DB::raw('RAND()'))->first();
+      ->orderBy(DB::raw('RAND()'))
+      ->first();
     if($book) {
       if ($book->series_order > 0) {
         $book = Book::where('is_read', false)

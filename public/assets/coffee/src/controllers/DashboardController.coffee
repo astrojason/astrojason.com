@@ -1,4 +1,4 @@
-window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$timeout', 'UserService', ($scope, $http, $location, $timeout, UserService)->
+window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$timeout', 'UserService', 'Link', ($scope, $http, $location, $timeout, UserService, Link)->
   $scope.display_category = $location.search().category || ''
   $scope.search_timeout = null
   $scope.daily_links = []
@@ -15,11 +15,11 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
   $scope.$on 'userLoggedOut', ->
     $scope.initDashboard()
 
-  $scope.$watch 'display_category', (newValue, oldValue)->
+  $scope.$watch 'display_category', (newValue)->
     if newValue != ''
       $scope.getCategoryArticles()
 
-  $scope.$watch 'search_query', (newValue, oldValue)->
+  $scope.$watch 'article_search', (newValue)->
     $scope.searching = true
     $timeout.cancel $scope.search_timeout
     if newValue?.length >= 3
@@ -29,42 +29,33 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
 
   $scope.$watch 'is_read', ->
     $timeout.cancel $scope.search_timeout
-    if $scope.search_query?.length >= 3
+    if $scope.article_search?.length >= 3
       $scope.search_timeout = $timeout ->
         $scope.search_articles()
       , 500
 
   $scope.getCategoryArticles = ->
+    $scope.selected_links = []
     $scope.loading_category = true
-    category_Promise = $http.get '/api/links/dashboard/' + $scope.display_category
-    category_Promise.success (response)->
-      if response.success
-        $scope.selected_links = response.links
-      else
-        $scope.$emit 'errorOccurred', response.error
-    category_Promise.error ->
-      $scope.$emit 'errorOccurred', 'Problem loading category results'
-    category_Promise.finally ->
+    data =
+      category: $scope.display_category
+      limit: 10
+      randomize: true
+    Link.query data, (response)->
+      $scope.selected_links = response.links
       $scope.loading_category = false
 
   $scope.search_articles = ->
-    $scope.loading_search = true
+    $scope.searching = true
     $scope.search_results = []
+
     data =
-      q: $scope.search_query
+      q: $scope.article_search
     if $scope.is_read
-      data.include_read = true
-    search_Promise = $http.post '/api/links/search', $.param data
-    search_Promise.success (response)->
-      if response.success
-        $scope.searching = false
-        $scope.search_results = response.links
-      else
-        $scope.$emit 'errorOccurred', response.error
-    search_Promise.error ->
-      $scope.$emit 'errorOccurred', 'Problem loading search results'
-    search_Promise.finally ->
-      $scope.loading_search = false
+      data['include_read'] = true
+    Link.query data, (response)->
+      $scope.search_results = response.links
+      $scope.searching = false
 
   $scope.deleteItem = (link)->
     index = $scope.daily_links.indexOf(link)
@@ -125,9 +116,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     daily_Promise = $http.get '/api/dashboard'
     daily_Promise.success (response)->
       if response.success
-        $scope.daily_links = response.links
-        $scope.unread_links = response.unread
-        $scope.total_read = parseInt response.total_read
+        $scope.total_read = response.total_read
         $scope.categories = response.categories
         $scope.total_links = response.total_links
         $scope.links_read = response.links_read
@@ -140,17 +129,20 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     daily_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem loading daily results'
 
+    Link.query category: 'Daily', (response)->
+      $scope.daily_links = response.links
+
+    $scope.refreshUnreadArticles()
+
   $scope.refreshUnreadArticles = ->
+    $scope.unread_links = []
     $scope.loading_unread = true
-    category_Promise = $http.get '/api/links/dashboard/unread/20'
-    category_Promise.success (response)->
-      if response.success
-        $scope.unread_links = response.links
-      else
-        $scope.$emit 'errorOccurred', response.error
-    category_Promise.error ->
-      $scope.$emit 'errorOccurred', 'Problem loading unread results'
-    category_Promise.finally ->
+    data =
+      category: 'Unread'
+      limit: 20
+      randomize: true
+    Link.query data, (response)->
+      $scope.unread_links = response.links
       $scope.loading_unread = false
 
   $scope.populateLinks = ->
