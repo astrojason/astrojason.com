@@ -1,4 +1,4 @@
-window.app.controller 'LinkController', ['$scope', '$http', '$controller', ($scope, $http, $controller)->
+window.app.controller 'LinkController', ['$scope', '$controller', 'Link', ($scope, $controller, Link)->
 
   $controller 'FormMasterController', $scope: $scope
 
@@ -12,56 +12,40 @@ window.app.controller 'LinkController', ['$scope', '$http', '$controller', ($sco
       $scope.errorMessage = false
 
   $scope.linkOpened = ->
-    open_Promise = $http.post '/api/links/open/' + $scope.link.id
-    open_Promise.success (response)->
-      if response.success
-        console.log 'Read count updated'
-      else
-        console.log 'Read count update problem'
-    open_Promise.error ->
-      $scope.$emit 'errorOccurred', 'Problem updating read count'
+    $scope.link.times_read += 1
+    $scope.save()
 
-  $scope.markAsRead = ->
-    read_Promise = $http.post '/api/links/read/' + $scope.link.id
-    read_Promise.success (response)->
-      if response.success
-        $scope.link.is_read = true
-        if $scope.$parent.markAsRead
-          $scope.$parent.markAsRead $scope.link
-
-  $scope.markAsUnread = ->
-    read_Promise = $http.post '/api/links/unread/' + $scope.link.id
-    read_Promise.success (response)->
-      if response.success
-        $scope.link.is_read = false
+  $scope.toggleRead = ->
+    $scope.link.is_read = !$scope.link.is_read
+    $scope.save()
 
   $scope.delete = ->
-    read_Promise = $http.post '/api/links/delete/' + $scope.link.id
-    read_Promise.success (response)->
-      if response.success
-        if $scope.$parent.deleteItem
-          $scope.$parent.deleteItem $scope.link
+    success = ->
+      alertify.success 'Link deleted successfully'
+      $scope.deleting = false
+      $scope.editing = false
+      if $scope.$parent.removeLink
+        $scope.$parent.removeLink $scope.index
+
+    error = (response)->
+      $scope.errorMessage = response.data.error
+
+    link_promise = Link.remove id: $scope.link.id
+    link_promise.$promise.then success, error
 
   $scope.save = ->
-    data = $scope.link
     if $scope.link.category == 'New'
       $scope.link.category = $scope.new_category
-    link_Promise = $http.post '/api/links/save', $.param data
-    link_Promise.success (response)->
-      if response.success
-        if $scope.link_form.category.$dirty
-          if $scope.$parent.changeCategory
-            $scope.$parent.changeCategory $scope.link
-        if $scope.link.category == $scope.new_category
-          $scope.categories.push $scope.new_category
-        $scope.editing = false
-        if $scope.$parent.linkAdded
-          $scope.$parent.linkAdded()
-        alertify.success "Link " + ($scope.link.id ? "updated" : "added") + " successfully"
-      else
-        $scope.errorMessage = response.error
-        if $scope.$parent.saveError
-          $scope.$parent.saveError response.error
+
+    success = (response)->
+      $scope.editing = false
+      alertify.success "Link " + (if $scope.link.id then "updated" else "added") + " successfully"
+
+    error = ->
+      $scope.errorMessage = response.error
+
+    link_promise = Link.save $.param $scope.link
+    link_promise.$promise.then success, error
 
   $scope.setCategories = (categories)->
     $scope.categories = categories

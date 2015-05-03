@@ -3,6 +3,5 @@ window.app.factory 'Link', ['$resource', ($resource)->
     query:
       method: 'GET'
       isArray: false
-
   return $resource '/api/link', {}, resource_options
 ]

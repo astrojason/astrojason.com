@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title') :: astrojason.com</title>
     <link href="assets/bower/alertifyjs/dist/css/alertify.css" rel="stylesheet" />
+    <link href="assets/bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="assets/sass/build/vendor/loader.css" rel="stylesheet" />
     <link href="assets/sass/build/base.css" rel="stylesheet" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -16,7 +18,7 @@
   </head>
   <body ng-app="astroApp" ng-controller="MasterController">
     <div id="overlay" ng-show="init" class="overlay"></div>
-    <div ng-controller="ReadLaterController"@if(Auth::check()) ng-init="createLink({{ Auth::user()->id }}, '{{ $title }}', '{{ $link }}')"@endif>
+    <div ng-controller="ReadLaterController"@if(Auth::check()) ng-init="createLink(<% Auth::user()->id %>, '<% $title %>', '<% $link %>')"@endif>
       <div class="alert alert-danger" ng-show="error" ng-cloak>{{ error }} <span class="glyphicon glyphicon-remove-sign pull-right" ng-click="closeWindow()"></span></div>
       <link-form
         link="newLink"
@@ -28,13 +30,16 @@
     <script type="text/javascript" src="assets/bower/jquery/dist/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script type="text/javascript" src="assets/bower/angular/angular.min.js"></script>
-    <script type="text/javascript" src="assets/js/vendor/spin.min.js"></script>
+    <script type="text/javascript" src="assets/bower/angular-resource/angular-resource.min.js"></script>
     <script type="text/javascript" src="assets/bower/alertifyjs/dist/js/alertify.js"></script>
+    <script type="text/javascript" src="assets/bower/angular-messages/angular-messages.min.js"></script>
+    <script type="text/javascript" src="assets/bower/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="assets/bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="assets/js/vendor/bootstrap.min.js"></script>
     <script type="text/javascript" src="assets/js/app.min.js"></script>
     <script type="text/javascript" src="assets/js/models.min.js"></script>
     <script type="text/javascript" src="assets/js/directives.min.js"></script>
     <script type="text/javascript" src="assets/js/filters.min.js"></script>
-    <script type="text/javascript" src="assets/js/controllers.min.js"></script>
     <script type="text/javascript" src="assets/js/services.min.js"></script>
+    <script type="text/javascript" src="assets/js/controllers.min.js"></script>
   </body>

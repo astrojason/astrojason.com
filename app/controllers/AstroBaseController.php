@@ -9,7 +9,7 @@ abstract class AstroBaseController extends BaseController {
     return array_map([$this, 'transform'], $items->toArray());
   }
 
-  public function successResponse($data) {
+  public function successResponse($data = null) {
     return Response::json($data, 200);
   }
 

@@ -30,15 +30,8 @@ Route::group(array('prefix' => 'api'), function() {
     Route::post('logout', 'UserController@logout');
     Route::group(array('prefix' => 'link'), function(){
       Route::get('', 'LinkController@query');
-
-      Route::post('save', 'LinkController@save');
-      Route::post('search', 'LinkController@search');
-      Route::post('open/{id}', 'LinkController@open');
-      Route::post('read/{id}', 'LinkController@read');
-      Route::post('unread/{id}', 'LinkController@unread');
-      Route::post('delete/{id}', 'LinkController@delete');
-      Route::get('dashboard/{category}', 'LinkController@getRandomLinks');
-      Route::get('dashboard/{category}/{quantity}', 'LinkController@getRandomLinks');
+      Route::post('', 'LinkController@save');
+      Route::delete('', 'LinkController@delete');
       Route::get('populate', 'LinkController@populateLinks');
     });
     Route::group(array('prefix' => 'book'), function(){
