@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Response as IlluminateResponse;
 
 abstract class AstroBaseController extends BaseController {
 
@@ -10,11 +11,11 @@ abstract class AstroBaseController extends BaseController {
   }
 
   public function successResponse($data = null) {
-    return Response::json($data, 200);
+    return Response::json($data, IlluminateResponse::HTTP_OK);
   }
 
   public function notFoundResponse($message) {
-    return Response::json($message, 404);
+    return Response::json($message, IlluminateResponse::HTTP_NOT_FOUND);
   }
 
 }

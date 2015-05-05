@@ -2,8 +2,6 @@ window.app.controller 'SongController', ['$scope', 'Song', '$controller', ($scop
 
   $controller 'FormMasterController', $scope: $scope
 
-  $scope.modal = '#addSongModal'
-
   $scope.$watch '[song.title, song.artist]', ->
     $scope.errorMessage = ''
 
@@ -14,6 +12,10 @@ window.app.controller 'SongController', ['$scope', 'Song', '$controller', ($scop
   $scope.save = ()->
     success = ->
       alertify.success 'Song ' + (if $scope.song.id then 'updated' else 'added') + ' successfully'
+      if $scope.song.id
+        $scope.editing = false
+      else
+        $scope.$emit 'songAdded'
 
     error = (response)->
       $scope.errorMessage = response.data.error

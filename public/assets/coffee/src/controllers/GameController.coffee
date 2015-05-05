@@ -4,9 +4,7 @@ window.app.controller 'GameController', ['$scope', 'Game', '$controller', '$time
 
   $controller 'FormMasterController', $scope: $scope
 
-  $scope.modal = '#addGameModal'
-
-  $scope.$watch 'triggerGameRec', (newValue)->
+  $scope.$watch 'recommendingGame', (newValue)->
     if newValue
       $scope.getRecommendation()
 
@@ -36,12 +34,16 @@ window.app.controller 'GameController', ['$scope', 'Game', '$controller', '$time
 
     success = ->
       alertify.success "Game " + (if $scope.game.id then "updated" else "added") + " successfully"
+      if $scope.game.id
+        $scope.editing = false
+      else
+        $scope.$emit 'gameAdded'
 
     error = ->
       $scope.errorMessage = response.data.error
 
     game_promise = Game.save $.param $scope.game
-    game_promise.then success, error
+    game_promise.$promise.then success, error
 
   $scope.togglePlayed = ->
     $scope.game.played = !$scope.game.played

@@ -1,4 +1,4 @@
-window.app.controller 'ReadLaterController', ['$scope', '$window', '$timeout', ($scope, $window, $timeout)->
+window.app.controller 'ReadLaterController', ['$scope', '$timeout', ($scope, $timeout)->
 
   $scope.newLink = null
   $scope.success = false
@@ -21,7 +21,7 @@ window.app.controller 'ReadLaterController', ['$scope', '$window', '$timeout', (
 
   $scope.closeWindow = ->
     $scope.newLink = null
-    $window.parent.postMessage 'closeWindow', '*'
+    window.parent.postMessage 'closeWindow', '*'
 
   $scope.saveError = (message)->
     $scope.error = message

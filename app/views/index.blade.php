@@ -105,25 +105,25 @@
             </tr>
             <tr>
               <td>
-                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addLinkModal">Add Link</button>
-                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addBookModal">Add Book</button>
-                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addMovieModal">Add Movie</button>
+                <button class="btn btn-success btn-xs" ng-click="addingLink = true">Add Link</button>
+                <button class="btn btn-success btn-xs" ng-click="addingBook = true">Add Book</button>
+                <button class="btn btn-success btn-xs" ng-click="addingMovie = true">Add Movie</button>
               </td>
             </tr>
             <tr>
               <td>
-                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addGameModal">Add Game</button>
-                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#addSongModal">Add Song</button>
+                <button class="btn btn-success btn-xs" ng-click="addingGame = true">Add Game</button>
+                <button class="btn btn-success btn-xs" ng-click="addingSong = true">Add Song</button>
               </td>
             </tr>
             <tr ng-show="books_toread" ng-cloak>
-              <td><button class="btn btn-success btn-xs" ng-click="getBookRecommendation()">Book Recommendation</button></td>
+              <td><button class="btn btn-success btn-xs" ng-click="recommendingBook = true">Book Recommendation</button></td>
             </tr>
             <tr ng-show="games_toplay" ng-cloak>
-              <td><button class="btn btn-success btn-xs" ng-click="getGameRecommendation()">Game Recommendation</button></td>
+              <td><button class="btn btn-success btn-xs" ng-click="recommendingGame = true">Game Recommendation</button></td>
             </tr>
             <tr ng-show="songs_toplay" ng-cloak>
-              <td><button class="btn btn-success btn-xs" ng-click="getSongRecommendation()">Song Recommendation</button></td>
+              <td><button class="btn btn-success btn-xs" ng-click="recommendingSong = true">Song Recommendation</button></td>
             </tr>
             <tr ng-show="total_books || total_books" ng-cloak>
               <td>
@@ -145,10 +145,12 @@
     <div
         class="modal fade"
         id="recommendBookModal"
+        modal-visible="recommendingBook"
+        astro-modal>
+      <div
+        class="modal-dialog"
         ng-controller="BookController"
-        ng-init="setCategories(<% $book_categories %>); recommendation_category = 'To Read'"
-        modal>
-      <div class="modal-dialog">
+        ng-init="setCategories(<% $book_categories %>); recommendation_category = 'To Read'">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -178,64 +180,80 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" id="addLinkModal" ng-controller="LinkController" >
-      <div class="modal-dialog">
+    <div
+      class="modal fade"
+      id="addLinkModal"
+      astro-modal
+      modal-visible="addingLink">
+      <div class="modal-dialog" ng-controller="LinkController">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">Add a Link</h4>
           </div>
           <div class="modal-body">
-            <link-form editing="true" link="{}"></link-form>
+            <link-form editing="true" link="newLink"></link-form>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" id="addBookModal" ng-controller="BookController">
-      <div class="modal-dialog">
+    <div
+      class="modal fade"
+      id="addBookModal"
+      astro-modal
+      modal-visible="addingBook">
+      <div class="modal-dialog" ng-controller="BookController">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">Add a Book</h4>
           </div>
           <div class="modal-body">
-            <book-form book="{}" editing="true"></book-form>
+            <book-form book="newBook" editing="true"></book-form>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" id="addMovieModal" ng-controller="MovieController">
-      <div class="modal-dialog">
+    <div
+      class="modal fade"
+      id="addMovieModal"
+      astro-modal
+      modal-visible="addingMovie">
+      <div class="modal-dialog" ng-controller="MovieController">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">Add a Movie</h4>
           </div>
           <div class="modal-body">
-            <movie-form movie="{}" editing="true"></movie-form>
+            <movie-form movie="newMovie" editing="true"></movie-form>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" id="addGameModal" ng-controller="GameController">
-      <div class="modal-dialog">
+    <div
+      class="modal fade"
+      id="addGameModal"
+      astro-modal
+      modal-visible="addingGame">
+      <div class="modal-dialog" ng-controller="GameController">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">Add a Game</h4>
           </div>
           <div class="modal-body">
-            <game-form game="{}" editing="true"></game-form>
+            <game-form game="newGame" editing="true"></game-form>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" id="recommendGameModal" ng-controller="GameController">
-      <div class="modal-dialog">
+    <div class="modal fade" id="recommendGameModal" astro-modal modal-visible="recommendingGame">
+      <div class="modal-dialog" ng-controller="GameController">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -248,15 +266,19 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" id="addSongModal" ng-controller="SongController">
-      <div class="modal-dialog">
+    <div
+      class="modal fade"
+      id="addSongModal"
+      astro-modal
+      modal-visible="addingSong">
+      <div class="modal-dialog" ng-controller="SongController">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">Add a Song</h4>
           </div>
           <div class="modal-body">
-            <song-form song="{}" editing="true"></song-form>
+            <song-form song="newSong" editing="true"></song-form>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->

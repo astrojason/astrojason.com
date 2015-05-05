@@ -2,8 +2,6 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', 'B
 
   $controller 'FormMasterController', $scope: $scope
 
-  $scope.modal = '#addBookModal'
-
   $scope.$watch 'search_query', (newValue)->
     $scope.searching = true
     $timeout.cancel $scope.search_timeout
@@ -16,7 +14,7 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', 'B
     if $scope.search_query?.length >= 3
       $scope.search_books()
 
-  $scope.$watch 'triggerBookRec', (newValue)->
+  $scope.$watch 'recommendingBook', (newValue)->
     if newValue
       $scope.getRecommendation()
 
@@ -39,6 +37,10 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', 'B
 
     success = ->
       alertify.success "Book " + (if $scope.book.id then "updated" else "added") + " successfully"
+      if $scope.book.id
+        $scope.editing = false
+      else
+        $scope.$emit 'bookAdded'
 
     error = (response)->
       $scope.errorMessage = response.data.error

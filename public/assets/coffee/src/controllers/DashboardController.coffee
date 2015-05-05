@@ -6,14 +6,35 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
   $scope.search_results = []
   $scope.addingLink = false
   $scope.loading_unread = false
-  $scope.triggerBookRec = false
-  $scope.triggerGameRec = false
+  $scope.recommendingBook = false
+  $scope.recommendingGame = false
+  $scope.recommendingSong = false
+  $scope.addingLink = false
+  $scope.addingBook = false
+  $scope.addingMovie = false
+  $scope.addingGame = false
+  $scope.addingSong = false
 
   $scope.$on 'userLoggedIn', ->
     $scope.initDashboard()
 
   $scope.$on 'userLoggedOut', ->
     $scope.initDashboard()
+
+  $scope.$on 'linkAdded', ->
+    $scope.addingLink = false
+
+  $scope.$on 'bookAdded', ->
+    $scope.addingBook = false
+
+  $scope.$on 'movieAdded', ->
+    $scope.addingMovie = false
+
+  $scope.$on 'gameAdded', ->
+    $scope.addingGame = false
+
+  $scope.$on 'songAdded', ->
+    $scope.addingSong = false
 
   $scope.$watch 'display_category', (newValue)->
     if newValue != ''
@@ -33,6 +54,26 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       $scope.search_timeout = $timeout ->
         $scope.search_articles()
       , 500
+
+  $scope.$watch 'addingLink', ->
+    if !$scope.addingLink
+      $scope.newLink = new window.Link()
+
+  $scope.$watch 'addingBook', ->
+    if !$scope.addingBook
+      $scope.newBook = new window.Book()
+
+  $scope.$watch 'addingMovie', ->
+    if !$scope.addingMovie
+      $scope.newMovie = new window.Movie()
+
+  $scope.$watch 'addingGame', ->
+    if !$scope.addingGame
+      $scope.newGame = new window.Game()
+
+  $scope.$watch 'addingSong', ->
+    if !$scope.addingSong
+      $scope.newSong = new window.Song()
 
   $scope.getCategoryArticles = ->
     $scope.selected_links = []
@@ -97,16 +138,6 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     if index >= 0
       $scope.unread_links.splice index, 1
 
-  $scope.addLink = ->
-    $scope.addingLink = true
-
-  $scope.linkAdded = ->
-    $scope.addingLink = false
-    $scope.newLink = window.Link $scope.$parent.user.id
-
-  $scope.bookAdded = ->
-    $scope.addingBook = false
-
   $scope.initDashboard = ->
     $scope.user = UserService.getUser()
     if $scope.user?.id
@@ -150,16 +181,6 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     populate_promise.success (response)->
       if response.success
         $scope.loadDashboard()
-
-  $scope.getBookRecommendation = ->
-    $scope.triggerBookRec = true
-    angular.element('#recommendBookModal').modal('show')
-    false
-
-  $scope.getGameRecommendation = ->
-    $scope.triggerGameRec = true
-    angular.element('#recommendGameModal').modal('show')
-    false
 
   $scope.initDashboard()
 ]

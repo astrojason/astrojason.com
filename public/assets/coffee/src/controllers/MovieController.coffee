@@ -2,8 +2,6 @@ window.app.controller 'MovieController', ['$scope',  '$controller', 'Movie', ($s
 
   $controller 'FormMasterController', $scope: $scope
 
-  $scope.modal = '#addMovieModal'
-
   $scope.$on 'dateChanged', (e, m)->
     $scope.movie.date_watched = m
 
@@ -14,8 +12,10 @@ window.app.controller 'MovieController', ['$scope',  '$controller', 'Movie', ($s
   $scope.save = (movie)->
     success = ->
       alertify.success "Movie " + (if movie.id then "updated" else "added") + " successfully"
-      if $scope.$parent.movieSaved
-        $scope.$parent.movieSaved()
+      if $scope.movie.id
+        $scope.editing = false
+      else
+        $scope.$emit 'movieAdded'
 
     error = ->
       $scope.errorMessage = response.data.error

@@ -2,8 +2,6 @@ window.app.controller 'LinkController', ['$scope', '$controller', 'Link', ($scop
 
   $controller 'FormMasterController', $scope: $scope
 
-  $scope.modal = '#addLinkModal'
-
   $scope.deleting = false
   $scope.errorMessage = false
 
@@ -37,11 +35,14 @@ window.app.controller 'LinkController', ['$scope', '$controller', 'Link', ($scop
     if $scope.link.category == 'New'
       $scope.link.category = $scope.new_category
 
-    success = (response)->
-      $scope.editing = false
+    success = ->
       alertify.success "Link " + (if $scope.link.id then "updated" else "added") + " successfully"
+      if $scope.link.id
+        $scope.editing = false
+      else
+        $scope.$emit 'linkAdded'
 
-    error = ->
+    error = (response)->
       $scope.errorMessage = response.error
 
     link_promise = Link.save $.param $scope.link
