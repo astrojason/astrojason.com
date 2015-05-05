@@ -4,16 +4,15 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
   $scope.daily_links = []
   $scope.selected_links = []
   $scope.search_results = []
-  $scope.addingLink = false
   $scope.loading_unread = false
   $scope.recommendingBook = false
   $scope.recommendingGame = false
   $scope.recommendingSong = false
-  $scope.addingLink = false
-  $scope.addingBook = false
-  $scope.addingMovie = false
-  $scope.addingGame = false
-  $scope.addingSong = false
+  $scope.linkModalOpen = false
+  $scope.bookModalOpen = false
+  $scope.movieModalOpen = false
+  $scope.gameModalOpen = false
+  $scope.songModalOpen = false
 
   $scope.$on 'userLoggedIn', ->
     $scope.initDashboard()
@@ -21,20 +20,12 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
   $scope.$on 'userLoggedOut', ->
     $scope.initDashboard()
 
-  $scope.$on 'linkAdded', ->
-    $scope.addingLink = false
-
-  $scope.$on 'bookAdded', ->
-    $scope.addingBook = false
-
-  $scope.$on 'movieAdded', ->
-    $scope.addingMovie = false
-
-  $scope.$on 'gameAdded', ->
-    $scope.addingGame = false
-
-  $scope.$on 'songAdded', ->
-    $scope.addingSong = false
+  $scope.$on 'closeModal', ->
+    $scope.linkModalOpen = false
+    $scope.bookModalOpen = false
+    $scope.movieModalOpen = false
+    $scope.gameModalOpen = false
+    $scope.songModalOpen = false
 
   $scope.$watch 'display_category', (newValue)->
     if newValue != ''
@@ -56,23 +47,23 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       , 500
 
   $scope.$watch 'addingLink', ->
-    if !$scope.addingLink
+    if !$scope.linkModalOpen
       $scope.newLink = new window.Link()
 
-  $scope.$watch 'addingBook', ->
-    if !$scope.addingBook
+  $scope.$watch 'bookModalOpen', ->
+    if !$scope.bookModalOpen
       $scope.newBook = new window.Book()
 
-  $scope.$watch 'addingMovie', ->
-    if !$scope.addingMovie
+  $scope.$watch 'movieModalOpen', ->
+    if !$scope.movieModalOpen
       $scope.newMovie = new window.Movie()
 
-  $scope.$watch 'addingGame', ->
-    if !$scope.addingGame
+  $scope.$watch 'gameModalOpen', ->
+    if !$scope.gameModalOpen
       $scope.newGame = new window.Game()
 
-  $scope.$watch 'addingSong', ->
-    if !$scope.addingSong
+  $scope.$watch 'songModalOpen', ->
+    if !$scope.songModalOpen
       $scope.newSong = new window.Song()
 
   $scope.getCategoryArticles = ->

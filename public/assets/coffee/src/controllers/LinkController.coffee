@@ -40,7 +40,7 @@ window.app.controller 'LinkController', ['$scope', '$controller', 'Link', ($scop
       if $scope.link.id
         $scope.editing = false
       else
-        $scope.$emit 'linkAdded'
+        $scope.$emit 'closeModal'
 
     error = (response)->
       $scope.errorMessage = response.error

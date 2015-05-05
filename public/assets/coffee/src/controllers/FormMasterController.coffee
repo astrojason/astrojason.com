@@ -7,8 +7,7 @@ window.app.controller 'FormMasterController', ['$scope', ($scope)->
     if $scope.updating
       $scope.editing = false
     else
-      angular.element($scope.modal).modal 'hide'
-      false
+      $scope.$emit 'closeModal'
 
   $scope.$watch 'editing', (newValue)->
     if newValue

@@ -3,7 +3,9 @@ window.app.controller 'MovieController', ['$scope',  '$controller', 'Movie', ($s
   $controller 'FormMasterController', $scope: $scope
 
   $scope.$on 'dateChanged', (e, m)->
-    $scope.movie.date_watched = m
+    if $scope.movie
+      $scope.movie.date_watched = m
+      console.log $scope.movie
 
   $scope.toggleWatched = ->
     $scope.movie.is_watched = !$scope.movie.is_watched
@@ -15,7 +17,7 @@ window.app.controller 'MovieController', ['$scope',  '$controller', 'Movie', ($s
       if $scope.movie.id
         $scope.editing = false
       else
-        $scope.$emit 'movieAdded'
+        $scope.$emit 'closeModal'
 
     error = ->
       $scope.errorMessage = response.data.error

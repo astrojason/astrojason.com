@@ -40,7 +40,7 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', 'B
       if $scope.book.id
         $scope.editing = false
       else
-        $scope.$emit 'bookAdded'
+        $scope.$emit 'closeModal'
 
     error = (response)->
       $scope.errorMessage = response.data.error

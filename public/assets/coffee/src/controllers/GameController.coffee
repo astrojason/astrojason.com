@@ -37,7 +37,7 @@ window.app.controller 'GameController', ['$scope', 'Game', '$controller', '$time
       if $scope.game.id
         $scope.editing = false
       else
-        $scope.$emit 'gameAdded'
+        $scope.$emit 'closeModal'
 
     error = ->
       $scope.errorMessage = response.data.error

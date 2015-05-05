@@ -105,15 +105,15 @@
             </tr>
             <tr>
               <td>
-                <button class="btn btn-success btn-xs" ng-click="addingLink = true">Add Link</button>
-                <button class="btn btn-success btn-xs" ng-click="addingBook = true">Add Book</button>
-                <button class="btn btn-success btn-xs" ng-click="addingMovie = true">Add Movie</button>
+                <button class="btn btn-success btn-xs" ng-click="linkModalOpen = true">Add Link</button>
+                <button class="btn btn-success btn-xs" ng-click="bookModalOpen = true">Add Book</button>
+                <button class="btn btn-success btn-xs" ng-click="movieModalOpen = true">Add Movie</button>
               </td>
             </tr>
             <tr>
               <td>
-                <button class="btn btn-success btn-xs" ng-click="addingGame = true">Add Game</button>
-                <button class="btn btn-success btn-xs" ng-click="addingSong = true">Add Song</button>
+                <button class="btn btn-success btn-xs" ng-click="gameModalOpen = true">Add Game</button>
+                <button class="btn btn-success btn-xs" ng-click="songModalOpen = true">Add Song</button>
               </td>
             </tr>
             <tr ng-show="books_toread" ng-cloak>
@@ -184,7 +184,7 @@
       class="modal fade"
       id="addLinkModal"
       astro-modal
-      modal-visible="addingLink">
+      modal-visible="linkModalOpen">
       <div class="modal-dialog" ng-controller="LinkController">
         <div class="modal-content">
           <div class="modal-header">
@@ -202,7 +202,7 @@
       class="modal fade"
       id="addBookModal"
       astro-modal
-      modal-visible="addingBook">
+      modal-visible="bookModalOpen">
       <div class="modal-dialog" ng-controller="BookController">
         <div class="modal-content">
           <div class="modal-header">
@@ -220,7 +220,7 @@
       class="modal fade"
       id="addMovieModal"
       astro-modal
-      modal-visible="addingMovie">
+      modal-visible="movieModalOpen">
       <div class="modal-dialog" ng-controller="MovieController">
         <div class="modal-content">
           <div class="modal-header">
@@ -238,7 +238,7 @@
       class="modal fade"
       id="addGameModal"
       astro-modal
-      modal-visible="addingGame">
+      modal-visible="gameModalOpen">
       <div class="modal-dialog" ng-controller="GameController">
         <div class="modal-content">
           <div class="modal-header">
@@ -270,7 +270,7 @@
       class="modal fade"
       id="addSongModal"
       astro-modal
-      modal-visible="addingSong">
+      modal-visible="songModalOpen">
       <div class="modal-dialog" ng-controller="SongController">
         <div class="modal-content">
           <div class="modal-header">

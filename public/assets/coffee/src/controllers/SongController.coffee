@@ -15,7 +15,7 @@ window.app.controller 'SongController', ['$scope', 'Song', '$controller', ($scop
       if $scope.song.id
         $scope.editing = false
       else
-        $scope.$emit 'songAdded'
+        $scope.$emit 'closeModal'
 
     error = (response)->
       $scope.errorMessage = response.data.error
