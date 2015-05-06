@@ -3,14 +3,16 @@
 </div>
 <div class="row" ng-show="!editing && book.title">
   <div class="col-md-12">
-    <div class="alert alert-danger row" ng-show="deleting == true">
+    <div class="row" ng-show="deleting == true">
       <div class="col-md-12">
-        <h4>Delete Book</h4>
-        <p>Deleting the book cannot be undone.</p>
-        <p>
-          <a class="btn btn-danger" ng-click="delete()">Yes I want to delete</a>
-          <a class="btn btn-default" ng-click="deleting = false">No, do not delete</a>
-        </p>
+        <div class="alert alert-danger">
+          <h4>Delete Book</h4>
+          <p>Deleting the book cannot be undone.</p>
+          <p>
+            <a class="btn btn-danger" ng-click="delete()">Yes I want to delete</a>
+            <a class="btn btn-default" ng-click="deleting = false">No, do not delete</a>
+          </p>
+        </div>
       </div>
     </div>
     <div class="row">

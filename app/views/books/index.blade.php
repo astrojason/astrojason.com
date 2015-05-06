@@ -16,18 +16,21 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-show="search_query && search_results.length == 0 && !searching">
+        <tr ng-show="search_query && (search_results | filter:{removed: '!' + true}).length == 0 && !searching">
           <td>No results for <strong>{{ search_query }}</strong>
         </tr>
-        <tr ng-repeat="book in search_results" ng-show="search_results.length > 0" ng-cloak>
+        <tr ng-repeat="book in search_results | filter:{deleted: '!' + true}" ng-show="(search_results | filter:{removed: '!' + true}).length > 0" ng-cloak>
           <td ng-class="(book.is_read | boolparse) ? 'read' : ''"><book-form book="book" editing="false"></book-form></td>
         </tr>
       </tbody>
     </table>
     <table class="table table-condensed table-striped table-hover" ng-init="all()">
       <tbody>
-        <tr ng-repeat="book in books track by $index">
-          <td><book-form book="book" editing="false" index="$index"></book-form></td>
+        <tr ng-show="loading_books">
+          <td><loader ng-show="loading_books" ng-cloak></loader></td>
+        </tr>
+        <tr ng-repeat="book in books | filter:{removed: '!' + true}">
+          <td><book-form book="book" editing="false"></book-form></td>
         </tr>
       </tbody>
     </table>

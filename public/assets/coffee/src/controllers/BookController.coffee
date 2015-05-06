@@ -2,6 +2,8 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', 'B
 
   $controller 'FormMasterController', $scope: $scope
 
+  $scope.loading_books = false
+
   $scope.$watch 'search_query', (newValue)->
     $scope.searching = true
     $timeout.cancel $scope.search_timeout
@@ -19,8 +21,10 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', 'B
       $scope.getRecommendation()
 
   $scope.all = ->
+    $scope.loading_books = true
     Book.query (response)->
       $scope.books = response.books
+      $scope.loading_books = false
 
   $scope.search_books = ->
     $scope.searching = true
@@ -57,17 +61,13 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', 'B
       alertify.success 'Book deleted successfully'
       $scope.deleting = false
       $scope.editing = false
-      if $scope.$parent.removeBook
-        $scope.$parent.removeBook $scope.index
+      $scope.book.removed = true
 
     error = (response)->
       $scope.errorMessage = response.data.error
 
     song_promise = Book.remove id: $scope.book.id
     song_promise.$promise.then success, error
-
-  $scope.removeBook = (index)->
-    $scope.books.splice index, 1
 
   $scope.getRecommendation = ->
     if $scope.recommendation_category

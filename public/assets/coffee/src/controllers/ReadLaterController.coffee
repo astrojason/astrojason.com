@@ -10,18 +10,11 @@ window.app.controller 'ReadLaterController', ['$scope', '$timeout', ($scope, $ti
     $scope.newLink.name = name
     $scope.newLink.link = link
 
-  $scope.linkAdded = ->
-    $scope.success = true
+  $scope.$on 'closeModal', ->
+    console.log 'Closing modal'
     $timeout(->
-      $scope.closeWindow()
+      window.parent.postMessage 'closeWindow', '*'
     , 1000)
-
-  $scope.linkCancelled = ->
-    $scope.closeWindow()
-
-  $scope.closeWindow = ->
-    $scope.newLink = null
-    window.parent.postMessage 'closeWindow', '*'
 
   $scope.saveError = (message)->
     $scope.error = message
