@@ -4,7 +4,7 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', 'B
 
   $scope.loading_books = false
 
-  $scope.$watch 'search_query', (newValue)->
+  $scope.$watch 'book_query', (newValue)->
     $scope.searching = true
     $timeout.cancel $scope.search_timeout
     if newValue?.length >= 3
@@ -13,7 +13,7 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', 'B
       , 500
 
   $scope.$watch 'is_read', ->
-    if $scope.search_query?.length >= 3
+    if $scope.book_query?.length >= 3
       $scope.search_books()
 
   $scope.$watch 'recommendingBook', (newValue)->
@@ -27,13 +27,13 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', 'B
       $scope.loading_books = false
 
   $scope.search_books = ->
-    $scope.searching = true
+    $scope.searching_books = true
     data =
-      q: $scope.search_query
+      q: $scope.book_query
       include_read: $scope.is_read
     Book.query data, (response)->
       $scope.search_results = response.books
-      $scope.searching = false
+      $scope.searching_books = false
 
   $scope.save = ->
     if $scope.book.category == 'New'

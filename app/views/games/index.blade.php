@@ -6,22 +6,39 @@
 
 @section('content')
   <div ng-controller="GameController">
-    <table class="table table-condensed table-striped table-hover">
-      <thead>
-        <tr>
-          <th>
-            <input type="text" ng-model="search_query" class="form-control" placeholder="Search Query" />
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-show="search_query && search_results.length == 0 && !searching">
-          <td>No results for <strong>{{ search_query }}</strong>
-        </tr>
-        <tr ng-repeat="game in search_results" ng-show="search_results.length > 0" ng-cloak>
-          <td><game-form game="game" editing="false"></game-form></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="row">
+      <div class="col-md-12">
+        <loader ng-show="searching_games" ng-cloak></loader>
+        <table class="table table-condensed table-striped table-hover">
+          <thead>
+            <tr>
+              <th>
+                <input type="text" ng-model="game_query" class="form-control" placeholder="Search Query" />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-show="game_query && (search_results | filter:{removed: '!' + true}).length == 0 && !searching_games">
+              <td>No results for <strong>{{ game_query }}</strong>
+            </tr>
+            <tr ng-repeat="game in search_results | filter:{removed: '!' + true}" ng-show="(search_results | filter:{removed: '!' + true}).length > 0" ng-cloak>
+              <td><game-form game="game" editing="false"></game-form></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <loader ng-show="loading_games" ng-cloak></loader>
+        <table class="table table-condensed table-striped table-hover" ng-init="all()">
+          <tbody>
+          <tr ng-repeat="game in games | filter:{removed: '!' + true}">
+            <td><game-form game="game" editing="false"></game-form></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 @stop

@@ -2,6 +2,7 @@ window.app.controller 'FormMasterController', ['$scope', ($scope)->
 
   $scope.searching = false
   $scope.updating = false
+  $scope.search_timeout = null
 
   $scope.cancelEdit = ->
     if $scope.updating

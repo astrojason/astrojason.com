@@ -1,15 +1,12 @@
 window.app.controller 'GameController', ['$scope', 'Game', '$controller', '$timeout', ($scope, Game, $controller, $timeout)->
 
-  $scope.search_timeout = null
-
   $controller 'FormMasterController', $scope: $scope
 
   $scope.$watch 'recommendingGame', (newValue)->
     if newValue
       $scope.getRecommendation()
 
-  $scope.$watch 'search_query', (newValue)->
-    $scope.searching = true
+  $scope.$watch 'game_query', (newValue)->
     $timeout.cancel $scope.search_timeout
     if newValue?.length >= 3
       $scope.search_timeout = $timeout ->
@@ -17,16 +14,19 @@ window.app.controller 'GameController', ['$scope', 'Game', '$controller', '$time
       , 500
 
   $scope.all = ->
+    $scope.loading_games = true
     Game.query (response)->
       $scope.games = response.games
+      $scope.loading_games = false
 
   $scope.search_games = ->
+    $scope.searching_games = true
     data =
-      q: $scope.search_query
+      q: $scope.game_query
       include_read: $scope.is_read
     Game.query data, (response)->
       $scope.search_results = response.games
-      $scope.searching = false
+      $scope.searching_games = false
 
   $scope.save = ->
     if $scope.game.category == 'New'
@@ -54,8 +54,7 @@ window.app.controller 'GameController', ['$scope', 'Game', '$controller', '$time
       alertify.success 'Game deleted successfully'
       $scope.deleting = false
       $scope.editing = false
-      if $scope.$parent.removeGame
-        $scope.$parent.removeGame $scope.index
+      $scope.game.removed = true
 
     error = (response)->
       $scope.errorMessage = response.data.error

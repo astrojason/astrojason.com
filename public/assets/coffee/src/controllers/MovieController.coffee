@@ -1,11 +1,17 @@
-window.app.controller 'MovieController', ['$scope',  '$controller', 'Movie', ($scope, $controller, Movie)->
+window.app.controller 'MovieController', ['$scope',  '$controller', '$timeout', 'Movie', ($scope, $controller, $timeout, Movie)->
 
   $controller 'FormMasterController', $scope: $scope
 
   $scope.$on 'dateChanged', (e, m)->
     if $scope.movie
       $scope.movie.date_watched = m
-      console.log $scope.movie
+
+  $scope.$watch 'movie_query', (newValue)->
+    $timeout.cancel $scope.search_timeout
+    if newValue?.length >= 3
+      $scope.search_timeout = $timeout ->
+        $scope.search_movies()
+      , 500
 
   $scope.toggleWatched = ->
     $scope.movie.is_watched = !$scope.movie.is_watched
@@ -19,7 +25,7 @@ window.app.controller 'MovieController', ['$scope',  '$controller', 'Movie', ($s
       else
         $scope.$emit 'closeModal'
 
-    error = ->
+    error = (response)->
       $scope.errorMessage = response.data.error
 
     movie_promise = Movie.save $.param movie
@@ -30,8 +36,7 @@ window.app.controller 'MovieController', ['$scope',  '$controller', 'Movie', ($s
       alertify.success 'Movie deleted successfully'
       $scope.deleting = false
       $scope.editing = false
-      if $scope.$parent.removeMovie
-        $scope.$parent.removeMovie $scope.index
+      $scope.movie.removed = true
 
     error = (response)->
       $scope.errorMessage = response.data.error
@@ -40,11 +45,19 @@ window.app.controller 'MovieController', ['$scope',  '$controller', 'Movie', ($s
     movie_promise.$promise.then success, error
 
   $scope.all = ->
+    $scope.loading_movies = true
     Movie.query (response)->
       $scope.movies = response.movies
+      $scope.loading_movies = false
 
-  $scope.removeMovie = (index)->
-    $scope.movies.splice index, 1
+  $scope.search_movies = ->
+    $scope.searching_movies = true
+    data =
+      q: $scope.movie_query
+      include_read: $scope.is_read
+    Movie.query data, (response)->
+      $scope.search_results = response.movies
+      $scope.searching_movies = false
 
   $scope.checkEditing = ->
     return $scope.movie?.id
