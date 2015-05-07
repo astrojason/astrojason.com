@@ -19,10 +19,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-show="book_query && (search_results | filter:{removed: '!' + true}).length == 0 && !searching_books">
+            <tr ng-show="book_query && book_results.length == 0 && !searching_books">
               <td>No results for <strong>{{ book_query }}</strong>
             </tr>
-            <tr ng-repeat="book in search_results | filter:{deleted: '!' + true}" ng-show="(search_results | filter:{removed: '!' + true}).length > 0" ng-cloak>
+            <tr ng-repeat="book in book_results" ng-show="book_results.length > 0" ng-cloak>
               <td ng-class="(book.is_read | boolparse) ? 'read' : ''"><book-form book="book" editing="false"></book-form></td>
             </tr>
           </tbody>
@@ -34,7 +34,7 @@
         <loader ng-show="loading_books" ng-cloak></loader>
       <table class="table table-condensed table-striped table-hover" ng-init="all()">
         <tbody>
-          <tr ng-repeat="book in books | filter:{removed: '!' + true}">
+          <tr ng-repeat="book in books">
             <td><book-form book="book" editing="false"></book-form></td>
           </tr>
         </tbody>

@@ -26,10 +26,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-show="article_search && search_results.length == 0 && !searching">
+                <tr ng-show="article_search && link_results.length == 0 && !searching">
                   <td>No results for <strong>{{ article_search }}</strong>
                 </tr>
-                <tr ng-repeat="link in search_results" ng-show="search_results.length > 0" ng-cloak>
+                <tr ng-repeat="link in link_results" ng-show="link_results.length > 0" ng-cloak>
                   <td ng-class="(link.is_read | boolparse) ? 'read' : ''"><link-form link="link" editing="false"></link-form></td>
                 </tr>
               </tbody>

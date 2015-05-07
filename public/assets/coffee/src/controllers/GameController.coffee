@@ -1,6 +1,10 @@
-window.app.controller 'GameController', ['$scope', 'Game', '$controller', '$timeout', ($scope, Game, $controller, $timeout)->
+window.app.controller 'GameController', ['$scope', '$filter', '$controller', '$timeout', 'Game', ($scope, $filter, $controller, $timeout, Game)->
 
   $controller 'FormMasterController', $scope: $scope
+
+  $scope.$on 'gameDeleted', (event, message)->
+    $scope.games = $filter('filter')($scope.games, {id: '!' + message})
+    $scope.game_results = $filter('filter')($scope.game_results, {id: '!' + message})
 
   $scope.$watch 'recommendingGame', (newValue)->
     if newValue
@@ -23,9 +27,8 @@ window.app.controller 'GameController', ['$scope', 'Game', '$controller', '$time
     $scope.searching_games = true
     data =
       q: $scope.game_query
-      include_read: $scope.is_read
     Game.query data, (response)->
-      $scope.search_results = response.games
+      $scope.game_results = response.games
       $scope.searching_games = false
 
   $scope.save = ->
@@ -54,7 +57,7 @@ window.app.controller 'GameController', ['$scope', 'Game', '$controller', '$time
       alertify.success 'Game deleted successfully'
       $scope.deleting = false
       $scope.editing = false
-      $scope.game.removed = true
+      $scope.$emit 'gameDeleted', $scope.game.id
 
     error = (response)->
       $scope.errorMessage = response.data.error
@@ -67,9 +70,6 @@ window.app.controller 'GameController', ['$scope', 'Game', '$controller', '$time
 
   $scope.checkEditing = ->
     return $scope.game?.id
-
-  $scope.removeGame = (index)->
-    $scope.games.splice index, 1
 
   $scope.getRecommendation = ->
     success = (response)->

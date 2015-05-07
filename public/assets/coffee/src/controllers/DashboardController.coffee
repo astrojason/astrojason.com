@@ -1,9 +1,9 @@
-window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$timeout', 'UserService', 'Link', ($scope, $http, $location, $timeout, UserService, Link)->
+window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$timeout', '$filter', 'UserService', 'Link', ($scope, $http, $location, $timeout, $filter, UserService, Link)->
   $scope.display_category = $location.search().category || ''
   $scope.search_timeout = null
   $scope.daily_links = []
   $scope.selected_links = []
-  $scope.search_results = []
+  $scope.link_results = []
   $scope.loading_unread = false
   $scope.recommendingBook = false
   $scope.recommendingGame = false
@@ -19,6 +19,12 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
 
   $scope.$on 'userLoggedOut', ->
     $scope.initDashboard()
+
+  $scope.$on 'linkDeleted', (event, message)->
+    $scope.daily_links = $filter('filter')($scope.daily_links, {id: '!' + message})
+    $scope.unread_links = $filter('filter')($scope.unread_links, {id: '!' + message})
+    $scope.selected_links = $filter('filter')($scope.selected_links, {id: '!' + message})
+    $scope.link_results = $filter('filter')($scope.link_results, {id: '!' + message})
 
   $scope.$on 'closeModal', ->
     $scope.linkModalOpen = false
@@ -79,29 +85,15 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
 
   $scope.search_articles = ->
     $scope.searching = true
-    $scope.search_results = []
+    $scope.link_results = []
 
     data =
       q: $scope.article_search
     if $scope.is_read
       data['include_read'] = true
     Link.query data, (response)->
-      $scope.search_results = response.links
+      $scope.link_results = response.links
       $scope.searching = false
-
-  $scope.deleteItem = (link)->
-    index = $scope.daily_links.indexOf(link)
-    if index >= 0
-      $scope.daily_links.splice index, 1
-    index = $scope.unread_links.indexOf(link)
-    if index >= 0
-      $scope.unread_links.splice index, 1
-    index = $scope.selected_links.indexOf(link)
-    if index >= 0
-      $scope.selected_links.splice index, 1
-    index = $scope.search_results.indexOf(link)
-    if index >= 0
-      $scope.search_results.splice index, 1
 
   $scope.changeCategory = (link)->
     index = $scope.daily_links.indexOf(link)

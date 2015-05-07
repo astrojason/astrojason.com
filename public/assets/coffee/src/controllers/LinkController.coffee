@@ -1,9 +1,13 @@
-window.app.controller 'LinkController', ['$scope', '$controller', 'Link', ($scope, $controller, Link)->
+window.app.controller 'LinkController', ['$scope', '$controller', '$filter', 'Link', ($scope, $controller, $filter, Link)->
 
   $controller 'FormMasterController', $scope: $scope
 
   $scope.deleting = false
   $scope.errorMessage = false
+
+  $scope.$on 'linkDeleted', (event, message)->
+    $scope.links = $filter('filter')($scope.links, {id: '!' + message})
+    $scope.link_results = $filter('filter')($scope.link_results, {id: '!' + message})
 
   $scope.$watch 'link.link', (oldValue, newValue)->
     if oldValue != newValue
@@ -22,8 +26,7 @@ window.app.controller 'LinkController', ['$scope', '$controller', 'Link', ($scop
       alertify.success 'Link deleted successfully'
       $scope.deleting = false
       $scope.editing = false
-      if $scope.$parent.removeLink
-        $scope.$parent.removeLink $scope.index
+      $scope.$emit 'linkDeleted', $scope.link.id
 
     error = (response)->
       $scope.errorMessage = response.data.error
@@ -39,6 +42,7 @@ window.app.controller 'LinkController', ['$scope', '$controller', 'Link', ($scop
       alertify.success "Link " + (if $scope.link.id then "updated" else "added") + " successfully"
       if $scope.link.id
         $scope.editing = false
+        $scope.$emit 'linkUpdated', $scope.link
       else
         $scope.$emit 'closeModal'
 

@@ -18,10 +18,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-show="movie_query && (search_results | filter:{removed: '!' + true}).length == 0 && !searching_movies">
+            <tr ng-show="movie_query && movie_results.length == 0 && !searching_movies">
               <td>No results for <strong>{{ movie_query }}</strong>
             </tr>
-            <tr ng-repeat="movie in search_results | filter:{removed: '!' + true}" ng-show="(search_results | filter:{removed: '!' + true}).length > 0" ng-cloak>
+            <tr ng-repeat="movie in movie_results" ng-show="movie_results.length > 0" ng-cloak>
               <td><movie-form movie="movie" editing="false"></movie-form></td>
             </tr>
           </tbody>
@@ -33,7 +33,7 @@
         <loader ng-show="loading_movies" ng-cloak></loader>
         <table class="table table-condensed table-striped table-hover" ng-init="all()">
           <tbody>
-            <tr ng-repeat="movie in movies | filter:{removed: '!' + true}">
+            <tr ng-repeat="movie in movies">
               <td>
                 <movie-form movie="movie" editing="false"></movie-form>
               </td>

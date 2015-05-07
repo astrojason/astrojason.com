@@ -1,8 +1,12 @@
-window.app.controller 'BookController', ['$scope', '$controller', '$timeout', 'Book', ($scope, $controller, $timeout, Book)->
+window.app.controller 'BookController', ['$scope', '$controller', '$timeout', '$filter', 'Book', ($scope, $controller, $timeout, $filter, Book)->
 
   $controller 'FormMasterController', $scope: $scope
 
   $scope.loading_books = false
+
+  $scope.$on 'bookDeleted', (event, message)->
+    $scope.books = $filter('filter')($scope.books, {id: '!' + message})
+    $scope.book_results = $filter('filter')($scope.book_results, {id: '!' + message})
 
   $scope.$watch 'book_query', (newValue)->
     $scope.searching = true
@@ -32,7 +36,7 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', 'B
       q: $scope.book_query
       include_read: $scope.is_read
     Book.query data, (response)->
-      $scope.search_results = response.books
+      $scope.book_results = response.books
       $scope.searching_books = false
 
   $scope.save = ->
@@ -61,7 +65,7 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', 'B
       alertify.success 'Book deleted successfully'
       $scope.deleting = false
       $scope.editing = false
-      $scope.book.removed = true
+      $scope.$emit 'bookDeleted', $scope.book.id
 
     error = (response)->
       $scope.errorMessage = response.data.error

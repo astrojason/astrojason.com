@@ -1,6 +1,10 @@
-window.app.controller 'MovieController', ['$scope',  '$controller', '$timeout', 'Movie', ($scope, $controller, $timeout, Movie)->
+window.app.controller 'MovieController', ['$scope',  '$controller', '$timeout', '$filter', 'Movie', ($scope, $controller, $timeout, $filter, Movie)->
 
   $controller 'FormMasterController', $scope: $scope
+
+  $scope.$on 'movieDeleted', (event, message)->
+    $scope.movies = $filter('filter')($scope.movies, {id: '!' + message})
+    $scope.movie_results = $filter('filter')($scope.movie_results, {id: '!' + message})
 
   $scope.$on 'dateChanged', (e, m)->
     if $scope.movie
@@ -36,7 +40,7 @@ window.app.controller 'MovieController', ['$scope',  '$controller', '$timeout', 
       alertify.success 'Movie deleted successfully'
       $scope.deleting = false
       $scope.editing = false
-      $scope.movie.removed = true
+      $scope.$emit 'movieDeleted', $scope.movie.id
 
     error = (response)->
       $scope.errorMessage = response.data.error
@@ -54,9 +58,8 @@ window.app.controller 'MovieController', ['$scope',  '$controller', '$timeout', 
     $scope.searching_movies = true
     data =
       q: $scope.movie_query
-      include_read: $scope.is_read
     Movie.query data, (response)->
-      $scope.search_results = response.movies
+      $scope.movie_results = response.movies
       $scope.searching_movies = false
 
   $scope.checkEditing = ->
