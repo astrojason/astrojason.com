@@ -26,6 +26,11 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     $scope.selected_links = $filter('filter')($scope.selected_links, {id: '!' + message})
     $scope.link_results = $filter('filter')($scope.link_results, {id: '!' + message})
 
+  $scope.$on 'linkUpdated', (event, message)->
+    $scope.daily_links = $filter('filter')($scope.daily_links, {category: 'Daily'})
+    $scope.unread_links = $filter('filter')($scope.unread_links, {category: 'Unread'})
+    $scope.selected_links = $filter('filter')($scope.selected_links, {category: $scope.display_category})
+
   $scope.$on 'closeModal', ->
     $scope.linkModalOpen = false
     $scope.bookModalOpen = false
@@ -95,31 +100,31 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       $scope.link_results = response.links
       $scope.searching = false
 
-  $scope.changeCategory = (link)->
-    index = $scope.daily_links.indexOf(link)
-    if index >= 0
-      $scope.daily_links.splice index, 1
-    index = $scope.unread_links.indexOf(link)
-    if index >= 0
-      $scope.unread_links.splice index, 1
-    index = $scope.selected_links.indexOf(link)
-    if index >= 0
-      $scope.selected_links.splice index, 1
-
-  $scope.markAsRead = (link)->
-    $scope.total_read++
-    index = $scope.daily_links.indexOf(link)
-    if index >= 0
-      $scope.daily_links.splice index, 1
-    index = $scope.unread_links.indexOf(link)
-    if index >= 0
-      $scope.unread_links.splice index, 1
-    index = $scope.selected_links.indexOf(link)
-    if index >= 0
-      $scope.selected_links.splice index, 1
-    index = $scope.unread_links.indexOf(link)
-    if index >= 0
-      $scope.unread_links.splice index, 1
+#  $scope.changeCategory = (link)->
+#    index = $scope.daily_links.indexOf(link)
+#    if index >= 0
+#      $scope.daily_links.splice index, 1
+#    index = $scope.unread_links.indexOf(link)
+#    if index >= 0
+#      $scope.unread_links.splice index, 1
+#    index = $scope.selected_links.indexOf(link)
+#    if index >= 0
+#      $scope.selected_links.splice index, 1
+#
+#  $scope.markAsRead = (link)->
+#    $scope.total_read++
+#    index = $scope.daily_links.indexOf(link)
+#    if index >= 0
+#      $scope.daily_links.splice index, 1
+#    index = $scope.unread_links.indexOf(link)
+#    if index >= 0
+#      $scope.unread_links.splice index, 1
+#    index = $scope.selected_links.indexOf(link)
+#    if index >= 0
+#      $scope.selected_links.splice index, 1
+#    index = $scope.unread_links.indexOf(link)
+#    if index >= 0
+#      $scope.unread_links.splice index, 1
 
   $scope.initDashboard = ->
     $scope.user = UserService.getUser()
