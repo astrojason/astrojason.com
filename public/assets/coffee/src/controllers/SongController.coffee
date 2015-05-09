@@ -16,9 +16,10 @@ window.app.controller 'SongController', ['$scope', '$timeout', '$controller', '$
         $scope.search_songs()
       , 500
 
-  $scope.$watch 'recommendingSong', (newValue)->
-    if newValue
-      $scope.getRecommendation()
+  $scope.triggerRecommender = ->
+    $scope.$watch 'recommendingSong', (newValue)->
+      if newValue
+        $scope.getRecommendation()
 
   $scope.all = ->
     $scope.loading_songs = true

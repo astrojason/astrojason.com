@@ -150,7 +150,7 @@
       <div
         class="modal-dialog"
         ng-controller="BookController"
-        ng-init="setCategories(<% $book_categories %>); recommendation_category = 'To Read'">
+        ng-init="setCategories(<% $book_categories %>); recommendation_category = 'To Read'; triggerRecommender()">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -252,8 +252,12 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" id="recommendGameModal" astro-modal modal-visible="recommendingGame">
-      <div class="modal-dialog" ng-controller="GameController">
+    <div
+      class="modal fade"
+      id="recommendGameModal"
+      astro-modal
+      modal-visible="recommendingGame">
+      <div class="modal-dialog" ng-controller="GameController" ng-init="triggerRecommender()">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -266,8 +270,12 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" id="recommendSongModal" astro-modal modal-visible="recommendingSong">
-      <div class="modal-dialog" ng-controller="SongController">
+    <div
+      class="modal fade"
+      id="recommendSongModal"
+      astro-modal
+      modal-visible="recommendingSong">
+      <div class="modal-dialog" ng-controller="SongController" ng-init="triggerRecommender()">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

@@ -20,9 +20,10 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', '$
     if $scope.book_query?.length >= 3
       $scope.search_books()
 
-  $scope.$watch 'recommendingBook', (newValue)->
-    if newValue
-      $scope.getRecommendation()
+  $scope.triggerRecommender = ->
+    $scope.$watch 'recommendingBook', (newValue)->
+      if newValue
+        $scope.getRecommendation()
 
   $scope.all = ->
     $scope.loading_books = true

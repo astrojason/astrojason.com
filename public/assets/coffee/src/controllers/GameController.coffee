@@ -6,16 +6,17 @@ window.app.controller 'GameController', ['$scope', '$filter', '$controller', '$t
     $scope.games = $filter('filter')($scope.games, {id: '!' + message})
     $scope.game_results = $filter('filter')($scope.game_results, {id: '!' + message})
 
-  $scope.$watch 'recommendingGame', (newValue)->
-    if newValue
-      $scope.getRecommendation()
-
   $scope.$watch 'game_query', (newValue)->
     $timeout.cancel $scope.search_timeout
     if newValue?.length >= 3
       $scope.search_timeout = $timeout ->
         $scope.search_games()
       , 500
+
+  $scope.triggerRecommender = ->
+    $scope.$watch 'recommendingGame', (newValue)->
+      if newValue
+        $scope.getRecommendation()
 
   $scope.all = ->
     $scope.loading_games = true
