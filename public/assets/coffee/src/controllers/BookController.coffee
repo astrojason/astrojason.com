@@ -25,9 +25,16 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', '$
       if newValue
         $scope.getRecommendation()
 
-  $scope.all = ->
+  $scope.initList = ->
+    $scope.$watch 'filter_category', ->
+      $scope.get()
+
+  $scope.get = ->
     $scope.loading_books = true
-    Book.query (response)->
+    data = []
+    if $scope.filter_category
+      data['category'] = $scope.filter_category
+    Book.query data, (response)->
       $scope.books = response.books
       $scope.loading_books = false
 

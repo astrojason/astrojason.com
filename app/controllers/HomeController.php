@@ -7,25 +7,7 @@ class HomeController extends BaseController {
     $categoriesString = null;
     if(Auth::user()) {
       $bookmarklet = str_replace('"', "'", file_get_contents('assets/js/bookmarkletLoader.min.js'));
-			// TODO: Make this a shared function
-			$categories = [];
-			$dbCategories = Book::groupBy('category')
-				->where('user_id', Auth::user()->id)
-				->get(array('category'));
-			foreach($dbCategories as $category) {
-				$categories[] = $category->category;
-			}
-			if($categories) {
-				$lastElement = end($categories);
-			}
-			$categoriesString = '[';
-			foreach($categories as $category) {
-				$categoriesString .= '\'' . $category . '\'';
-				if($category != $lastElement) {
-					$categoriesString .= ',';
-				}
-			}
-			$categoriesString .= ']';
+      $categoriesString = BookController::getBookCategoryString();
     }
 		return View::make('index')->with('bookmarklet', $bookmarklet)->with('book_categories', $categoriesString);
 	}

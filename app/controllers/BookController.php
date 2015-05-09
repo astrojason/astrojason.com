@@ -3,7 +3,8 @@
 class BookController extends BaseController {
 
   public function index() {
-    return View::make('books.index');
+    $categoriesString = BookController::getBookCategoryString();
+    return View::make('books.index')->with('book_categories', $categoriesString);
   }
 
   public function query() {
@@ -12,6 +13,7 @@ class BookController extends BaseController {
     $limit = Input::get('limit');
     $randomize = filter_var(Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
     $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
+    $category = Input::get('category');
     if(isset($q)) {
       $query->where(function($query) use ($q) {
         $query->where('title', 'LIKE', '%' . $q . '%')
@@ -27,6 +29,9 @@ class BookController extends BaseController {
     }
     if(isset($limit)){
       $query->take($limit);
+    }
+    if(isset($category)) {
+      $query->where('category', $category);
     }
     $books = $query->get();
     return Response::json(array('books' => $books->toArray()), 200);
@@ -118,6 +123,32 @@ class BookController extends BaseController {
     }
     $book->save();
     return Response::json(array('success' => true, 'book' => $book->toArray()), 200);
+  }
+
+  /**
+   * @return string
+   */
+  public static function getBookCategoryString()
+  {
+    $categories = [];
+    $dbCategories = Book::groupBy('category')
+      ->where('user_id', Auth::user()->id)
+      ->get(array('category'));
+    foreach ($dbCategories as $category) {
+      $categories[] = $category->category;
+    }
+    if ($categories) {
+      $lastElement = end($categories);
+    }
+    $categoriesString = '[';
+    foreach ($categories as $category) {
+      $categoriesString .= '\'' . $category . '\'';
+      if ($category != $lastElement) {
+        $categoriesString .= ',';
+      }
+    }
+    $categoriesString .= ']';
+    return $categoriesString;
   }
 
 }

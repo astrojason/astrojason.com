@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-  <div ng-controller="BookController">
+  <div ng-controller="BookController" ng-init="setCategories(<% $book_categories %>)">
     <div class="row">
       <div class="col-md-12">
         <loader ng-show="searching_books" ng-cloak></loader>
@@ -32,13 +32,21 @@
     <div class="row">
       <div class="col-md-12">
         <loader ng-show="loading_books" ng-cloak></loader>
-      <table class="table table-condensed table-striped table-hover" ng-init="all()">
-        <tbody>
-          <tr ng-repeat="book in books">
-            <td><book-form book="book" editing="false"></book-form></td>
-          </tr>
-        </tbody>
-      </table>
+        <table class="table table-condensed table-striped table-hover" ng-init="initList()">
+          <thead>
+            <th>
+              <select ng-model="filter_category" class="form-control">
+                <option value="">All</option>
+                <option ng-repeat="category in categories">{{ category }}</option>
+              </select>
+            </th>
+          </thead>
+          <tbody>
+            <tr ng-repeat="book in books">
+              <td><book-form book="book" editing="false"></book-form></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
