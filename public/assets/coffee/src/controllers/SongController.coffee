@@ -16,6 +16,10 @@ window.app.controller 'SongController', ['$scope', '$timeout', '$controller', '$
         $scope.search_songs()
       , 500
 
+  $scope.$watch 'recommendingSong', (newValue)->
+    if newValue
+      $scope.getRecommendation()
+
   $scope.all = ->
     $scope.loading_songs = true
     Song.query (response)->
@@ -60,4 +64,13 @@ window.app.controller 'SongController', ['$scope', '$timeout', '$controller', '$
     Song.query data, (response)->
       $scope.song_results = response.songs
       $scope.searching_songs = false
+
+  $scope.getRecommendation = ->
+    data =
+      randomize: true
+      limit: 1
+    Song.query data, (response)->
+      $scope.song = response.songs[0]
+      $scope.loading_songs = false
+
 ]

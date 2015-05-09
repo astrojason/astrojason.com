@@ -100,32 +100,6 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       $scope.link_results = response.links
       $scope.searching = false
 
-#  $scope.changeCategory = (link)->
-#    index = $scope.daily_links.indexOf(link)
-#    if index >= 0
-#      $scope.daily_links.splice index, 1
-#    index = $scope.unread_links.indexOf(link)
-#    if index >= 0
-#      $scope.unread_links.splice index, 1
-#    index = $scope.selected_links.indexOf(link)
-#    if index >= 0
-#      $scope.selected_links.splice index, 1
-#
-#  $scope.markAsRead = (link)->
-#    $scope.total_read++
-#    index = $scope.daily_links.indexOf(link)
-#    if index >= 0
-#      $scope.daily_links.splice index, 1
-#    index = $scope.unread_links.indexOf(link)
-#    if index >= 0
-#      $scope.unread_links.splice index, 1
-#    index = $scope.selected_links.indexOf(link)
-#    if index >= 0
-#      $scope.selected_links.splice index, 1
-#    index = $scope.unread_links.indexOf(link)
-#    if index >= 0
-#      $scope.unread_links.splice index, 1
-
   $scope.initDashboard = ->
     $scope.user = UserService.getUser()
     if $scope.user?.id
@@ -143,6 +117,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
         $scope.books_read = response.books_read
         $scope.books_toread = response.books_toread
         $scope.games_toplay = response.games_toplay
+        $scope.songs_toplay = response.songs_toplay
       else
         $scope.$emit 'errorOccurred', response.error
     daily_Promise.error ->

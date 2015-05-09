@@ -266,6 +266,20 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+    <div class="modal fade" id="recommendSongModal" astro-modal modal-visible="recommendingSong">
+      <div class="modal-dialog" ng-controller="SongController">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Recommended Song <span class="glyphicon glyphicon-refresh tool" ng-click="getRecommendation()"></span></h4>
+          </div>
+          <div class="modal-body">
+            <song-form song="song" editing="false"></song-form>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
     <div
       class="modal fade"
       id="addSongModal"

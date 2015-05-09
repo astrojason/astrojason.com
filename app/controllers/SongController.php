@@ -9,11 +9,27 @@ class SongController extends BaseController {
   public function query() {
     $query = Song::where('user_id', Auth::user()->id);
     $q = Input::get('q');
+    $randomize = filter_var(Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
+    $limit = Input::get('limit');
+    $page = Input::get('page');
+    $include_learned = filter_var(Input::get('include_learned'), FILTER_VALIDATE_BOOLEAN);
     if(isset($q)){
       $query->where(function($query) use ($q) {
         $query->where('title', 'LIKE', '%' . $q . '%')
           ->orwhere('artist', 'LIKE', '%' . $q . '%');
       });
+    }
+    if(!$include_learned) {
+      $query->where('learned', false);
+    }
+    if($randomize){
+      $query->orderBy(DB::raw('RAND()'));
+    }
+    if (isset($limit)) {
+      $query->take($limit);
+      if (isset($page) && $page > 1 && !$randomize) {
+        $query->skip($limit * ($page - 1));
+      }
     }
     $songs = $query->get();
     return Response::json(array('songs' => $songs->toArray()), 200);
@@ -40,6 +56,7 @@ class SongController extends BaseController {
         return Response::json(array('error' => 'A song with that name by that artist already exists.'), 500);
       } else {
         $song = new Song();
+        $song->user_id = Auth::user()->id;
       }
     }
     $song->title = $title;
