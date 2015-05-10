@@ -1,6 +1,7 @@
 module.exports = (grunt) ->
 
   grunt.initConfig
+
     pkg: grunt.file.readJSON 'package.json'
 
     coffee:
@@ -41,16 +42,25 @@ module.exports = (grunt) ->
           'public/assets/js/filters.min.js': 'public/assets/coffee/build/filters/*'
           'public/assets/js/services.min.js': 'public/assets/coffee/build/services/*'
         }
-    clean: ['public/assets/coffee/build/*', 'public/assets/js/*.js']
+
+    clean: [
+      'public/assets/coffee/build/*',
+      'public/assets/js/*.js'
+    ]
+
     watch:
+
       options:
         atBegin: true
+
       coffee:
         files: 'public/assets/coffee/src/**/*.coffee'
         tasks: ['clean', 'coffee']
+
       compass:
         files: 'public/assets/sass/src/**/*.s{a,c}ss'
         tasks: 'compass'
+
       uglify:
         files: 'public/assets/coffee/build/**/*.js'
         tasks: 'uglify'
