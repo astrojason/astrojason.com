@@ -1,4 +1,4 @@
-window.app.controller 'LinkController', ['$scope', '$controller', '$filter', 'Link', ($scope, $controller, $filter, Link)->
+window.app.controller 'LinkController', ['$scope', '$controller', '$filter', '$timeout', '$location', 'Link', ($scope, $controller, $filter, $timeout, $location, Link)->
 
   $controller 'FormMasterController', $scope: $scope
 
@@ -12,6 +12,44 @@ window.app.controller 'LinkController', ['$scope', '$controller', '$filter', 'Li
   $scope.$watch 'link.link', (oldValue, newValue)->
     if oldValue != newValue
       $scope.errorMessage = false
+
+  $scope.$watch 'links_query', (newValue)->
+    $timeout.cancel $scope.search_timeout
+    if newValue?.length >= 3
+      $scope.search_timeout = $timeout ->
+        $scope.search_links()
+      , 500
+
+  $scope.$watch 'page', (newValue, oldValue)->
+    if newValue != oldValue
+      cur_opts = $location.search()
+      cur_opts.page = newValue
+      $location.search(cur_opts)
+      $scope.all()
+
+  $scope.all = ->
+    $scope.loading_links = true
+    data =
+      limit: $scope.limit
+      page: $scope.page
+    $scope.query data
+
+  $scope.query = (data)->
+    Link.query data, (response)->
+      $scope.loading_links = false
+      $scope.links = response.links
+      $scope.total = response.total
+      $scope.pages = response.pages
+      $scope.generatePages()
+
+
+  $scope.search_links = ->
+    $scope.searching_links = true
+    data =
+      q: $scope.links_query
+    Link.query data, (response)->
+      $scope.link_results = response.links
+      $scope.searching_links = false
 
   $scope.linkOpened = ->
     $scope.link.times_read += 1

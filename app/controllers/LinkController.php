@@ -5,6 +5,10 @@
  */
 class LinkController extends AstroBaseController {
 
+  public function index() {
+    return View::make('links.index');
+  }
+
   public function readLater() {
     $title = Input::get('title');
     $link = Input::get('link');
@@ -15,6 +19,7 @@ class LinkController extends AstroBaseController {
    * @return \Illuminate\Http\JsonResponse
    */
   public function query() {
+    $pageCount = 0;
     $q = Input::get('q');
     $category = Input::get('category');
     $limit = Input::get('limit');
@@ -39,13 +44,14 @@ class LinkController extends AstroBaseController {
       $query->orderBy(DB::raw('RAND()'));
     }
     if (isset($limit)) {
+      $pageCount = ceil($total / $limit);
       $query->take($limit);
       if (isset($page) && $page > 1 && !$randomize) {
         $query->skip($limit * ($page - 1));
       }
     }
     $links = $query->get();
-    return $this->successResponse(array('links' => $this->transformCollection($links), 'total' => $total));
+    return $this->successResponse(array('links' => $this->transformCollection($links), 'total' => $total, 'pages' => $pageCount));
   }
 
   /**

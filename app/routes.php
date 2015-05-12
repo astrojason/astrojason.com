@@ -12,10 +12,11 @@
 */
 
 Route::get('', 'HomeController@showIndex');
-Route::get('register', 'HomeController@register');
 Route::get('books', 'BookController@index');
-Route::get('movies', 'MovieController@index');
 Route::get('games', 'GameController@index');
+Route::get('links', 'LinkController@index');
+Route::get('movies', 'MovieController@index');
+Route::get('register', 'HomeController@register');
 Route::get('songs', 'SongController@index');
 
 Route::get('readlater', 'LinkController@readLater');
@@ -68,6 +69,7 @@ Route::group(array('prefix' => 'templates'), function(){
   Route::get('game-form', 'TemplateController@gameForm');
   Route::get('song-form', 'TemplateController@songForm');
   Route::get('loader', 'TemplateController@loader');
+  Route::get('paginator', 'TemplateController@paginator');
 });
 
 Route::group(array('prefix' => 'migrations', 'before' => 'auth'), function(){

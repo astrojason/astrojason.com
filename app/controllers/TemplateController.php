@@ -22,7 +22,7 @@ class TemplateController extends BaseController {
       }
     }
     $categoriesString .= ']';
-    return View::make('templates/linkForm')->with('categories', $categoriesString);
+    return View::make('templates.linkForm')->with('categories', $categoriesString);
   }
 
   public function bookForm() {
@@ -44,12 +44,12 @@ class TemplateController extends BaseController {
         }
       }
       $categoriesString .= ']';
-      return View::make('templates/bookForm')->with('categories', $categoriesString);
+      return View::make('templates.bookForm')->with('categories', $categoriesString);
     }
   }
 
   public function movieForm() {
-    return View::make('templates/movieForm');
+    return View::make('templates.movieForm');
   }
 
   public function gameForm() {
@@ -70,15 +70,19 @@ class TemplateController extends BaseController {
         }
       }
       $platformsString .= ']';
-      return View::make('templates/gameForm')->with('platforms', $platformsString);
+      return View::make('templates.gameForm')->with('platforms', $platformsString);
     }
   }
 
   public function songForm() {
-    return View::make('templates/songForm');
+    return View::make('templates.songForm');
   }
 
   public function loader() {
-    return View::make('templates/loader');
+    return View::make('templates.loader');
+  }
+
+  public function paginator() {
+    return View::make('templates.paginator');
   }
 }

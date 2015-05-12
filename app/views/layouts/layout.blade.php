@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="astroApp">
+<base href="/" />
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,7 +17,7 @@
       <script type="text/javascript" src="assets/bower/respond/dest/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body ng-app="astroApp" ng-controller="MasterController"@if(Auth::user()) ng-init="initUser({ id: <% Auth::user()->id %>, username: '<% Auth::user()->username %>', firstname: '<% Auth::user()->firstname %>', lastname: '<% Auth::user()->lastname %>', email: '<% Auth::user()->email %>' })"@endif>
+  <body ng-controller="MasterController"@if(Auth::user()) ng-init="initUser({ id: <% Auth::user()->id %>, username: '<% Auth::user()->username %>', firstname: '<% Auth::user()->firstname %>', lastname: '<% Auth::user()->lastname %>', email: '<% Auth::user()->email %>' })"@endif>
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
@@ -32,7 +33,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav" ng-show="user" ng-cloak>
             @foreach($userNav as $navItem)
-              <li @if($navItem->active) class="active"@endif><a href="<% $navItem->href %>"><% $navItem->name %></a></li>
+              <li @if($navItem->active) class="active"@endif><a href="<% $navItem->href %>" target="_self"><% $navItem->name %></a></li>
             @endforeach
 <!--            <li><a href="#contact">Contact</a></li>-->
 <!--            <li class="dropdown">-->
