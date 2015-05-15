@@ -32,6 +32,14 @@
       <div class="col-md-12">
         <loader ng-show="loading_links" ng-cloak></loader>
         <table class="table table-condensed table-striped table-hover" ng-init="all()">
+          <thead>
+            <tr>
+              <td>
+                <select name="category" ng-model="display_category" ng-options="category for category in categories" class="form-control">
+                  <option value="">All</option>
+                </select></td>
+            </tr>
+          </thead>
           <tbody>
             <tr ng-repeat="link in links">
               <td><link-form link="link" editing="false"></link-form></td>

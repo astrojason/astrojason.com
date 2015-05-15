@@ -21,20 +21,7 @@ class HomeController extends BaseController {
 		$games_unplayed = Game::where('user_id', Auth::user()->id)->where('completed', false)->count();
     $songs_unplayed = Song::where('user_id', Auth::user()->id)->where('learned', false)->count();
 
-    $links = Link::where('is_read', false)
-      ->where('category', 'Daily')
-      ->where('user_id', Auth::user()->id)
-      ->get();
-
-    $categories = [];
-    $dbCategories = Link::groupBy('category')
-      ->where('category', '<>', 'Daily')
-      ->where('category', '<>', 'Unread')
-      ->where('user_id', Auth::user()->id)
-      ->get(array('category'));
-    foreach($dbCategories as $category) {
-      array_push($categories, $category->category);
-    }
+    $categories = LinkController::getLinkCategories();
     $total_read = Link::where('updated_at', 'LIKE', date('Y-m-d') . '%')->where('is_read', true)->where('user_id', Auth::user()->id)->count();
     return Response::json(array(
       'success' => true,

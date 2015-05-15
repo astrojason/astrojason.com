@@ -6,7 +6,8 @@
 class LinkController extends AstroBaseController {
 
   public function index() {
-    return View::make('links.index');
+    $categories = LinkController::getLinkCategories();
+    return View::make('links.index')->with('categories', $categories);
   }
 
   public function readLater() {
@@ -124,5 +125,21 @@ class LinkController extends AstroBaseController {
       'times_loaded' => (int) $link['times_loaded'],
       'times_read' => (int) $link['times_read']
     ];
+  }
+
+  /**
+   * @return array
+   */
+  public static function getLinkCategories() {
+    $categories = [];
+    $dbCategories = Link::groupBy('category')
+      ->where('category', '<>', 'Daily')
+      ->where('category', '<>', 'Unread')
+      ->where('user_id', Auth::user()->id)
+      ->get(array('category'));
+    foreach ($dbCategories as $category) {
+      array_push($categories, $category->category);
+    }
+    return $categories;
   }
 }
