@@ -72,10 +72,15 @@ Route::group(array('prefix' => 'templates'), function(){
   Route::get('paginator', 'TemplateController@paginator');
 });
 
-Route::group(array('prefix' => 'migrations', 'before' => 'auth'), function(){
-  Route::get('books', 'MigrationsController@books');
-  Route::get('games', 'MigrationsController@games');
-  Route::get('links', 'MigrationsController@links');
-  Route::get('movies', 'MigrationsController@movies');
-  Route::get('movies/randomize', 'MigrationsController@reorder');
+Route::group(array('before' => 'admin'), function(){
+  Route::group(array('prefix' => 'debug'), function() {
+    Route::get('queries', 'DebugController@queries');
+  });
+  Route::group(array('prefix' => 'migrations'), function(){
+    Route::get('books', 'MigrationsController@books');
+    Route::get('games', 'MigrationsController@games');
+    Route::get('links', 'MigrationsController@links');
+    Route::get('movies', 'MigrationsController@movies');
+    Route::get('movies/randomize', 'MigrationsController@reorder');
+  });
 });

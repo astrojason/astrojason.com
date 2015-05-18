@@ -37,8 +37,7 @@ Route::filter('auth', function() {
   if (Auth::guest()) return Response::json(array('success' => false, 'message' => 'noaccess'), 200);
 });
 
-Route::filter('auth.basic', function()
-{
+Route::filter('auth.basic', function() {
 	return Auth::basic();
 });
 
@@ -56,6 +55,20 @@ Route::filter('auth.basic', function()
 Route::filter('guest', function()
 {
 	if (Auth::check()) return Redirect::to('/');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Admin Filter
+|--------------------------------------------------------------------------
+|
+| Make sure this user is me
+|
+*/
+
+Route::filter('admin', function()
+{
+	if (Auth::guest() || Auth::user()->id != 1) return Redirect::to('/');
 });
 
 /*
