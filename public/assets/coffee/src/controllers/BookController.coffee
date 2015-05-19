@@ -8,18 +8,6 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', '$
     $scope.books = $filter('filter')($scope.books, {id: '!' + message})
     $scope.book_results = $filter('filter')($scope.book_results, {id: '!' + message})
 
-  $scope.$watch 'book_query', (newValue)->
-    $scope.searching = true
-    $timeout.cancel $scope.search_timeout
-    if newValue?.length >= 3
-      $scope.search_timeout = $timeout ->
-        $scope.search_books()
-      , 500
-
-  $scope.$watch 'is_read', ->
-    if $scope.book_query?.length >= 3
-      $scope.search_books()
-
   $scope.triggerRecommender = ->
     $scope.$watch 'recommendingBook', (newValue)->
       if newValue
@@ -27,25 +15,39 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', '$
 
   $scope.initList = ->
     $scope.$watch 'filter_category', ->
-      $scope.get()
+      if !$scope.loading_books
+        $scope.get()
+
+    $scope.$watch 'book_query', ->
+      if !$scope.loading_books
+        $scope.searching = true
+        $timeout.cancel $scope.search_timeout
+        $scope.search_timeout = $timeout ->
+          $scope.get()
+        , 500
+
+    $scope.$watch 'is_read', ->
+      if !$scope.loading_books
+        $scope.get()
+
+    $scope.$watch 'sort', ->
+      if !$scope.loading_books
+        $scope.get()
 
   $scope.get = ->
     $scope.loading_books = true
     data = []
+    if $scope.book_query
+      data['q'] = $scope.book_query
+    if $scope.is_read
+      data['include_read'] = $scope.is_read
     if $scope.filter_category
       data['category'] = $scope.filter_category
+    if $scope.sort
+      data['sort'] = $scope.sort
     Book.query data, (response)->
       $scope.books = response.books
       $scope.loading_books = false
-
-  $scope.search_books = ->
-    $scope.searching_books = true
-    data =
-      q: $scope.book_query
-      include_read: $scope.is_read
-    Book.query data, (response)->
-      $scope.book_results = response.books
-      $scope.searching_books = false
 
   $scope.save = ->
     if $scope.book.category == 'New'

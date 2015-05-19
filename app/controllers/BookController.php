@@ -14,6 +14,7 @@ class BookController extends BaseController {
     $randomize = filter_var(Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
     $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
     $category = Input::get('category');
+    $sort = Input::get('sort');
     if(isset($q)) {
       $query->where(function($query) use ($q) {
         $query->where('title', 'LIKE', '%' . $q . '%')
@@ -32,6 +33,16 @@ class BookController extends BaseController {
     }
     if(isset($category)) {
       $query->where('category', $category);
+    }
+    if(isset($sort)) {
+      if($sort == 'series') {
+        $query->where('series', '!=', '');
+        $query->orderBy('series');
+        $query->orderBy('series_order');
+      }
+      else {
+        $query->orderBy($sort);
+      }
     }
     $books = $query->get();
     return Response::json(array('books' => $books->toArray()), 200);
