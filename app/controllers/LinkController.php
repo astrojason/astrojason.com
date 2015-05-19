@@ -67,7 +67,7 @@ class LinkController extends AstroBaseController {
         return Response::json(array('success' => false, 'error' => 'Link already exists'), 200);
       }
       $link = new Link;
-      $link->user_id = Input::get('user_id');
+      $link->user_id = Auth::user()->id;
     }
     try {
       $link->name = Input::get('name');

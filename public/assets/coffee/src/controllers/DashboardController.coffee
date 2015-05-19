@@ -27,9 +27,9 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     $scope.link_results = $filter('filter')($scope.link_results, {id: '!' + message})
 
   $scope.$on 'linkUpdated', (event, message)->
-    $scope.daily_links = $filter('filter')($scope.daily_links, {category: 'Daily'})
-    $scope.unread_links = $filter('filter')($scope.unread_links, {category: 'Unread'})
-    $scope.selected_links = $filter('filter')($scope.selected_links, {category: $scope.display_category})
+    $scope.daily_links = $filter('filter')($scope.daily_links, {category: 'Daily', is_read: false})
+    $scope.unread_links = $filter('filter')($scope.unread_links, {category: 'Unread', is_read: false})
+    $scope.selected_links = $filter('filter')($scope.selected_links, {category: $scope.display_category, is_read: false})
 
   $scope.$on 'closeModal', ->
     $scope.linkModalOpen = false
@@ -57,7 +57,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
         $scope.search_articles()
       , 500
 
-  $scope.$watch 'addingLink', ->
+  $scope.$watch 'linkModalOpen', ->
     if !$scope.linkModalOpen
       $scope.newLink = new window.Link()
 
