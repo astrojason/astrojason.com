@@ -18,10 +18,12 @@ window.app.controller 'FormMasterController', ['$scope', '$location', ($scope, $
         $scope.updating = $scope.checkEditing()
 
   $scope.generatePages = ->
-    start_at = $scope.page
-    end_at = $scope.page + 10
-    if end_at > $scope.pages
-      end_at = $scope.pages
-      start_at = end_at - 10
-    $scope.nav_pages = [start_at...end_at]
+    $scope.nav_pages = []
+    if $scope.pages > 1
+      start_at = $scope.page
+      end_at = $scope.page + 10
+      if end_at > $scope.pages
+        end_at = $scope.pages
+        start_at = end_at - 10
+      $scope.nav_pages = [start_at...end_at]
 ]

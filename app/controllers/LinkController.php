@@ -6,8 +6,8 @@
 class LinkController extends AstroBaseController {
 
   public function index() {
-    $categories = LinkController::getLinkCategories();
-    return View::make('links.index')->with('categories', $categories);
+    $categories = LinkController::getLinkCategoryString();
+    return View::make('links.index')->with('link_categories', $categories);
   }
 
   public function readLater() {
@@ -141,5 +141,28 @@ class LinkController extends AstroBaseController {
       array_push($categories, $category->category);
     }
     return $categories;
+  }
+
+  /**
+   * @return string
+   */
+  public static function getLinkCategoryString() {
+    $categories = [];
+    $dbCategories = self::getLinkCategories();
+    foreach ($dbCategories as $category) {
+      $categories[] = $category;
+    }
+    if ($categories) {
+      $lastElement = end($categories);
+    }
+    $categoriesString = '[';
+    foreach ($categories as $category) {
+      $categoriesString .= '\'' . $category . '\'';
+      if ($category != $lastElement) {
+        $categoriesString .= ',';
+      }
+    }
+    $categoriesString .= ']';
+    return $categoriesString;
   }
 }

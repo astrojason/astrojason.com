@@ -13,43 +13,45 @@ window.app.controller 'LinkController', ['$scope', '$controller', '$filter', '$t
     if oldValue != newValue
       $scope.errorMessage = false
 
-  $scope.$watch 'links_query', (newValue)->
-    $timeout.cancel $scope.search_timeout
-    if newValue?.length >= 3
-      $scope.search_timeout = $timeout ->
-        $scope.search_links()
-      , 500
+  $scope.initList = ->
 
-  $scope.$watch 'page', (newValue, oldValue)->
-    if newValue != oldValue
-      cur_opts = $location.search()
-      cur_opts.page = newValue
-      $location.search(cur_opts)
-      $scope.all()
+    $scope.query()
 
-  $scope.all = ->
+    $scope.$watch 'links_query', ->
+      if !$scope.loading_links
+        $timeout.cancel $scope.search_timeout
+        if !$scope.loading_links
+          $scope.search_timeout = $timeout ->
+            $scope.query()
+          , 500
+
+    $scope.$watch 'page', (newValue, oldValue)->
+      if !$scope.loading_links
+        if newValue != oldValue
+          cur_opts = $location.search()
+          cur_opts.page = newValue
+          $location.search(cur_opts)
+          $scope.query()
+
+    $scope.$watch 'display_category', ->
+      if !$scope.loading_links
+        $scope.query()
+
+  $scope.query = ->
     $scope.loading_links = true
     data =
       limit: $scope.limit
       page: $scope.page
-    $scope.query data
-
-  $scope.query = (data)->
+    if $scope.links_query
+      data['q'] = $scope.links_query
+    if $scope.display_category
+      data['category'] = $scope.display_category
     Link.query data, (response)->
       $scope.loading_links = false
       $scope.links = response.links
       $scope.total = response.total
       $scope.pages = response.pages
       $scope.generatePages()
-
-
-  $scope.search_links = ->
-    $scope.searching_links = true
-    data =
-      q: $scope.links_query
-    Link.query data, (response)->
-      $scope.link_results = response.links
-      $scope.searching_links = false
 
   $scope.linkOpened = ->
     $scope.link.times_read += 1
