@@ -20,10 +20,9 @@ window.app.controller 'FormMasterController', ['$scope', '$location', ($scope, $
   $scope.generatePages = ->
     $scope.nav_pages = []
     if $scope.pages > 1
-      start_at = $scope.page
-      end_at = $scope.page + 10
+      start_at = if $scope.page >= 5 then $scope.page - 4 else 1
+      end_at = start_at + 10
       if end_at > $scope.pages
         end_at = $scope.pages
-        start_at = end_at - 10
       $scope.nav_pages = [start_at...end_at]
 ]

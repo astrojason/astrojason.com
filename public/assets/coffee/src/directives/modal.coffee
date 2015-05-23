@@ -1,4 +1,4 @@
-window.app.directive 'astroModal', ['$filter', ($filter)->
+window.app.directive 'astroModal', [->
   restrict: 'A',
   scope: {
     modalVisible: '='
