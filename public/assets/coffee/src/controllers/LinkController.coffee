@@ -4,6 +4,7 @@ window.app.controller 'LinkController', ['$scope', '$controller', '$filter', '$t
 
   $scope.deleting = false
   $scope.errorMessage = false
+  $scope.originalLink = angular.copy $scope.link
 
   $scope.$on 'linkDeleted', (event, message)->
     $scope.links = $filter('filter')($scope.links, {id: '!' + message})
@@ -83,6 +84,8 @@ window.app.controller 'LinkController', ['$scope', '$controller', '$filter', '$t
       if $scope.link.id
         $scope.editing = false
         $scope.$emit 'linkUpdated', $scope.link
+        if $scope.originalLink.is_read != $scope.link.is_read
+          $scope.$emit 'linkRead', $scope.link.is_read
       else
         $scope.$emit 'closeModal'
 

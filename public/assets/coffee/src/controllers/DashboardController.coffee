@@ -31,6 +31,14 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     $scope.unread_links = $filter('filter')($scope.unread_links, {category: 'Unread', is_read: false})
     $scope.selected_links = $filter('filter')($scope.selected_links, {category: $scope.display_category, is_read: false})
 
+  $scope.$on 'linkRead', (event, message)->
+    if message
+      $scope.links_read += 1
+      $scope.total_read += 1
+    else
+      $scope.links_read -= 1
+      $scope.total_read -= 1
+
   $scope.$on 'closeModal', ->
     $scope.linkModalOpen = false
     $scope.bookModalOpen = false
