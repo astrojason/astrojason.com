@@ -11,7 +11,7 @@ class LinkController extends AstroBaseController {
   }
 
   public function readLater() {
-    $title = Input::get('title');
+    $title = addslashes(Input::get('title'));
     $link = Input::get('link');
     return View::make('readlater')->with('title', $title)->with('link', $link);
   }

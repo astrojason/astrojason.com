@@ -5,8 +5,8 @@ window.addEventListener 'message', (e)->
     container.remove()
 
 addTheLink = ->
-  title = document.title
-  link = location.href
+  title = escape document.title
+  link = escape location.href
   containerStyle =
     position: 'absolute'
     top: 0
