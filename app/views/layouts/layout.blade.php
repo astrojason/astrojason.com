@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="astroApp">
-<base href="/" />
+  <base href="/" />
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
