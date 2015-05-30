@@ -8,13 +8,15 @@ class BookController extends BaseController {
   }
 
   public function query() {
-    $query = Book::query()->where('user_id', Auth::user()->id);
+    $pageCount = 0;
+    $page = Input::get('page');
     $q = Input::get('q');
     $limit = Input::get('limit');
-    $randomize = filter_var(Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
-    $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
     $category = Input::get('category');
     $sort = Input::get('sort');
+    $query = Book::query()->where('user_id', Auth::user()->id);
+    $randomize = filter_var(Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
+    $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
     if(isset($q)) {
       $query->where(function($query) use ($q) {
         $query->where('title', 'LIKE', '%' . $q . '%')
@@ -44,8 +46,16 @@ class BookController extends BaseController {
         $query->orderBy($sort);
       }
     }
+    $total = $query->count();
+    if (isset($limit)) {
+      $pageCount = ceil($total / $limit);
+      $query->take($limit);
+      if (isset($page) && $page > 1 && !$randomize) {
+        $query->skip($limit * ($page - 1));
+      }
+    }
     $books = $query->get();
-    return Response::json(array('books' => $books->toArray()), 200);
+    return Response::json(array('books' => $books->toArray(), 'total' => $total, 'pages' => $pageCount), 200);
   }
 
   public function recommendation($category) {

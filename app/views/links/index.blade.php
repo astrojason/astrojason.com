@@ -33,9 +33,9 @@
               <td><link-form link="link" editing="false"></link-form></td>
             </tr>
           </tbody>
-          <tfoot>
+          <tfoot ng-show="pages > 1">
             <tr>
-              <td><paginator page="page" pages="pages" nav-pages="nav_pages" ng-show="pages > 1"></paginator></td>
+              <td><paginator page="page" pages="pages" nav-pages="nav_pages"></paginator></td>
             </tr>
           </tfoot>
         </table>

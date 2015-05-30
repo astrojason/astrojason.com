@@ -39,6 +39,11 @@
               <td><book-form book="book" editing="false"></book-form></td>
             </tr>
           </tbody>
+          <tfoot ng-show="pages > 1">
+            <tr>
+              <td><paginator page="page" pages="pages" nav-pages="nav_pages"></paginator></td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     </div>

@@ -1,4 +1,4 @@
-window.app.controller 'BookController', ['$scope', '$controller', '$timeout', '$filter', 'Book', ($scope, $controller, $timeout, $filter, Book)->
+window.app.controller 'BookController', ['$scope', '$controller', '$timeout', '$filter', '$location', 'Book', ($scope, $controller, $timeout, $filter, $location, Book)->
 
   $controller 'FormMasterController', $scope: $scope
 
@@ -34,9 +34,19 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', '$
       if !$scope.loading_books
         $scope.get()
 
+    $scope.$watch 'page', (newValue, oldValue)->
+      if !$scope.loading_links
+        if newValue != oldValue
+          cur_opts = $location.search()
+          cur_opts.page = newValue
+          $location.search(cur_opts)
+          $scope.get()
+
   $scope.get = ->
     $scope.loading_books = true
-    data = []
+    data =
+      limit: $scope.limit
+      page: $scope.page
     if $scope.book_query
       data['q'] = $scope.book_query
     if $scope.is_read
@@ -46,8 +56,11 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', '$
     if $scope.sort
       data['sort'] = $scope.sort
     Book.query data, (response)->
-      $scope.books = response.books
       $scope.loading_books = false
+      $scope.books = response.books
+      $scope.total = response.total
+      $scope.pages = response.pages
+      $scope.generatePages()
 
   $scope.save = ->
     if $scope.book.category == 'New'
