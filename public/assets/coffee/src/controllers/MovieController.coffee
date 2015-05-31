@@ -10,13 +10,6 @@ window.app.controller 'MovieController', ['$scope',  '$controller', '$timeout', 
     if $scope.movie
       $scope.movie.date_watched = m
 
-  $scope.$watch 'movie_query', (newValue)->
-    $timeout.cancel $scope.search_timeout
-    if newValue?.length >= 3
-      $scope.search_timeout = $timeout ->
-        $scope.search_movies()
-      , 500
-
   $scope.toggleWatched = ->
     $scope.movie.is_watched = !$scope.movie.is_watched
     $scope.save $scope.movie
@@ -48,19 +41,25 @@ window.app.controller 'MovieController', ['$scope',  '$controller', '$timeout', 
     movie_promise = Movie.remove id: $scope.movie.id
     movie_promise.$promise.then success, error
 
-  $scope.all = ->
+  $scope.initList = ->
+
+    $scope.query()
+
+    $scope.$watch 'movie_query', ->
+      $timeout.cancel $scope.search_timeout
+      if !$scope.loading_movies
+        $scope.search_timeout = $timeout ->
+          $scope.query()
+        , 500
+
+  $scope.query = ->
     $scope.loading_movies = true
-    Movie.query (response)->
+    data = []
+    if $scope.movie_query
+      data['q'] = $scope.movie_query
+    Movie.query data, (response)->
       $scope.movies = response.movies
       $scope.loading_movies = false
-
-  $scope.search_movies = ->
-    $scope.searching_movies = true
-    data =
-      q: $scope.movie_query
-    Movie.query data, (response)->
-      $scope.movie_results = response.movies
-      $scope.searching_movies = false
 
   $scope.checkEditing = ->
     return $scope.movie?.id

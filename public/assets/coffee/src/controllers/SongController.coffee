@@ -9,21 +9,27 @@ window.app.controller 'SongController', ['$scope', '$timeout', '$controller', '$
   $scope.$watch '[song.title, song.artist]', ->
     $scope.errorMessage = ''
 
-  $scope.$watch 'song_query', (newValue)->
-    $timeout.cancel $scope.search_timeout
-    if newValue?.length >= 3
-      $scope.search_timeout = $timeout ->
-        $scope.search_songs()
-      , 500
-
   $scope.triggerRecommender = ->
     $scope.$watch 'recommendingSong', (newValue)->
       if newValue
         $scope.getRecommendation()
 
-  $scope.all = ->
+  $scope.initList = ->
+    $scope.query()
+
+    $scope.$watch 'song_query', ->
+      $timeout.cancel $scope.search_timeout
+      if !$scope.loading_songs
+        $scope.search_timeout = $timeout ->
+          $scope.query()
+        , 500
+
+  $scope.query = ->
     $scope.loading_songs = true
-    Song.query (response)->
+    data = []
+    if $scope.song_query
+      data['q'] = $scope.song_query
+    Song.query data, (response)->
       $scope.songs = response.songs
       $scope.loading_songs = false
 
@@ -57,14 +63,6 @@ window.app.controller 'SongController', ['$scope', '$timeout', '$controller', '$
 
     song_promise = Song.remove id: $scope.song.id
     song_promise.$promise.then success, error
-
-  $scope.search_songs = ->
-    $scope.searching_songs = true
-    data =
-      q: $scope.song_query
-    Song.query data, (response)->
-      $scope.song_results = response.songs
-      $scope.searching_songs = false
 
   $scope.getRecommendation = ->
     data =

@@ -1,4 +1,4 @@
-window.app.controller 'GameController', ['$scope', '$filter', '$controller', '$timeout', 'Game', ($scope, $filter, $controller, $timeout, Game)->
+window.app.controller 'GameController', ['$scope', '$filter', '$controller', '$timeout', '$location', 'Game', ($scope, $filter, $controller, $timeout, $location, Game)->
 
   $controller 'FormMasterController', $scope: $scope
 
@@ -6,7 +6,7 @@ window.app.controller 'GameController', ['$scope', '$filter', '$controller', '$t
     $scope.games = $filter('filter')($scope.games, {id: '!' + message})
     $scope.game_results = $filter('filter')($scope.game_results, {id: '!' + message})
 
-  $scope.$watch 'game_query', (newValue)->
+  $scope.$watch '', (newValue)->
     $timeout.cancel $scope.search_timeout
     if newValue?.length >= 3
       $scope.search_timeout = $timeout ->
@@ -18,19 +18,38 @@ window.app.controller 'GameController', ['$scope', '$filter', '$controller', '$t
       if newValue
         $scope.getRecommendation()
 
-  $scope.all = ->
+  $scope.initList = ->
+
+    $scope.query()
+
+    $scope.$watch 'game_query', ->
+      $timeout.cancel $scope.search_timeout
+      if !$scope.loading_games
+        $scope.search_timeout = $timeout ->
+          $scope.query()
+        , 500
+
+    $scope.$watch 'page', (newValue, oldValue)->
+      if !$scope.loading_games
+        if newValue != oldValue
+          cur_opts = $location.search()
+          cur_opts.page = newValue
+          $location.search(cur_opts)
+          $scope.query()
+
+    $scope.$watch 'display_category', ->
+      if !$scope.loading_games
+        $scope.query()
+
+  $scope.query = ->
     $scope.loading_games = true
-    Game.query (response)->
+    data = []
+    if $scope.game_query
+      data['q'] = $scope.game_query
+    Game.query data, (response)->
       $scope.games = response.games
       $scope.loading_games = false
 
-  $scope.search_games = ->
-    $scope.searching_games = true
-    data =
-      q: $scope.game_query
-    Game.query data, (response)->
-      $scope.game_results = response.games
-      $scope.searching_games = false
 
   $scope.save = ->
     if $scope.game.category == 'New'

@@ -8,8 +8,8 @@
   <div ng-controller="GameController">
     <div class="row">
       <div class="col-md-12">
-        <loader ng-show="searching_games" ng-cloak></loader>
-        <table class="table table-condensed table-striped table-hover">
+        <loader ng-show="loading_games" ng-cloak></loader>
+        <table class="table table-condensed table-striped table-hover" ng-init="initList()">
           <thead>
             <tr>
               <th>
@@ -18,24 +18,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-show="game_query && game_results.length == 0 && !searching_games">
+            <tr ng-show="game_query && games.length == 0 && !loading_games">
               <td>No results for <strong>{{ game_query }}</strong>
             </tr>
-            <tr ng-repeat="game in game_results" ng-show="game_results.length > 0" ng-cloak>
+            <tr ng-repeat="game in games">
               <td><game-form game="game" editing="false"></game-form></td>
             </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <loader ng-show="loading_games" ng-cloak></loader>
-        <table class="table table-condensed table-striped table-hover" ng-init="all()">
-          <tbody>
-          <tr ng-repeat="game in games">
-            <td><game-form game="game" editing="false"></game-form></td>
-          </tr>
           </tbody>
         </table>
       </div>
