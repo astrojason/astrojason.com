@@ -5,7 +5,7 @@
   <div class="col-md-12">
     <div class="alert alert-danger row" ng-show="deleting == true">
       <div class="col-md-12">
-        <h4>Delete Game</h4>
+        <h4>Delete "{{ game.title }}"?</h4>
         <p>Deleting the game cannot be undone.</p>
         <p>
           <a class="btn btn-danger" ng-click="delete()">Yes I want to delete</a>
