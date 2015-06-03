@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('title')
-  Movies
+  Games
 @stop
 
 @section('content')
