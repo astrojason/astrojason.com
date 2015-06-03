@@ -7,13 +7,24 @@ class GameController extends BaseController {
   }
 
   public function query(){
+    $pageCount = 0;
+    $limit = Input::get('limit');
+    $page = Input::get('page');
     $query = Game::query()->where('user_id', Auth::user()->id);
     $q = Input::get('q');
     if(isset($q)){
       $query->where('title', 'LIKE', '%' . $q . '%');
     }
+    $total = $query->count();
+    if (isset($limit)) {
+      $pageCount = ceil($total / $limit);
+      $query->take($limit);
+      if (isset($page) && $page > 1) {
+        $query->skip($limit * ($page - 1));
+      }
+    }
     $games = $query->get();
-    return Response::json(array('success' => true, 'games' => $games->toArray()));
+    return Response::json(array('success' => true, 'games' => $games->toArray(), 'total' => $total, 'pages' => $pageCount));
   }
 
   public function save() {

@@ -43,12 +43,17 @@ window.app.controller 'GameController', ['$scope', '$filter', '$controller', '$t
 
   $scope.query = ->
     $scope.loading_games = true
-    data = []
+    data =
+      limit: $scope.limit
+      page: $scope.page
     if $scope.game_query
       data['q'] = $scope.game_query
     Game.query data, (response)->
-      $scope.games = response.games
       $scope.loading_games = false
+      $scope.games = response.games
+      $scope.total = response.total
+      $scope.pages = response.pages
+      $scope.generatePages()
 
 
   $scope.save = ->
