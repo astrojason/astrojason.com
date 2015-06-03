@@ -1,4 +1,4 @@
-window.app.controller 'MovieController', ['$scope',  '$controller', '$timeout', '$filter', 'Movie', ($scope, $controller, $timeout, $filter, Movie)->
+window.app.controller 'MovieController', ['$scope',  '$controller', '$timeout', '$filter', '$location', 'Movie', ($scope, $controller, $timeout, $filter, $location, Movie)->
 
   $controller 'FormMasterController', $scope: $scope
 
@@ -52,14 +52,27 @@ window.app.controller 'MovieController', ['$scope',  '$controller', '$timeout', 
           $scope.query()
         , 500
 
+    $scope.$watch 'page', (newValue, oldValue)->
+      if !$scope.loading_movies
+        if newValue != oldValue
+          cur_opts = $location.search()
+          cur_opts.page = newValue
+          $location.search(cur_opts)
+          $scope.query()
+
   $scope.query = ->
     $scope.loading_movies = true
-    data = []
+    data =
+      limit: $scope.limit
+      page: $scope.page
     if $scope.movie_query
       data['q'] = $scope.movie_query
     Movie.query data, (response)->
-      $scope.movies = response.movies
       $scope.loading_movies = false
+      $scope.movies = response.movies
+      $scope.total = response.total
+      $scope.pages = response.pages
+      $scope.generatePages()
 
   $scope.checkEditing = ->
     return $scope.movie?.id

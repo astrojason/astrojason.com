@@ -7,15 +7,26 @@ class MovieController extends BaseController {
   }
 
   public function query() {
+    $pageCount = 0;
     $q = Input::get('q');
+    $limit = Input::get('limit');
+    $page = Input::get('page');
     $query = Movie::where('user_id', Auth::user()->id);
     if(isset($q)) {
       $query->where(function($query) use ($q) {
         $query->where('title', 'LIKE', '%' . $q . '%');
       });
     }
+    $total = $query->count();
+    if (isset($limit)) {
+      $pageCount = ceil($total / $limit);
+      $query->take($limit);
+      if (isset($page) && $page > 1) {
+        $query->skip($limit * ($page - 1));
+      }
+    }
     $movies = $query->orderBy('rating_order')->get();
-    return Response::json(array('movies' => $movies->toArray()), 200);
+    return Response::json(array('movies' => $movies->toArray(), 'total' => $total, 'pages' => $pageCount), 200);
   }
 
   public function save() {
