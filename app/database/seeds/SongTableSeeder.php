@@ -13,7 +13,7 @@ class SongTableSeeder extends Seeder
 
     $this->command->info('Inserting sample records using Faker ...');
 
-    foreach(range(1,30) as $index)
+    foreach(range(1,100) as $index)
     {
       Song::create([
         'user_id' => 1,

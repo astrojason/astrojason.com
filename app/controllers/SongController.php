@@ -7,6 +7,7 @@ class SongController extends BaseController {
   }
 
   public function query() {
+    $pageCount = 0;
     $query = Song::where('user_id', Auth::user()->id);
     $q = Input::get('q');
     $randomize = filter_var(Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
@@ -22,17 +23,19 @@ class SongController extends BaseController {
     if(!$include_learned) {
       $query->where('learned', false);
     }
+    $total = $query->count();
     if($randomize){
       $query->orderBy(DB::raw('RAND()'));
     }
     if (isset($limit)) {
+      $pageCount = ceil($total / $limit);
       $query->take($limit);
       if (isset($page) && $page > 1 && !$randomize) {
         $query->skip($limit * ($page - 1));
       }
     }
     $songs = $query->get();
-    return Response::json(array('songs' => $songs->toArray()), 200);
+    return Response::json(array('songs' => $songs->toArray(), 'total' => $total, 'pages' => $pageCount), 200);
   }
 
   public function save() {

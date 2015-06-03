@@ -1,4 +1,4 @@
-window.app.controller 'SongController', ['$scope', '$timeout', '$controller', '$filter', 'Song', ($scope, $timeout, $controller, $filter, Song)->
+window.app.controller 'SongController', ['$scope', '$timeout', '$controller', '$filter', '$location', 'Song', ($scope, $timeout, $controller, $filter, $location, Song)->
 
   $controller 'FormMasterController', $scope: $scope
 
@@ -24,14 +24,27 @@ window.app.controller 'SongController', ['$scope', '$timeout', '$controller', '$
           $scope.query()
         , 500
 
+    $scope.$watch 'page', (newValue, oldValue)->
+      if !$scope.loading_songs
+        if newValue != oldValue
+          cur_opts = $location.search()
+          cur_opts.page = newValue
+          $location.search(cur_opts)
+          $scope.query()
+
   $scope.query = ->
     $scope.loading_songs = true
-    data = []
+    data =
+      limit: $scope.limit
+      page: $scope.page
     if $scope.song_query
       data['q'] = $scope.song_query
     Song.query data, (response)->
-      $scope.songs = response.songs
       $scope.loading_songs = false
+      $scope.songs = response.songs
+      $scope.total = response.total
+      $scope.pages = response.pages
+      $scope.generatePages()
 
   $scope.save = ()->
     success = ->
