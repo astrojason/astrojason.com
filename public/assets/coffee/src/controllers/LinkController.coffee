@@ -90,7 +90,7 @@ window.app.controller 'LinkController', ['$scope', '$controller', '$filter', '$t
         $scope.$emit 'closeModal'
 
     error = (response)->
-      $scope.errorMessage = response.error
+      $scope.errorMessage = response.data.error
 
     link_promise = Link.save $.param $scope.link
     link_promise.$promise.then success, error

@@ -1,5 +1,7 @@
 <?php
 
+use \Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+
 class MovieController extends BaseController {
 
   public function index() {
@@ -26,7 +28,7 @@ class MovieController extends BaseController {
       }
     }
     $movies = $query->orderBy('rating_order')->get();
-    return Response::json(array('movies' => $movies->toArray(), 'total' => $total, 'pages' => $pageCount), 200);
+    return Response::json(array('movies' => $movies->toArray(), 'total' => $total, 'pages' => $pageCount), SymfonyResponse::HTTP_OK);
   }
 
   public function save() {
@@ -55,7 +57,7 @@ class MovieController extends BaseController {
       $movie->date_watched = date('Y-m-d',$date_watched);
     }
     $movie->save();
-    return Response::json(array('movie' => $movie->toArray()), 200);
+    return Response::json(array('movie' => $movie->toArray()), SymfonyResponse::HTTP_OK);
   }
 
   public function delete() {
@@ -70,9 +72,9 @@ class MovieController extends BaseController {
         $update_movie->save();
       }
       $movie->delete();
-      return Response::json(array('success' => true), 200);
+      return Response::json(array('success' => true), SymfonyResponse::HTTP_OK);
     } else {
-      return Response::json(array('error' => 'No movie with that id exists'), 404);
+      return Response::json(array('error' => 'No movie with that id exists'), SymfonyResponse::HTTP_NOT_FOUND);
     }
   }
 }

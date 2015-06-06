@@ -1,5 +1,7 @@
 <?php
 
+use \Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+
 class SongController extends BaseController {
 
   public function index() {
@@ -35,7 +37,7 @@ class SongController extends BaseController {
       }
     }
     $songs = $query->get();
-    return Response::json(array('songs' => $songs->toArray(), 'total' => $total, 'pages' => $pageCount), 200);
+    return Response::json(array('songs' => $songs->toArray(), 'total' => $total, 'pages' => $pageCount), SymfonyResponse::HTTP_OK);
   }
 
   public function save() {
@@ -48,7 +50,7 @@ class SongController extends BaseController {
         ->where('user_id', Auth::user()->id)
         ->first();
       if(!isset($song)){
-        return Response::json(array('error' => 'No song with that id exists for the logged in user.'), 404);
+        return Response::json(array('error' => 'No song with that id exists for the logged in user.'), SymfonyResponse::HTTP_NOT_FOUND);
       }
     } else {
       $song = Song::where('user_id', Auth::user()->id)
@@ -56,7 +58,7 @@ class SongController extends BaseController {
         ->where('artist', $artist)
         ->first();
       if(isset($song)){
-        return Response::json(array('error' => 'A song with that name by that artist already exists.'), 500);
+        return Response::json(array('error' => 'A song with that name by that artist already exists.'), SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY);
       } else {
         $song = new Song();
         $song->user_id = Auth::user()->id;
@@ -67,7 +69,7 @@ class SongController extends BaseController {
     $song->location = $location;
     $song->learned = $learned;
     $song->save();
-    return Response::json(array('song' => $song->toArray()), 200);
+    return Response::json(array('song' => $song->toArray()), SymfonyResponse::HTTP_OK);
   }
 
   public function delete() {
@@ -76,13 +78,13 @@ class SongController extends BaseController {
         ->where('user_id', Auth::user()->id)
         ->first();
       if (!isset($song)) {
-        return Response::json(array('error' => 'No song with that id exists for the logged in user.'), 404);
+        return Response::json(array('error' => 'No song with that id exists for the logged in user.'), SymfonyResponse::HTTP_NOT_FOUND);
       } else {
         $song->delete();
-        return Response::json(array('success' => true), 200);
+        return Response::json(array('success' => true), SymfonyResponse::HTTP_OK);
       }
     } else {
-      return Response::json(array('error' => 'You must pass an id.'), 500);
+      return Response::json(array('error' => 'You must pass an id.'), SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY);
     }
   }
 

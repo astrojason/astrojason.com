@@ -1,5 +1,7 @@
 <?php
 
+use \Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+
 class UserController extends BaseController {
   public function processRegistration(){
     try {
@@ -10,9 +12,9 @@ class UserController extends BaseController {
       $user->email = Input::get('email');
       $user->password = Hash::make(Input::get('password'));
       $user->save();
-      return Response::json(array('success' => true), 200);
+      return Response::json(array('success' => true), SymfonyResponse::HTTP_OK);
     } catch (Exception $exception) {
-      return Response::json(array('success' => false, 'error' => $exception->getMessage()), 200);
+      return Response::json(array('success' => false, 'error' => $exception->getMessage()), SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY);
     }
   }
 
@@ -22,7 +24,7 @@ class UserController extends BaseController {
     if(count($user) > 0) {
       $available = false;
     }
-    return Response::json(array('success' => true, 'available' => $available), 200);
+    return Response::json(array('success' => true, 'available' => $available), SymfonyResponse::HTTP_OK);
   }
 
   public function checkEmail() {
@@ -31,7 +33,7 @@ class UserController extends BaseController {
     if(count($user) > 0) {
       $available = false;
     }
-    return Response::json(array('success' => true, 'available' => $available), 200);
+    return Response::json(array('success' => true, 'available' => $available), SymfonyResponse::HTTP_OK);
   }
 
   public function login() {
@@ -53,10 +55,10 @@ class UserController extends BaseController {
       if (Auth::attempt($userdata, true)) {
         $response['success'] = true;
         $response['user'] = Auth::user()->toArray();
-        return Response::json($response);
+        return Response::json($response, SymfonyResponse::HTTP_OK);
       } else {
         $response['reason'] = 'Auth failed';
-        return Response::json($response);
+        return Response::json($response, SymfonyResponse::HTTP_UNAUTHORIZED);
       }
     }
   }

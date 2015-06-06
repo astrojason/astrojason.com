@@ -1,5 +1,7 @@
 <?php
 
+use \Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+
 class GameController extends BaseController {
 
   public function index() {
@@ -33,14 +35,14 @@ class GameController extends BaseController {
     if(Input::get('id')) {
       $game = Game::where('user_id', Auth::user()->id)->where('id', Input::get('id'))->first();
       if(!isset($game)) {
-        return Response::json(array('success' => false, 'error' => 'There is no game with id for this user.'), 200);
+        return Response::json(array('success' => false, 'error' => 'There is no game with id for this user.'), SymfonyResponse::HTTP_NOT_FOUND);
       }
     } else {
       $game = Game::where('user_id', Auth::user()->id)
         ->where('title', $title)
         ->where('platform', $platform)->first();
       if(isset($game)) {
-        return Response::json(array('success' => false, 'error' => 'There is already a game with that title for this platform'), 200);
+        return Response::json(array('success' => false, 'error' => 'There is already a game with that title for this platform'), SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY);
       } else {
         $game = new Game();
       }
@@ -49,7 +51,7 @@ class GameController extends BaseController {
     $game->platform = $platform;
     $game->completed = filter_var(Input::get('completed'), FILTER_VALIDATE_BOOLEAN);
     $game->save();
-    return Response::json(array('success' => true), 200);
+    return Response::json(array('success' => true), SymfonyResponse::HTTP_OK);
   }
 
   public function delete() {
@@ -57,9 +59,9 @@ class GameController extends BaseController {
     $game = Game::where('id', $id)->where('user_id', Auth::user()->id)->first();
     if(isset($game)){
       $game->delete();
-      return Response::json(array('success' => true), 200);
+      return Response::json(array('success' => true), SymfonyResponse::HTTP_OK);
     } else {
-      return Response::json(array('success' => false, 'error' => 'No game with that id exists'), 200);
+      return Response::json(array('success' => false, 'error' => 'No game with that id exists'), SymfonyResponse::HTTP_NOT_FOUND);
     }
   }
 
@@ -67,7 +69,7 @@ class GameController extends BaseController {
     $game = Game::where('completed', false)
       ->where('user_id', Auth::user()->id)
       ->orderBy(DB::raw('RAND()'))->first();
-    return Response::json(array('success' => true, 'game' => $game->toArray()), 200);
+    return Response::json(array('success' => true, 'game' => $game->toArray()), SymfonyResponse::HTTP_OK);
   }
 
 }

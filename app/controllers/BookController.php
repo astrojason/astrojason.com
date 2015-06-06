@@ -1,5 +1,7 @@
 <?php
 
+use \Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+
 class BookController extends BaseController {
 
   public function index() {
@@ -55,7 +57,7 @@ class BookController extends BaseController {
       }
     }
     $books = $query->get();
-    return Response::json(array('books' => $books->toArray(), 'total' => $total, 'pages' => $pageCount), 200);
+    return Response::json(array('books' => $books->toArray(), 'total' => $total, 'pages' => $pageCount), SymfonyResponse::HTTP_OK);
   }
 
   public function recommendation($category) {
@@ -74,31 +76,9 @@ class BookController extends BaseController {
       }
       $book->times_loaded = $book->times_loaded + 1;
       $book->save();
-      return Response::json(array('success' => true, 'book' => $book->toArray()), 200);
+      return Response::json(array('success' => true, 'book' => $book->toArray()), SymfonyResponse::HTTP_OK);
     } else {
-      return Response::json(array('success' => false, 'error' => 'No book found'), 200);
-    }
-  }
-
-  public function read($id) {
-    $book = Book::where('id', $id)->where('user_id', Auth::user()->id)->first();
-    if(isset($book)) {
-      $book->is_read = true;
-      $book->save();
-      return Response::json(array('success' => true), 200);
-    } else {
-      return Response::json(array('success' => false, 'error' => 'No book with that id exists'), 200);
-    }
-  }
-
-  public function unread($id) {
-    $book = Book::where('id', $id)->where('user_id', Auth::user()->id)->first();
-    if(isset($book)) {
-      $book->is_read = false;
-      $book->save();
-      return Response::json(array('success' => true), 200);
-    } else {
-      return Response::json(array('success' => false, 'error' => 'No book with that id exists'), 200);
+      return Response::json(array('success' => false, 'error' => 'No book found'), SymfonyResponse::HTTP_NOT_FOUND);
     }
   }
 
@@ -107,9 +87,9 @@ class BookController extends BaseController {
     $book = Book::where('id', $id)->where('user_id', Auth::user()->id)->first();
     if(isset($book)) {
       $book->delete();
-      return Response::json(array('success' => true), 200);
+      return Response::json(array('success' => true), SymfonyResponse::HTTP_OK);
     } else {
-      return Response::json(array('success' => false, 'error' => 'No book with that id exists'), 200);
+      return Response::json(array('success' => false, 'error' => 'No book with that id exists'), SymfonyResponse::HTTP_NOT_FOUND);
     }
   }
 
@@ -130,7 +110,7 @@ class BookController extends BaseController {
         ->where('user_id', Auth::user()->id)
         ->first();
       if(isset($book)) {
-        return Response::json(array('success' => false, 'error' => 'Book already exists'), 200);
+        return Response::json(array('success' => false, 'error' => 'Book already exists'), SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY);
       }
       $book = new Book();
     }
@@ -143,7 +123,7 @@ class BookController extends BaseController {
       $book->series_order = $series_order;
     }
     $book->save();
-    return Response::json(array('success' => true, 'book' => $book->toArray()), 200);
+    return Response::json(array('success' => true, 'book' => $book->toArray()), SymfonyResponse::HTTP_OK);
   }
 
   /**

@@ -3,6 +3,9 @@
 /**
  * Class LinkController
  */
+
+use \Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+
 class LinkController extends AstroBaseController {
 
   public function index() {
@@ -64,7 +67,7 @@ class LinkController extends AstroBaseController {
     } else {
       $link = Link::where('link', Input::get('link'))->where('user_id', Auth::user()->id)->first();
       if(isset($link)) {
-        return Response::json(array('success' => false, 'error' => 'Link already exists'), 200);
+        return Response::json(array('success' => false, 'error' => 'Link already exists'), SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY);
       }
       $link = new Link;
       $link->user_id = Auth::user()->id;
@@ -82,7 +85,7 @@ class LinkController extends AstroBaseController {
       $link->save();
       return $this->successResponse(array('link' => $this->transform($link)));
     } catch(Exception $exception) {
-      return Response::json(array('success' => false, 'error' => $exception->getMessage()), 200);
+      return Response::json(array('success' => false, 'error' => $exception->getMessage()), SymfonyResponse::HTTP_OK);
     }
   }
 
@@ -93,7 +96,7 @@ class LinkController extends AstroBaseController {
       $link->delete();
       return $this->successResponse();
     } else {
-      return Response::json(array('success' => false, 'error' => 'No link with that id exists'), 200);
+      return Response::json(array('success' => false, 'error' => 'No link with that id exists'), SymfonyResponse::HTTP_OK);
     }
   }
 
@@ -108,7 +111,7 @@ class LinkController extends AstroBaseController {
       $new_link->category = 'Unread';
       $new_link->save();
     }
-    return Response::json(array('success' => true), 200);
+    return Response::json(array('success' => true), SymfonyResponse::HTTP_OK);
   }
 
   /**
