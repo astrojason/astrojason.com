@@ -24,6 +24,10 @@ window.app.controller 'SongController', ['$scope', '$timeout', '$controller', '$
           $scope.query()
         , 500
 
+    $scope.$watch 'include_learned', ->
+      if !$scope.loading_songs
+        $scope.query()
+
     $scope.$watch 'page', (newValue, oldValue)->
       if !$scope.loading_songs
         if newValue != oldValue
@@ -37,6 +41,7 @@ window.app.controller 'SongController', ['$scope', '$timeout', '$controller', '$
     data =
       limit: $scope.limit
       page: $scope.page
+      include_learned: $scope.include_learned
     if $scope.song_query
       data['q'] = $scope.song_query
     Song.query data, (response)->

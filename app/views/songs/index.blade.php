@@ -12,8 +12,9 @@
         <table class="table table-condensed table-striped table-hover" ng-init="initList()">
           <thead>
             <tr>
-              <th>
+              <th class="input-group">
                 <input type="text" ng-model="song_query" class="form-control" placeholder="Search Query" />
+                <div class="input-group-addon"><input type="checkbox" ng-model="include_learned" /> <label>Include learned</label></div>
               </th>
             </tr>
           </thead>
