@@ -59,7 +59,7 @@
               </thead>
               <tbody>
                 <tr ng-repeat="link in unread_links">
-                  <td><link-form link="link" editing="false"></link-form></td>
+                  <td class="item"><link-form link="link" editing="false"></link-form></td>
                 </tr>
               </tbody>
             </table>

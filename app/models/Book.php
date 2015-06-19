@@ -34,9 +34,4 @@
  */
 class Book extends Eloquent {
 
-  public function __construct() {
-    $this->series_order = 0;
-    $this->user_id = Auth::user()->id;
-  }
-  
 }

@@ -1,4 +1,4 @@
-app = angular.module 'astroApp', ['ngMessages', 'ngResource']
+app = angular.module 'astroApp', ['ngMessages', 'ngResource', 'ngAnimate']
 
 app.config(['$httpProvider', '$locationProvider', ($httpProvider, $locationProvider)->
   $httpProvider.defaults.xsrfCookieName = 'csrftoken'

@@ -27,8 +27,5 @@
  * @method static \Illuminate\Database\Query\Builder|\Link whereTimesRead($value)
  */
 class Link extends Eloquent {
-  public function __construct() {
-    $this->user_id = Auth::user()->id;
-    $this->is_read = false;
-  }
+
 }

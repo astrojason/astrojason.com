@@ -99,6 +99,9 @@ class BookController extends BaseController {
     $lname = Input::get('author_lname');
     $category = Input::get('category');
     $series = Input::get('series');
+    $is_read = filter_var(Input::get('is_read'), FILTER_VALIDATE_BOOLEAN);
+    $owned = filter_var(Input::get('owned'), FILTER_VALIDATE_BOOLEAN);
+    $series_order = null;
     if ($series) {
       $series_order = Input::get('series_order');
     }
@@ -118,6 +121,8 @@ class BookController extends BaseController {
     $book->author_fname = $fname;
     $book->author_lname = $lname;
     $book->category = $category;
+    $book->is_read = $is_read;
+    $book->owned = $owned;
     if($series) {
       $book->series = $series;
       $book->series_order = $series_order;

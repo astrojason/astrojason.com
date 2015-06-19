@@ -33,9 +33,9 @@
           </thead>
           <tbody>
             <tr ng-show="books.length == 0 && !searching_books">
-              <td>No books matching the filtered values</strong>
+              <td>No books matching the filtered values</td>
             </tr>
-            <tr ng-repeat="book in books">
+            <tr ng-repeat="book in books" ng-class="{read: book.is_read}">
               <td><book-form book="book" editing="false"></book-form></td>
             </tr>
           </tbody>
