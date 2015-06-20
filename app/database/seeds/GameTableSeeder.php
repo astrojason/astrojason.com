@@ -16,7 +16,7 @@ class GameTableSeeder extends Seeder
     foreach(range(1,200) as $index) {
       Game::create([
         'user_id' => 1,
-        'title' => $faker->title(),
+        'title' => $faker->sentence(2),
         'platform' => $faker->monthName(),
         'completed' => $faker->boolean()
       ]);
