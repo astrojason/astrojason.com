@@ -16,7 +16,7 @@ class LinkTableSeeder extends Seeder
     foreach(range(1,1000) as $index) {
       Link::create([
         'user_id' => 1,
-        'name' => $faker->sentence(3),
+        'name' => ucwords(implode(' ', $faker->words(3))),
         'link' => $faker->url(),
         'category' => $faker->boolean() ? 'Unread' : $faker->monthName(),
         'is_read' => $faker->boolean(),

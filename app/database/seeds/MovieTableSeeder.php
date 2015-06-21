@@ -16,7 +16,7 @@ class MovieTableSeeder extends Seeder
     foreach(range(1,200) as $index) {
       Movie::create([
         'user_id' => 1,
-        'title' => $faker->title(),
+        'title' => ucwords(implode(' ', $faker->words(2))),
         'times_watched' => $faker->numberBetween(1, 10),
         'rating_order' => $index,
         'is_watched' => $faker->boolean()

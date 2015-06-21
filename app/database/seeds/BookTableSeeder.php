@@ -21,7 +21,7 @@ class BookTableSeeder extends Seeder
     foreach(range(1, 200) as $index) {
       Book::create([
         'user_id' => 1,
-        'title' => $faker->sentence(3),
+        'title' => ucwords(implode(' ', $faker->words(3))),
         'author_fname' => $faker->firstName,
         'author_lname' => $faker->lastName,
         'category' => $faker->boolean() ? 'To Read' : $faker->monthName(),
@@ -40,7 +40,7 @@ class BookTableSeeder extends Seeder
       foreach(range(1,15) as $series_order) {
         Book::create([
           'user_id' => 1,
-          'title' => $faker->sentence(3),
+          'title' => ucwords(implode(' ', $faker->words(3))),
           'author_fname' => $first_name,
           'author_lname' => $last_name,
           'category' => $category,

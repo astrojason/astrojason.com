@@ -41,13 +41,26 @@ window.app.controller 'GameController', ['$scope', '$filter', '$controller', '$t
       if !$scope.loading_games
         $scope.query()
 
+    $scope.$watch 'include_completed', ->
+      if !$scope.loading_games
+        $scope.query()
+
+    $scope.$watch 'filter_platform', ->
+      if !$scope.loading_games
+        $scope.query()
+
   $scope.query = ->
     $scope.loading_games = true
     data =
       limit: $scope.limit
       page: $scope.page
+      include_completed: $scope.include_completed
     if $scope.game_query
       data['q'] = $scope.game_query
+    if $scope.include_completed
+      data['include_completed'] = $scope.include_completed
+    if $scope.filter_platform
+      data['platform'] = $scope.filter_platform
     Game.query data, (response)->
       $scope.loading_games = false
       $scope.games = response.games
@@ -104,5 +117,8 @@ window.app.controller 'GameController', ['$scope', '$filter', '$controller', '$t
 
     game_promise = Game.recommend()
     game_promise.$promise.then success, error
+
+  $scope.setPlatforms = (platforms)->
+    $scope.platforms = platforms
 
 ]

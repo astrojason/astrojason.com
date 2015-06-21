@@ -16,9 +16,9 @@ class SongTableSeeder extends Seeder
     foreach(range(1,100) as $index) {
       Song::create([
         'user_id' => 1,
-        'title' => $faker->sentence(3),
-        'artist' => $faker->sentence(2),
-        'location' => $faker->sentence(1),
+        'title' => ucwords(implode(' ', $faker->words(3))),
+        'artist' => ucwords(implode(' ', $faker->words(2))),
+        'location' => implode(' ', $faker->words(1)),
         'learned' => $faker->boolean()
       ]);
     }

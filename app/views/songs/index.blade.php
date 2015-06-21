@@ -22,7 +22,7 @@
             <tr ng-show="song_query && songs.length == 0 && !loading_songs">
               <td>No results for <strong>{{ song_query }}</strong>
             </tr>
-            <tr ng-repeat="song in songs">
+            <tr ng-repeat="song in songs" ng-class="{read: song.learned}">
               <td>
                 <song-form song="song" editing="false"></song-form>
               </td>

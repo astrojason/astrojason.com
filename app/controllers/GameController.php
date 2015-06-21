@@ -5,17 +5,45 @@ use \Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 class GameController extends BaseController {
 
   public function index() {
-    return View::make('games.index');
+    $platforms = [];
+    $dbPlatforms = Game::groupBy('platform')
+      ->where('user_id', Auth::user()->id)
+      ->get(array('platform'));
+    foreach ($dbPlatforms as $platform) {
+      $platforms[] = $platform->platform;
+    }
+    if ($platforms) {
+      $lastElement = end($platforms);
+    }
+    $platformsString = '[';
+    foreach ($platforms as $platform) {
+      $platformsString .= '\'' . $platform . '\'';
+      if ($platform != $lastElement) {
+        $platformsString .= ',';
+      }
+    }
+    $platformsString .= ']';
+
+
+    return View::make('games.index')->with('platforms', $platformsString);
   }
 
   public function query(){
     $pageCount = 0;
     $limit = Input::get('limit');
     $page = Input::get('page');
-    $query = Game::query()->where('user_id', Auth::user()->id);
     $q = Input::get('q');
+    $include_completed = filter_var(Input::get('include_completed'), FILTER_VALIDATE_BOOLEAN);
+    $platform = Input::get('platform');
+    $query = Game::query()->where('user_id', Auth::user()->id);
     if(isset($q)){
       $query->where('title', 'LIKE', '%' . $q . '%');
+    }
+    if(!$include_completed){
+      $query->where('completed', false);
+    }
+    if(isset($platform)){
+      $query->where('platform', $platform);
     }
     $total = $query->count();
     if (isset($limit)) {
