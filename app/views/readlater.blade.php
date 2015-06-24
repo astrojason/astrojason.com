@@ -13,8 +13,8 @@
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-    <script type="text/javascript" src="assets/bower/html5shiv/dist/html5shiv.min.js"></script>
-    <script type="text/javascript" src="assets/bower/respond/dest/respond.min.js"></script>
+      <script type="text/javascript" src="assets/bower/html5shiv/dist/html5shiv.min.js"></script>
+      <script type="text/javascript" src="assets/bower/respond/dest/respond.min.js"></script>
     <![endif]-->
   </head>
   <body ng-app="astroApp" ng-controller="MasterController">
@@ -32,6 +32,7 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script type="text/javascript" src="assets/bower/angular/angular.min.js"></script>
     <script type="text/javascript" src="assets/bower/angular-resource/angular-resource.min.js"></script>
+    <script type="text/javascript" src="assets/bower/angular-animate/angular-animate.min.js"></script>
     <script type="text/javascript" src="assets/bower/alertifyjs/dist/js/alertify.js"></script>
     <script type="text/javascript" src="assets/bower/angular-messages/angular-messages.min.js"></script>
     <script type="text/javascript" src="assets/bower/moment/min/moment.min.js"></script>
