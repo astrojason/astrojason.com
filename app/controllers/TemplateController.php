@@ -85,4 +85,8 @@ class TemplateController extends BaseController {
   public function paginator() {
     return View::make('templates.paginator');
   }
+
+  public function songModal() {
+    return View::make('templates.songModal');
+  }
 }

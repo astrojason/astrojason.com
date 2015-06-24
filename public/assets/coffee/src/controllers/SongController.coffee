@@ -36,6 +36,15 @@ window.app.controller 'SongController', ['$scope', '$timeout', '$controller', '$
           $location.search(cur_opts)
           $scope.query()
 
+    $scope.$on 'closeModal', (event, song)->
+      $scope.songModalOpen = false
+      if song
+        song.new = true
+        $scope.songs.splice(0, 0, song)
+        $timeout ->
+          song.new = false
+        , 1000
+
   $scope.query = ->
     $scope.loading_songs = true
     data =
@@ -52,12 +61,12 @@ window.app.controller 'SongController', ['$scope', '$timeout', '$controller', '$
       $scope.generatePages()
 
   $scope.save = ()->
-    success = ->
+    success = (response)->
       alertify.success 'Song ' + (if $scope.song.id then 'updated' else 'added') + ' successfully'
       if $scope.song.id
         $scope.editing = false
       else
-        $scope.$emit 'closeModal'
+        $scope.$emit 'closeModal', response.song
 
     error = (response)->
       $scope.errorMessage = response.data.error

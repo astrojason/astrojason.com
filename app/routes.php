@@ -70,6 +70,7 @@ Route::group(array('prefix' => 'templates'), function(){
   Route::get('song-form', 'TemplateController@songForm');
   Route::get('loader', 'TemplateController@loader');
   Route::get('paginator', 'TemplateController@paginator');
+  Route::get('song-modal', 'TemplateController@songModal');
 });
 
 Route::group(array('before' => 'admin'), function(){

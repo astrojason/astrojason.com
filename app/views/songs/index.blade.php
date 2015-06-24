@@ -12,18 +12,21 @@
         <table class="table table-condensed table-striped table-hover" ng-init="initList()">
           <thead>
             <tr>
-              <th class="input-group">
-                <input type="text" ng-model="song_query" class="form-control" placeholder="Search Query" />
-                <div class="input-group-addon"><input type="checkbox" ng-model="include_learned" /> <label>Include learned</label></div>
-              </th>
+              <th>Songs<button class="btn btn-success btn-xs pull-right" ng-click="songModalOpen = true">Add</button></th>
             </tr>
           </thead>
           <tbody>
             <tr ng-show="song_query && songs.length == 0 && !loading_songs">
               <td>No results for <strong>{{ song_query }}</strong>
             </tr>
+            <tr>
+              <td class="input-group">
+                <input type="text" ng-model="song_query" class="form-control" placeholder="Search Query" />
+                <div class="input-group-addon"><input type="checkbox" ng-model="include_learned" /> <label>Include learned</label></div>
+              </td>
+            </tr>
             <tr ng-repeat="song in songs" ng-class="{read: song.learned}">
-              <td>
+              <td ng-class="{new: song.new}">
                 <song-form song="song" editing="false"></song-form>
               </td>
             </tr>
@@ -36,5 +39,6 @@
         </table>
       </div>
     </div>
+    <song-modal></song-modal>
   </div>
 @stop
