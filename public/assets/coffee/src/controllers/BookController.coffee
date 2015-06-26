@@ -3,7 +3,6 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', '$
   $controller 'FormMasterController', $scope: $scope
 
   $scope.loading_books = false
-  $scope.newBook = new window.Book()
 
   $scope.$on 'bookDeleted', (event, message)->
     $scope.books = $filter('filter')($scope.books, {id: '!' + message})
@@ -15,6 +14,8 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', '$
         $scope.getRecommendation()
 
   $scope.initList = ->
+
+    $scope.newBook = new window.Book()
 
     $scope.$on 'closeModal', (event, book)->
       $scope.bookModalOpen = false

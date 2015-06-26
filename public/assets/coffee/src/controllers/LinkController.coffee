@@ -16,7 +16,18 @@ window.app.controller 'LinkController', ['$scope', '$controller', '$filter', '$t
 
   $scope.initList = ->
 
+    $scope.newLink = new window.Link()
+
     $scope.query()
+
+    $scope.$on 'closeModal', (event, link)->
+      $scope.linkModalOpen = false
+      if link
+        link.new = true
+        $scope.links.splice(0, 0, link)
+        $timeout ->
+          link.new = false
+        , 1000
 
     $scope.$watch 'links_query', ->
       if !$scope.loading_links
@@ -79,7 +90,7 @@ window.app.controller 'LinkController', ['$scope', '$controller', '$filter', '$t
     if $scope.link.category == 'New'
       $scope.link.category = $scope.new_category
 
-    success = ->
+    success = (response)->
       alertify.success "Link " + (if $scope.link.id then "updated" else "added") + " successfully"
       if $scope.link.id
         $scope.editing = false
@@ -87,7 +98,7 @@ window.app.controller 'LinkController', ['$scope', '$controller', '$filter', '$t
         if $scope.originalLink.is_read != $scope.link.is_read
           $scope.$emit 'linkRead', $scope.link.is_read
       else
-        $scope.$emit 'closeModal'
+        $scope.$emit 'closeModal', response.link
 
     error = (response)->
       $scope.errorMessage = response.data.error
