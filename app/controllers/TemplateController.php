@@ -89,4 +89,8 @@ class TemplateController extends BaseController {
   public function songModal() {
     return View::make('templates.songModal');
   }
+
+  public function bookModal() {
+    return View::make('templates.bookModal');
+  }
 }

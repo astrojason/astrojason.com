@@ -3,6 +3,7 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', '$
   $controller 'FormMasterController', $scope: $scope
 
   $scope.loading_books = false
+  $scope.newBook = new window.Book()
 
   $scope.$on 'bookDeleted', (event, message)->
     $scope.books = $filter('filter')($scope.books, {id: '!' + message})
@@ -14,6 +15,17 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', '$
         $scope.getRecommendation()
 
   $scope.initList = ->
+
+    $scope.$on 'closeModal', (event, book)->
+      $scope.bookModalOpen = false
+      if book
+        book.new = true
+        $scope.books.splice(0, 0, book)
+        $scope.newBook = new window.Book()
+        $timeout ->
+          book.new = false
+        , 1000
+
     $scope.$watch 'filter_category', ->
       if !$scope.loading_books
         $scope.get()
@@ -66,12 +78,12 @@ window.app.controller 'BookController', ['$scope', '$controller', '$timeout', '$
     if $scope.book.category == 'New'
       $scope.book.category = $scope.new_category
 
-    success = ->
+    success = (response)->
       alertify.success "Book " + (if $scope.book.id then "updated" else "added") + " successfully"
       if $scope.book.id
         $scope.editing = false
       else
-        $scope.$emit 'closeModal'
+        $scope.$emit 'closeModal', response.book
 
     error = (response)->
       $scope.errorMessage = response.data.error

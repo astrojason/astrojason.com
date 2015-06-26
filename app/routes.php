@@ -71,6 +71,7 @@ Route::group(array('prefix' => 'templates'), function(){
   Route::get('loader', 'TemplateController@loader');
   Route::get('paginator', 'TemplateController@paginator');
   Route::get('song-modal', 'TemplateController@songModal');
+  Route::get('book-modal', 'TemplateController@bookModal');
 });
 
 Route::group(array('before' => 'admin'), function(){

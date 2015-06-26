@@ -116,6 +116,7 @@ class BookController extends BaseController {
         return Response::json(array('success' => false, 'error' => 'Book already exists'), SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY);
       }
       $book = new Book();
+      $book->user_id = Auth::user()->id;
     }
     $book->title = $title;
     $book->author_fname = $fname;
