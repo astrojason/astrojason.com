@@ -12,9 +12,9 @@ window.app.controller 'ReadLaterController', ['$scope', '$timeout', ($scope, $ti
 
   $scope.$on 'closeModal', ->
     console.log 'Closing modal'
-    $timeout(->
+    $timeout ->
       window.parent.postMessage 'closeWindow', '*'
-    , 1000)
+    , 1000
 
   $scope.saveError = (message)->
     $scope.error = message
