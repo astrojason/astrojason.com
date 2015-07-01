@@ -6,13 +6,6 @@ window.app.controller 'GameController', ['$scope', '$filter', '$controller', '$t
     $scope.games = $filter('filter')($scope.games, {id: '!' + message})
     $scope.game_results = $filter('filter')($scope.game_results, {id: '!' + message})
 
-  $scope.$watch '', (newValue)->
-    $timeout.cancel $scope.search_timeout
-    if newValue?.length >= 3
-      $scope.search_timeout = $timeout ->
-        $scope.search_games()
-      , 500
-
   $scope.triggerRecommender = ->
     $scope.$watch 'recommendingGame', (newValue)->
       if newValue
@@ -49,6 +42,15 @@ window.app.controller 'GameController', ['$scope', '$filter', '$controller', '$t
       if !$scope.loading_games
         $scope.query()
 
+    $scope.$on 'closeModal', (event, game)->
+      $scope.gameModalOpen = false
+      if game
+        game.new = true
+        $scope.games.splice(0, 0, game)
+        $timeout ->
+          game.new = false
+        , 1000
+
   $scope.query = ->
     $scope.loading_games = true
     data =
@@ -73,12 +75,12 @@ window.app.controller 'GameController', ['$scope', '$filter', '$controller', '$t
     if $scope.game.category == 'New'
       $scope.game.category = $scope.new_category
 
-    success = ->
+    success = (response)->
       alertify.success "Game " + (if $scope.game.id then "updated" else "added") + " successfully"
       if $scope.game.id
         $scope.editing = false
       else
-        $scope.$emit 'closeModal'
+        $scope.$emit 'closeModal', response.game
 
     error = ->
       $scope.errorMessage = response.data.error

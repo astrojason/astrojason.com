@@ -97,4 +97,8 @@ class TemplateController extends BaseController {
   public function linkModal() {
     return View::make('templates.linkModal');
   }
+
+  public function gameModal() {
+    return View::make('templates.gameModal');
+  }
 }

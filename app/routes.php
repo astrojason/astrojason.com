@@ -73,6 +73,7 @@ Route::group(array('prefix' => 'templates'), function(){
   Route::get('song-modal', 'TemplateController@songModal');
   Route::get('book-modal', 'TemplateController@bookModal');
   Route::get('link-modal', 'TemplateController@linkModal');
+  Route::get('game-modal', 'TemplateController@gameModal');
 });
 
 Route::group(array('before' => 'admin'), function(){

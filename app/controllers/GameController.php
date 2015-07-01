@@ -73,13 +73,14 @@ class GameController extends BaseController {
         return Response::json(array('success' => false, 'error' => 'There is already a game with that title for this platform'), SymfonyResponse::HTTP_UNPROCESSABLE_ENTITY);
       } else {
         $game = new Game();
+        $game->user_id = Auth::user()->id;
       }
     }
     $game->title = $title;
     $game->platform = $platform;
     $game->completed = filter_var(Input::get('completed'), FILTER_VALIDATE_BOOLEAN);
     $game->save();
-    return Response::json(array('success' => true), SymfonyResponse::HTTP_OK);
+    return Response::json(array('game' => $game), SymfonyResponse::HTTP_OK);
   }
 
   public function delete() {
