@@ -12,19 +12,20 @@
         <table class="table table-condensed table-striped table-hover" ng-init="initList()">
           <thead>
             <tr>
-              <th>
-                <input type="text" ng-model="movie_query" class="form-control" placeholder="Search Query" />
-              </th>
+              <th>Movies<button class="btn btn-success btn-xs pull-right" ng-click="movieModalOpen = true">Add</button></th>
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td>
+                <input type="text" ng-model="movie_query" class="form-control" placeholder="Search Query" />
+              </td>
+            </tr>
             <tr ng-show="movie_query && movie.length == 0 && !loading_movies">
               <td>No results for <strong>{{ movie_query }}</strong>
             </tr>
             <tr ng-repeat="movie in movies">
-              <td>
-                <movie-form movie="movie" editing="false"></movie-form>
-              </td>
+              <td ng-class="{new: movie.new}"><movie-form movie="movie" editing="false"></movie-form></td>
             </tr>
           </tbody>
           <tfoot ng-show="pages > 1">
@@ -35,5 +36,6 @@
         </table>
       </div>
     </div>
+    <movie-modal></movie-modal>
   </div>
 @stop

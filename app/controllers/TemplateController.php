@@ -101,4 +101,8 @@ class TemplateController extends BaseController {
   public function gameModal() {
     return View::make('templates.gameModal');
   }
+
+  public function movieModal() {
+    return View::make('templates.movieModal');
+  }
 }

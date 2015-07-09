@@ -21,6 +21,8 @@ Route::get('songs', 'SongController@index');
 
 Route::get('readlater', 'LinkController@readLater');
 
+Route::get('goodreads', 'BookController@goodreads');
+
 Route::group(array('prefix' => 'api'), function() {
   Route::post('register', 'UserController@processRegistration');
   Route::post('checkusername', 'UserController@checkUsername');
@@ -74,6 +76,7 @@ Route::group(array('prefix' => 'templates'), function(){
   Route::get('book-modal', 'TemplateController@bookModal');
   Route::get('link-modal', 'TemplateController@linkModal');
   Route::get('game-modal', 'TemplateController@gameModal');
+  Route::get('movie-modal', 'TemplateController@movieModal');
 });
 
 Route::group(array('before' => 'admin'), function(){

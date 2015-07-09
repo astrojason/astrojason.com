@@ -15,12 +15,12 @@ window.app.controller 'MovieController', ['$scope',  '$controller', '$timeout', 
     $scope.save $scope.movie
 
   $scope.save = (movie)->
-    success = ->
+    success = (response)->
       alertify.success "Movie " + (if movie.id then "updated" else "added") + " successfully"
       if $scope.movie.id
         $scope.editing = false
       else
-        $scope.$emit 'closeModal'
+        $scope.$emit 'closeModal', response.movie
 
     error = (response)->
       $scope.errorMessage = response.data.error
@@ -59,6 +59,15 @@ window.app.controller 'MovieController', ['$scope',  '$controller', '$timeout', 
           cur_opts.page = newValue
           $location.search(cur_opts)
           $scope.query()
+
+    $scope.$on 'closeModal', (event, movie)->
+      $scope.movieModalOpen = false
+      if movie
+        movie.new = true
+        $scope.movies.splice(0, 0, movie)
+        $timeout ->
+          movie.new = false
+        , 1000
 
   $scope.query = ->
     $scope.loading_movies = true
