@@ -133,8 +133,9 @@ class BookController extends BaseController {
   }
 
   public function goodreads() {
+    $page = Input::get('page', 1);
     $url = 'https://www.goodreads.com/review/list/1387939?format=xml&key=LWJgJG6enKKElIBM6nzNyw&v=2';
-    $params = ['id' => 1387939, 'shelf' => 'to-read', 'key' => 'LWJgJG6enKKElIBM6nzNyw'];
+    $params = ['id' => 1387939, 'shelf' => 'to-read', 'key' => 'LWJgJG6enKKElIBM6nzNyw', 'page' => $page];
     $url .= '&' . http_build_query($params, null, '&', PHP_QUERY_RFC3986);
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // return the result on success, rather than just TRUE
@@ -142,11 +143,14 @@ class BookController extends BaseController {
     $xml = simplexml_load_string($curlResponse);
     $json = json_encode($xml);
     $array = json_decode($json, true);
-    $books = [];
+    $books = ['end' => $array['reviews']['@attributes']['end'],
+      'page' => $page,
+      'total' => $array['reviews']['@attributes']['total'],
+      'titles' => []];
     foreach($array['reviews']['review'] as $review) {
       $title = $review['book']['title'];
       $book = Book::where('user_id', Auth::user()->id)->where('title', $title)->first();
-      $books[] = [
+      $books['titles'][] = [
         'goodreads_id' => $book['book']['id'],
         'title' => $title,
         'author' => $review['book']['authors']['author']['name'],
@@ -155,7 +159,7 @@ class BookController extends BaseController {
       ];
     }
 
-    return Response::json(array('books' => $books), curl_getinfo($ch, CURLINFO_HTTP_CODE));
+    return View::make('books.goodreads')->with('books', $books);
   }
 
   /**

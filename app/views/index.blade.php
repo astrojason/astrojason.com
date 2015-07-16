@@ -58,7 +58,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="link in unread_links">
+                <tr ng-repeat="link in unread_links" ng-class="getLinkClass(link)">
                   <td class="item"><link-form link="link" editing="false"></link-form></td>
                 </tr>
               </tbody>

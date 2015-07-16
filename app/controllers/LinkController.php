@@ -30,6 +30,7 @@ class LinkController extends AstroBaseController {
     $page = Input::get('page');
     $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
     $randomize = filter_var(Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
+    $updateLoadCount = filter_var(Input::get('update_load_count'), FILTER_VALIDATE_BOOLEAN);
     $query = Link::query()->where('user_id', Auth::user()->id);
     if(!$include_read) {
       $query->where('is_read', false);
@@ -55,6 +56,13 @@ class LinkController extends AstroBaseController {
       }
     }
     $links = $query->get();
+    if($updateLoadCount){
+      /** @var Link $link */
+      foreach($links as $link) {
+        $link->times_loaded += 1;
+        $link->save();
+      }
+    }
     return $this->successResponse(array('links' => $this->transformCollection($links), 'total' => $total, 'pages' => $pageCount));
   }
 

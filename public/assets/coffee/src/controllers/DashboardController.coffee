@@ -92,6 +92,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       category: $scope.display_category
       limit: 10
       randomize: true
+      update_load_count: true
     Link.query data, (response)->
       $scope.selected_links = response.links
       $scope.loading_category = false
@@ -143,6 +144,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
       category: 'Unread'
       limit: 20
       randomize: true
+      update_load_count: true
     Link.query data, (response)->
       $scope.unread_links = response.links
       $scope.loading_unread = false
@@ -152,6 +154,12 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
     populate_promise.success (response)->
       if response.success
         $scope.loadDashboard()
+
+  $scope.getLinkClass = (link)->
+    if link.times_loaded > 20
+      return 'link-danger'
+    if link.times_loaded > 10
+      return 'link-warning'
 
   $scope.initDashboard()
 ]
