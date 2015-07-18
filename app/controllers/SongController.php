@@ -37,6 +37,13 @@ class SongController extends BaseController {
       }
     }
     $songs = $query->get();
+    if($randomize){
+      /** @var Song $song */
+      foreach($songs as $song) {
+        $song->times_recommended += 1;
+        $song->save();
+      }
+    }
     return Response::json(array('songs' => $songs->toArray(), 'total' => $total, 'pages' => $pageCount), SymfonyResponse::HTTP_OK);
   }
 

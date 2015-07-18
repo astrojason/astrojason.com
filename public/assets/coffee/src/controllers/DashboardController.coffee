@@ -158,7 +158,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
   $scope.getLinkClass = (link)->
     if link.times_loaded > 20
       return 'link-danger'
-    if link.times_loaded > 10
+    if link.times_loaded > 20
       return 'link-warning'
 
   $scope.initDashboard()

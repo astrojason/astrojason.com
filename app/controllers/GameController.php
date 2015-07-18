@@ -98,6 +98,8 @@ class GameController extends BaseController {
     $game = Game::where('completed', false)
       ->where('user_id', Auth::user()->id)
       ->orderBy(DB::raw('RAND()'))->first();
+    $game->times_recommended += 1;
+    $game->save();
     return Response::json(array('success' => true, 'game' => $game->toArray()), SymfonyResponse::HTTP_OK);
   }
 

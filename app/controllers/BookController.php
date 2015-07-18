@@ -74,7 +74,7 @@ class BookController extends BaseController {
           ->orderBy('series_order')
           ->first();
       }
-      $book->times_loaded = $book->times_loaded + 1;
+      $book->times_recommended += 1;
       $book->save();
       return Response::json(array('success' => true, 'book' => $book->toArray()), SymfonyResponse::HTTP_OK);
     } else {

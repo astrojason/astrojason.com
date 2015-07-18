@@ -79,8 +79,7 @@
               </thead>
               <tbody>
                 <tr
-                  ng-repeat="link in selected_links"
-                  ng-class="link.times_loaded > 10 ? (link.times_loaded > 50 ? 'danger' : 'warning') : ''">
+                  ng-repeat="link in selected_links">
                   <td><link-form link="link" editing="false"></link-form></td>
                 </tr>
               </tbody>
@@ -172,7 +171,9 @@
             </form>
             <div class="row" ng-show="book">
               <div class="col-md-12 top-margin">
-                <book-form book="book" editing="false"></book-form>
+                <div ng-class="{'alert alert-warning' : book.times_recommended > 5}">
+                  <book-form book="book" editing="false"></book-form>
+                </div>
               </div>
             </div>
           </div>
@@ -200,7 +201,9 @@
             <h4 class="modal-title">Recommended Game <span class="glyphicon glyphicon-refresh tool" ng-click="getRecommendation()"></span></h4>
           </div>
           <div class="modal-body">
-            <game-form game="game" editing="false"></game-form>
+            <div ng-class="{'alert alert-warning' : game.times_recommended > 5}">
+              <game-form game="game" editing="false"></game-form>
+            </div>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -218,7 +221,9 @@
             <h4 class="modal-title">Recommended Song <span class="glyphicon glyphicon-refresh tool" ng-click="getRecommendation()"></span></h4>
           </div>
           <div class="modal-body">
-            <song-form song="song" editing="false"></song-form>
+            <div ng-class="{'alert alert-warning' : song.times_recommended > 5}">
+              <song-form song="song" editing="false"></song-form>
+            </div>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
