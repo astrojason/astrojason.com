@@ -117,18 +117,15 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
   $scope.loadDashboard = ->
     daily_Promise = $http.get '/api/dashboard'
     daily_Promise.success (response)->
-      if response.success
-        $scope.total_read = response.total_read
-        $scope.categories = response.categories
-        $scope.total_links = response.total_links
-        $scope.links_read = response.links_read
-        $scope.total_books = response.total_books
-        $scope.books_read = response.books_read
-        $scope.books_toread = response.books_toread
-        $scope.games_toplay = response.games_toplay
-        $scope.songs_toplay = response.songs_toplay
-      else
-        $scope.$emit 'errorOccurred', response.error
+      $scope.total_read = response.total_read
+      $scope.categories = response.categories
+      $scope.total_links = response.total_links
+      $scope.links_read = response.links_read
+      $scope.total_books = response.total_books
+      $scope.books_read = response.books_read
+      $scope.books_toread = response.books_toread
+      $scope.games_toplay = response.games_toplay
+      $scope.songs_toplay = response.songs_toplay
     daily_Promise.error ->
       $scope.$emit 'errorOccurred', 'Problem loading daily results'
 
@@ -152,8 +149,7 @@ window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$
   $scope.populateLinks = ->
     populate_promise = $http.get '/api/links/populate'
     populate_promise.success (response)->
-      if response.success
-        $scope.loadDashboard()
+      $scope.loadDashboard()
 
   $scope.getLinkClass = (link)->
     if link.times_loaded > 20

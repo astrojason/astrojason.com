@@ -89,7 +89,7 @@ window.app.controller 'GameController', ['$scope', '$filter', '$controller', '$t
     game_promise.$promise.then success, error
 
   $scope.togglePlayed = ->
-    $scope.game.played = !$scope.game.played
+    $scope.game.completed = !$scope.game.completed
     $scope.save()
 
   $scope.delete = ->

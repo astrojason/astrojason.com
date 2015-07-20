@@ -39,11 +39,11 @@
     <input type="text" name="artist" ng-model="song.artist" class="form-control" placeholder="Artist" />
   </div>
   <div class="form-group" style="position: relative">
-    <label for="date_watched">Where is the sheet music?</label>
+    <label for="location">Where is the sheet music?</label>
     <input type="text" name="location" ng-model="song.location" class="form-control" placeholder="Location" />
   </div>
   <div class="form-group">
-    <input type="checkbox" ng-model="movie.learned" ng-checked="movie.learned | boolparse" /> Learned
+    <input type="checkbox" ng-model="song.learned" ng-checked="song.learned | boolparse" /> Learned
   </div>
   <div class="form-group">
     <button class="btn btn-primary" ng-disabled="!song_form.$valid">Save</button>

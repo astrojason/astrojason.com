@@ -20,8 +20,7 @@
       <div class="col-md-2">
         <div class="pull-right">
           <span class="glyphicon glyphicon-pencil tool" ng-click="editing = true"></span>
-          <span class="glyphicon glyphicon-ok tool" ng-click="markAsPlayed()" ng-show="!(game.completed | boolparse)"></span>
-          <span class="glyphicon glyphicon-book tool" ng-click="markAsUnplayed()" ng-show="(game.completed | boolparse)"></span>
+          <span class="glyphicon glyphicon-ok tool" ng-click="togglePlayed()" ng-class="(game.completed | boolparse) ? 'glyphicon-book' : 'glyphicon-ok'"></span>
           <span class="glyphicon glyphicon-remove tool" ng-click="deleting = true"></span>
         </div>
       </div>

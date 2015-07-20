@@ -20,7 +20,7 @@
       <div class="col-md-2">
         <div class="pull-right">
           <span class="glyphicon glyphicon-pencil tool" ng-click="editing = true"></span>
-          <span class="glyphicon tool" ng-click="toggleRead()" ng-class="(link.is_read | boolparse) ? 'glyphicon-book' : 'glyphicon-ok' "></span>
+          <span class="glyphicon tool" ng-click="toggleRead()" ng-class="(link.is_read | boolparse) ? 'glyphicon-book' : 'glyphicon-ok'"></span>
           <span class="glyphicon glyphicon-remove tool" ng-click="deleting = true"></span>
         </div>
       </div>
