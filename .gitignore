@@ -6,8 +6,7 @@ public/assets/coffee/build/
 public/assets/sass/build/
 app/config/development/
 app/storage/
-app/config/app.php
-app/config/database.php
+app/config/production
 bootstrap/compiled.php
 composer.lock
 .env.local.php
