@@ -59,7 +59,7 @@ class BookController extends AstroBaseController {
     $book = \Book::where('is_read', false)
       ->where('category', $category)
       ->where('user_id', \Auth::user()->id)
-      ->orderBy(DB::raw('RAND()'))
+      ->orderBy(\DB::raw('RAND()'))
       ->first();
     if($book) {
       if ($book->series_order > 0) {
@@ -110,7 +110,7 @@ class BookController extends AstroBaseController {
       if(isset($book)) {
         return $this->notFoundResponse('Book already exists');
       }
-      $book = new Book();
+      $book = new \Book();
       $book->user_id = \Auth::user()->id;
     }
     $book->title = $title;

@@ -13,11 +13,10 @@ window.app.directive 'checkAvailability', ['$http', ($http)->
           check_Promise = $http.post '/api/checkemail', $.param email: ngModel.$modelValue
         check_Promise.success (data)->
           scope.$broadcast 'checkedAvailability'
-          if data.success
-            if data.available
-              ngModel.$setValidity 'unique', true
-            else
-              ngModel.$setValidity 'unique', false
+          if data.available
+            ngModel.$setValidity 'unique', true
+          else
+            ngModel.$setValidity 'unique', false
         check_Promise.error ->
           scope.$emit 'errorOccurred', 'Problem checking availability'
 ]

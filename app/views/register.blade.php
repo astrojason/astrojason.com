@@ -6,7 +6,10 @@
 
 @section('content')
   <h1>User Registration</h1>
-  <form role="form" name="registrationForm" class="form-inline" ng-submit="registerUser()" ng-controller="UserController">
+  <div class="alert alert-success" ng-show="registrationSuccess" ng-cloak>
+    You are registered! You can now log in.
+  </div>
+  <form role="form" name="registrationForm" class="form-inline" ng-submit="registerUser()" ng-controller="UserController" ng-show="!registrationSuccess">
     <div class="form-group">
       <label class="sr-only" for="first_name">First Name</label>
       <input type="text" class="form-control" placeholder="First Name" ng-model="first_name" required />
