@@ -1,4 +1,4 @@
-window.app.controller 'GameController', ['$scope', '$filter', '$controller', '$timeout', '$location', 'Game', ($scope, $filter, $controller, $timeout, $location, Game)->
+angular.module('astroApp').controller 'GameController', ['$scope', '$filter', '$controller', '$timeout', '$location', 'Game', ($scope, $filter, $controller, $timeout, $location, Game)->
 
   $controller 'FormMasterController', $scope: $scope
 
