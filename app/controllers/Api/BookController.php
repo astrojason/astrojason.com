@@ -146,10 +146,10 @@ class BookController extends AstroBaseController {
       $title = $review['book']['title'];
       $book = \Book::where('user_id', \Auth::user()->id)->where('title', $title)->first();
       $books['titles'][] = [
-        'goodreads_id' => $book['book']['id'],
+        'goodreads_id' => (int)$review['book']['id'],
         'title' => $title,
         'author' => $review['book']['authors']['author']['name'],
-        'average_rating' => $review['book']['average_rating'],
+        'average_rating' => (float)$review['book']['average_rating'],
         'id' => isset($book) ? $book->id : 0
       ];
     }
