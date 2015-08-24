@@ -27,7 +27,7 @@ class BookTableSeeder extends Seeder
         'category' => $faker->boolean() ? 'To Read' : $faker->monthName(),
         'is_read' => $faker->boolean(),
         'owned' => $faker->boolean(),
-        'times_loaded' => $faker->numberBetween(0, 50)
+        'times_recommended' => $faker->numberBetween(0, 50)
       ]);
     }
 
@@ -48,7 +48,7 @@ class BookTableSeeder extends Seeder
           'series_order' => $series_order,
           'is_read' => $faker->boolean(),
           'owned' => $faker->boolean(),
-          'times_loaded' => $faker->numberBetween(0, 50)
+          'times_recommended' => $faker->numberBetween(0, 50)
         ]);
       }
     }

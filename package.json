@@ -2,6 +2,7 @@
   "name": "astrojason.com",
   "version": "0.0.1",
   "devDependencies": {
+    "bower": "^1.4.1",
     "grunt": "*",
     "grunt-contrib-coffee": "*",
     "grunt-contrib-uglify": "*",
@@ -12,5 +13,5 @@
     "grunt-concurrent": "^1.0.0",
     "grunt-contrib-imagemin": "^0.9.4",
     "grunt-contrib-jshint": "^0.11.1"
-  }
+  },
 }

@@ -14,7 +14,6 @@
  * @property integer $series_order
  * @property boolean $is_read
  * @property boolean $owned
- * @property integer $times_loaded
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @method static \Illuminate\Database\Query\Builder|\Book whereId($value)

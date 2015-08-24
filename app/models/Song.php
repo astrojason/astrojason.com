@@ -20,7 +20,7 @@
  * @method static \Illuminate\Database\Query\Builder|\Song whereLearned($value)
  * @method static \Illuminate\Database\Query\Builder|\Song whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Song whereUpdatedAt($value)
- * @property integer $times_recommended 
+ * @property integer $times_recommended
  * @method static \Illuminate\Database\Query\Builder|\Song whereTimesRecommended($value)
  */
 class Song extends Eloquent {
