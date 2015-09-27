@@ -1,10 +1,11 @@
-window.app.controller 'LinkController', ['$scope', '$controller', '$filter', '$timeout', '$location', 'Link', ($scope, $controller, $filter, $timeout, $location, Link)->
+window.app.controller 'LinkController', ['$scope', '$controller', '$filter', '$timeout', '$location', '$http', 'Link', ($scope, $controller, $filter, $timeout, $location, $http, Link)->
 
   $controller 'FormMasterController', $scope: $scope
 
   $scope.deleting = false
   $scope.errorMessage = false
   $scope.originalLink = angular.copy $scope.link
+  $scope.importedCount = 0
 
   $scope.$on 'linkDeleted', (event, message)->
     $scope.links = $filter('filter')($scope.links, {id: '!' + message})
@@ -108,4 +109,24 @@ window.app.controller 'LinkController', ['$scope', '$controller', '$filter', '$t
 
   $scope.setCategories = (categories)->
     $scope.categories = categories
+
+  $scope.importLinks = ->
+    $scope.importedCount = 0
+    submitLinks = []
+    links = $scope.importlist.split 'http'
+    angular.forEach links, (link)->
+      if link != ''
+        exploded = link.split '|'
+        thisLink =
+          url: ('http' + exploded[0]).trim()
+          name: exploded[1].trim()
+        submitLinks.push thisLink
+    data =
+      importlist: submitLinks
+
+    importPromise = $http.post '/api/link/import', $.param data
+    importPromise.success (response)->
+      $scope.importedCount = response.count
+    importPromise.error ->
+      console.log 'This is bad'
 ]

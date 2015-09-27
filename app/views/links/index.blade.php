@@ -12,7 +12,13 @@
         <table class="table table-condensed table-striped table-hover" ng-init="initList()">
           <thead>
             <tr>
-              <th>Links<button class="btn btn-success btn-xs pull-right" ng-click="linkModalOpen = true">Add</button></th>
+              <th>
+                Links
+                <ul class="list-inline pull-right">
+                  <li><button class="btn btn-success btn-xs pull-right" ng-click="linkModalOpen = true">Add</button></li>
+                  <li><button class="btn btn-success btn-xs pull-right" ng-click="importModalOpen = true">Import from OneTab</button></li>
+                </ul>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -45,5 +51,28 @@
       </div>
     </div>
     <link-modal></link-modal>
+    <div
+      class="modal fade"
+      id="imporLinksModal"
+      astro-modal
+      modal-visible="importModalOpen">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Import from OneTab</h4>
+          </div>
+          <div class="modal-body">
+            <textarea ng-model="importlist" class="form-control" ng-show="importedCount == 0"></textarea>
+            <div class="alert alert-success" ng-show="importedCount > 0">
+              Imported {{ importedCount }} links.
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="importLinks()">Import</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
   </div>
 @stop

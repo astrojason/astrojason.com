@@ -110,6 +110,26 @@ class LinkController extends AstroBaseController {
     return $this->successResponse();
   }
 
+  public function importLinks() {
+    $importLinks = \Input::get('importlist');
+
+    $links = [];
+    foreach($importLinks as $importLink){
+      $link = \Link::where('link', $importLink['url'])->where('user_id', \Auth::user()->id)->first();
+      if(!isset($link)) {
+        $link = new \Link();
+        $link->name = $importLink['name'];
+        $link->link = $importLink['url'];
+        $link->category = 'Unread';
+        $link->user_id = \Auth::user()->id;
+        $link->save();
+      }
+      $links[] = $link;
+    }
+
+    return $this->successResponse(array('links' => $links, 'count' => count($links)));
+  }
+
   /**
    * @param \Link $link
    * @return array
