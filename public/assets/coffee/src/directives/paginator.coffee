@@ -1,4 +1,4 @@
-window.app.directive 'paginator', [ ->
+angular.module('astroApp').directive 'paginator', [ ->
   restrict: 'E'
   scope:
     page: '='

@@ -41,12 +41,46 @@ module.exports = (grunt) ->
           'public/assets/js/directives.min.js': 'public/assets/coffee/build/directives/*'
           'public/assets/js/filters.min.js': 'public/assets/coffee/build/filters/*'
           'public/assets/js/services.min.js': 'public/assets/coffee/build/services/*'
+          'public/assets/js/resources.min.js': 'public/assets/coffee/build/resources/*'
         }
 
     clean: [
       'public/assets/coffee/build/*',
       'public/assets/js/*.js'
     ]
+
+    karma:
+      options:
+        files: [
+          'public/assets/bower/angular/angular.js'
+          'public/assets/bower/angular-animate/angular-animate.js'
+          'public/assets/bower/angular-messages/angular-messages.js'
+          'public/assets/bower/angular-mocks/angular-mocks.js'
+          'public/assets/bower/angular-resource/angular-resource.js'
+          'public/assets/bower/jquery/dist/jquery.min.js'
+          'public/assets/bower/karma-read-json/karma-read-json.js'
+
+          'public/assets/coffee/build/**/*.js'
+
+          {
+            pattern: 'public/assets/coffee/src/tests/data/**/*.json'
+            included: false
+          }
+        ]
+        logLevel: 'ERROR'
+        frameworks: ['jasmine']
+        singleRun: true
+
+      dev:
+        browsers: ['PhantomJS']
+        singleRun: true
+
+      report:
+        browsers: ['PhantomJS']
+        singleRun: true
+        preprocessors:
+          'public/assets/coffee/build/**/*.js': ['coverage']
+        reporters: ['coverage']
 
     watch:
 
@@ -65,8 +99,15 @@ module.exports = (grunt) ->
         files: 'public/assets/coffee/build/**/*.js'
         tasks: 'uglify'
 
+  grunt.registerTask 'test', [
+    'clean'
+    'coffee'
+    'karma:dev'
+  ]
+
   grunt.loadNpmTasks 'grunt-contrib-compass'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-clean'
+  grunt.loadNpmTasks 'grunt-karma'

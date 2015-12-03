@@ -1,128 +1,137 @@
-window.app.controller 'BookController', ['$scope', '$controller', '$timeout', '$filter', '$location', 'Book', ($scope, $controller, $timeout, $filter, $location, Book)->
+angular.module('astroApp').controller 'BookController', ['$scope', '$controller', '$timeout', '$filter', '$location',
+  'BookResource', 'Book', 'AlertifyService', ($scope, $controller, $timeout, $filter, $location, BookResource, Book,
+  AlertifyService)->
 
-  $controller 'FormMasterController', $scope: $scope
+    $controller 'FormMasterController', $scope: $scope
 
-  $scope.loading_books = false
+    $scope.loading_books = false
 
-  $scope.$on 'bookDeleted', (event, message)->
-    $scope.books = $filter('filter')($scope.books, {id: '!' + message})
-    $scope.book_results = $filter('filter')($scope.book_results, {id: '!' + message})
+    $scope.$on 'bookDeleted', (event, message)->
+      $scope.books = $filter('filter')($scope.books, {id: '!' + message})
+      $scope.book_results = $filter('filter')($scope.book_results, {id: '!' + message})
 
-  $scope.triggerRecommender = ->
-    $scope.$watch 'recommendingBook', (newValue)->
-      if newValue
-        $scope.getRecommendation()
+    $scope.triggerRecommender = ->
+      $scope.$watch 'recommendingBook', (newValue)->
+        if newValue
+          $scope.getRecommendation()
 
-  $scope.initList = ->
+    $scope.initList = ->
 
-    $scope.newBook = new window.Book()
+      $scope.newBook = new Book()
 
-    $scope.$on 'closeModal', (event, book)->
-      $scope.bookModalOpen = false
-      if book
-        book.new = true
-        $scope.books.splice(0, 0, book)
-        $scope.newBook = new window.Book()
-        $timeout ->
-          book.new = false
-        , 1000
+      $scope.$on 'closeModal', (event, book)->
+        $scope.bookModalOpen = false
+        if book
+          book.new = true
+          $scope.books.splice(0, 0, book)
+          $scope.newBook = new Book()
+          $timeout ->
+            book.new = false
+          , 1000
 
-    $scope.$watch 'filter_category', ->
-      if !$scope.loading_books
-        $scope.get()
-
-    $scope.$watch 'book_query', ->
-      if !$scope.loading_books
-        $scope.searching = true
-        $timeout.cancel $scope.search_timeout
-        $scope.search_timeout = $timeout ->
-          $scope.get()
-        , 500
-
-    $scope.$watch 'is_read', ->
-      if !$scope.loading_books
-        $scope.get()
-
-    $scope.$watch 'sort', ->
-      if !$scope.loading_books
-        $scope.get()
-
-    $scope.$watch 'page', (newValue, oldValue)->
-      if !$scope.loading_links
-        if newValue != oldValue
-          cur_opts = $location.search()
-          cur_opts.page = newValue
-          $location.search(cur_opts)
+      $scope.$watch 'filter_category', ->
+        if !$scope.loading_books
           $scope.get()
 
-  $scope.get = ->
-    $scope.loading_books = true
-    data =
-      limit: $scope.limit
-      page: $scope.page
-    if $scope.book_query
-      data['q'] = $scope.book_query
-    if $scope.is_read
-      data['include_read'] = $scope.is_read
-    if $scope.filter_category
-      data['category'] = $scope.filter_category
-    if $scope.sort
-      data['sort'] = $scope.sort
-    Book.query data, (response)->
-      $scope.loading_books = false
-      $scope.books = response.books
-      $scope.total = response.total
-      $scope.pages = response.pages
-      $scope.generatePages()
+      $scope.$watch 'book_query', ->
+        if !$scope.loading_books
+          $scope.searching = true
+          $timeout.cancel $scope.search_timeout
+          $scope.search_timeout = $timeout ->
+            $scope.get()
+          , 500
 
-  $scope.save = ->
-    if $scope.book.category == 'New'
-      $scope.book.category = $scope.new_category
+      $scope.$watch 'is_read', ->
+        if !$scope.loading_books
+          $scope.get()
 
-    success = (response)->
-      alertify.success "Book " + (if $scope.book.id then "updated" else "added") + " successfully"
-      if $scope.book.id
-        $scope.editing = false
-      else
-        $scope.$emit 'closeModal', response.book
+      $scope.$watch 'sort', ->
+        if !$scope.loading_books
+          $scope.get()
 
-    error = (response)->
-      $scope.errorMessage = response.data.error
+      $scope.$watch 'page', (newValue, oldValue)->
+        if !$scope.loading_links
+          if newValue != oldValue
+            cur_opts = $location.search()
+            cur_opts.page = newValue
+            $location.search(cur_opts)
+            $scope.get()
 
-    book_promise = Book.save $.param $scope.book
-    book_promise.$promise.then success, error
+    $scope.get = ->
+      $scope.loading_books = true
+      data =
+        limit: $scope.limit
+        page: $scope.page
+      if $scope.book_query
+        data['q'] = $scope.book_query
+      if $scope.is_read
+        data['include_read'] = $scope.is_read
+      if $scope.filter_category
+        data['category'] = $scope.filter_category
+      if $scope.sort
+        data['sort'] = $scope.sort
 
-  $scope.toggleRead = ->
-    $scope.book.is_read = !$scope.book.is_read
-    $scope.save()
+      bookPromise = BookResource.query(data).$promise
 
-  $scope.delete = ->
-    success = ->
-      alertify.success 'Book deleted successfully'
-      $scope.deleting = false
-      $scope.editing = false
-      $scope.$emit 'bookDeleted', $scope.book.id
+      bookPromise.then (response)->
+        $scope.books = response.books
+        $scope.total = response.total
+        $scope.pages = response.pages
+        $scope.generatePages()
 
-    error = (response)->
-      $scope.errorMessage = response.data.error
+      bookPromise.finally ->
+        $scope.loading_books = false
 
-    song_promise = Book.remove id: $scope.book.id
-    song_promise.$promise.then success, error
+    $scope.save = ->
+      if $scope.book.category == 'New'
+        $scope.book.category = $scope.new_category
 
-  $scope.getRecommendation = ->
-    if $scope.recommendation_category
       success = (response)->
-        $scope.book = response.book
-      error = ->
-        console.log 'Something went wrong'
-      book_promise = Book.recommend category: $scope.recommendation_category
+        AlertifyService.success "Book " + (if $scope.book.id then "updated" else "added") + " successfully"
+        if $scope.book.id
+          $scope.editing = false
+        else
+          $scope.$emit 'closeModal', response.book
+
+      error = (response)->
+        $scope.errorMessage = response.data.error
+
+      book_promise = BookResource.save $.param $scope.book
       book_promise.$promise.then success, error
 
-  $scope.setCategories = (categories)->
-    $scope.categories = categories
-    if categories?.length > 0
-      $scope.recommendation_category = categories[0]
+    $scope.toggleRead = ->
+      $scope.book.is_read = !$scope.book.is_read
+      $scope.save()
 
-  $scope.checkEditing = ->
-    return $scope.book?.id
+    $scope.delete = ->
+      success = ->
+        AlertifyService.success 'Book deleted successfully'
+        $scope.deleting = false
+        $scope.editing = false
+        $scope.$emit 'bookDeleted', $scope.book.id
+
+      error = (response)->
+        $scope.errorMessage = response.data.error
+
+      song_promise = BookResource.remove id: $scope.book.id
+      song_promise.$promise.then success, error
+
+    $scope.getRecommendation = ->
+      if $scope.recommendation_category
+        success = (response)->
+          $scope.book = response.book
+        error = ->
+          console.log 'Something went wrong'
+        book_promise = BookResource.recommend category: $scope.recommendation_category
+        book_promise.$promise.then success, error
+
+    $scope.setCategories = (categories)->
+      $scope.categories = categories
+      if categories?.length > 0
+        $scope.recommendation_category = categories[0]
+
+    $scope.checkEditing = ->
+      if $scope.book?.id
+        return true
+      false
 ]

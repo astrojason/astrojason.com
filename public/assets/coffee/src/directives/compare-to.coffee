@@ -1,4 +1,4 @@
-window.app.directive 'compareTo', ->
+angular.module('astroApp').directive 'compareTo', ->
   require: "ngModel"
   scope: {
     otherModelValue: "=compareTo"

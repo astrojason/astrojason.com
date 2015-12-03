@@ -52,7 +52,7 @@ class BookController extends AstroBaseController {
       }
     }
     $books = $query->get();
-    return $this->successResponse(array('books' => $books->toArray(), 'total' => $total, 'pages' => $pageCount));
+    return $this->successResponse(array('books' => $this->transform($books->toArray()), 'total' => $total, 'pages' => $pageCount));
   }
 
   public function recommendation($category) {
@@ -158,7 +158,21 @@ class BookController extends AstroBaseController {
   }
 
   public function transform($data){
-    return $data;
+    $transformedData = [];
+    foreach($data as $book){
+      $transformedData[] = [
+        'id' => (int)$book['id'],
+        'title' => $book['title'],
+        'author_fname' => $book['author_fname'],
+        'author_lname' => $book['author_lname'],
+        'series' => $book['series'],
+        'series_order' => $book['series_order'] ? (int)$book['series_order'] : 0,
+        'category' => $book['category'],
+        'owned' => (bool)$book['owned'],
+        'is_read' => (bool)$book['is_read']
+      ];
+    }
+    return $transformedData;
   }
 
 }

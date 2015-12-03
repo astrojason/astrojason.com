@@ -1,4 +1,4 @@
-window.app.directive 'bookForm', ->
+angular.module('astroApp').directive 'bookForm', ->
   templateUrl: 'templates/book-form'
   restrict: 'E'
   controller: 'BookController'

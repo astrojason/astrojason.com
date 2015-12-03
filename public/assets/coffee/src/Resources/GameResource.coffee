@@ -1,4 +1,4 @@
-window.app.factory 'Game', ['$resource', ($resource)->
+angular.module('astroApp').factory 'GameResource', ['$resource', ($resource)->
   resource_options =
     query:
       method: 'GET'

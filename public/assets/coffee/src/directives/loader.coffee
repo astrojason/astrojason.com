@@ -1,3 +1,3 @@
-window.app.directive 'loader', ->
+angular.module('astroApp').directive 'loader', ->
   templateUrl: 'templates/loader'
   restrict: 'E'

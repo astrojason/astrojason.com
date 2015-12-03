@@ -1,4 +1,4 @@
-window.app.factory 'Song', ['$resource', ($resource)->
+angular.module('astroApp').factory 'SongResource', ['$resource', ($resource)->
   resource_options =
     query:
       method: 'GET'

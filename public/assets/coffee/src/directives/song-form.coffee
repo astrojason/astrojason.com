@@ -1,4 +1,4 @@
-window.app.directive 'songForm', ->
+angular.module('astroApp').directive 'songForm', ->
   templateUrl: 'templates/song-form'
   restrict: 'E'
   controller: 'SongController'

@@ -1,4 +1,4 @@
-window.app.directive 'movieForm', ->
+angular.module('astroApp').directive 'movieForm', ->
   templateUrl: 'templates/movie-form'
   restrict: 'E'
   controller: 'MovieController'

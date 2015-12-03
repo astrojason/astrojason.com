@@ -1,4 +1,4 @@
-window.app.directive 'checkAvailability', ['$http', ($http)->
+angular.module('astroApp').directive 'checkAvailability', ['$http', ($http)->
   require: "ngModel"
   link: (scope, element, attributes, ngModel)->
     element.on 'keyup', ->

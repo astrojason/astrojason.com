@@ -17,8 +17,7 @@ class BookController extends BaseController {
   /**
    * @return string
    */
-  public static function getBookCategoryString()
-  {
+  public static function getBookCategoryString() {
     $categories = [];
     $dbCategories = Book::groupBy('category')
       ->where('user_id', Auth::user()->id)

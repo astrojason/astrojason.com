@@ -1,4 +1,4 @@
-window.app.directive 'astroModal', [->
+angular.module('astroApp').directive 'astroModal', [->
   restrict: 'A',
   scope: {
     modalVisible: '='

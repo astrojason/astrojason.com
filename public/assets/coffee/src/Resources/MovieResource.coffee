@@ -1,4 +1,4 @@
-window.app.factory 'Movie', ['$resource', ($resource)->
+angular.module('astroApp').factory 'MovieResource', ['$resource', ($resource)->
   resource_options =
     query:
       method: 'GET'

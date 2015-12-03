@@ -1,4 +1,4 @@
-window.app.directive 'gameForm', ->
+angular.module('astroApp').directive 'gameForm', ->
   templateUrl: 'templates/game-form'
   restrict: 'E'
   controller: 'GameController'

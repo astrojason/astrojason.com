@@ -1,161 +1,173 @@
-window.app.controller 'DashboardController', ['$scope', '$http', '$location', '$timeout', '$filter', 'UserService', 'Link', ($scope, $http, $location, $timeout, $filter, UserService, Link)->
-  $scope.display_category = $location.search().category || ''
-  $scope.search_timeout = null
-  $scope.daily_links = []
-  $scope.selected_links = []
-  $scope.link_results = []
-  $scope.loading_unread = false
-  $scope.recommendingBook = false
-  $scope.recommendingGame = false
-  $scope.recommendingSong = false
-  $scope.linkModalOpen = false
-  $scope.bookModalOpen = false
-  $scope.movieModalOpen = false
-  $scope.gameModalOpen = false
-  $scope.songModalOpen = false
+angular.module('astroApp').controller 'DashboardController', ['$scope', '$http', '$location', '$timeout', '$filter',
+  'UserService', 'LinkResource', 'Link', 'Book', 'Movie', 'Game', 'Song', ($scope, $http, $location, $timeout, $filter,
+    UserService, LinkResource, Link, Book, Movie, Game, Song)->
 
-  $scope.$on 'userLoggedIn', ->
-    $scope.initDashboard()
-
-  $scope.$on 'userLoggedOut', ->
-    $scope.initDashboard()
-
-  $scope.$on 'linkDeleted', (event, message)->
-    $scope.daily_links = $filter('filter')($scope.daily_links, {id: '!' + message})
-    $scope.unread_links = $filter('filter')($scope.unread_links, {id: '!' + message})
-    $scope.selected_links = $filter('filter')($scope.selected_links, {id: '!' + message})
-    $scope.link_results = $filter('filter')($scope.link_results, {id: '!' + message})
-
-  $scope.$on 'linkUpdated', (event, message)->
-    $scope.daily_links = $filter('filter')($scope.daily_links, {category: 'Daily', is_read: false})
-    $scope.unread_links = $filter('filter')($scope.unread_links, {category: 'Unread', is_read: false})
-    $scope.selected_links = $filter('filter')($scope.selected_links, {category: $scope.display_category, is_read: false})
-
-  $scope.$on 'linkRead', (event, message)->
-    if message
-      $scope.links_read += 1
-      $scope.total_read += 1
-    else
-      $scope.links_read -= 1
-      $scope.total_read -= 1
-
-  $scope.$on 'closeModal', ->
+    $scope.display_category = $location.search().category || ''
+    $scope.search_timeout = null
+    $scope.daily_links = []
+    $scope.selected_links = []
+    $scope.link_results = []
+    $scope.loading_unread = false
+    $scope.recommendingBook = false
+    $scope.recommendingGame = false
+    $scope.recommendingSong = false
     $scope.linkModalOpen = false
     $scope.bookModalOpen = false
     $scope.movieModalOpen = false
     $scope.gameModalOpen = false
     $scope.songModalOpen = false
 
-  $scope.$watch 'display_category', (newValue)->
-    if newValue != ''
-      $scope.getCategoryArticles()
+    $scope.$on 'userLoggedIn', ->
+      $scope.initDashboard()
 
-  $scope.$watch 'article_search', (newValue)->
-    $scope.searching = true
-    $timeout.cancel $scope.search_timeout
-    if newValue?.length >= 3
-      $scope.search_timeout = $timeout ->
-        $scope.search_articles()
-      , 500
+    $scope.$on 'userLoggedOut', ->
+      $scope.initDashboard()
 
-  $scope.$watch 'is_read', ->
-    $timeout.cancel $scope.search_timeout
-    if $scope.article_search?.length >= 3
-      $scope.search_timeout = $timeout ->
-        $scope.search_articles()
-      , 500
+    $scope.$on 'linkDeleted', (event, message)->
+      $scope.daily_links = $filter('filter')($scope.daily_links, {id: '!' + message})
+      $scope.unread_links = $filter('filter')($scope.unread_links, {id: '!' + message})
+      $scope.selected_links = $filter('filter')($scope.selected_links, {id: '!' + message})
+      $scope.link_results = $filter('filter')($scope.link_results, {id: '!' + message})
 
-  $scope.$watch 'linkModalOpen', ->
-    if !$scope.linkModalOpen
-      $scope.newLink = new window.Link()
+    $scope.$on 'linkUpdated', (event, message)->
+      daily_links =
+        category: 'Daily'
+        is_read: false
+      unread_links =
+        category: 'Unread'
+        is_read: false
+      selected_links =
+        category: $scope.display_category
+        is_read: false
+      $scope.daily_links = $filter('filter')($scope.daily_links, daily_links)
+      $scope.unread_links = $filter('filter')($scope.unread_links, unread_links)
+      $scope.selected_links = $filter('filter')($scope.selected_links, selected_links)
 
-  $scope.$watch 'bookModalOpen', ->
-    if !$scope.bookModalOpen
-      $scope.newBook = new window.Book()
+    $scope.$on 'linkRead', (event, message)->
+      if message
+        $scope.links_read += 1
+        $scope.total_read += 1
+      else
+        $scope.links_read -= 1
+        $scope.total_read -= 1
 
-  $scope.$watch 'movieModalOpen', ->
-    if !$scope.movieModalOpen
-      $scope.newMovie = new window.Movie()
+    $scope.$on 'closeModal', ->
+      $scope.linkModalOpen = false
+      $scope.bookModalOpen = false
+      $scope.movieModalOpen = false
+      $scope.gameModalOpen = false
+      $scope.songModalOpen = false
 
-  $scope.$watch 'gameModalOpen', ->
-    if !$scope.gameModalOpen
-      $scope.newGame = new window.Game()
+    $scope.$watch 'display_category', (newValue)->
+      if newValue != ''
+        $scope.getCategoryArticles()
 
-  $scope.$watch 'songModalOpen', ->
-    if !$scope.songModalOpen
-      $scope.newSong = new window.Song()
+    $scope.$watch 'article_search', (newValue)->
+      $scope.searching = true
+      $timeout.cancel $scope.search_timeout
+      if newValue?.length >= 3
+        $scope.search_timeout = $timeout ->
+          $scope.search_articles()
+        , 500
 
-  $scope.getCategoryArticles = ->
-    $scope.selected_links = []
-    $scope.loading_category = true
-    data =
-      category: $scope.display_category
-      limit: 10
-      randomize: true
-      update_load_count: true
-    Link.query data, (response)->
-      $scope.selected_links = response.links
-      $scope.loading_category = false
+    $scope.$watch 'is_read', ->
+      $timeout.cancel $scope.search_timeout
+      if $scope.article_search?.length >= 3
+        $scope.search_timeout = $timeout ->
+          $scope.search_articles()
+        , 500
 
-  $scope.search_articles = ->
-    $scope.searching = true
-    $scope.link_results = []
+    $scope.$watch 'linkModalOpen', ->
+      if !$scope.linkModalOpen
+        $scope.newLink = new Link()
 
-    data =
-      q: $scope.article_search
-    if $scope.is_read
-      data['include_read'] = true
-    Link.query data, (response)->
-      $scope.link_results = response.links
-      $scope.searching = false
+    $scope.$watch 'bookModalOpen', ->
+      if !$scope.bookModalOpen
+        $scope.newBook = new Book()
 
-  $scope.initDashboard = ->
-    $scope.user = UserService.getUser()
-    if $scope.user?.id
-      $scope.loadDashboard()
+    $scope.$watch 'movieModalOpen', ->
+      if !$scope.movieModalOpen
+        $scope.newMovie = new Movie()
 
-  $scope.loadDashboard = ->
-    daily_Promise = $http.get '/api/dashboard'
-    daily_Promise.success (response)->
-      $scope.total_read = response.total_read
-      $scope.categories = response.categories
-      $scope.total_links = response.total_links
-      $scope.links_read = response.links_read
-      $scope.total_books = response.total_books
-      $scope.books_read = response.books_read
-      $scope.books_toread = response.books_toread
-      $scope.games_toplay = response.games_toplay
-      $scope.songs_toplay = response.songs_toplay
-    daily_Promise.error ->
-      $scope.$emit 'errorOccurred', 'Problem loading daily results'
+    $scope.$watch 'gameModalOpen', ->
+      if !$scope.gameModalOpen
+        $scope.newGame = new Game()
 
-    Link.query category: 'Daily', (response)->
-      $scope.daily_links = response.links
+    $scope.$watch 'songModalOpen', ->
+      if !$scope.songModalOpen
+        $scope.newSong = new Song()
 
-    $scope.refreshUnreadArticles()
+    $scope.getCategoryArticles = ->
+      $scope.selected_links = []
+      $scope.loading_category = true
+      data =
+        category: $scope.display_category
+        limit: 10
+        randomize: true
+        update_load_count: true
+      LinkResource.query data, (response)->
+        $scope.selected_links = response.links
+        $scope.loading_category = false
 
-  $scope.refreshUnreadArticles = ->
-    $scope.unread_links = []
-    $scope.loading_unread = true
-    data =
-      category: 'Unread'
-      limit: 20
-      randomize: true
-      update_load_count: true
-    Link.query data, (response)->
-      $scope.unread_links = response.links
-      $scope.loading_unread = false
+    $scope.search_articles = ->
+      $scope.searching = true
+      $scope.link_results = []
 
-  $scope.populateLinks = ->
-    populate_promise = $http.get '/api/links/populate'
-    populate_promise.success (response)->
-      $scope.loadDashboard()
+      data =
+        q: $scope.article_search
+      if $scope.is_read
+        data['include_read'] = true
+      LinkResource.query data, (response)->
+        $scope.link_results = response.links
+        $scope.searching = false
 
-  $scope.getLinkClass = (link)->
-    if link.times_loaded > 20
-      return 'link-danger'
-    if link.times_loaded > 20
-      return 'link-warning'
+    $scope.initDashboard = ->
+      $scope.user = UserService.getUser()
+      if $scope.user?.id
+        $scope.loadDashboard()
 
-  $scope.initDashboard()
+    $scope.loadDashboard = ->
+      daily_Promise = $http.get '/api/dashboard'
+      daily_Promise.success (response)->
+        $scope.total_read = response.total_read
+        $scope.categories = response.categories
+        $scope.total_links = response.total_links
+        $scope.links_read = response.links_read
+        $scope.total_books = response.total_books
+        $scope.books_read = response.books_read
+        $scope.books_toread = response.books_toread
+        $scope.games_toplay = response.games_toplay
+        $scope.songs_toplay = response.songs_toplay
+      daily_Promise.error ->
+        $scope.$emit 'errorOccurred', 'Problem loading daily results'
+
+      LinkResource.query category: 'Daily', (response)->
+        $scope.daily_links = response.links
+
+      $scope.refreshUnreadArticles()
+
+    $scope.refreshUnreadArticles = ->
+      $scope.unread_links = []
+      $scope.loading_unread = true
+      data =
+        category: 'Unread'
+        limit: 20
+        randomize: true
+        update_load_count: true
+      LinkResource.query data, (response)->
+        $scope.unread_links = response.links
+        $scope.loading_unread = false
+
+    $scope.populateLinks = ->
+      populate_promise = $http.get '/api/links/populate'
+      populate_promise.success (response)->
+        $scope.loadDashboard()
+
+    $scope.getLinkClass = (link)->
+      if link.times_loaded > 20
+        return 'link-danger'
+      if link.times_loaded > 20
+        return 'link-warning'
+
+    $scope.initDashboard()
 ]

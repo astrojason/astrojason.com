@@ -1,4 +1,4 @@
-window.app.factory 'Book', ['$resource', ($resource)->
+angular.module('astroApp').factory 'BookResource', ['$resource', ($resource)->
   resource_options =
     query:
       method: 'GET'

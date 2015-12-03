@@ -1,4 +1,4 @@
-window.app.service 'UserService', ->
+angular.module('astroApp').service 'UserService', ->
   this_user = {}
 
   setUser = (user)->

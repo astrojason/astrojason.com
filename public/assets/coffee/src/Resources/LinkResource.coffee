@@ -1,4 +1,4 @@
-window.app.factory 'Link', ['$resource', ($resource)->
+angular.module('astroApp').factory 'LinkResource', ['$resource', ($resource)->
   resource_options =
     query:
       method: 'GET'
