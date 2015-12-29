@@ -114,14 +114,18 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
     $scope.importLinks = ->
       $scope.importedCount = 0
       submitLinks = []
+      errorLinks = []
       links = $scope.importlist.split 'http'
       angular.forEach links, (link)->
         if link != ''
           exploded = link.split '|'
-          thisLink =
-            url: ('http' + exploded[0]).trim()
-            name: exploded[1].trim()
-          submitLinks.push thisLink
+          if exploded.length >= 2
+            thisLink =
+              url: ('http' + exploded[0]).trim()
+              name: exploded[1].trim()
+            submitLinks.push thisLink
+          else
+            errorLinks.push link
       data =
         importlist: submitLinks
 

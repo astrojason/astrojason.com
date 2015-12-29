@@ -66,6 +66,14 @@
             <textarea ng-model="importlist" class="form-control" ng-show="importedCount == 0"></textarea>
             <div class="alert alert-success" ng-show="importedCount > 0">
               Imported {{ importedCount }} links.
+              <div ng-show="errorLinks.length > 0">
+                <h6>Could not add the following links:</h6>
+                <ul>
+                  <li ng-repeat="errorLink in errorLinks">
+                    {{ errorLink }}
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
           <div class="modal-footer">

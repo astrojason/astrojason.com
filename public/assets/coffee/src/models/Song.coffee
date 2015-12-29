@@ -1,6 +1,6 @@
 angular.module('astroApp').factory 'Song', [ (userId)->
 
-  Song = ->
+  Song = (userId)->
     @.id = 0
     @.title = ''
     @.artist = ''

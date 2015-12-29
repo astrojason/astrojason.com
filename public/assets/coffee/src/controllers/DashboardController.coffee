@@ -29,7 +29,7 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
       $scope.selected_links = $filter('filter')($scope.selected_links, {id: '!' + message})
       $scope.link_results = $filter('filter')($scope.link_results, {id: '!' + message})
 
-    $scope.$on 'linkUpdated', (event, message)->
+    $scope.$on 'linkUpdated', ->
       daily_links =
         category: 'Daily'
         is_read: false
@@ -122,7 +122,7 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
         $scope.searching = false
 
     $scope.initDashboard = ->
-      $scope.user = UserService.getUser()
+      $scope.user = UserService.get()
       if $scope.user?.id
         $scope.loadDashboard()
 

@@ -5,54 +5,23 @@ namespace Api;
 class BookController extends AstroBaseController {
 
   public function query() {
-    $pageCount = 0;
-    $page = \Input::get('page');
-    $q = \Input::get('q');
-    $limit = \Input::get('limit');
-    $category = \Input::get('category');
-    $sort = \Input::get('sort');
-    $query = \Book::query()->where('user_id', \Auth::user()->id);
-    $randomize = filter_var(\Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
-    $include_read = filter_var(\Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
-    if(isset($q)) {
-      $query->where(function($query) use ($q) {
-        $query->where('title', 'LIKE', '%' . $q . '%')
-          ->orwhere('series', 'LIKE', '%' . $q . '%')
-          ->orwhere('author_lname', 'LIKE', '%' . $q . '%');
-      });
+    $astroSql = new \AstroBookRepo();
+    $astroSql->userId = \Auth::user()->id;
+
+    $this->get($astroSql);
+    if($astroSql->errors) {
+      return $this->errorResponse($astroSql->errors, $astroSql->errorCode);
+    } else {
+      $results = $astroSql->getData();
+      $books = $results['books'];
+      $total = $results['total'];
+      $pageCount = $results['pageCount'];
+      return $this->successResponse(array('books' => $this->transform($books->toArray()), 'total' => $total, 'pages' => $pageCount));
     }
-    if(!$include_read) {
-      $query->where('is_read', false);
-    }
-    if($randomize){
-      $query->orderBy(\DB::raw('RAND()'));
-    }
-    if(isset($limit)){
-      $query->take($limit);
-    }
-    if(isset($category)) {
-      $query->where('category', $category);
-    }
-    if(isset($sort)) {
-      if($sort == 'series') {
-        $query->where('series', '!=', '');
-        $query->orderBy('series');
-        $query->orderBy('series_order');
-      }
-      else {
-        $query->orderBy($sort);
-      }
-    }
-    $total = $query->count();
-    if (isset($limit)) {
-      $pageCount = ceil($total / $limit);
-      $query->take($limit);
-      if (isset($page) && $page > 1 && !$randomize) {
-        $query->skip($limit * ($page - 1));
-      }
-    }
-    $books = $query->get();
-    return $this->successResponse(array('books' => $this->transform($books->toArray()), 'total' => $total, 'pages' => $pageCount));
+  }
+
+  public function get(\AstroData $dataProvider) {
+    $dataProvider->getData();
   }
 
   public function recommendation($category) {

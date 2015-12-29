@@ -43,5 +43,6 @@
     <script type="text/javascript" src="assets/js/directives.min.js"></script>
     <script type="text/javascript" src="assets/js/filters.min.js"></script>
     <script type="text/javascript" src="assets/js/services.min.js"></script>
+    <script type="text/javascript" src="assets/js/resources.min.js"></script>
     <script type="text/javascript" src="assets/js/controllers.min.js"></script>
   </body>

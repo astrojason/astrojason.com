@@ -1,4 +1,4 @@
-describe 'BookResource', ->
+describe 'BookResource test', ->
   BookResource = null
   $httpBackend = null
 

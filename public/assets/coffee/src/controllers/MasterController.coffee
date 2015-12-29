@@ -24,7 +24,7 @@ angular.module('astroApp').controller 'MasterController', ['$scope', '$http', 'U
       login_Promise.success (data)->
         $scope.init = false
         $scope.user = data.user
-        UserService.setUser $scope.user
+        UserService.set $scope.user
         $scope.$broadcast 'userLoggedIn'
       login_Promise.error ->
         $scope.$emit 'errorOccurred', 'Problem logging in'
@@ -42,5 +42,5 @@ angular.module('astroApp').controller 'MasterController', ['$scope', '$http', 'U
 
     $scope.initUser = (user)->
       $scope.user = user
-      UserService.setUser $scope.user
+      UserService.set $scope.user
 ]

@@ -1,6 +1,6 @@
 angular.module('astroApp').factory 'Movie', [ (userId)->
 
-  Movie = ->
+  Movie = (userId)->
     @.id = 0
     @.title = ''
     @.date_watched = null

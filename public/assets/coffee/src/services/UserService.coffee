@@ -1,10 +1,11 @@
 angular.module('astroApp').service 'UserService', ->
-  this_user = {}
+  UserService =
+    this_user: {}
 
-  setUser = (user)->
-    this_user = user
+    set: (user)->
+      @.this_user = user
 
-  getUser = ->
-    this_user
+    get: ->
+      @.this_user
 
-  return { setUser: setUser, getUser: getUser }
+  return UserService

@@ -4,6 +4,7 @@ node_modules/
 public/assets/bower/
 public/assets/coffee/build/
 public/assets/sass/build/
+public/assets/js/*.min.js
 app/config/development/
 app/storage/
 app/config/production

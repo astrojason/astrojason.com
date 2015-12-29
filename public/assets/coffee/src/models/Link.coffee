@@ -1,6 +1,6 @@
 angular.module('astroApp').factory 'Link', [(userId)->
 
-  Link = ->
+  Link = (userId)->
     @.id = 0
     @.name = ''
     @.link = ''
