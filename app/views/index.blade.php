@@ -4,12 +4,12 @@
   Welcome
 @stop
 @section('content')
-  <div ng-controller="DashboardController">
+  <div ng-controller="DashboardController" ng-init="initDashboard()">
     <div class="row" ng-show="!user.id">
       Do you have too much stuff to read, paralyzed by choices. Let me decide! Create an account now.
     </div>
     <div class="row" ng-show="user.id">
-      <div class="col-lg-9">
+      <div class="col-lg-9 col-sm-12">
         <div ng-show="total_links == 0" ng-cloak>
           You do not have any links, would you like me to <button class="btn btn-default" ng-click="populateLinks()">Randomize</button> some for you?
         </div>
@@ -35,7 +35,8 @@
               </tbody>
             </table>
           </div>
-          <div id="daily_links" class="link_container">
+
+          <div id="daily_links" class="link_container" ngfx-slide-in-down="daily_links.length > 0">
             <table class="table table-condensed table-striped table-hover" ng-show="daily_links.length > 0" ng-cloak>
               <thead>
                 <tr>
@@ -49,6 +50,7 @@
               </tbody>
             </table>
           </div>
+
           <div id="unread_links" class="link_container">
             <loader ng-show="loading_unread" ng-cloak></loader>
             <table class="table table-condensed table-striped table-hover" ng-show="unread_links.length > 0" ng-cloak>
@@ -87,7 +89,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-3 col-sm-3 hidden-xs">
         <table class="table table-condensed table-hover">
           <thead>
             <tr>

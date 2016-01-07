@@ -8,6 +8,7 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
     $scope.selected_links = []
     $scope.link_results = []
     $scope.loading_unread = false
+    $scope.loading_category = false
     $scope.recommendingBook = false
     $scope.recommendingGame = false
     $scope.recommendingSong = false
@@ -105,8 +106,15 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
         limit: 10
         randomize: true
         update_load_count: true
-      LinkResource.query data, (response)->
+
+      categoryLinksPromise = LinkResource.query(data).$promise
+      categoryLinksPromise.then (response)->
         $scope.selected_links = response.links
+
+      categoryLinksPromise.catch ->
+        $scope.$emit 'errorOccurred', 'Could not load links for category'
+
+      categoryLinksPromise.finally ->
         $scope.loading_category = false
 
     $scope.search_articles = ->
@@ -117,8 +125,16 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
         q: $scope.article_search
       if $scope.is_read
         data['include_read'] = true
-      LinkResource.query data, (response)->
+
+      searchPromise = LinkResource.query(data).$promise
+
+      searchPromise.then (response)->
         $scope.link_results = response.links
+
+      searchPromise.catch ->
+        $scope.$emit 'errorOccurred', 'Could not get perform the search'
+
+      searchPromise.finally ->
         $scope.searching = false
 
     $scope.initDashboard = ->
@@ -160,7 +176,7 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
 
     $scope.populateLinks = ->
       populate_promise = $http.get '/api/links/populate'
-      populate_promise.success (response)->
+      populate_promise.success ->
         $scope.loadDashboard()
 
     $scope.getLinkClass = (link)->
@@ -168,6 +184,4 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
         return 'link-danger'
       if link.times_loaded > 20
         return 'link-warning'
-
-    $scope.initDashboard()
 ]

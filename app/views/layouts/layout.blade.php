@@ -8,6 +8,7 @@
     <title>@yield('title') :: astrojason.com</title>
     <link href="assets/bower/alertifyjs/dist/css/alertify.css" rel="stylesheet" />
     <link href="assets/bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="assets/bower/angular-fx/dist/angular-fx.min.css" rel="stylesheet" />
     <link href="assets/sass/build/vendor/loader.css" rel="stylesheet" />
     <link href="assets/sass/build/base.css" rel="stylesheet" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -35,19 +36,6 @@
             @foreach($userNav as $navItem)
               <li @if($navItem->active) class="active"@endif><a href="<% $navItem->href %>" target="_self"><% $navItem->name %></a></li>
             @endforeach
-<!--            <li><a href="#contact">Contact</a></li>-->
-<!--            <li class="dropdown">-->
-<!--              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>-->
-<!--              <ul class="dropdown-menu" role="menu">-->
-<!--                <li><a href="#">Action</a></li>-->
-<!--                <li><a href="#">Another action</a></li>-->
-<!--                <li><a href="#">Something else here</a></li>-->
-<!--                <li class="divider"></li>-->
-<!--                <li class="dropdown-header">Nav header</li>-->
-<!--                <li><a href="#">Separated link</a></li>-->
-<!--                <li><a href="#">One more separated link</a></li>-->
-<!--              </ul>-->
-<!--            </li>-->
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="active">
@@ -83,6 +71,7 @@
     <script type="text/javascript" src="assets/bower/angular-resource/angular-resource.min.js"></script>
     <script type="text/javascript" src="assets/bower/angular-animate/angular-animate.min.js"></script>
     <script type="text/javascript" src="assets/bower/alertifyjs/dist/js/alertify.js"></script>
+    <script type="text/javascript" src="assets/bower/angular-fx/dist/angular-fx.min.js"></script>
     <script type="text/javascript" src="assets/bower/angular-messages/angular-messages.min.js"></script>
     <script type="text/javascript" src="assets/bower/moment/min/moment.min.js"></script>
     <script type="text/javascript" src="assets/bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>

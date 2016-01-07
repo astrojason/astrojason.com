@@ -265,13 +265,13 @@ describe 'BookController tests', ->
     $scope.$digest()
     expect($scope.book).toEqual mockBookQueryResponse.books[0]
 
-  it 'should log an error the console when the recommendation fails', ->
+  it 'should emit an error the console when the recommendation fails', ->
     $scope.recommendation_category = 'To Read'
-    spyOn(console, 'log').and.callThrough()
+    spyOn($scope, '$emit').and.callThrough()
     $scope.getRecommendation()
     mockBookRecommendDeferred.reject()
     $scope.$digest()
-    expect(console.log).toHaveBeenCalledWith 'Something went wrong'
+    expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Could not get book recommendation'
 
   it 'should set the categories to the passed values', ->
     $scope.setCategories([1,2,3,4,5])

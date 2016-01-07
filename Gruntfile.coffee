@@ -59,6 +59,7 @@ module.exports = (grunt) ->
           'public/assets/bower/angular-resource/angular-resource.js'
           'public/assets/bower/jquery/dist/jquery.min.js'
           'public/assets/bower/karma-read-json/karma-read-json.js'
+          'public/assets/bower/angular-fx/dist/angular-fx.min.js'
 
           'public/assets/coffee/build/**/*.js'
 

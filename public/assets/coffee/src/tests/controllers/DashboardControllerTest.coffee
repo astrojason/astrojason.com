@@ -2,15 +2,31 @@ describe 'DashboardController tests', ->
   $scope = null
   $timeout = null
   DashboardController = null
+  Link = null
+  mockLinkResource = null
+  mockLinkQuery = null
+  mockUserService = null
+  mockLinkQueryResponse = readJSON 'public/assets/coffee/src/tests/data/links.json'
 
   beforeEach ->
     module 'astroApp'
-    inject ($rootScope, $controller, _$timeout_)->
+    inject ($rootScope, $controller, _$timeout_, $q, _Link_)->
       $scope = $rootScope.$new()
       $timeout = _$timeout_
+      Link = _Link_
+
+      mockLinkResource =
+        query: ->
+          mockLinkQuery = $q.defer()
+          $promise: mockLinkQuery.promise
+
+      mockUserService =
+        get: ->
 
       mockInjections =
         $scope: $scope
+        LinkResource: mockLinkResource
+        UserService: mockUserService
 
       DashboardController = $controller 'DashboardController', mockInjections
 
@@ -29,6 +45,7 @@ describe 'DashboardController tests', ->
     expect($scope.movieModalOpen).toEqual false
     expect($scope.gameModalOpen).toEqual false
     expect($scope.songModalOpen).toEqual false
+    expect($scope.loading_category).toEqual false
 
   it 'should call initDashboard when userLoggedIn is broadcast', ->
     spyOn($scope, 'initDashboard').and.returnValue true
@@ -116,7 +133,7 @@ describe 'DashboardController tests', ->
     $scope.$digest()
     expect($scope.getCategoryArticles).toHaveBeenCalled()
 
-  it 'should call getCategoryAricle when display_category is changed and has no value', ->
+  it 'should call getCategoryArticle when display_category is changed and has no value', ->
     spyOn($scope, 'getCategoryArticles').and.returnValue true
     $scope.display_category = ''
     $scope.$digest()
@@ -144,3 +161,110 @@ describe 'DashboardController tests', ->
     $timeout ->
     $timeout.flush()
     expect($scope.search_articles).not.toHaveBeenCalled()
+
+  it 'should call $scope.search_articles when there is a long enough search term and is_read is changed', ->
+    spyOn($scope, 'search_articles').and.returnValue true
+    $scope.article_search = 'test'
+    $scope.$digest()
+    #    Make sure there is a timeout pending
+    $timeout ->
+    $timeout.flush()
+    $scope.search_articles.calls.reset()
+    $scope.is_read = true
+    $scope.$digest()
+    #    Make sure there is a timeout pending
+    $timeout ->
+    $timeout.flush()
+    expect($scope.search_articles).toHaveBeenCalled()
+
+  it 'should set the newLink model to a new Link', ->
+    $scope.linkModalOpen = true
+    $scope.$digest()
+    $scope.linkModalOpen = false
+    $scope.$digest()
+    expect($scope.newLink).toEqual new Link()
+
+  it 'should set the base variables when $scope.getCategoryArticles is called', ->
+    $scope.selected_links = ['test']
+    $scope.getCategoryArticles()
+    expect($scope.selected_links).toEqual []
+    expect($scope.loading_category).toEqual true
+
+  it 'should call LinkResource.query when $scope.getCategoryArticles is called', ->
+    spyOn(mockLinkResource, 'query').and.callThrough()
+    $scope.getCategoryArticles()
+    expect(mockLinkResource.query).toHaveBeenCalled()
+
+  it 'should set $scope.selected_links to the returned value', ->
+    $scope.getCategoryArticles()
+    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse)
+    $scope.$digest()
+    expect($scope.selected_links).toEqual mockLinkQueryResponse.links
+
+  it 'should set $scope.loading_category to false when LinkResource.query succeeds', ->
+    $scope.getCategoryArticles()
+    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse)
+    $scope.$digest()
+    expect($scope.loading_category).toEqual false
+
+  it 'should set $scope.loading_category to false when LinkResource.query fails', ->
+    $scope.getCategoryArticles()
+    mockLinkQuery.reject()
+    $scope.$digest()
+    expect($scope.loading_category).toEqual false
+
+  it 'should set emit an error when LinkResource.query fails', ->
+    spyOn($scope, '$emit').and.callThrough()
+    $scope.getCategoryArticles()
+    mockLinkQuery.reject()
+    $scope.$digest()
+    expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Could not load links for category'
+
+  it 'should set the appropriate variables when search_articles is called', ->
+    $scope.link_results = ['test']
+    $scope.search_articles()
+    expect($scope.link_results).toEqual []
+    expect($scope.searching).toEqual true
+
+  it 'should set $scope.link_results to the returned values when LinkResource.query succeeds', ->
+    $scope.search_articles()
+    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse)
+    $scope.$digest()
+    expect($scope.link_results).toEqual mockLinkQueryResponse.links
+
+  it 'should set $scope.searching to false when LinkResource.query succeeds', ->
+    $scope.search_articles()
+    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse)
+    $scope.$digest()
+    expect($scope.loading_category).toEqual false
+
+  it 'should set $scope.searching to false when LinkResource.query succeeds', ->
+    $scope.search_articles()
+    mockLinkQuery.reject()
+    $scope.$digest()
+    expect($scope.loading_category).toEqual false
+
+  it 'should set $scope.$emit to be called when LinkResource.query succeeds', ->
+    spyOn($scope, '$emit').and.callThrough()
+    $scope.search_articles()
+    mockLinkQuery.reject()
+    $scope.$digest()
+    expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Could not get perform the search'
+
+  it 'should call UserService.get when $scope.initDashboard is called', ->
+    spyOn(mockUserService, 'get').and.callThrough()
+    $scope.initDashboard()
+    expect(mockUserService.get).toHaveBeenCalled()
+
+  it 'should not call $scope.loadDashboard when $scope.initDashboard is called and UserService.get does not return a user', ->
+    spyOn($scope, 'loadDashboard').and.callThrough()
+    $scope.initDashboard()
+    expect($scope.loadDashboard).not.toHaveBeenCalled()
+
+  it 'should call $scope.loadDashboard when $scope.initDashboard is called and UserService.get does return a user', ->
+    spyOn(mockUserService, 'get').and.returnValue id: 1
+    spyOn($scope, 'loadDashboard').and.callThrough()
+    $scope.initDashboard()
+    expect($scope.loadDashboard).toHaveBeenCalled()
+
+#    TODO: test loaddashboard and down the controller

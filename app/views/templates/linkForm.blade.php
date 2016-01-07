@@ -14,16 +14,18 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-10">
+      <div class="col-md-10 col-xs-8">
         <a ng-href="{{ link.link }}" ng-click="linkOpened()" target="_blank">{{ link.name }}</a>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-2 hidden-xs">
         <div class="pull-right">
           <span class="glyphicon glyphicon-pencil tool" ng-click="editing = true"></span>
           <span class="glyphicon tool" ng-click="toggleRead()" ng-class="(link.is_read | boolparse) ? 'glyphicon-book' : 'glyphicon-ok'"></span>
           <span class="glyphicon glyphicon-remove tool" ng-click="deleting = true"></span>
         </div>
       </div>
+      <div class="col-xs-2 hidden-lg hidden-md hidden-sm"><span class="glyphicon tool pull-right" ng-click="toggleRead()" ng-class="(link.is_read | boolparse) ? 'glyphicon-book' : 'glyphicon-ok'"></span></div>
+      <div class="col-xs-2 hidden-lg hidden-md hidden-sm"><span class="glyphicon glyphicon-remove tool pull-right" ng-click="deleting = true"></span></div>
     </div>
   </div>
 </div>

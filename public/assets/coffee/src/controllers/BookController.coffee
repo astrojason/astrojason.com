@@ -121,7 +121,7 @@ angular.module('astroApp').controller 'BookController', ['$scope', '$controller'
         success = (response)->
           $scope.book = response.book
         error = ->
-          console.log 'Something went wrong'
+          $scope.$emit 'errorOccurred', 'Could not get book recommendation'
         book_promise = BookResource.recommend category: $scope.recommendation_category
         book_promise.$promise.then success, error
 
