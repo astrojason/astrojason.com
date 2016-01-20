@@ -1,6 +1,6 @@
 angular.module('astroApp').controller 'DashboardController', ['$scope', '$http', '$location', '$timeout', '$filter',
-  'UserService', 'LinkResource', 'Link', 'Book', 'Movie', 'Game', 'Song', ($scope, $http, $location, $timeout, $filter,
-    UserService, LinkResource, Link, Book, Movie, Game, Song)->
+  'UserService', 'DashboardResource', 'LinkResource', 'Link', 'Book', 'Movie', 'Game', 'Song', ($scope, $http, $location, $timeout,
+  $filter, UserService, DashboardResource, LinkResource, Link, Book, Movie, Game, Song)->
 
     $scope.display_category = $location.search().category || ''
     $scope.search_timeout = null
@@ -143,8 +143,8 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
         $scope.loadDashboard()
 
     $scope.loadDashboard = ->
-      daily_Promise = $http.get '/api/dashboard'
-      daily_Promise.success (response)->
+      daily_Promise = DashboardResource.get().$promise
+      daily_Promise.then (response)->
         $scope.total_read = response.total_read
         $scope.categories = response.categories
         $scope.total_links = response.total_links
@@ -154,7 +154,7 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
         $scope.books_toread = response.books_toread
         $scope.games_toplay = response.games_toplay
         $scope.songs_toplay = response.songs_toplay
-      daily_Promise.error ->
+      daily_Promise.catch ->
         $scope.$emit 'errorOccurred', 'Problem loading daily results'
 
       LinkResource.query category: 'Daily', (response)->
@@ -162,6 +162,7 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
 
       $scope.refreshUnreadArticles()
 
+#   TODO: This is a duplicate call, should be able to combine it with getCategoryArticles
     $scope.refreshUnreadArticles = ->
       $scope.unread_links = []
       $scope.loading_unread = true
@@ -170,10 +171,15 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
         limit: 20
         randomize: true
         update_load_count: true
-      LinkResource.query data, (response)->
+      unreadPromise = LinkResource.query(data).$promise
+
+      unreadPromise.then (response)->
         $scope.unread_links = response.links
+
+      unreadPromise.finally ->
         $scope.loading_unread = false
 
+#   TODO: Put this into the LinkResource service
     $scope.populateLinks = ->
       populate_promise = $http.get '/api/links/populate'
       populate_promise.success ->
@@ -182,6 +188,6 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
     $scope.getLinkClass = (link)->
       if link.times_loaded > 20
         return 'link-danger'
-      if link.times_loaded > 20
+      if link.times_loaded > 10
         return 'link-warning'
 ]

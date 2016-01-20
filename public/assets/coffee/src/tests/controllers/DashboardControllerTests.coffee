@@ -1,18 +1,23 @@
 describe 'DashboardController tests', ->
   $scope = null
   $timeout = null
+  $httpBackend = null
   DashboardController = null
   Link = null
   mockLinkResource = null
   mockLinkQuery = null
+  mockDashboardGet = null
   mockUserService = null
+  mockDashboardResource = null
   mockLinkQueryResponse = readJSON 'public/assets/coffee/src/tests/data/links.json'
+  mockDashboardQueryResponse = readJSON 'public/assets/coffee/src/tests/data/dahsboard.json'
 
   beforeEach ->
     module 'astroApp'
-    inject ($rootScope, $controller, _$timeout_, $q, _Link_)->
+    inject ($rootScope, $controller, _$timeout_, _$httpBackend_, $q, _Link_)->
       $scope = $rootScope.$new()
       $timeout = _$timeout_
+      $httpBackend = _$httpBackend_
       Link = _Link_
 
       mockLinkResource =
@@ -23,10 +28,16 @@ describe 'DashboardController tests', ->
       mockUserService =
         get: ->
 
+      mockDashboardResource =
+        get: ->
+          mockDashboardGet = $q.defer()
+          $promise: mockDashboardGet.promise
+
       mockInjections =
         $scope: $scope
         LinkResource: mockLinkResource
         UserService: mockUserService
+        DashboardResource: mockDashboardResource
 
       DashboardController = $controller 'DashboardController', mockInjections
 
@@ -267,4 +278,96 @@ describe 'DashboardController tests', ->
     $scope.initDashboard()
     expect($scope.loadDashboard).toHaveBeenCalled()
 
-#    TODO: test loaddashboard and down the controller
+  it 'should call DashboardResource.get when $scope.loadDashboard() is called', ->
+    spyOn(mockDashboardResource, 'get').and.callThrough()
+    $scope.loadDashboard()
+    expect(mockDashboardResource.get).toHaveBeenCalled()
+
+  it 'should set the appropriate values to what is returned from DashboardResource.get on success', ->
+    $scope.loadDashboard()
+    mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
+    $scope.$digest()
+    expect($scope.total_read).toEqual mockDashboardQueryResponse.total_read
+    expect($scope.categories).toEqual mockDashboardQueryResponse.categories
+    expect($scope.total_links).toEqual mockDashboardQueryResponse.total_links
+    expect($scope.links_read).toEqual mockDashboardQueryResponse.links_read
+    expect($scope.total_books).toEqual mockDashboardQueryResponse.total_books
+    expect($scope.books_read).toEqual mockDashboardQueryResponse.books_read
+    expect($scope.books_toread).toEqual mockDashboardQueryResponse.books_toread
+    expect($scope.games_toplay).toEqual mockDashboardQueryResponse.games_toplay
+    expect($scope.songs_toplay).toEqual mockDashboardQueryResponse.songs_toplay
+
+  it 'should emit an error when Dashboard.get fails', ->
+    spyOn($scope, '$emit').and.callThrough()
+    $scope.loadDashboard()
+    mockDashboardGet.reject()
+    $scope.$digest()
+    expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Problem loading daily results'
+
+  it 'should call LinkResource.query when loadDashboard is called', ->
+    spyOn($scope, 'refreshUnreadArticles').and.returnValue true
+    spyOn(mockLinkResource, 'query').and.callThrough()
+    $scope.loadDashboard()
+    expect(mockLinkResource.query).toHaveBeenCalled()
+
+  it 'should call refreshUnreadArticles when loadDashboard is called', ->
+    spyOn($scope, 'refreshUnreadArticles').and.callThrough
+    $scope.loadDashboard()
+    expect($scope.refreshUnreadArticles).toHaveBeenCalled()
+
+  it 'should call LinkResource.query when refreshUnreadArticles is called', ->
+    spyOn(mockLinkResource, 'query').and.callThrough()
+    $scope.refreshUnreadArticles()
+    expect(mockLinkResource.query).toHaveBeenCalled()
+
+  it 'should set the appropriate values to the initial variables when refreshUnreadArticles is called', ->
+    $scope.unread_links = [1,2,3,4]
+    $scope.refreshUnreadArticles()
+    expect($scope.unread_links).toEqual []
+    expect($scope.loading_unread).toEqual true
+
+  it 'should set $scope.loading_unread to false when LinkResource.query succeeds', ->
+    $scope.refreshUnreadArticles()
+    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse)
+    $scope.$digest()
+    expect($scope.loading_unread).toEqual false
+
+  it 'should set $scope.unread_links to the returned links when LinkResource.query succeeds', ->
+    $scope.refreshUnreadArticles()
+    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse)
+    $scope.$digest()
+    expect($scope.unread_links).toEqual mockLinkQueryResponse.links
+
+  it 'should set $scope.loading_unread to false when LinkResource.query fails', ->
+    $scope.refreshUnreadArticles()
+    mockLinkQuery.reject()
+    $scope.$digest()
+    expect($scope.loading_unread).toEqual false
+
+  it 'should call /api/ilinks/populate when populateLinks is called', ->
+    $httpBackend.expectGET('/api/links/populate').respond 200
+    $scope.populateLinks()
+    $httpBackend.flush()
+
+  it 'should call loadDashboard when the $http get responds successfully', ->
+    spyOn($scope, 'loadDashboard').and.callThrough()
+    $httpBackend.expectGET('/api/links/populate').respond 200
+    $scope.populateLinks()
+    $httpBackend.flush()
+    expect($scope.loadDashboard).toHaveBeenCalled()
+
+  it 'should not call loadDashboard when the $http get responds unsuccessfully', ->
+    spyOn($scope, 'loadDashboard').and.callThrough()
+    $httpBackend.expectGET('/api/links/populate').respond 500
+    $scope.populateLinks()
+    $httpBackend.flush()
+    expect($scope.loadDashboard).not.toHaveBeenCalled()
+
+  it 'should return link-danger when the times_loaded is greatee than 20', ->
+    expect($scope.getLinkClass(times_loaded: 21)).toEqual 'link-danger'
+
+  it 'should return link-warning when the times_loaded is greater than 10 but less than 20', ->
+    expect($scope.getLinkClass(times_loaded: 11)).toEqual 'link-warning'
+
+  it 'should return undefined when the times_loaded is 10 or less', ->
+    expect($scope.getLinkClass(times_loaded: 5)).toBeUndefined()

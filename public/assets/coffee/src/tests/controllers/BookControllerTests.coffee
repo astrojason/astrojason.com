@@ -1,4 +1,4 @@
-describe 'BookController tests', ->
+describe 'BookController unit tests', ->
   $scope = null
   BookController = null
   mockBookResource = null
@@ -59,116 +59,116 @@ describe 'BookController tests', ->
     expect($scope.getRecommendation).toHaveBeenCalled()
 
   it 'should not try to update the list when filter_category changes if initList has not been called', ->
-    spyOn($scope, 'get').and.callThrough()
+    spyOn($scope, 'query').and.callThrough()
     $scope.filter_category = 'test'
     $scope.$digest()
-    expect($scope.get).not.toHaveBeenCalled()
+    expect($scope.query).not.toHaveBeenCalled()
 
   it 'should try to update the list when filter_category changes if initList has not been called', ->
-    spyOn($scope, 'get').and.callThrough()
+    spyOn($scope, 'query').and.callThrough()
     $scope.initList()
     $scope.filter_category = 'test'
     $scope.$digest()
-    expect($scope.get).toHaveBeenCalled()
+    expect($scope.query).toHaveBeenCalled()
 
   it 'should not try to update the list when filter_category changes if initList has not been called and loading_books is true', ->
-    spyOn($scope, 'get').and.callThrough()
+    spyOn($scope, 'query').and.callThrough()
     $scope.initList()
     $scope.loading_books = true
     $scope.filter_category = 'test'
     $scope.$digest()
-    expect($scope.get).not.toHaveBeenCalled()
+    expect($scope.query).not.toHaveBeenCalled()
 
   it 'should not try to update the list when book_query changes if initList has not been called', ->
-    spyOn($scope, 'get').and.callThrough()
+    spyOn($scope, 'query').and.callThrough()
     $scope.book_query = 'test'
     $scope.$digest()
-    expect($scope.get).not.toHaveBeenCalled()
+    expect($scope.query).not.toHaveBeenCalled()
 
-  it 'should try to update the list when book_query changes if initList has not been called', ->
-    spyOn($scope, 'get').and.callThrough()
+  it 'should try to update the list when book_query changes if initList has been called', ->
+    spyOn($scope, 'query').and.callThrough()
     $scope.initList()
     $scope.book_query = 'test'
     $scope.$digest()
-    expect($scope.get).toHaveBeenCalled()
+    expect($scope.query).toHaveBeenCalled()
 
-  it 'should not try to update the list when book_query changes if initList has not been called and loading_books is true', ->
-    spyOn($scope, 'get').and.callThrough()
+  it 'should not try to update the list when book_query changes if initList has been called and loading_books is true', ->
+    spyOn($scope, 'query').and.callThrough()
     $scope.initList()
     $scope.loading_books = true
     $scope.book_query = 'test'
     $scope.$digest()
-    expect($scope.get).not.toHaveBeenCalled()
+    expect($scope.query).not.toHaveBeenCalled()
 
   it 'should not try to update the list when is_read changes if initList has not been called', ->
-    spyOn($scope, 'get').and.callThrough()
+    spyOn($scope, 'query').and.callThrough()
     $scope.is_read = 'test'
     $scope.$digest()
-    expect($scope.get).not.toHaveBeenCalled()
+    expect($scope.query).not.toHaveBeenCalled()
 
   it 'should try to update the list when is_read changes if initList has not been called', ->
-    spyOn($scope, 'get').and.callThrough()
+    spyOn($scope, 'query').and.callThrough()
     $scope.initList()
     $scope.is_read = 'test'
     $scope.$digest()
-    expect($scope.get).toHaveBeenCalled()
+    expect($scope.query).toHaveBeenCalled()
 
   it 'should not try to update the list when is_read changes if initList has not been called and loading_books is true', ->
-    spyOn($scope, 'get').and.callThrough()
+    spyOn($scope, 'query').and.callThrough()
     $scope.initList()
     $scope.loading_books = true
     $scope.is_read = 'test'
     $scope.$digest()
-    expect($scope.get).not.toHaveBeenCalled()
+    expect($scope.query).not.toHaveBeenCalled()
 
   it 'should not try to update the list when sort changes if initList has not been called', ->
-    spyOn($scope, 'get').and.callThrough()
+    spyOn($scope, 'query').and.callThrough()
     $scope.sort = 'test'
     $scope.$digest()
-    expect($scope.get).not.toHaveBeenCalled()
+    expect($scope.query).not.toHaveBeenCalled()
 
   it 'should try to update the list when sort changes if initList has not been called', ->
-    spyOn($scope, 'get').and.callThrough()
+    spyOn($scope, 'query').and.callThrough()
     $scope.initList()
     $scope.sort = 'test'
     $scope.$digest()
-    expect($scope.get).toHaveBeenCalled()
+    expect($scope.query).toHaveBeenCalled()
 
   it 'should not try to update the list when sort changes if initList has not been called and loading_books is true', ->
-    spyOn($scope, 'get').and.callThrough()
+    spyOn($scope, 'query').and.callThrough()
     $scope.initList()
     $scope.loading_books = true
     $scope.sort = 'test'
     $scope.$digest()
-    expect($scope.get).not.toHaveBeenCalled()
+    expect($scope.query).not.toHaveBeenCalled()
 
-  it 'should set loading_books to true when $scope.get is called', ->
-    $scope.get()
+  it 'should set loading_books to true when $scope.query is called', ->
+    $scope.query()
     expect($scope.loading_books).toEqual true
 
   it 'should set loading_books to false when BookResource.query succeeds', ->
-    $scope.get()
+    $scope.query()
     mockBookQueryDeferred.resolve mockBookQueryResponse
     $scope.$digest()
     expect($scope.loading_books).toEqual false
 
   it 'should set loading_books to false when BookResource.query fails', ->
-    $scope.get()
+    $scope.query()
     mockBookQueryDeferred.reject()
     $scope.$digest()
     expect($scope.loading_books).toEqual false
 
-  it 'should set the appropriate variables when $scope.get resolves', ->
-    $scope.get()
+  it 'should set the appropriate variables when $scope.query resolves', ->
+    $scope.query()
     mockBookQueryDeferred.resolve angular.copy(mockBookQueryResponse)
     $scope.$digest()
     expect($scope.books).toEqual mockBookQueryResponse.books
     expect($scope.total).toEqual mockBookQueryResponse.total
     expect($scope.pages).toEqual mockBookQueryResponse.pages
 
-  it 'should call $scope.generatePages whe $scope.get resolves', ->
+  it 'should call $scope.generatePages whe $scope.query resolves', ->
     spyOn($scope, 'generatePages').and.callThrough()
-    $scope.get()
+    $scope.query()
     mockBookQueryDeferred.resolve angular.copy(mockBookQueryResponse)
     $scope.$digest()
     expect($scope.generatePages).toHaveBeenCalled()

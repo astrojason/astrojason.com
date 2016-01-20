@@ -31,23 +31,23 @@ angular.module('astroApp').controller 'BookController', ['$scope', '$controller'
 
       $scope.$watch 'filter_category', ->
         if !$scope.loading_books
-          $scope.get()
+          $scope.query()
 
       $scope.$watch 'book_query', ->
         if !$scope.loading_books
           $scope.searching = true
           $timeout.cancel $scope.search_timeout
           $scope.search_timeout = $timeout ->
-            $scope.get()
+            $scope.query()
           , 500
 
       $scope.$watch 'is_read', ->
         if !$scope.loading_books
-          $scope.get()
+          $scope.query()
 
       $scope.$watch 'sort', ->
         if !$scope.loading_books
-          $scope.get()
+          $scope.query()
 
       $scope.$watch 'page', (newValue, oldValue)->
         if !$scope.loading_links
@@ -55,9 +55,9 @@ angular.module('astroApp').controller 'BookController', ['$scope', '$controller'
             cur_opts = $location.search()
             cur_opts.page = newValue
             $location.search(cur_opts)
-            $scope.get()
+            $scope.query()
 
-    $scope.get = ->
+    $scope.query = ->
       $scope.loading_books = true
       data =
         limit: $scope.limit
