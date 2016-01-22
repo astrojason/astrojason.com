@@ -1,0 +1,128 @@
+{
+  "books": {
+    "end": "20",
+    "page": "1",
+    "total": "438",
+    "titles": [{
+      "goodreads_id": 91477,
+      "title": "Fool Moon (The Dresden Files, #2)",
+      "author": "Jim Butcher",
+      "average_rating": 4.04,
+      "id": 0
+    }, {
+      "goodreads_id": 3367799,
+      "title": "Bullies, Bastards & Bitches: How to Write the Bad Guys of Fiction",
+      "author": "Jessica Page Morrell",
+      "average_rating": 3.99,
+      "id": 0
+    }, {
+      "goodreads_id": 82966,
+      "title": "The Butcher's Boy (Butcher's Boy, #1)",
+      "author": "Thomas Perry",
+      "average_rating": 3.92,
+      "id": 0
+    }, {
+      "goodreads_id": 20727654,
+      "title": "The Paper Magician (The Paper Magician Trilogy, #1)",
+      "author": "Charlie N. Holmberg",
+      "average_rating": 3.6,
+      "id": 0
+    }, {
+      "goodreads_id": 361081,
+      "title": "Pacific Vortex! (Dirk Pitt, #6)",
+      "author": "Clive Cussler",
+      "average_rating": 3.74,
+      "id": 0
+    }, {
+      "goodreads_id": 160251,
+      "title": "Ordinary People",
+      "author": "Judith Guest",
+      "average_rating": 3.89,
+      "id": 0
+    }, {
+      "goodreads_id": 133454,
+      "title": "Jhereg (Vlad Taltos, #1)",
+      "author": "Steven Brust",
+      "average_rating": 4.15,
+      "id": 0
+    }, {
+      "goodreads_id": 304961,
+      "title": "Dynamic Figure Drawing",
+      "author": "Burne Hogarth",
+      "average_rating": 3.95,
+      "id": 0
+    }, {
+      "goodreads_id": 59704,
+      "title": "Writing for Comics, Vol. 1",
+      "author": "Alan Moore",
+      "average_rating": 3.91,
+      "id": 0
+    }, {
+      "goodreads_id": 221238,
+      "title": "Perspective! for Comic Book Artists: How to Achieve a Professional Look in your Artwork",
+      "author": "David Chelsea",
+      "average_rating": 3.99,
+      "id": 0
+    }, {
+      "goodreads_id": 599246,
+      "title": "How to Draw Comics the Marvel Way",
+      "author": "Stan Lee",
+      "average_rating": 3.92,
+      "id": 0
+    }, {
+      "goodreads_id": 176811,
+      "title": "The Ax",
+      "author": "Donald E. Westlake",
+      "average_rating": 3.9,
+      "id": 0
+    }, {
+      "goodreads_id": 30933,
+      "title": "Brideshead Revisited",
+      "author": "Evelyn Waugh",
+      "average_rating": 3.99,
+      "id": 0
+    }, {
+      "goodreads_id": 9589,
+      "title": "Hocus Pocus",
+      "author": "Kurt Vonnegut",
+      "average_rating": 3.8,
+      "id": 0
+    }, {
+      "goodreads_id": 40020,
+      "title": "A Patchwork Planet",
+      "author": "Anne Tyler",
+      "average_rating": 3.77,
+      "id": 0
+    }, {
+      "goodreads_id": 29044,
+      "title": "The Secret History",
+      "author": "Donna Tartt",
+      "average_rating": 4.05,
+      "id": 0
+    }, {
+      "goodreads_id": 89323,
+      "title": "Joe Hill",
+      "author": "Wallace Stegner",
+      "average_rating": 3.65,
+      "id": 0
+    }, {
+      "goodreads_id": 410656,
+      "title": "Men in Black",
+      "author": "Scott Spencer",
+      "average_rating": 3.48,
+      "id": 0
+    }, {
+      "goodreads_id": 245968,
+      "title": "The Illusionist",
+      "author": "Dinitia Smith",
+      "average_rating": 3.3,
+      "id": 0
+    }, {
+      "goodreads_id": 1209530,
+      "title": "The Crater",
+      "author": "Richard Slotkin",
+      "average_rating": 4.03,
+      "id": 0
+    }]
+  }
+}
