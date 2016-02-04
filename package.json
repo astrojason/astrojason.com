@@ -4,19 +4,20 @@
   "devDependencies": {
     "bower": "^1.4.1",
     "grunt": "*",
-    "grunt-contrib-coffee": "*",
-    "grunt-contrib-uglify": "*",
-    "grunt-contrib-compass": "*",
-    "grunt-contrib-watch": "*",
-    "grunt-contrib-clean": "~0.6.0",
-    "load-grunt-config": "^0.16.0",
     "grunt-concurrent": "^1.0.0",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-coffee": "*",
+    "grunt-contrib-compass": "*",
     "grunt-contrib-imagemin": "^0.9.4",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
     "grunt-karma": "^0.11.0",
     "jasmine-core": "^2.3.4",
     "karma": "^0.12.31",
     "karma-coverage": "^0.5.3",
     "karma-jasmine": "^0.3.5",
-    "karma-phantomjs-launcher": "^0.1.4"
+    "karma-jasmine-diff-reporter": "^0.3.2",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "load-grunt-config": "^0.16.0"
   }
 }

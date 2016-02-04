@@ -48,7 +48,7 @@ module.exports = (grunt) ->
       'public/assets/coffee/build/*',
       'public/assets/js/*.js'
     ]
-
+#TODO: Split this out into karma.conf
     karma:
       options:
         files: [
@@ -59,6 +59,7 @@ module.exports = (grunt) ->
           'public/assets/bower/angular-resource/angular-resource.js'
           'public/assets/bower/jquery/dist/jquery.min.js'
           'public/assets/bower/karma-read-json/karma-read-json.js'
+          'public/assets/bower/jasmine-collection-matchers/lib/pack.js'
           'public/assets/bower/angular-fx/dist/angular-fx.min.js'
 
           'public/assets/coffee/build/**/*.js'
@@ -70,6 +71,11 @@ module.exports = (grunt) ->
         ]
         logLevel: 'ERROR'
         frameworks: ['jasmine']
+        reporters: [
+          'jasmine-diff'
+          'progress'
+        ]
+        colors: false
         singleRun: true
 
       dev:

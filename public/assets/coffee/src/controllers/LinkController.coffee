@@ -1,5 +1,6 @@
 angular.module('astroApp').controller 'LinkController', ['$scope', '$controller', '$filter', '$timeout', '$location',
-  '$http', 'LinkResource', 'Link', ($scope, $controller, $filter, $timeout, $location, $http, LinkResource, Link)->
+  'LinkResource', 'Link', 'AlertifyService',
+  ($scope, $controller, $filter, $timeout, $location, LinkResource, Link, AlertifyService)->
 
     $controller 'FormMasterController', $scope: $scope
 
@@ -60,12 +61,16 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
         data['q'] = $scope.links_query
       if $scope.display_category
         data['category'] = $scope.display_category
-      LinkResource.query data, (response)->
-        $scope.loading_links = false
-        $scope.links = response.links
-        $scope.total = response.total
-        $scope.pages = response.pages
+      linkQueryPromise = LinkResource.query(data).$promise
+
+      linkQueryPromise.then (links)->
+        $scope.links = links
+        $scope.total = links.$total
+        $scope.pages = links.$pages
         $scope.generatePages()
+
+      linkQueryPromise.finally ->
+        $scope.loading_links = false
 
     $scope.linkOpened = ->
       $scope.link.times_read += 1
@@ -76,24 +81,26 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
       $scope.save()
 
     $scope.delete = ->
-      success = ->
-        alertify.success 'Link deleted successfully'
+      link_promise = LinkResource.remove(id: $scope.link.id).$promise
+
+      link_promise.then ->
+        AlertifyService.success 'Link deleted successfully'
         $scope.deleting = false
         $scope.editing = false
         $scope.$emit 'linkDeleted', $scope.link.id
 
-      error = (response)->
-        $scope.errorMessage = response.data.error
-
-      link_promise = LinkResource.remove id: $scope.link.id
-      link_promise.$promise.then success, error
+      link_promise.catch (response)->
+        $scope.errorMessage = response?.data?.error || 'There was an error deleting the selected link.'
 
     $scope.save = ->
       if $scope.link.category == 'New'
         $scope.link.category = $scope.new_category
 
-      success = (response)->
-        alertify.success "Link " + (if $scope.link.id then "updated" else "added") + " successfully"
+#        TODO: Figure out how to unit test this as a $scope.link.$save() promise
+      link_promise = LinkResource.save($.param($scope.link)).$promise
+
+      link_promise.then (response)->
+        AlertifyService.success "Link " + (if $scope.link.id then "updated" else "added") + " successfully."
         if $scope.link.id
           $scope.editing = false
           $scope.$emit 'linkUpdated', $scope.link
@@ -103,11 +110,8 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
           $scope.link_form.$setPristine()
           $scope.$emit 'closeModal', response.link
 
-      error = (response)->
-        $scope.errorMessage = response.data.error
-
-      link_promise = LinkResource.save $.param $scope.link
-      link_promise.$promise.then success, error
+      link_promise.catch (response)->
+        $scope.errorMessage = response?.data?.error || 'There was an error saving the selected link.'
 
     $scope.setCategories = (categories)->
       $scope.categories = categories
@@ -116,7 +120,7 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
       $scope.importedCount = 0
       submitLinks = []
       errorLinks = []
-      links = $scope.importlist.split 'http'
+      links = $scope.splitImports $scope.importList
       angular.forEach links, (link)->
         if link != ''
           exploded = link.split '|'
@@ -130,9 +134,14 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
       data =
         importlist: submitLinks
 
-      importPromise = $http.post '/api/link/import', $.param data
-      importPromise.success (response)->
+      importPromise = LinkResource.import($.param data).$promise
+
+      importPromise.then (response)->
         $scope.importedCount = response.count
-      importPromise.error ->
-        console.log 'This is bad'
+
+      importPromise.catch ->
+        $scope.errorMessage = 'There was a problem with the import'
+
+    $scope.splitImports = (data)->
+      data.split 'http'
 ]
