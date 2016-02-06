@@ -44,10 +44,11 @@ module.exports = (grunt) ->
           'public/assets/js/resources.min.js': 'public/assets/coffee/build/resources/*'
         }
 
-    clean: [
-      'public/assets/coffee/build/*',
-      'public/assets/js/*.js'
-    ]
+    clean:
+      main: [
+        'public/assets/coffee/build/*'
+        'public/assets/js/*.js'
+      ]
 #TODO: Split this out into karma.conf
     karma:
       options:

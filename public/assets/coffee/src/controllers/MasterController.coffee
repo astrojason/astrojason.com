@@ -1,6 +1,9 @@
-angular.module('astroApp').controller 'MasterController', ['$scope', '$http', 'UserService',
-  ($scope, $http, UserService) ->
+angular.module('astroApp').controller 'MasterController', ['$scope', 'UserService',
+  ($scope, UserService) ->
+    $scope.init = false
     $scope.initItems = 0
+    $scope.show_error = false
+    $scope.error_message = ''
 
     $scope.$on 'initStarted', ->
       $scope.init = true
@@ -16,29 +19,14 @@ angular.module('astroApp').controller 'MasterController', ['$scope', '$http', 'U
       $scope.error_message = data
 
     $scope.login = ->
-      $scope.init = true
       data =
         username: $scope.username
         password: $scope.password
-      login_Promise = $http.post '/api/login', $.param data
-      login_Promise.success (data)->
-        $scope.init = false
-        $scope.user = data.user
-        UserService.set $scope.user
-        $scope.$broadcast 'userLoggedIn'
-      login_Promise.error ->
-        $scope.$emit 'errorOccurred', 'Problem logging in'
+
+      UserService.login data
 
     $scope.logout = ->
-      $scope.init = true
-      login_Promise = $http.post '/api/logout'
-      login_Promise.success ->
-        $scope.init = false
-        $scope.user = null
-        UserService.setUser $scope.user
-        $scope.$broadcast 'userLoggedOut'
-      login_Promise.error ->
-        $scope.$emit 'errorOccurred', 'Problem logging out'
+      UserService.logout()
 
     $scope.initUser = (user)->
       $scope.user = user
