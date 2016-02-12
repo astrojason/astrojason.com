@@ -8,6 +8,7 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
     $scope.errorMessage = false
     $scope.originalLink = angular.copy $scope.link
     $scope.importedCount = 0
+    $scope.loading_links = false
 
     $scope.$on 'linkDeleted', (event, message)->
       $scope.links = $filter('filter')($scope.links, {id: '!' + message})
@@ -33,12 +34,11 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
           , 1000
 
       $scope.$watch 'links_query', ->
+        $timeout.cancel $scope.search_timeout
         if !$scope.loading_links
-          $timeout.cancel $scope.search_timeout
-          if !$scope.loading_links
-            $scope.search_timeout = $timeout ->
-              $scope.query()
-            , 500
+          $scope.search_timeout = $timeout ->
+            $scope.query()
+          , 500
 
       $scope.$watch 'page', (newValue, oldValue)->
         if !$scope.loading_links

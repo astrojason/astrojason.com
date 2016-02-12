@@ -1,6 +1,7 @@
 describe 'LinkController unit tests', ->
   $scope = null
   $compile = null
+  $timeout = null
   LinkController = null
   Link = null
   scopeLink = null
@@ -19,8 +20,9 @@ describe 'LinkController unit tests', ->
 
   beforeEach ->
     module 'astroApp'
-    inject ($rootScope, $controller, $q, _$compile_, _Link_)->
+    inject ($rootScope, $controller, $q, _$compile_, _$timeout_, _Link_)->
       $scope = $rootScope.$new()
+      $timeout = _$timeout_
       $compile = _$compile_
       Link = _Link_
 
@@ -58,6 +60,7 @@ describe 'LinkController unit tests', ->
     expect($scope.deleting).toEqual false
     expect($scope.errorMessage).toEqual false
     expect($scope.importedCount).toEqual 0
+    expect($scope.loading_links).toEqual false
 
   it 'should filter out the deleted scopeLink from $scope.links when linkDeleted is broadcast', ->
     $scope.links = angular.copy mockLinkQueryResponse.links
@@ -120,8 +123,8 @@ describe 'LinkController unit tests', ->
 
   it 'should not call $scope.query if $scope.initList has been called, $scope.link_query is changed and $scope.loading_links is true', ->
     spyOn $scope, 'query'
-    $scope.$digest()
     $scope.initList()
+    $scope.$digest()
     $scope.query.calls.reset()
     $scope.loading_links = true
     $scope.link_query = 'changed'
@@ -130,11 +133,12 @@ describe 'LinkController unit tests', ->
 
   it 'should call $scope.query if $scope.link_query is changed and $scope.initList has been called and $scope.loading_links is false', ->
     spyOn $scope, 'query'
-    $scope.$digest()
     $scope.initList()
+    $scope.$digest()
     $scope.query.calls.reset()
     $scope.link_query = 'changed'
     $scope.$digest()
+    $timeout.flush()
     expect($scope.query).toHaveBeenCalled()
 
   it 'should not call $scope.query if $scope.page is changed and $scope.initList has not been called', ->
@@ -146,8 +150,8 @@ describe 'LinkController unit tests', ->
 
   it 'should not call $scope.query if $scope.initList has been called, $scope.page is changed and $scope.loading_links is true', ->
     spyOn $scope, 'query'
-    $scope.$digest()
     $scope.initList()
+    $scope.$digest()
     $scope.query.calls.reset()
     $scope.loading_links = true
     $scope.page = 3
@@ -156,8 +160,8 @@ describe 'LinkController unit tests', ->
 
   it 'should call $scope.query if $scope.page is changed and $scope.initList has been called and $scope.loading_links is false', ->
     spyOn $scope, 'query'
-    $scope.$digest()
     $scope.initList()
+    $scope.$digest()
     $scope.query.calls.reset()
     $scope.page = 3
     $scope.$digest()
@@ -172,8 +176,8 @@ describe 'LinkController unit tests', ->
 
   it 'should not call $scope.query if $scope.initList has been called, $scope.display_category is changed and $scope.loading_links is true', ->
     spyOn $scope, 'query'
-    $scope.$digest()
     $scope.initList()
+    $scope.$digest()
     $scope.query.calls.reset()
     $scope.loading_links = true
     $scope.display_category = 'changed'
@@ -182,8 +186,8 @@ describe 'LinkController unit tests', ->
 
   it 'should call $scope.query if $scope.display_category is changed and $scope.initList has been called and $scope.loading_links is false', ->
     spyOn $scope, 'query'
-    $scope.$digest()
     $scope.initList()
+    $scope.$digest()
     $scope.query.calls.reset()
     $scope.display_category = 'changed'
     $scope.$digest()
