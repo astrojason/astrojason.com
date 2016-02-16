@@ -74,7 +74,7 @@ module.exports = (grunt) ->
         frameworks: ['jasmine']
         reporters: [
           'jasmine-diff'
-          'progress'
+          'dots'
         ]
         colors: false
         singleRun: true

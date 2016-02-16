@@ -1,14 +1,14 @@
 angular.module('astroApp').controller 'SongController', ['$scope', '$timeout', '$controller', '$filter', '$location',
-  'SongResource', ($scope, $timeout, $controller, $filter, $location, SongResource)->
+  'SongResource', 'AlertifyService', ($scope, $timeout, $controller, $filter, $location, SongResource, AlertifyService)->
 
     $controller 'FormMasterController', $scope: $scope
+
+    $scope.loading_songs = false
+    $scope.saving = false
 
     $scope.$on 'songDeleted', (event, message)->
       $scope.songs = $filter('filter')($scope.songs, {id: '!' + message})
       $scope.song_results = $filter('filter')($scope.song_results, {id: '!' + message})
-
-    $scope.$watch '[song.title, song.artist]', ->
-      $scope.errorMessage = ''
 
     $scope.triggerRecommender = ->
       $scope.$watch 'recommendingSong', (newValue)->
@@ -48,55 +48,76 @@ angular.module('astroApp').controller 'SongController', ['$scope', '$timeout', '
 
     $scope.query = ->
       $scope.loading_songs = true
+
       data =
         limit: $scope.limit
         page: $scope.page
         include_learned: $scope.include_learned
+
       if $scope.song_query
         data['q'] = $scope.song_query
-      SongResource.query data, (response)->
-        $scope.loading_songs = false
-        $scope.songs = response.songs
-        $scope.total = response.total
-        $scope.pages = response.pages
+
+      songPromise = SongResource.query(data).$promise
+
+      songPromise.then (songs)->
+        $scope.songs = songs
+        $scope.total = songs.$total
+        $scope.pages = songs.$pages
         $scope.generatePages()
 
+      songPromise.catch (response)->
+        $scope.errorMessage = response?.data.error || 'There was a problem getting the songs.'
+
+      songPromise.finally ->
+        $scope.loading_songs = false
+
     $scope.save = ()->
-      success = (response)->
-        alertify.success 'Song ' + (if $scope.song.id then 'updated' else 'added') + ' successfully'
+      $scope.saving = true
+      song_promise = SongResource.save($scope.song).$promise
+
+      song_promise.then (response)->
+        AlertifyService.success 'Song ' + (if $scope.song.id then 'updated' else 'added') + ' successfully'
         if $scope.song.id
           $scope.editing = false
         else
           $scope.$emit 'closeModal', response.song
 
-      error = (response)->
-        $scope.errorMessage = response.data.error
+      song_promise.catch (response)->
+        $scope.errorMessage = response?.data.error || 'There was a problem saving the song.'
 
-      song_promise = SongResource.save $.param $scope.song
-      song_promise.$promise.then success, error
+      song_promise.finally ->
+        $scope.saving = false
 
     $scope.toggleLearned = ->
       $scope.song.learned = !$scope.song.learned
       $scope.save()
 
     $scope.delete = ->
-      success = ->
-        alertify.success 'Song deleted successfully'
+      song_promise = SongResource.remove(id: $scope.song.id).$promise
+
+      song_promise.then ->
+        AlertifyService.success 'Song deleted successfully'
         $scope.deleting = false
         $scope.editing = false
         $scope.$emit 'songDeleted', $scope.song.id
 
-      error = (response)->
-        $scope.errorMessage = response.data.error
-
-      song_promise = SongResource.remove id: $scope.song.id
-      song_promise.$promise.then success, error
+      song_promise.catch (response)->
+        $scope.errorMessage = response?.data.error || 'There was a problem deleting the song.'
 
     $scope.getRecommendation = ->
+      $scope.loading_songs = true
+
       data =
         randomize: true
         limit: 1
-      SongResource.query data, (response)->
-        $scope.song = response.songs[0]
+      song_promise = SongResource.query(data).$promise
+
+      song_promise.then (response)->
+        $scope.song = response[0]
+
+      song_promise.catch (response)->
+        $scope.errorMessage = response?.data.error || 'There was a problem getting a song recommendation.'
+
+      song_promise.finally ->
         $scope.loading_songs = false
 ]

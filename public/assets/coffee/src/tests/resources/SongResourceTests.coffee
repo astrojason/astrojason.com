@@ -1,6 +1,7 @@
 describe 'SongResource test', ->
   SongResource = null
   $httpBackend = null
+  mockSongQueryResponse = readJSON 'public/assets/coffee/src/tests/data/songs.json'
 
   beforeEach ->
     module 'astroApp'
@@ -9,6 +10,6 @@ describe 'SongResource test', ->
       SongResource = _SongResource_
 
   it 'should call the default endpoint', ->
-    $httpBackend.expectGET('/api/song').respond 200
+    $httpBackend.expectGET('/api/song').respond 200, mockSongQueryResponse
     SongResource.query()
     $httpBackend.flush()
