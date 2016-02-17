@@ -1,4 +1,5 @@
 angular.module('astroApp').factory 'SongResource', ['$resource', ($resource)->
+
   resource_options =
     query:
       method: 'GET'
@@ -18,5 +19,6 @@ angular.module('astroApp').factory 'SongResource', ['$resource', ($resource)->
     recommend:
       method: 'GET'
       url: '/api/song/recommendation'
+
   return $resource '/api/song', {}, resource_options
 ]
