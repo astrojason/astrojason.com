@@ -20,6 +20,14 @@ describe 'checkAvailability directive unit tests', ->
       $compile = _$compile_
       $httpBackend = _$httpBackend_
 
+  it 'should change the validity back to true when a keypress occurs', ->
+    directiveElement = getCompliledDirective 'username'
+    $scope.myForm.username.$setValidity 'unique', false
+    expect($scope.myForm.username.$valid).toEqual false
+    directiveElement.find('input').triggerHandler 'keyup'
+    $scope.$digest()
+    expect($scope.myForm.username.$valid).toEqual true
+
   it 'should broadcast checkingAvailability when the value of the model changes', ->
     $httpBackend.expectPOST('/api/user/checkusername').respond 200
     spyOn $scope, '$broadcast'
@@ -41,7 +49,6 @@ describe 'checkAvailability directive unit tests', ->
 
   it 'should set the validity of the element to true when the endpoint returns success', ->
     $httpBackend.expectPOST('/api/user/checkusername').respond 200
-    spyOn $scope, '$broadcast'
     directiveElement = getCompliledDirective 'username'
     $scope.myForm.username.$setViewValue 'test.user'
     directiveElement.find('input').triggerHandler 'blur'
@@ -61,10 +68,18 @@ describe 'checkAvailability directive unit tests', ->
 
   it 'should set the validity of the element to false when the endpoint returns an error', ->
     $httpBackend.expectPOST('/api/user/checkusername').respond 403
-    spyOn $scope, '$broadcast'
     directiveElement = getCompliledDirective 'username'
     $scope.myForm.username.$setViewValue 'test.user'
     directiveElement.find('input').triggerHandler 'blur'
     $httpBackend.flush()
     $scope.$digest()
     expect($scope.myForm.username.$valid).toEqual false
+
+  it 'should check the validity of the emaol', ->
+    $httpBackend.expectPOST('/api/user/checkemail').respond 403
+    directiveElement = getCompliledDirective 'email'
+    $scope.myForm.email.$setViewValue 'test.user'
+    directiveElement.find('input').triggerHandler 'blur'
+    $httpBackend.flush()
+    $scope.$digest()
+    expect($scope.myForm.email.$valid).toEqual false

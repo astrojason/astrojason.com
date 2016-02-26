@@ -1,11 +1,11 @@
 angular.module('astroApp').directive 'compareTo', ->
   require: "ngModel"
-  scope: {
-    otherModelValue: "=compareTo"
-  },
+  scope:
+    confirmValue: '=compareTo'
   link: (scope, element, attributes, ngModel)->
-    ngModel.$validators.compareTo = (modelValue)->
-      return modelValue == scope.otherModelValue
 
-    scope.$watch "otherModelValue", ->
+    ngModel.$validators.compareTo = (modelValue)->
+      return modelValue == scope.confirmValue
+
+    scope.$watch "confirmValue", ->
       ngModel.$validate()
