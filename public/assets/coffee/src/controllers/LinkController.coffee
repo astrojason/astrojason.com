@@ -95,9 +95,9 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
     $scope.save = ->
       if $scope.link.category == 'New'
         $scope.link.category = $scope.new_category
-
-#        TODO: Figure out how to unit test this as a $scope.link.$save() promise
-      link_promise = LinkResource.save($.param($scope.link)).$promise
+#
+##        TODO: Figure out how to unit test this as a $scope.link.$save() promise
+      link_promise = LinkResource.save($scope.link).$promise
 
       link_promise.then (response)->
         AlertifyService.success "Link " + (if $scope.link.id then "updated" else "added") + " successfully."

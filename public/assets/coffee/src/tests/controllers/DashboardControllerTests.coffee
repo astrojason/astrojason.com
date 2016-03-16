@@ -239,13 +239,13 @@ describe 'DashboardController tests', ->
 
   it 'should set $scope.link_results to the returned values when LinkResource.query succeeds', ->
     $scope.search_articles()
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse)
+    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
     $scope.$digest()
     expect($scope.link_results).toEqual mockLinkQueryResponse.links
 
   it 'should set $scope.searching to false when LinkResource.query succeeds', ->
     $scope.search_articles()
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse)
+    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
     $scope.$digest()
     expect($scope.loading_category).toEqual false
 
@@ -328,13 +328,13 @@ describe 'DashboardController tests', ->
 
   it 'should set $scope.loading_unread to false when LinkResource.query succeeds', ->
     $scope.refreshUnreadArticles()
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse)
+    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
     $scope.$digest()
     expect($scope.loading_unread).toEqual false
 
   it 'should set $scope.unread_links to the returned links when LinkResource.query succeeds', ->
     $scope.refreshUnreadArticles()
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse)
+    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
     $scope.$digest()
     expect($scope.unread_links).toEqual mockLinkQueryResponse.links
 

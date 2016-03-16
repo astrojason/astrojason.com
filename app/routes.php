@@ -12,6 +12,9 @@
 */
 
 Route::get('', 'HomeController@showIndex');
+Route::get('info', function(){
+  return View::make('info');
+});
 
 Route::get('games', 'GameController@index');
 Route::get('links', 'LinkController@index');

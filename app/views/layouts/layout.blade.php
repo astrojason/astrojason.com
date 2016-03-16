@@ -49,7 +49,7 @@
                   <input type="password" placeholder="Password" class="form-control" ng-model="password">
                 </div>
                 <button type="submit" class="btn btn-success">Sign in</button>
-                <a href="register" class="btn btn-default">Register</a>
+                <a href="register" class="btn btn-default" target="_self">Register</a>
               </form>
             </li>
           </ul>

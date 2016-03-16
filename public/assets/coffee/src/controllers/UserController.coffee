@@ -12,14 +12,7 @@ angular.module('astroApp').controller 'UserController', ['$scope', 'UserResource
   $scope.registerUser = ->
     $scope.submitting = true
 
-    data =
-      first_name: $scope.first_name
-      last_name: $scope.last_name
-      email: $scope.email
-      username: $scope.username
-      password: $scope.password
-
-    registration_Promise = UserResource.add(data).$promise
+    registration_Promise = UserResource.add($scope.user).$promise
 
     registration_Promise.then ->
       $scope.registrationSuccess = true

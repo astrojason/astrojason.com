@@ -22,7 +22,6 @@ class DashboardController extends AstroBaseController {
         ->orwhere('created_at', 'LIKE', '%' . date('Y-m-d') . '%');
     });
     $total_read = $query->count();
-    $debug_query = $query->toSql();
 
 
     return $this->successResponse(array(
@@ -35,8 +34,7 @@ class DashboardController extends AstroBaseController {
       'books_read' => $books_read,
       'books_toread' => $books_unread,
       'games_toplay' => $games_unplayed,
-      'songs_toplay' => $songs_unplayed,
-      'debug' => $debug_query
+      'songs_toplay' => $songs_unplayed
     ));
   }
 

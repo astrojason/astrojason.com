@@ -4,6 +4,7 @@ angular.module('astroApp').factory 'LinkResource', ['$resource', ($resource)->
     id: '@id'
 
   resource_options =
+
     query:
       isArray: true
       method: 'GET'
@@ -17,6 +18,7 @@ angular.module('astroApp').factory 'LinkResource', ['$resource', ($resource)->
           response.resource.$pages = response.data.$pages
           response.resource.$total = response.data.$total
           response.resource
+
     import:
       method: 'POST'
       params:

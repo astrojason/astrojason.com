@@ -18,6 +18,9 @@ angular.module('astroApp').factory 'UserResource', ['$resource', ($resource)->
       method: 'POST'
       params:
         action: 'login'
+      transformResponse: (response)->
+        wrappedResponse = angular.fromJson response
+        wrappedResponse.user
 
     logout:
       method: 'POST'

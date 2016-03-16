@@ -9,7 +9,7 @@ describe 'Book', ->
   it 'should create a new book object', ->
     new_book = new Book 1
     expect(new_book instanceof Book).toEqual true
-    expect(new_book.id).toEqual 0
+    expect(new_book.id).toEqual null
     expect(new_book.title).toEqual ''
     expect(new_book.author_fname).toEqual ''
     expect(new_book.author_lname).toEqual ''

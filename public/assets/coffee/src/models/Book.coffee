@@ -1,7 +1,7 @@
 angular.module('astroApp').factory 'Book', [->
 
   Book = (userId)->
-    @.id = 0
+    @.id = null
     @.title = ''
     @.author_fname = ''
     @.author_lname = ''

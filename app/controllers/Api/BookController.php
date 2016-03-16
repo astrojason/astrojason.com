@@ -2,37 +2,71 @@
 
 namespace Api;
 
+use Book;
+use Input;
+
 class BookController extends AstroBaseController {
 
   public function query() {
-    $astroSql = new \AstroBookRepo();
-    $astroSql->userId = \Auth::user()->id;
-
-    $this->get($astroSql);
-    if($astroSql->errors) {
-      return $this->errorResponse($astroSql->errors, $astroSql->errorCode);
-    } else {
-      $results = $astroSql->getData();
-      $books = $results['books'];
-      $total = $results['total'];
-      $pageCount = $results['pageCount'];
-      return $this->successResponse(array('books' => $this->transform($books->toArray()), 'total' => $total, 'pages' => $pageCount));
+    $pageCount = 0;
+    $page = Input::get('page');
+    $q = Input::get('q');
+    $limit = Input::get('limit');
+    $category = Input::get('category');
+    $sort = Input::get('sort');
+    $query = Book::query()->where('user_id', \Auth::user()->id);
+    $randomize = filter_var(Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
+    $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
+    if(isset($q)) {
+      $query->where(function($query) use ($q) {
+        $query->where('title', 'LIKE', '%' . $q . '%')
+          ->orwhere('series', 'LIKE', '%' . $q . '%')
+          ->orwhere('author_lname', 'LIKE', '%' . $q . '%');
+      });
     }
-  }
-
-  public function get(\AstroData $dataProvider) {
-    $dataProvider->getData();
+    if(!$include_read) {
+      $query->where('is_read', false);
+    }
+    if($randomize){
+      $query->orderBy(\DB::raw('RAND()'));
+    }
+    if(isset($limit)){
+      $query->take($limit);
+    }
+    if(isset($category)) {
+      $query->where('category', $category);
+    }
+    if(isset($sort)) {
+      if($sort == 'series') {
+        $query->where('series', '!=', '');
+        $query->orderBy('series');
+        $query->orderBy('series_order');
+      }
+      else {
+        $query->orderBy($sort);
+      }
+    }
+    $total = $query->count();
+    if (isset($limit)) {
+      $pageCount = ceil($total / $limit);
+      $query->take($limit);
+      if (isset($page) && $page > 1 && !$randomize) {
+        $query->skip($limit * ($page - 1));
+      }
+    }
+    $books = $query->get();
+    return $this->successResponse(array('books' => $this->transform($books->toArray()), 'total' => $total, 'pages' => $pageCount));
   }
 
   public function recommendation($category) {
-    $book = \Book::where('is_read', false)
+    $book = Book::where('is_read', false)
       ->where('category', $category)
       ->where('user_id', \Auth::user()->id)
       ->orderBy(\DB::raw('RAND()'))
       ->first();
     if($book) {
       if ($book->series_order > 0) {
-        $book = \Book::where('is_read', false)
+        $book = Book::where('is_read', false)
           ->where('user_id', \Auth::user()->id)
           ->where('series', $book->series)
           ->orderBy('series_order')
@@ -46,9 +80,8 @@ class BookController extends AstroBaseController {
     }
   }
 
-  public function delete() {
-    $id = \Input::get('id');
-    $book = \Book::where('id', $id)->where('user_id', \Auth::user()->id)->first();
+  public function delete($bookId) {
+    $book = Book::where('id', $bookId)->where('user_id', \Auth::user()->id)->first();
     if(isset($book)) {
       $book->delete();
       return $this->successResponse();
@@ -57,29 +90,29 @@ class BookController extends AstroBaseController {
     }
   }
 
-  public function save() {
-    $title = \Input::get('title');
-    $fname = \Input::get('author_fname');
-    $lname = \Input::get('author_lname');
-    $category = \Input::get('category');
-    $series = \Input::get('series');
-    $is_read = filter_var(\Input::get('is_read'), FILTER_VALIDATE_BOOLEAN);
-    $owned = filter_var(\Input::get('owned'), FILTER_VALIDATE_BOOLEAN);
+  public function save($bookId = null) {
+    $title = Input::get('title');
+    $fname = Input::get('author_fname');
+    $lname = Input::get('author_lname');
+    $category = Input::get('category');
+    $series = Input::get('series');
+    $is_read = filter_var(Input::get('is_read'), FILTER_VALIDATE_BOOLEAN);
+    $owned = filter_var(Input::get('owned'), FILTER_VALIDATE_BOOLEAN);
     $series_order = null;
     if ($series) {
-      $series_order = \Input::get('series_order');
+      $series_order = Input::get('series_order');
     }
-    if(\Input::get('id')) {
-      $book = \Book::where('id', \Input::get('id'))->where('user_id', \Auth::user()->id)->first();
+    if($bookId) {
+      $book = Book::where('id', $bookId)->where('user_id', \Auth::user()->id)->first();
     } else {
-      $book = \Book::where('title', $title)
+      $book = Book::where('title', $title)
         ->where('author_lname', $lname)
         ->where('user_id', \Auth::user()->id)
         ->first();
       if(isset($book)) {
         return $this->notFoundResponse('Book already exists');
       }
-      $book = new \Book();
+      $book = new Book();
       $book->user_id = \Auth::user()->id;
     }
     $book->title = $title;
@@ -97,7 +130,7 @@ class BookController extends AstroBaseController {
   }
 
   public function goodreads() {
-    $page = \Input::get('page', 1);
+    $page = Input::get('page', 1);
     $url = 'https://www.goodreads.com/review/list/1387939?format=xml&key=LWJgJG6enKKElIBM6nzNyw&v=2';
     $params = ['id' => 1387939, 'shelf' => 'to-read', 'key' => 'LWJgJG6enKKElIBM6nzNyw', 'page' => $page];
     $url .= '&' . http_build_query($params, null, '&', PHP_QUERY_RFC3986);
@@ -113,7 +146,7 @@ class BookController extends AstroBaseController {
       'titles' => []];
     foreach($array['reviews']['review'] as $review) {
       $title = $review['book']['title'];
-      $book = \Book::where('user_id', \Auth::user()->id)->where('title', $title)->first();
+      $book = Book::where('user_id', \Auth::user()->id)->where('title', $title)->first();
       $books['titles'][] = [
         'goodreads_id' => (int)$review['book']['id'],
         'title' => $title,

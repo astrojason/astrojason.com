@@ -57,9 +57,9 @@ class LinkController extends AstroBaseController {
   /**
    * @return \Illuminate\Http\JsonResponse
    */
-  public function save() {
-    if(\Input::get('id')) {
-      $link = \Link::where('id', \Input::get('id'))->where('user_id', \Auth::user()->id)->first();
+  public function save($linkId = null) {
+    if($linkId) {
+      $link = \Link::where('id', $linkId)->where('user_id', \Auth::user()->id)->first();
     } else {
       $link = \Link::where('link', \Input::get('link'))->where('user_id', \Auth::user()->id)->first();
       if(isset($link)) {
@@ -85,9 +85,8 @@ class LinkController extends AstroBaseController {
     }
   }
 
-  public function delete() {
-    $id = \Input::get('id');
-    $link = \Link::where('id', $id)->where('user_id', \Auth::user()->id)->first();
+  public function delete($linkId) {
+    $link = \Link::where('id', $linkId)->where('user_id', \Auth::user()->id)->first();
     if(isset($link)){
       $link->delete();
       return $this->successResponse();

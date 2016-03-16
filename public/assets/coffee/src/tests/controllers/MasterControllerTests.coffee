@@ -2,22 +2,33 @@ describe 'MasterController unit tests', ->
   $scope = null
   MasterController = null
   mockUserService = null
+  mockUserResource = null
+  mockUserResourceLoginDeferred = null
+  mockUserResourceLogoutDeferred = null
   mockUser =
     name: 'myTestUser'
 
   beforeEach ->
     module 'astroApp'
-    inject ($rootScope, $controller)->
+    inject ($rootScope, $controller, $q)->
       $scope = $rootScope.$new()
 
       mockUserService =
         set: ->
+
+      mockUserResource =
         login: ->
+          mockUserResourceLoginDeferred = $q.defer()
+          $promise: mockUserResourceLoginDeferred.promise
+
         logout: ->
+          mockUserResourceLogoutDeferred = $q.defer()
+          $promise: mockUserResourceLogoutDeferred.promise
 
       mockInjections =
         $scope: $scope
         UserService: mockUserService
+        UserResource: mockUserResource
 
       MasterController = $controller 'MasterController', mockInjections
 
@@ -56,15 +67,15 @@ describe 'MasterController unit tests', ->
     expect($scope.show_error).toEqual true
     expect($scope.error_message).toEqual 'This is a test error'
 
-  it 'should call UserService.login when $scope.login is called', ->
-    spyOn mockUserService, 'login'
+  it 'should call UserResource.login when $scope.login is called', ->
+    spyOn(mockUserResource, 'login').and.callThrough()
     $scope.login()
-    expect(mockUserService.login).toHaveBeenCalled()
+    expect(mockUserResource.login).toHaveBeenCalled()
 
-  it 'should call UserService.logout when $scope.logout is called', ->
-    spyOn mockUserService, 'logout'
+  it 'should call UserResource.logout when $scope.logout is called', ->
+    spyOn(mockUserResource, 'logout').and.callThrough()
     $scope.logout()
-    expect(mockUserService.logout).toHaveBeenCalled()
+    expect(mockUserResource.logout).toHaveBeenCalled()
 
   it 'should set the user to the passed user', ->
     $scope.initUser(mockUser)

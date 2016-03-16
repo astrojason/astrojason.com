@@ -86,18 +86,17 @@ angular.module('astroApp').controller 'BookController', ['$scope', '$controller'
       if $scope.book.category == 'New'
         $scope.book.category = $scope.new_category
 
-      success = (response)->
+      book_promise = BookResource.save($scope.book).$promise
+
+      book_promise.then (response)->
         AlertifyService.success "Book " + (if $scope.book.id then "updated" else "added") + " successfully"
         if $scope.book.id
           $scope.editing = false
         else
           $scope.$emit 'closeModal', response.book
 
-      error = (response)->
+      book_promise.catch (response)->
         $scope.errorMessage = response.data.error
-
-      book_promise = BookResource.save $.param $scope.book
-      book_promise.$promise.then success, error
 
     $scope.toggleRead = ->
       $scope.book.is_read = !$scope.book.is_read

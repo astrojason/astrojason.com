@@ -128,8 +128,8 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
 
       searchPromise = LinkResource.query(data).$promise
 
-      searchPromise.then (response)->
-        $scope.link_results = response.links
+      searchPromise.then (links)->
+        $scope.link_results = links
 
       searchPromise.catch ->
         $scope.$emit 'errorOccurred', 'Could not get perform the search'
@@ -157,8 +157,8 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
       daily_Promise.catch ->
         $scope.$emit 'errorOccurred', 'Problem loading daily results'
 
-      LinkResource.query category: 'Daily', (response)->
-        $scope.daily_links = response.links
+      LinkResource.query category: 'Daily', (links)->
+        $scope.daily_links = links
 
       $scope.refreshUnreadArticles()
 
@@ -173,8 +173,8 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
         update_load_count: true
       unreadPromise = LinkResource.query(data).$promise
 
-      unreadPromise.then (response)->
-        $scope.unread_links = response.links
+      unreadPromise.then (links)->
+        $scope.unread_links = links
 
       unreadPromise.finally ->
         $scope.loading_unread = false

@@ -328,7 +328,7 @@ describe 'LinkController unit tests', ->
     spyOn(mockLinkResource, 'save').and.callThrough()
     $scope.link = scopeLink
     $scope.save()
-    expect(mockLinkResource.save).toHaveBeenCalledWith $.param($scope.link)
+    expect(mockLinkResource.save).toHaveBeenCalledWith $scope.link
 
   it 'should call Alertify.success with the updated message when the LinkResource.save succeeds and an existing scopeLink is updated', ->
     spyOn mockAlertifyService, 'success'
