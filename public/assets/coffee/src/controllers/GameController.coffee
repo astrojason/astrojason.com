@@ -1,11 +1,12 @@
 angular.module('astroApp').controller 'GameController', ['$scope', '$filter', '$controller', '$timeout', '$location',
-  'GameResource', 'Game', 'AlertifyService', ($scope, $filter, $controller, $timeout, $location, GameResource, Game,
-  AleritfyService)->
+  '$log', 'GameResource', 'Game', 'AlertifyService', ($scope, $filter, $controller, $timeout, $location, $log,
+  GameResource, Game, AleritfyService)->
 
     $controller 'FormMasterController', $scope: $scope
 
     $scope.loading_games = false
     $scope.saving_game = false
+    $scope.include_completed = false
 
     $scope.$on 'gameDeleted', (event, message)->
       $scope.games = $filter('filter')($scope.games, {id: '!' + message})
@@ -24,7 +25,7 @@ angular.module('astroApp').controller 'GameController', ['$scope', '$filter', '$
         $timeout.cancel $scope.search_timeout
         if !$scope.loading_games
           $scope.search_timeout = $timeout ->
-            $scope.query()
+            $scope.query 'game_query'
           , 500
 
       $scope.$watch 'page', (newValue, oldValue)->
@@ -33,15 +34,15 @@ angular.module('astroApp').controller 'GameController', ['$scope', '$filter', '$
             cur_opts = $location.search()
             cur_opts.page = newValue
             $location.search(cur_opts)
-            $scope.query()
+            $scope.query 'page'
 
       $scope.$watch 'include_completed', ->
         if !$scope.loading_games
-          $scope.query()
+          $scope.query 'include_completed'
 
       $scope.$watch 'filter_platform', ->
         if !$scope.loading_games
-          $scope.query()
+          $scope.query 'filter_platform'
 
       $scope.$on 'closeModal', (event, game)->
         $scope.gameModalOpen = false
@@ -52,7 +53,9 @@ angular.module('astroApp').controller 'GameController', ['$scope', '$filter', '$
             game.new = false
           , 1000
 
-    $scope.query = ->
+    $scope.query = (caller)->
+      $log.info "Game query triggered by #{caller}"
+      $timeout.cancel $scope.search_timeout
       $scope.loading_games = true
 
       data =

@@ -5,16 +5,20 @@ namespace Api;
 
 use Illuminate\Http\Response as IlluminateResponse;
 
+use Auth;
+use Input;
+use Game;
+
 class GameController extends AstroBaseController {
 
   public function query(){
     $pageCount = 0;
-    $limit = \Input::get('limit');
-    $page = \Input::get('page');
-    $q = \Input::get('q');
-    $include_completed = filter_var(\Input::get('include_completed'), FILTER_VALIDATE_BOOLEAN);
-    $platform = \Input::get('platform');
-    $query = \Game::query()->where('user_id', \Auth::user()->id);
+    $limit = Input::get('limit');
+    $page = Input::get('page');
+    $q = Input::get('q');
+    $include_completed = filter_var(Input::get('include_completed'), FILTER_VALIDATE_BOOLEAN);
+    $platform = Input::get('platform');
+    $query = Game::query()->where('user_id', Auth::user()->id);
     if(isset($q)){
       $query->where('title', 'LIKE', '%' . $q . '%');
     }
@@ -33,38 +37,38 @@ class GameController extends AstroBaseController {
       }
     }
     $games = $query->get();
-    return $this->successResponse(array('games' => $games->toArray(), 'total' => $total, 'pages' => $pageCount));
+    $games = $this->transformCollection($games);
+    return $this->successResponse(array('games' => $games, 'total' => $total, 'pages' => $pageCount));
   }
 
-  public function save() {
-    $title = \Input::get('title');
-    $platform = \Input::get('platform');
-    if(\Input::get('id')) {
-      $game = \Game::where('user_id', \Auth::user()->id)->where('id', \Input::get('id'))->first();
+  public function save($gameId = null) {
+    $title = Input::get('title');
+    $platform = Input::get('platform');
+    if($gameId) {
+      $game = Game::where('user_id', Auth::user()->id)->where('id', $gameId)->first();
       if(!isset($game)) {
         return $this->notFoundResponse('There is no game with id for this user.');
       }
     } else {
-      $game = \Game::where('user_id', \Auth::user()->id)
+      $game = Game::where('user_id', Auth::user()->id)
         ->where('title', $title)
         ->where('platform', $platform)->first();
       if(isset($game)) {
         return $this->errorResponse('There is already a game with that title for this platform', IlluminateResponse::HTTP_UNPROCESSABLE_ENTITY);
       } else {
-        $game = new \Game();
-        $game->user_id = \Auth::user()->id;
+        $game = new Game();
+        $game->user_id = Auth::user()->id;
       }
     }
     $game->title = $title;
     $game->platform = $platform;
-    $game->completed = filter_var(\Input::get('completed'), FILTER_VALIDATE_BOOLEAN);
+    $game->completed = filter_var(Input::get('completed'), FILTER_VALIDATE_BOOLEAN);
     $game->save();
     return $this->successResponse(array('game' => $game));
   }
 
-  public function delete() {
-    $id = \Input::get('id');
-    $game = \Game::where('id', $id)->where('user_id', \Auth::user()->id)->first();
+  public function delete($gameId) {
+    $game = Game::where('id', $gameId)->where('user_id', Auth::user()->id)->first();
     if(isset($game)){
       $game->delete();
       return $this->successResponse();
@@ -74,15 +78,24 @@ class GameController extends AstroBaseController {
   }
 
   public function recommend() {
-    $game = \Game::where('completed', false)
-      ->where('user_id', \Auth::user()->id)
+    $game = Game::where('completed', false)
+      ->where('user_id', Auth::user()->id)
       ->orderBy(\DB::raw('RAND()'))->first();
     $game->times_recommended += 1;
     $game->save();
-    return $this->successResponse(array('game' => $game->toArray()));
+    $game = $this->transform($game);
+    return $this->successResponse(array('game' => $game));
   }
 
-  public function transform($data) {
-    return $data;
+  public function transform($game) {
+    $game['completed'] = filter_var($game['completed'], FILTER_VALIDATE_BOOLEAN);
+    $game['id'] = (int)$game['id'];
+    $game['times_recommended'] = (int)$game['times_recommended'];
+    $game['user_id'] = (int)$game['user_id'];
+    return $game;
+  }
+
+  public function transformCollection($items) {
+    return parent::transformCollection($items);
   }
 }
