@@ -5,16 +5,13 @@ namespace Api;
 
 use Illuminate\Http\Response as IlluminateResponse;
 
-use DB;
-use Input;
-use Response;
-use Song;
+use Auth, DB, Input, Response, Song;
 
 class SongController extends AstroBaseController {
 
   public function query() {
     $pageCount = 0;
-    $query = Song::where('user_id', \Auth::user()->id);
+    $query = Song::where('user_id', Auth::user()->id);
     $q = Input::get('q');
     $randomize = filter_var(Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
     $limit = Input::get('limit');
@@ -48,23 +45,23 @@ class SongController extends AstroBaseController {
         $song->save();
       }
     }
-    return $this->successResponse(array('songs' => $songs->toArray(), 'total' => $total, 'pages' => $pageCount));
+    return $this->successResponse(array('songs' => $this->transformCollection($songs), 'total' => $total, 'pages' => $pageCount));
   }
 
-  public function save() {
+  public function save($songId = null) {
     $title = Input::get('title');
     $artist = Input::get('artist');
     $location = Input::get('location');
     $learned = filter_var(Input::get('learned'), FILTER_VALIDATE_BOOLEAN);
-    if(Input::get('id')){
-      $song = Song::where('id', Input::get('id'))
-        ->where('user_id', \Auth::user()->id)
+    if($songId){
+      $song = Song::where('id', $songId)
+        ->where('user_id', Auth::user()->id)
         ->first();
       if(!isset($song)){
         return $this->notFoundResponse('No song with that id exists for the logged in user.');
       }
     } else {
-      $song = Song::where('user_id', \Auth::user()->id)
+      $song = Song::where('user_id', Auth::user()->id)
         ->where('title', $title)
         ->where('artist', $artist)
         ->first();
@@ -72,7 +69,7 @@ class SongController extends AstroBaseController {
         return Response::json(array('error' => 'A song with that name by that artist already exists.'), IlluminateResponse::HTTP_UNPROCESSABLE_ENTITY);
       } else {
         $song = new Song();
-        $song->user_id = \Auth::user()->id;
+        $song->user_id = Auth::user()->id;
       }
     }
     $song->title = $title;
@@ -80,13 +77,13 @@ class SongController extends AstroBaseController {
     $song->location = $location;
     $song->learned = $learned;
     $song->save();
-    return $this->successResponse(array('song' => $song->toArray()));
+    return $this->successResponse(array('song' => $this->transform($song)));
   }
 
-  public function delete() {
-    if(Input::get('id')) {
-      $song = Song::where('id', Input::get('id'))
-        ->where('user_id', \Auth::user()->id)
+  public function delete($songId) {
+    if($songId) {
+      $song = Song::where('id', $songId)
+        ->where('user_id', Auth::user()->id)
         ->first();
       if (!isset($song)) {
         return $this->notFoundResponse('No song with that id exists for the logged in user.');
@@ -99,9 +96,12 @@ class SongController extends AstroBaseController {
     }
   }
 
-
-  public function transform($data) {
-
+  public function transform($song) {
+    $song['id'] = (int)$song['id'];
+    $song['user_id'] = (int)$song['user_id'];
+    $song['times_recommended'] = (int)$song['times_recommended'];
+    $song['learned'] = filter_var($song['learned'], FILTER_VALIDATE_BOOLEAN);
+    return $song;
   }
 
 }

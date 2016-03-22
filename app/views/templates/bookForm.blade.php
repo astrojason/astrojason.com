@@ -1,7 +1,7 @@
 <div class="row" ng-show="errorMessage">
   <div class="alert alert-danger">{{ errorMessage }}</div>
 </div>
-<div class="row" ng-show="!editing && book.title">
+<div class="row" ng-show="!editing">
   <div class="col-md-12">
     <div class="row" ng-show="deleting == true">
       <div class="col-md-12">

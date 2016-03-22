@@ -4,6 +4,8 @@ namespace Api;
 
 use Illuminate\Http\Response as IlluminateResponse;
 
+use Response;
+
 abstract class AstroBaseController extends \Controller {
 
   abstract function transform($item);
@@ -13,15 +15,15 @@ abstract class AstroBaseController extends \Controller {
   }
 
   public function successResponse($data = null) {
-    return \Response::json($data, IlluminateResponse::HTTP_OK);
+    return Response::json($data, IlluminateResponse::HTTP_OK);
   }
 
   public function errorResponse($message = '', $statusCode = IlluminateResponse::HTTP_INTERNAL_SERVER_ERROR) {
-    return \Response::json($message, $statusCode);
+    return Response::json($message, $statusCode);
   }
 
   public function notFoundResponse($message) {
-    return \Response::json($message, IlluminateResponse::HTTP_NOT_FOUND);
+    return Response::json($message, IlluminateResponse::HTTP_NOT_FOUND);
   }
 
 }

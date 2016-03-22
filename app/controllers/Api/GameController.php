@@ -5,9 +5,7 @@ namespace Api;
 
 use Illuminate\Http\Response as IlluminateResponse;
 
-use Auth;
-use Input;
-use Game;
+use Auth, DB, Input, Game;
 
 class GameController extends AstroBaseController {
 
@@ -37,8 +35,7 @@ class GameController extends AstroBaseController {
       }
     }
     $games = $query->get();
-    $games = $this->transformCollection($games);
-    return $this->successResponse(array('games' => $games, 'total' => $total, 'pages' => $pageCount));
+    return $this->successResponse(array('games' => $this->transformCollection($games), 'total' => $total, 'pages' => $pageCount));
   }
 
   public function save($gameId = null) {
@@ -64,7 +61,7 @@ class GameController extends AstroBaseController {
     $game->platform = $platform;
     $game->completed = filter_var(Input::get('completed'), FILTER_VALIDATE_BOOLEAN);
     $game->save();
-    return $this->successResponse(array('game' => $game));
+    return $this->successResponse(array('game' => $this->transform($game)));
   }
 
   public function delete($gameId) {
@@ -80,11 +77,11 @@ class GameController extends AstroBaseController {
   public function recommend() {
     $game = Game::where('completed', false)
       ->where('user_id', Auth::user()->id)
-      ->orderBy(\DB::raw('RAND()'))->first();
+      ->orderBy(DB::raw('RAND()'))->first();
     $game->times_recommended += 1;
     $game->save();
     $game = $this->transform($game);
-    return $this->successResponse(array('game' => $game));
+    return $this->successResponse(array('game' => $this->transform($game)));
   }
 
   public function transform($game) {
@@ -93,9 +90,5 @@ class GameController extends AstroBaseController {
     $game['times_recommended'] = (int)$game['times_recommended'];
     $game['user_id'] = (int)$game['user_id'];
     return $game;
-  }
-
-  public function transformCollection($items) {
-    return parent::transformCollection($items);
   }
 }

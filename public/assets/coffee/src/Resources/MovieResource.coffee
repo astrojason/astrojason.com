@@ -4,18 +4,21 @@ angular.module('astroApp').factory 'MovieResource', ['$resource', ($resource)->
     id: '@id'
 
   resource_options =
+
     query:
       method: 'GET'
       isArray: true
       transformResponse: (response)->
         wrappedResponse = angular.fromJson response
-        wrappedResponse.movies.$total = response.total
-        wrappedResponse.movies.$pages = response.pages
+        wrappedResponse.movies.$total = wrappedResponse.total
+        wrappedResponse.movies.$pages = wrappedResponse.pages
+        wrappedResponse.movies
       interceptor:
         response: (response)->
           response.resource.$pages = response.data.$pages
           response.resource.$total = response.data.$total
           response.resource
+
     widget:
       method: 'GET'
       params:

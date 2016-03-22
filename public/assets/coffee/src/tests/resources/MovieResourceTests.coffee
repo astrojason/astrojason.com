@@ -45,3 +45,8 @@ describe 'MovieResource test', ->
     $httpBackend.expectDELETE("/api/movie/#{myMovie.id}").respond 200
     myMovie.$remove()
     $httpBackend.flush()
+
+  it 'should GET to the widget endpoint', ->
+    $httpBackend.expectGET('/api/movie/widget').respond mockMovieQueryResponse
+    MovieResource.widget()
+    $httpBackend.flush()

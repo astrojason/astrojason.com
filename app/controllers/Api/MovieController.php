@@ -3,15 +3,16 @@
 
 namespace Api;
 
+use Auth, DB, Input, Movie;
 
 class MovieController extends AstroBaseController {
 
   public function query() {
     $pageCount = 0;
-    $q = \Input::get('q');
-    $limit = \Input::get('limit');
-    $page = \Input::get('page');
-    $query = \Movie::where('user_id', \Auth::user()->id);
+    $q = Input::get('q');
+    $limit = Input::get('limit');
+    $page = Input::get('page');
+    $query = Movie::where('user_id', Auth::user()->id);
     if(isset($q)) {
       $query->where(function($query) use ($q) {
         $query->where('title', 'LIKE', '%' . $q . '%');
@@ -26,24 +27,24 @@ class MovieController extends AstroBaseController {
       }
     }
     $movies = $query->orderBy('rating_order')->get();
-    return $this->successResponse(array('movies' => $movies->toArray(), 'total' => $total, 'pages' => $pageCount));
+    return $this->successResponse(array('movies' => $this->transformCollection($movies), 'total' => $total, 'pages' => $pageCount));
   }
 
-  public function save() {
-    $title = \Input::get('title');
-    $is_watched = filter_var(\Input::get('is_watched'), FILTER_VALIDATE_BOOLEAN);
-    $date_watched = strtotime(\Input::get('date_watched'));
-    if(\Input::get('id')) {
-      $movie = \Movie::where('user_id', \Auth::user()->id)->where('id', \Input::get('id'))->first();
-      if(\Input::get('rating_order')) {
-        $moving_movie = \Movie::where('user_id', \Auth::user()->id)->where('rating_order', \Input::get('rating_order'))->first();
+  public function save($movieId = null) {
+    $title = Input::get('title');
+    $is_watched = filter_var(Input::get('is_watched'), FILTER_VALIDATE_BOOLEAN);
+    $date_watched = strtotime(Input::get('date_watched'));
+    if($movieId) {
+      $movie = Movie::where('user_id', Auth::user()->id)->where('id', $movieId)->first();
+      if(Input::get('rating_order')) {
+        $moving_movie = Movie::where('user_id', Auth::user()->id)->where('rating_order', Input::get('rating_order'))->first();
         $moving_movie->rating_order = $movie->rating_order;
         $moving_movie->save();
-        $movie->rating_order = \Input::get('rating_order');
+        $movie->rating_order = Input::get('rating_order');
       }
     } else {
-      $movie = new \Movie();
-      $movie->user_id = \Auth::user()->id;
+      $movie = new Movie();
+      $movie->user_id = Auth::user()->id;
       $movie->rating_order = DB::table('movies')->max('rating_order') + 1;
       if($is_watched) {
         $movie->times_watched = 1;
@@ -55,14 +56,13 @@ class MovieController extends AstroBaseController {
       $movie->date_watched = date('Y-m-d',$date_watched);
     }
     $movie->save();
-    return $this->successResponse(array('movie' => $movie->toArray()));
+    return $this->successResponse(array('movie' => $this->transform($movie)));
   }
 
-  public function delete() {
-    $id = \Input::get('id');
-    $movie = \Movie::where('id', $id)->where('user_id', \Auth::user()->id)->first();
+  public function delete($movieId) {
+    $movie = Movie::where('id', $movieId)->where('user_id', Auth::user()->id)->first();
     if(isset($movie)){
-      $movies_after = \Movie::where('user_id', \Auth::user()->id)
+      $movies_after = Movie::where('user_id', Auth::user()->id)
         ->where('rating_order', '>', $movie->rating_order)
         ->get();
       foreach($movies_after as $update_movie) {
@@ -76,9 +76,13 @@ class MovieController extends AstroBaseController {
     }
   }
 
-
-  public function transform($data){
-
+  public function transform($movie){
+    $movie['is_watched'] = filter_var($movie['is_watched'], FILTER_VALIDATE_BOOLEAN);
+    $movie['id'] = (int)$movie['id'];
+    $movie['times_watched'] = (int)$movie['times_watched'];
+    $movie['rating_order'] = (int)$movie['rating_order'];
+    $movie['user_id'] = (int)$movie['user_id'];
+    return $movie;
   }
 
 }

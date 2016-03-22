@@ -2,8 +2,7 @@
 
 namespace Api;
 
-use Book;
-use Input;
+use Auth, Book, Input;
 
 class BookController extends AstroBaseController {
 
@@ -14,7 +13,7 @@ class BookController extends AstroBaseController {
     $limit = Input::get('limit');
     $category = Input::get('category');
     $sort = Input::get('sort');
-    $query = Book::query()->where('user_id', \Auth::user()->id);
+    $query = Book::query()->where('user_id', Auth::user()->id);
     $randomize = filter_var(Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
     $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
     if(isset($q)) {
@@ -61,13 +60,13 @@ class BookController extends AstroBaseController {
   public function recommendation($category) {
     $book = Book::where('is_read', false)
       ->where('category', $category)
-      ->where('user_id', \Auth::user()->id)
+      ->where('user_id', Auth::user()->id)
       ->orderBy(\DB::raw('RAND()'))
       ->first();
     if($book) {
       if ($book->series_order > 0) {
         $book = Book::where('is_read', false)
-          ->where('user_id', \Auth::user()->id)
+          ->where('user_id', Auth::user()->id)
           ->where('series', $book->series)
           ->orderBy('series_order')
           ->first();
@@ -81,7 +80,7 @@ class BookController extends AstroBaseController {
   }
 
   public function delete($bookId) {
-    $book = Book::where('id', $bookId)->where('user_id', \Auth::user()->id)->first();
+    $book = Book::where('id', $bookId)->where('user_id', Auth::user()->id)->first();
     if(isset($book)) {
       $book->delete();
       return $this->successResponse();
@@ -103,17 +102,17 @@ class BookController extends AstroBaseController {
       $series_order = Input::get('series_order');
     }
     if($bookId) {
-      $book = Book::where('id', $bookId)->where('user_id', \Auth::user()->id)->first();
+      $book = Book::where('id', $bookId)->where('user_id', Auth::user()->id)->first();
     } else {
       $book = Book::where('title', $title)
         ->where('author_lname', $lname)
-        ->where('user_id', \Auth::user()->id)
+        ->where('user_id', Auth::user()->id)
         ->first();
       if(isset($book)) {
         return $this->notFoundResponse('Book already exists');
       }
       $book = new Book();
-      $book->user_id = \Auth::user()->id;
+      $book->user_id = Auth::user()->id;
     }
     $book->title = $title;
     $book->author_fname = $fname;
@@ -126,7 +125,7 @@ class BookController extends AstroBaseController {
       $book->series_order = $series_order;
     }
     $book->save();
-    return $this->successResponse(array('book' => $book->toArray()));
+    return $this->successResponse(array('book' => $this->transform($book)));
   }
 
   public function goodreads() {
@@ -146,7 +145,7 @@ class BookController extends AstroBaseController {
       'titles' => []];
     foreach($array['reviews']['review'] as $review) {
       $title = $review['book']['title'];
-      $book = Book::where('user_id', \Auth::user()->id)->where('title', $title)->first();
+      $book = Book::where('user_id', Auth::user()->id)->where('title', $title)->first();
       $books['titles'][] = [
         'goodreads_id' => (int)$review['book']['id'],
         'title' => $title,
@@ -155,7 +154,6 @@ class BookController extends AstroBaseController {
         'id' => isset($book) ? $book->id : 0
       ];
     }
-
     return $this->successResponse(array('books' => $books));
   }
 

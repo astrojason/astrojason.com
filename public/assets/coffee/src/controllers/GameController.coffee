@@ -91,7 +91,7 @@ angular.module('astroApp').controller 'GameController', ['$scope', '$filter', '$
       if $scope.game.category == 'New'
         $scope.game.category = $scope.new_category
 
-      game_promise = GameResource.save($.param $scope.game).$promise
+      game_promise = GameResource.save($scope.game).$promise
 
       game_promise.then (response)->
         AleritfyService.success "Game " + (if $scope.game.id then "updated" else "added") + " successfully"

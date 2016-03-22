@@ -1,7 +1,7 @@
 angular.module('astroApp').factory 'Game', [(userId)->
 
   Game = (userId)->
-    @.id = 0
+    @.id = null
     @.title = ''
     @.platform = ''
     @.completed = false

@@ -108,8 +108,8 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
         update_load_count: true
 
       categoryLinksPromise = LinkResource.query(data).$promise
-      categoryLinksPromise.then (response)->
-        $scope.selected_links = response.links
+      categoryLinksPromise.then (links)->
+        $scope.selected_links = links
 
       categoryLinksPromise.catch ->
         $scope.$emit 'errorOccurred', 'Could not load links for category'

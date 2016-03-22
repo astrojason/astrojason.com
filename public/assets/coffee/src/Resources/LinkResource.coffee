@@ -6,8 +6,8 @@ angular.module('astroApp').factory 'LinkResource', ['$resource', ($resource)->
   resource_options =
 
     query:
-      isArray: true
       method: 'GET'
+      isArray: true
       transformResponse: (response)->
         wrappedResponse = angular.fromJson response
         wrappedResponse.links.$pages = wrappedResponse.pages
