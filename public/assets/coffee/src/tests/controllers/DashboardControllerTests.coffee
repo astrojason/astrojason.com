@@ -208,13 +208,13 @@ describe 'DashboardController tests', ->
 
   it 'should set $scope.selected_links to the returned value', ->
     $scope.getCategoryArticles()
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse)
+    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
     $scope.$digest()
     expect($scope.selected_links).toEqual mockLinkQueryResponse.links
 
   it 'should set $scope.loading_category to false when LinkResource.query succeeds', ->
     $scope.getCategoryArticles()
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse)
+    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
     $scope.$digest()
     expect($scope.loading_category).toEqual false
 
