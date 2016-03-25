@@ -63,7 +63,7 @@
             <h4 class="modal-title">Import from OneTab</h4>
           </div>
           <div class="modal-body">
-            <textarea ng-model="importlist" class="form-control" ng-show="importedCount == 0"></textarea>
+            <textarea ng-model="links_to_import" class="form-control" ng-show="importedCount == 0"></textarea>
             <div class="alert alert-success" ng-show="importedCount > 0">
               Imported {{ importedCount }} links.
               <div ng-show="errorLinks.length > 0">

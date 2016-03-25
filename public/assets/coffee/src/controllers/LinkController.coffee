@@ -120,9 +120,9 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
       $scope.importedCount = 0
       submitLinks = []
       errorLinks = []
-      links = $scope.splitImports $scope.importList
+      links = $scope.splitImports $scope.links_to_import
       angular.forEach links, (link)->
-        if link != ''
+        if link.trim != ''
           exploded = link.split '|'
           if exploded.length >= 2
             thisLink =
@@ -143,5 +143,6 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
         $scope.errorMessage = 'There was a problem with the import'
 
     $scope.splitImports = (data)->
-      data.split 'http'
+      if data? != ''
+        data.split 'http'
 ]

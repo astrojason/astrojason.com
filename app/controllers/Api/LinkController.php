@@ -128,7 +128,7 @@ class LinkController extends AstroBaseController {
       $links[] = $link;
     }
 
-    return $this->successResponse(array('links' => $this->transformCollection($links), 'count' => count($links)));
+    return $this->successResponse(array('count' => count($links)));
   }
 
   /**
