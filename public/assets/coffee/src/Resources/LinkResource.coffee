@@ -28,9 +28,9 @@ angular.module('astroApp').factory 'LinkResource', ['$resource', ($resource)->
 
   LinkResource.prototype.cssClass = ()->
     if @.times_loaded > 20
-      return 'link-danger'
+      return 'text-danger'
     else if @.times_loaded > 10
-      return 'link-warning'
+      return 'text-warning'
 
   LinkResource
 ]

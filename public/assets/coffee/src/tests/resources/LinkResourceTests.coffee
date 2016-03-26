@@ -41,15 +41,15 @@ describe 'LinkResource test', ->
     myLink.$remove()
     $httpBackend.flush()
 
-  it 'should return link-danger when the times_loaded is greater than 20', ->
+  it 'should return text-danger when the times_loaded is greater than 20', ->
     myLink = new LinkResource()
     myLink.times_loaded = 21
-    expect(myLink.cssClass()).toEqual 'link-danger'
+    expect(myLink.cssClass()).toEqual 'text-danger'
 
-  it 'should return link-warning when the times_loaded is greater than 10 but less than 20', ->
+  it 'should return text-warning when the times_loaded is greater than 10 but less than 20', ->
     myLink = new LinkResource()
     myLink.times_loaded = 15
-    expect(myLink.cssClass()).toEqual 'link-warning'
+    expect(myLink.cssClass()).toEqual 'text-warning'
 
   it 'should return undefined when the times_loaded is 10 or less', ->
     myLink = new LinkResource()
