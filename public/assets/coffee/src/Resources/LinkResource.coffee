@@ -24,5 +24,13 @@ angular.module('astroApp').factory 'LinkResource', ['$resource', ($resource)->
       params:
         id: 'import'
 
-  return $resource '/api/link/:id', resource_parameter_defaults, resource_options
+  LinkResource = $resource '/api/link/:id', resource_parameter_defaults, resource_options
+
+  LinkResource.prototype.cssClass = ()->
+    if @.times_loaded > 20
+      return 'link-danger'
+    else if @.times_loaded > 10
+      return 'link-warning'
+
+  LinkResource
 ]

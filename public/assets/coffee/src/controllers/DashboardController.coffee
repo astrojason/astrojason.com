@@ -184,10 +184,4 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
       populate_promise = $http.get '/api/links/populate'
       populate_promise.success ->
         $scope.loadDashboard()
-
-    $scope.getLinkClass = (link)->
-      if link.times_loaded > 20
-        return 'link-danger'
-      if link.times_loaded > 10
-        return 'link-warning'
 ]

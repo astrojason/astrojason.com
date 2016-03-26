@@ -362,12 +362,3 @@ describe 'DashboardController tests', ->
     $scope.populateLinks()
     $httpBackend.flush()
     expect($scope.loadDashboard).not.toHaveBeenCalled()
-
-  it 'should return link-danger when the times_loaded is greatee than 20', ->
-    expect($scope.getLinkClass(times_loaded: 21)).toEqual 'link-danger'
-
-  it 'should return link-warning when the times_loaded is greater than 10 but less than 20', ->
-    expect($scope.getLinkClass(times_loaded: 11)).toEqual 'link-warning'
-
-  it 'should return undefined when the times_loaded is 10 or less', ->
-    expect($scope.getLinkClass(times_loaded: 5)).toBeUndefined()

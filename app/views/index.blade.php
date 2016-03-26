@@ -60,7 +60,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="link in unread_links" ng-class="getLinkClass(link)">
+                <tr ng-repeat="link in unread_links" ng-class="link.cssClass()">
                   <td class="item"><link-form link="link" editing="false"></link-form></td>
                 </tr>
               </tbody>

@@ -38,8 +38,8 @@
             <tr ng-show="links_query && links.length == 0 && !loading_links">
               <td>No results for <strong>{{ links_query }}</strong>
             </tr>
-            <tr ng-repeat="link in links" ng-class="{read: link.is_read}">
-              <td ng-class="{new: link.new}"><link-form link="link" editing="false"></link-form></td>
+            <tr ng-repeat="link in links" ng-class="link.cssClass()">
+              <td ng-class="{new: link.new}"><link-form link="link" editing="false" show-category="!display_category"></link-form></td>
             </tr>
           </tbody>
           <tfoot ng-show="pages > 1">

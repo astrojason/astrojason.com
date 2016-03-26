@@ -14,8 +14,11 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-10 col-xs-8">
+      <div class="col-xs-8" ng-class="showCategory ? 'col-md-8' : 'col-md-10'">
         <a ng-href="{{ link.link }}" ng-click="linkOpened()" target="_blank">{{ link.name }}</a>
+      </div>
+      <div class="col-md-2 hidden-xs" ng-show="showCategory">
+        {{ link.category }}
       </div>
       <div class="col-md-2 hidden-xs">
         <div class="pull-right">

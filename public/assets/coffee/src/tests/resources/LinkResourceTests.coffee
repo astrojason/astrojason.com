@@ -40,3 +40,17 @@ describe 'LinkResource test', ->
     $httpBackend.expectDELETE("/api/link/#{myLink.id}").respond 200
     myLink.$remove()
     $httpBackend.flush()
+
+  it 'should return link-danger when the times_loaded is greater than 20', ->
+    myLink = new LinkResource()
+    myLink.times_loaded = 21
+    expect(myLink.cssClass()).toEqual 'link-danger'
+
+  it 'should return link-warning when the times_loaded is greater than 10 but less than 20', ->
+    myLink = new LinkResource()
+    myLink.times_loaded = 15
+    expect(myLink.cssClass()).toEqual 'link-warning'
+
+  it 'should return undefined when the times_loaded is 10 or less', ->
+    myLink = new LinkResource()
+    expect(myLink.cssClass()).toBeUndefined()
