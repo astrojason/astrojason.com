@@ -20,25 +20,26 @@
                 </ul>
               </th>
             </tr>
-          </thead>
-          <tbody>
             <tr>
-              <td>
+              <th class="input-group">
                 <input type="text" ng-model="links_query" class="form-control" placeholder="Search Query" />
-              </td>
+                <div class="input-group-addon"><input type="checkbox" ng-model="include_read" /> <label>Include read</label></div>
+              </th>
             </tr>
             <tr>
-              <td class="input-group">
+              <th class="input-group">
                 <div class="input-group-addon">Category</div>
                 <select name="category" ng-model="display_category" ng-options="category for category in categories" class="form-control">
                   <option value="">All</option>
                 </select>
-              </td>
+              </th>
             </tr>
+          </thead>
+          <tbody>
             <tr ng-show="links_query && links.length == 0 && !loading_links">
               <td>No results for <strong>{{ links_query }}</strong>
             </tr>
-            <tr ng-repeat="link in links" ng-class="link.cssClass()">
+            <tr ng-repeat="link in links" ng-class="link.cssClass(); {'read': (link.is_read | boolparse)}">
               <td ng-class="{new: link.new}"><link-form link="link" editing="false" show-category="!display_category"></link-form></td>
             </tr>
           </tbody>

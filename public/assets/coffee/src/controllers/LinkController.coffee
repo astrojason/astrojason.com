@@ -40,6 +40,10 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
             $scope.query()
           , 500
 
+      $scope.$watch 'include_read', ->
+        if !$scope.loading_links
+          $scope.query()
+
       $scope.$watch 'page', (newValue, oldValue)->
         if !$scope.loading_links
           if newValue != oldValue
@@ -61,6 +65,8 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
         data['q'] = $scope.links_query
       if $scope.display_category
         data['category'] = $scope.display_category
+      if $scope.include_read
+        data['include_read'] = $scope.include_read
       linkQueryPromise = LinkResource.query(data).$promise
 
       linkQueryPromise.then (links)->
