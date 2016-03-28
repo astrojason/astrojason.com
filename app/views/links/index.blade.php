@@ -34,12 +34,25 @@
                 </select>
               </th>
             </tr>
+            <tr>
+              <th>
+                <div class="col-xs-8" ng-class="!display_category ? 'col-md-6' : 'col-md-10'">
+                  <a href="#" ng-click="toggleSort('name')">Title</a>
+                </div>
+                <div class="col-md-2 hidden-xs" ng-show="!display_category">
+                  <a href="#" ng-click="toggleSort('category')">Category</a>
+                </div>
+                <div class="col-md-2 hidden-xs" ng-show="!display_category">
+                  <a href="#" ng-click="toggleSort('times_loaded')">Times Recommended</a>
+                </div>
+              </th>
+            </tr>
           </thead>
           <tbody>
             <tr ng-show="links_query && links.length == 0 && !loading_links">
               <td>No results for <strong>{{ links_query }}</strong>
             </tr>
-            <tr ng-repeat="link in links" ng-class="link.cssClass(); {'read': (link.is_read | boolparse)}">
+            <tr ng-repeat="link in links" ng-class="link.cssClass()">
               <td ng-class="{new: link.new}"><link-form link="link" editing="false" show-category="!display_category"></link-form></td>
             </tr>
           </tbody>

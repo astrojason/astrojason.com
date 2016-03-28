@@ -56,6 +56,14 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
         if !$scope.loading_links
           $scope.query()
 
+      $scope.$watch 'sort', ->
+        if !$scope.loading_links
+          $scope.query()
+
+      $scope.$watch 'descending', ->
+        if !$scope.loading_links
+          $scope.query()
+
     $scope.query = ->
       $scope.loading_links = true
       data =
@@ -67,6 +75,10 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
         data['category'] = $scope.display_category
       if $scope.include_read
         data['include_read'] = $scope.include_read
+      if $scope.sort
+        data['sort'] = $scope.sort
+      if $scope.descending
+        data['descending'] = true
       linkQueryPromise = LinkResource.query(data).$promise
 
       linkQueryPromise.then (links)->

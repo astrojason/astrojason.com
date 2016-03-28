@@ -1,7 +1,7 @@
 <div class="row" ng-show="errorMessage != ''">
   <div class="alert alert-danger">{{ errorMessage }}</div>
 </div>
-<div class="row" ng-show="!editing && link.name">
+<div class="row" ng-show="!editing">
   <div class="col-md-12">
     <div class="row alert alert-danger" ng-show="deleting == true">
       <div class="col-md-12">
@@ -14,11 +14,14 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-8" ng-class="showCategory ? 'col-md-8' : 'col-md-10'">
+      <div class="col-xs-8" ng-class="showCategory ? 'col-md-6' : 'col-md-10'">
         <a ng-href="{{ link.link }}" ng-click="linkOpened()" target="_blank">{{ link.name }}</a>
       </div>
       <div class="col-md-2 hidden-xs" ng-show="showCategory">
         {{ link.category }}
+      </div>
+      <div class="col-md-2 hidden-xs" ng-show="showCategory">
+        {{ link.times_loaded }}
       </div>
       <div class="col-md-2 hidden-xs">
         <div class="pull-right">

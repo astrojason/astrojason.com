@@ -18,9 +18,11 @@ class LinkController extends AstroBaseController {
     $category = Input::get('category');
     $limit = Input::get('limit');
     $page = Input::get('page');
+    $sort = Input::get('sort');
     $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
     $randomize = filter_var(Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
     $updateLoadCount = filter_var(Input::get('update_load_count'), FILTER_VALIDATE_BOOLEAN);
+    $descending = filter_var(Input::get('descending'), FILTER_VALIDATE_BOOLEAN);
     $query = Link::query()->where('user_id', Auth::user()->id);
     if(!$include_read) {
       $query->where('is_read', false);
@@ -33,6 +35,9 @@ class LinkController extends AstroBaseController {
     }
     if(isset($category)) {
       $query->where('category', $category);
+    }
+    if(isset($sort)) {
+      $query->orderBy($sort, $descending ? 'DESC' : 'ASC');
     }
     $total = $query->count();
     if($randomize){

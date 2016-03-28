@@ -53,4 +53,4 @@ describe 'LinkResource test', ->
 
   it 'should return undefined when the times_loaded is 10 or less', ->
     myLink = new LinkResource()
-    expect(myLink.cssClass()).toBeUndefined()
+    expect(myLink.cssClass()).toEqual ''
