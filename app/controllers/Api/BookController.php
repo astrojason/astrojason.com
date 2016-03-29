@@ -16,6 +16,7 @@ class BookController extends AstroBaseController {
     $query = Book::query()->where('user_id', Auth::user()->id);
     $randomize = filter_var(Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
     $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
+    $descending = filter_var(Input::get('descending'), FILTER_VALIDATE_BOOLEAN);
     if(isset($q)) {
       $query->where(function($query) use ($q) {
         $query->where('title', 'LIKE', '%' . $q . '%')
@@ -42,7 +43,7 @@ class BookController extends AstroBaseController {
         $query->orderBy('series_order');
       }
       else {
-        $query->orderBy($sort);
+        $query->orderBy($sort, $descending ? 'DESC' : 'ASC');
       }
     }
     $total = $query->count();
@@ -169,7 +170,8 @@ class BookController extends AstroBaseController {
         'series_order' => $book['series_order'] ? (int)$book['series_order'] : 0,
         'category' => $book['category'],
         'owned' => (bool)$book['owned'],
-        'is_read' => (bool)$book['is_read']
+        'is_read' => (bool)$book['is_read'],
+        'times_recommended' => (int)$book['times_recommended']
       ];
     }
     return $transformedData;

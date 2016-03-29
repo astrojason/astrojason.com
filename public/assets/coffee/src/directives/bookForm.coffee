@@ -5,3 +5,4 @@ angular.module('astroApp').directive 'bookForm', ->
   scope:
     book: '='
     editing: '='
+    showCategory: '='

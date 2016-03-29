@@ -49,8 +49,12 @@ angular.module('astroApp').controller 'BookController', ['$scope', '$controller'
         if !$scope.loading_books
           $scope.query()
 
+      $scope.$watch 'descending', ->
+        if !$scope.loading_books
+          $scope.query()
+
       $scope.$watch 'page', (newValue, oldValue)->
-        if !$scope.loading_links
+        if !$scope.loading_books
           if newValue != oldValue
             cur_opts = $location.search()
             cur_opts.page = newValue
@@ -70,6 +74,8 @@ angular.module('astroApp').controller 'BookController', ['$scope', '$controller'
         data['category'] = $scope.filter_category
       if $scope.sort
         data['sort'] = $scope.sort
+      if $scope.descending
+        data['descending'] = true
 
       bookPromise = BookResource.query(data).$promise
 

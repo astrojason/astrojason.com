@@ -16,10 +16,20 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-10">
-        <u>{{ book.title }}</u>
+      <div ng-class="showCategory ? 'col-md-3' : 'col-md-5'">
+        <span class="underline">{{ book.title }}</span>
+      </div>
+      <div class="col-md-2">
         <span ng-show="book.author_fname || book.author_lname" ng-cloak>{{ book.author_fname }} {{ book.author_lname }}</span>
+      </div>
+      <div class="col-md-2">
         <span class="small" ng-show="book.series" ng-cloak>{{ book.series }} {{ book.series_order }}</span>
+      </div>
+      <div class="col-md-2" ng-show="showCategory">
+        {{ book.category }}
+      </div>
+      <div class="col-md-1">
+        {{ book.times_recommended }}
       </div>
       <div class="col-md-2">
         <div class="pull-right">
