@@ -5,3 +5,4 @@ angular.module('astroApp').directive 'gameForm', ->
   scope:
     game: '='
     editing: '='
+    showPlatform: '='

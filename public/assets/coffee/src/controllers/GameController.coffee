@@ -44,6 +44,14 @@ angular.module('astroApp').controller 'GameController', ['$scope', '$filter', '$
         if !$scope.loading_games
           $scope.query 'filter_platform'
 
+      $scope.$watch 'sort', ->
+        if !$scope.loading_games
+          $scope.query()
+
+      $scope.$watch 'descending', ->
+        if !$scope.loading_games
+          $scope.query()
+
       $scope.$on 'closeModal', (event, game)->
         $scope.gameModalOpen = false
         if game
@@ -71,6 +79,12 @@ angular.module('astroApp').controller 'GameController', ['$scope', '$filter', '$
 
       if $scope.filter_platform
         data['platform'] = $scope.filter_platform
+
+      if $scope.sort
+        data['sort'] = $scope.sort
+
+      if $scope.descending
+        data['descending'] = true
 
       gamePromise = GameResource.query(data).$promise
 

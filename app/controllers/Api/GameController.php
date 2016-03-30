@@ -16,6 +16,9 @@ class GameController extends AstroBaseController {
     $q = Input::get('q');
     $include_completed = filter_var(Input::get('include_completed'), FILTER_VALIDATE_BOOLEAN);
     $platform = Input::get('platform');
+    $descending = filter_var(Input::get('descending'), FILTER_VALIDATE_BOOLEAN);
+    $sort = Input::get('sort');
+
     $query = Game::query()->where('user_id', Auth::user()->id);
     if(isset($q)){
       $query->where('title', 'LIKE', '%' . $q . '%');
@@ -25,6 +28,9 @@ class GameController extends AstroBaseController {
     }
     if(isset($platform)){
       $query->where('platform', $platform);
+    }
+    if(isset($sort)) {
+      $query->orderBy($sort, $descending ? 'DESC' : 'ASC');
     }
     $total = $query->count();
     if (isset($limit)) {
