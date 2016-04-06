@@ -16,7 +16,9 @@ class SongController extends AstroBaseController {
     $randomize = filter_var(Input::get('randomize'), FILTER_VALIDATE_BOOLEAN);
     $limit = Input::get('limit');
     $page = Input::get('page');
+    $sort = Input::get('sort');
     $include_learned = filter_var(Input::get('include_learned'), FILTER_VALIDATE_BOOLEAN);
+    $descending = filter_var(Input::get('descending'), FILTER_VALIDATE_BOOLEAN);
     if(isset($q)){
       $query->where(function($query) use ($q) {
         $query->where('title', 'LIKE', '%' . $q . '%')
@@ -25,6 +27,9 @@ class SongController extends AstroBaseController {
     }
     if(!$include_learned) {
       $query->where('learned', false);
+    }
+    if(isset($sort)) {
+      $query->orderBy($sort, $descending ? 'DESC' : 'ASC');
     }
     $total = $query->count();
     if($randomize){
