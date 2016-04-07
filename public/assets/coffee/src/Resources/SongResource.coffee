@@ -9,8 +9,8 @@ angular.module('astroApp').factory 'SongResource', ['$resource', ($resource)->
       isArray: true
       transformResponse: (response)->
         wrappedResponse = angular.fromJson response
-        wrappedResponse.songs.$total = response.total
-        wrappedResponse.songs.$pages = response.pages
+        wrappedResponse.songs.$total = wrappedResponse.total
+        wrappedResponse.songs.$pages = wrappedResponse.pages
         wrappedResponse.songs
 
       interceptor:

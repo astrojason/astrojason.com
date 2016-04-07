@@ -38,11 +38,15 @@ angular.module('astroApp').controller 'SongController', ['$scope', '$timeout', '
             $scope.query()
 
       $scope.$watch 'sort', ->
-        if !$scope.loading_games
+        if !$scope.loading_songs
           $scope.query()
 
       $scope.$watch 'descending', ->
-        if !$scope.loading_games
+        if !$scope.loading_songs
+          $scope.query()
+
+      $scope.$watch 'display_artist', ->
+        if !$scope.loading_songs
           $scope.query()
 
       $scope.$on 'closeModal', (event, song)->
@@ -70,6 +74,9 @@ angular.module('astroApp').controller 'SongController', ['$scope', '$timeout', '
 
       if $scope.descending
         data['descending'] = true
+
+      if $scope.display_artist
+        data['artist'] = $scope.display_artist
 
       songPromise = SongResource.query(data).$promise
 
@@ -134,4 +141,7 @@ angular.module('astroApp').controller 'SongController', ['$scope', '$timeout', '
 
       song_promise.finally ->
         $scope.loading_songs = false
+
+    $scope.setArtists = (artists)->
+      $scope.artists = artists
 ]

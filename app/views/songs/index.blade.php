@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-  <div ng-controller="SongController">
+  <div ng-controller="SongController" ng-init="setArtists(<% $song_artists %>)">
     <div class="row">
       <div class="col-md-12">
         <loader ng-show="loading_songs" ng-cloak></loader>
@@ -18,6 +18,14 @@
               <th class="input-group">
                 <input type="text" ng-model="song_query" class="form-control" placeholder="Search Query" />
                 <div class="input-group-addon"><input type="checkbox" ng-model="include_learned" /> <label>Include learned</label></div>
+              </th>
+            </tr>
+            <tr>
+              <th class="input-group">
+                <div class="input-group-addon">Artist</div>
+                <select name="artist" ng-model="display_artist" ng-options="artist for artist in artists" class="form-control">
+                  <option value="">All</option>
+                </select>
               </th>
             </tr>
             <tr>

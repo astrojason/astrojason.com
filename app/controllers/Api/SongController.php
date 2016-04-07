@@ -17,6 +17,7 @@ class SongController extends AstroBaseController {
     $limit = Input::get('limit');
     $page = Input::get('page');
     $sort = Input::get('sort');
+    $artist = Input::get('artist');
     $include_learned = filter_var(Input::get('include_learned'), FILTER_VALIDATE_BOOLEAN);
     $descending = filter_var(Input::get('descending'), FILTER_VALIDATE_BOOLEAN);
     if(isset($q)){
@@ -24,6 +25,9 @@ class SongController extends AstroBaseController {
         $query->where('title', 'LIKE', '%' . $q . '%')
           ->orwhere('artist', 'LIKE', '%' . $q . '%');
       });
+    }
+    if(isset($artist)) {
+      $query->where('artist', $artist);
     }
     if(!$include_learned) {
       $query->where('learned', false);
