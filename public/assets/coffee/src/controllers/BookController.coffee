@@ -6,6 +6,9 @@ angular.module('astroApp').controller 'BookController', ['$scope', '$controller'
 
     $scope.loading_books = false
 
+    if !$scope.book?.id? && !$scope.recommendation
+      $scope.editing = true
+
     $scope.$on 'bookDeleted', (event, message)->
       $scope.books = $filter('filter')($scope.books, {id: '!' + message})
       $scope.book_results = $filter('filter')($scope.book_results, {id: '!' + message})
@@ -136,7 +139,5 @@ angular.module('astroApp').controller 'BookController', ['$scope', '$controller'
         $scope.recommendation_category = categories[0]
 
     $scope.checkEditing = ->
-      if $scope.book?.id
-        return true
-      false
+      $scope.book?.id?
 ]

@@ -30,7 +30,7 @@
                   <td>No results for <strong>{{ article_search }}</strong>
                 </tr>
                 <tr ng-repeat="link in link_results" ng-show="link_results.length > 0" ng-cloak>
-                  <td ng-class="(link.is_read | boolparse) ? 'read' : ''"><link-form link="link" editing="false"></link-form></td>
+                  <td ng-class="(link.is_read | boolparse) ? 'read' : ''"><link-form link="link"></link-form></td>
                 </tr>
               </tbody>
             </table>
@@ -45,7 +45,7 @@
               </thead>
               <tbody>
                 <tr ng-repeat="link in daily_links">
-                  <td><link-form link="link" editing="false"></link-form></td>
+                  <td><link-form link="link"></link-form></td>
                 </tr>
               </tbody>
             </table>
@@ -61,7 +61,7 @@
               </thead>
               <tbody>
                 <tr ng-repeat="link in unread_links" ng-class="link.cssClass()">
-                  <td class="item"><link-form link="link" editing="false"></link-form></td>
+                  <td class="item"><link-form link="link"></link-form></td>
                 </tr>
               </tbody>
             </table>
@@ -80,9 +80,8 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  ng-repeat="link in selected_links">
-                  <td><link-form link="link" editing="false"></link-form></td>
+                <tr ng-repeat="link in selected_links">
+                  <td><link-form link="link"></link-form></td>
                 </tr>
               </tbody>
             </table>
@@ -174,7 +173,7 @@
             <div class="row" ng-show="book">
               <div class="col-md-12 top-margin">
                 <div ng-class="{'alert alert-warning' : book.times_recommended > 5}">
-                  <book-form book="book" editing="false"></book-form>
+                  <book-form book="book" recommendation="true"></book-form>
                 </div>
               </div>
             </div>
@@ -204,7 +203,7 @@
           </div>
           <div class="modal-body">
             <div ng-class="{'alert alert-warning' : game.times_recommended > 5}">
-              <game-form game="game" editing="false"></game-form>
+              <game-form game="game"></game-form>
             </div>
           </div>
         </div><!-- /.modal-content -->
@@ -224,7 +223,7 @@
           </div>
           <div class="modal-body">
             <div ng-class="{'alert alert-warning' : song.times_recommended > 5}">
-              <song-form song="song" editing="false"></song-form>
+              <song-form song="song"></song-form>
             </div>
           </div>
         </div><!-- /.modal-content -->

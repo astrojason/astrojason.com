@@ -4,5 +4,4 @@ angular.module('astroApp').directive 'linkForm', ->
   controller: 'LinkController'
   scope:
     link: '='
-    editing: '='
     showCategory: '='

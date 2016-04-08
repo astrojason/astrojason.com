@@ -54,7 +54,7 @@
               <td>No books matching the filtered values</td>
             </tr>
             <tr ng-repeat="book in books" ng-class="{read: book.is_read}">
-              <td ng-class="{new: book.new}"><book-form book="book" editing="false" show-category="!filter_category"></book-form></td>
+              <td ng-class="{new: book.new}"><book-form book="book" show-category="!filter_category"></book-form></td>
             </tr>
           </tbody>
           <tfoot ng-show="pages > 1">

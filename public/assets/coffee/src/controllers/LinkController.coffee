@@ -10,6 +10,9 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
     $scope.importedCount = 0
     $scope.loading_links = false
 
+    if !$scope.link?.id?
+      $scope.editing = true
+
     $scope.$on 'linkDeleted', (event, message)->
       $scope.links = $filter('filter')($scope.links, {id: '!' + message})
       $scope.link_results = $filter('filter')($scope.link_results, {id: '!' + message})
@@ -163,4 +166,7 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
     $scope.splitImports = (data)->
       if data? != ''
         data.split 'http'
+
+    $scope.checkEditing = ->
+      $scope.link?.id?
 ]

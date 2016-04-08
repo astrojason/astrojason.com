@@ -19,7 +19,7 @@
       <div ng-class="showCategory ? 'col-md-3' : 'col-md-5'">
         <span class="underline">{{ book.title }}</span>
       </div>
-      <div class="col-md-2">
+      <div ng-class="recommendation ? 'col-md-3' : 'col-md-2'">
         <span ng-show="book.author_fname || book.author_lname" ng-cloak>{{ book.author_fname }} {{ book.author_lname }}</span>
       </div>
       <div class="col-md-2">
@@ -28,7 +28,7 @@
       <div class="col-md-2" ng-show="showCategory">
         {{ book.category }}
       </div>
-      <div class="col-md-1">
+      <div class="col-md-1" ng-hide="recommendation">
         {{ book.times_recommended }}
       </div>
       <div class="col-md-2">

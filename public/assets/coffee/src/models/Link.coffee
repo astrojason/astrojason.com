@@ -1,7 +1,7 @@
 angular.module('astroApp').factory 'Link', [(userId)->
 
   Link = (userId)->
-    @.id = 0
+    @.id = null
     @.name = ''
     @.link = ''
     @.category = 'Unread'

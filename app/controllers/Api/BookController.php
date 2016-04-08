@@ -55,7 +55,7 @@ class BookController extends AstroBaseController {
       }
     }
     $books = $query->get();
-    return $this->successResponse(array('books' => $this->transform($books->toArray()), 'total' => $total, 'pages' => $pageCount));
+    return $this->successResponse(array('books' => $this->transformCollection($books), 'total' => $total, 'pages' => $pageCount));
   }
 
   public function recommendation($category) {
@@ -74,9 +74,9 @@ class BookController extends AstroBaseController {
       }
       $book->times_recommended += 1;
       $book->save();
-      return $this->successResponse(array('book' => $book->toArray()));
+      return $this->successResponse(array('book' => $this->transform($book)));
     } else {
-      return $this->notFoundResponse('No book found with that id');
+      return $this->notFoundResponse('You do not have any unread books');
     }
   }
 
@@ -158,10 +158,8 @@ class BookController extends AstroBaseController {
     return $this->successResponse(array('books' => $books));
   }
 
-  public function transform($data){
-    $transformedData = [];
-    foreach($data as $book){
-      $transformedData[] = [
+  public function transform($book){
+    return [
         'id' => (int)$book['id'],
         'title' => $book['title'],
         'author_fname' => $book['author_fname'],
@@ -173,8 +171,6 @@ class BookController extends AstroBaseController {
         'is_read' => (bool)$book['is_read'],
         'times_recommended' => (int)$book['times_recommended']
       ];
-    }
-    return $transformedData;
   }
 
 }
