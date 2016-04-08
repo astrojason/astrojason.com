@@ -5,6 +5,9 @@ angular.module('astroApp').controller 'MovieController', ['$scope',  '$controlle
 
     $scope.loading_movies = false
 
+    if !$scope.movie?.id?
+      $scope.editing = true
+
     $scope.$on 'movieDeleted', (event, message)->
       $scope.movies = $filter('filter')($scope.movies, {id: '!' + message})
       $scope.movie_results = $filter('filter')($scope.movie_results, {id: '!' + message})

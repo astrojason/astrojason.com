@@ -4,4 +4,3 @@ angular.module('astroApp').directive 'movieForm', ->
   controller: 'MovieController'
   scope:
     movie: '='
-    editing: '='

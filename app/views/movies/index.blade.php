@@ -25,7 +25,7 @@
               <td>No results for <strong>{{ movie_query }}</strong>
             </tr>
             <tr ng-repeat="movie in movies" ng-class="{read: movie.is_watched}">
-              <td ng-class="{new: movie.new}"><movie-form movie="movie" editing="false"></movie-form></td>
+              <td ng-class="{new: movie.new}"><movie-form movie="movie"></movie-form></td>
             </tr>
           </tbody>
           <tfoot ng-show="pages > 1">
