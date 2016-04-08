@@ -203,7 +203,7 @@
           </div>
           <div class="modal-body">
             <div ng-class="{'alert alert-warning' : game.times_recommended > 5}">
-              <game-form game="game"></game-form>
+              <game-form game="game" recommendation="true" show-platform="true"></game-form>
             </div>
           </div>
         </div><!-- /.modal-content -->

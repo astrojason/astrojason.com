@@ -17,10 +17,10 @@
       <div ng-class="showPlatform ? 'col-md-3' : 'col-md-9'">
         <span class="underline">{{ game.title }}</span>
       </div>
-      <div class="col-md-6" ng-show="showPlatform">
+      <div ng-class="recommendation ? 'col-md-7' : 'col-md-6'" ng-show="showPlatform">
         {{ game.platform }}
       </div>
-      <div class="col-md-1">
+      <div class="col-md-1" ng-hide="recommendation">
         {{ game.times_recommended }}
       </div>
       <div class="col-md-2">

@@ -8,6 +8,9 @@ angular.module('astroApp').controller 'GameController', ['$scope', '$filter', '$
     $scope.saving_game = false
     $scope.include_completed = false
 
+    if !$scope.game?.id? && !$scope.recommendation
+      $scope.editing = true
+
     $scope.$on 'gameDeleted', (event, message)->
       $scope.games = $filter('filter')($scope.games, {id: '!' + message})
       $scope.game_results = $filter('filter')($scope.game_results, {id: '!' + message})

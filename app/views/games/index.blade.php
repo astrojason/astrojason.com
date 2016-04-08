@@ -48,7 +48,7 @@
               <td>No results for <strong>{{ game_query }}</strong>
             </tr>
             <tr ng-repeat="game in games" ng-class="{read: game.completed}">
-              <td ng-class="{new: game.new}"><game-form game="game" editing="false" show-platform="!filter_platform"></game-form></td>
+              <td ng-class="{new: game.new}"><game-form game="game" show-platform="!filter_platform"></game-form></td>
             </tr>
           </tbody>
           <tfoot ng-show="pages > 1">
