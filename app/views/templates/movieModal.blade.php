@@ -10,7 +10,7 @@
         <h4 class="modal-title">Add a Movie</h4>
       </div>
       <div class="modal-body">
-        <movie-form movie="newMovie" editing="true"></movie-form>
+        <movie-form movie="newMovie"></movie-form>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

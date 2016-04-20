@@ -94,7 +94,6 @@ class GameController extends AstroBaseController {
     $game['completed'] = filter_var($game['completed'], FILTER_VALIDATE_BOOLEAN);
     $game['id'] = (int)$game['id'];
     $game['times_recommended'] = (int)$game['times_recommended'];
-    $game['user_id'] = (int)$game['user_id'];
     return $game;
   }
 }

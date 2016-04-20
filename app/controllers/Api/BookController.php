@@ -2,7 +2,7 @@
 
 namespace Api;
 
-use Auth, Book, Input;
+use Auth, Book, DB, Input;
 
 class BookController extends AstroBaseController {
 
@@ -28,7 +28,7 @@ class BookController extends AstroBaseController {
       $query->where('is_read', false);
     }
     if($randomize){
-      $query->orderBy(\DB::raw('RAND()'));
+      $query->orderBy(DB::raw('RAND()'));
     }
     if(isset($limit)){
       $query->take($limit);
@@ -110,7 +110,7 @@ class BookController extends AstroBaseController {
         ->where('user_id', Auth::user()->id)
         ->first();
       if(isset($book)) {
-        return $this->notFoundResponse('Book already exists');
+        return $this->notFoundResponse('A book with that name buy an author with the same last name already exists');
       }
       $book = new Book();
       $book->user_id = Auth::user()->id;

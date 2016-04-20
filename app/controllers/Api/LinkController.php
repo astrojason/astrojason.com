@@ -137,7 +137,7 @@ class LinkController extends AstroBaseController {
   }
 
   /**
-   * @param Link $link
+   * @param array $link
    * @return array
    */
   public function transform($link) {

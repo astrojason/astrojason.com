@@ -77,12 +77,13 @@ class MovieController extends AstroBaseController {
   }
 
   public function transform($movie){
-    $movie['is_watched'] = filter_var($movie['is_watched'], FILTER_VALIDATE_BOOLEAN);
-    $movie['id'] = (int)$movie['id'];
-    $movie['times_watched'] = (int)$movie['times_watched'];
-    $movie['rating_order'] = (int)$movie['rating_order'];
-    $movie['user_id'] = (int)$movie['user_id'];
-    return $movie;
+    return [
+      'is_watched' => filter_var($movie['is_watched'], FILTER_VALIDATE_BOOLEAN),
+      'id' => (int)$movie['id'],
+      'times_watched' => (int)$movie['times_watched'],
+      'rating_order' => (int)$movie['rating_order'],
+      'title' => $movie['title']
+    ];
   }
 
 }

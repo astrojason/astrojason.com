@@ -106,11 +106,14 @@ class SongController extends AstroBaseController {
   }
 
   public function transform($song) {
-    $song['id'] = (int)$song['id'];
-    $song['user_id'] = (int)$song['user_id'];
-    $song['times_recommended'] = (int)$song['times_recommended'];
-    $song['learned'] = filter_var($song['learned'], FILTER_VALIDATE_BOOLEAN);
-    return $song;
+    return [
+      'id' => (int)$song['id'],
+      'times_recommended' => (int)$song['times_recommended'],
+      'learned' => filter_var($song['learned'], FILTER_VALIDATE_BOOLEAN),
+      'title' => $song['title'],
+      'artist' => $song['artist'],
+      'location' => $song['location']
+    ];
   }
 
 }

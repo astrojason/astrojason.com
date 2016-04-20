@@ -24,7 +24,7 @@ class UserController extends AstroBaseController {
         'password' 	=> Input::get('password')
       );
       if (Auth::attempt($userdata, true)) {
-        return $this->successResponse(array('user' => Auth::user()->toArray()));
+        return $this->successResponse(['user' => $this->transform(Auth::user())]);
       } else {
         return $this->errorResponse('Auth failed', IlluminateResponse::HTTP_UNAUTHORIZED);
       }
@@ -69,8 +69,14 @@ class UserController extends AstroBaseController {
     }
   }
 
-  public function transform($data) {
-
+  public function transform($user) {
+    return [
+      'id' => (int)$user['id'],
+      'firstname' => $user['firstname'],
+      'lastname' => $user['lastname'],
+      'username' => $user['username'],
+      'email' => $user['email']
+    ];
   }
 
 }

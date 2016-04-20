@@ -102,10 +102,13 @@ angular.module('astroApp').controller 'BookController', ['$scope', '$controller'
         if $scope.book.id
           $scope.editing = false
         else
+          delete $scope.errorMessage
+          $scope.book = new Book()
+          $scope.book_form.$setPristine()
           $scope.$emit 'closeModal', response.book
 
       book_promise.catch (response)->
-        $scope.errorMessage = response.data.error
+        $scope.errorMessage = response.data
 
     $scope.toggleRead = ->
       $scope.book.is_read = !$scope.book.is_read

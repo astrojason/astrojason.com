@@ -8,10 +8,15 @@ describe 'BookController unit tests', ->
   mockBookRemoveDeferred = null
   mockBookRecommendDeferred = null
   mockBookQueryResponse = readJSON 'public/assets/coffee/src/tests/data/books.json'
+  mockForm = """
+    <form name="book_form">
+      <input name="name" ng-model="book.name" />
+    </form>
+  """
 
   beforeEach ->
     module 'astroApp'
-    inject ($rootScope, $controller, $q)->
+    inject ($rootScope, $controller, $q, $compile)->
       $scope = $rootScope.$new()
 
       mockBookResource =
@@ -39,6 +44,10 @@ describe 'BookController unit tests', ->
         $scope: $scope
         BookResource: mockBookResource
         AlertifyService: mockAlertifyService
+
+      element = angular.element mockForm
+      linker = $compile element
+      element = linker $scope
 
       BookController = $controller 'BookController', mockInjections
 
@@ -188,13 +197,13 @@ describe 'BookController unit tests', ->
     expect($scope.editing).toEqual false
 
   it 'should emit closeModal command when the save succeeds and this is a new book', ->
-    spyOn($scope, '$emit')
+    spyOn $scope, '$emit'
     $scope.book = angular.copy mockBookQueryResponse.books[0]
     $scope.book.id = null
     $scope.save()
-    mockBookSaveDeferred.resolve book: angular.copy($scope.book)
+    mockBookSaveDeferred.resolve book: angular.copy(mockBookQueryResponse.books[0])
     $scope.$digest()
-    expect($scope.$emit).toHaveBeenCalledWith 'closeModal', $scope.book
+    expect($scope.$emit).toHaveBeenCalledWith 'closeModal', mockBookQueryResponse.books[0]
 
   it 'should call AlertifyService.success when the save succeeds', ->
     spyOn(mockAlertifyService, 'success').and.callThrough()
@@ -207,7 +216,7 @@ describe 'BookController unit tests', ->
   it 'should set the errorMessage to the passed error message when save fails', ->
     $scope.book = angular.copy mockBookQueryResponse.books[0]
     $scope.save()
-    mockBookSaveDeferred.reject data: error: 'This is an error'
+    mockBookSaveDeferred.reject data: 'This is an error'
     $scope.$digest()
     expect($scope.errorMessage).toEqual 'This is an error'
 
@@ -243,7 +252,7 @@ describe 'BookController unit tests', ->
   it 'should set $scope.errorMessage to the passed error message on delete failure', ->
     $scope.book = angular.copy mockBookQueryResponse.books[0]
     $scope.delete()
-    mockBookRemoveDeferred.reject data: error: 'This is a test message'
+    mockBookRemoveDeferred.reject 'This is a test message'
     $scope.$digest()
     expect($scope.errorMessage).toEqual 'This is a test message'
 

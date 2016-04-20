@@ -1,5 +1,5 @@
 angular.module('astroApp').controller 'SongController', ['$scope', '$timeout', '$controller', '$filter', '$location',
-  'SongResource', 'AlertifyService', ($scope, $timeout, $controller, $filter, $location, SongResource, AlertifyService)->
+  'Song', 'SongResource', 'AlertifyService', ($scope, $timeout, $controller, $filter, $location, Song, SongResource, AlertifyService)->
 
     $controller 'FormMasterController', $scope: $scope
 
@@ -101,6 +101,9 @@ angular.module('astroApp').controller 'SongController', ['$scope', '$timeout', '
         if $scope.song.id
           $scope.editing = false
         else
+          delete $scope.errorMessage
+          $scope.song = new Song()
+          $scope.song_form.$setPristine()
           $scope.$emit 'closeModal', response.song
 
       song_promise.catch (response)->

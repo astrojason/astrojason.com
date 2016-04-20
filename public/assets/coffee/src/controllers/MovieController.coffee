@@ -1,5 +1,6 @@
 angular.module('astroApp').controller 'MovieController', ['$scope',  '$controller', '$timeout', '$filter', '$location',
-  'MovieResource', 'AlertifyService', ($scope, $controller, $timeout, $filter, $location, MovieResource, AlertifyService)->
+  'MovieResource', 'Movie', 'AlertifyService', ($scope, $controller, $timeout, $filter, $location, MovieResource,
+  Movie, AlertifyService)->
 
     $controller 'FormMasterController', $scope: $scope
 
@@ -78,6 +79,9 @@ angular.module('astroApp').controller 'MovieController', ['$scope',  '$controlle
         if $scope.movie.id
           $scope.editing = false
         else
+          delete $scope.errorMessage
+          $scope.movie = new Movie()
+          $scope.movie_form.$setPristine()
           $scope.$emit 'closeModal', response.movie
 
       movie_promise.catch (response)->

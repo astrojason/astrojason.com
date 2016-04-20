@@ -128,6 +128,8 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
           if $scope.originalLink.is_read != $scope.link.is_read
             $scope.$emit 'linkRead', $scope.link.is_read
         else
+          delete $scope.errorMessage
+          $scope.link = new Link()
           $scope.link_form.$setPristine()
           $scope.$emit 'closeModal', response.link
 

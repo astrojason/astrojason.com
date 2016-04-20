@@ -115,11 +115,15 @@ angular.module('astroApp').controller 'GameController', ['$scope', '$filter', '$
         if $scope.game.id
           $scope.editing = false
         else
+          delete $scope.errorMessage
+          $scope.game = new Game()
+          $scope.game_form.$setPristine()
           $scope.$emit 'closeModal', response.game
 
       game_promise.catch (response)->
-        if response?.data?.error
-          $scope.errorMessage = response.data.error
+        console.log response
+        if response?.data?
+          $scope.errorMessage = response.data
         else
           $scope.errorMessage = 'Something went wrong'
 
