@@ -49,7 +49,7 @@ class UserController extends AstroBaseController {
     $user = User::where('username', Input::get('username'))->get();
     $available = true;
     if(count($user) > 0) {
-      $available = false;
+      return $this->errorResponse(array('available' => $available));
     }
     return $this->successResponse(array('available' => $available));
   }

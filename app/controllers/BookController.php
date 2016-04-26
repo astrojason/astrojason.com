@@ -1,6 +1,6 @@
 <?php
 
-use \Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use App\Models\Book as Book;
 
 class BookController extends BaseController {
 

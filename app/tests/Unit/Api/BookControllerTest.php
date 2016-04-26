@@ -8,7 +8,7 @@
 
 namespace Unit\Api;
 
-use Api\BookController as BookController, TestCase;
+use App\Models\Book as Book, Api\BookController as BookController, TestCase;
 
 class BookControllerTest extends TestCase {
 
@@ -38,7 +38,7 @@ class BookControllerTest extends TestCase {
       'is_read' => false,
       'times_recommended' => 22
     ];
-    $bookController = new BookController();
+    $bookController = new BookController(new Book());
     $this->assertEquals($expectedTransformation, $bookController->transform($bookToTransform));
   }
 

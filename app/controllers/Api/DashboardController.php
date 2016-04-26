@@ -3,7 +3,7 @@
 
 namespace Api;
 
-use Auth, Book, Game, Link, Song;
+use Auth, App\Models\Book as Book, Game, Link, Song;
 
 class DashboardController extends AstroBaseController {
 

@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Book as Book;
+
 class TemplateController extends BaseController {
 
   public function linkForm() {

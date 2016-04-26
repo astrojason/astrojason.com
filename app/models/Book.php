@@ -33,6 +33,11 @@
  * @property integer $times_recommended
  * @method static \Illuminate\Database\Query\Builder|\Book whereTimesRecommended($value)
  */
+
+namespace App\Models;
+
+use Eloquent;
+
 class Book extends Eloquent {
 
 }

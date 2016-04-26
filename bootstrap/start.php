@@ -28,7 +28,7 @@ $env = $app->detectEnvironment(function() {
   if(isset($_SERVER['APPLICATION_ENV'])) {
 	  return $_SERVER['APPLICATION_ENV'];
   } else {
-    return 'production';
+    return 'development';
   }
 });
 

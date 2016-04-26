@@ -1,10 +1,8 @@
 <?php
 
-class BookTableSeeder extends Seeder
-{
+use App\Models\Book as Book;
 
-
-
+class BookTableSeeder extends Seeder {
 //* @property string $series
 //* @property integer $series_order
 
