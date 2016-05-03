@@ -7,6 +7,10 @@ use Illuminate\Http\Response as IlluminateResponse;
 
 use Auth, DB, Exception, Input, Link;
 
+/**
+ * Class LinkController
+ * @package Api
+ */
 class LinkController extends AstroBaseController {
 
   /**
@@ -67,9 +71,11 @@ class LinkController extends AstroBaseController {
   public function save($linkId = null) {
     if($linkId) {
       $link = Link::where('id', $linkId)->where('user_id', Auth::user()->id)->first();
+      if(!isset($link)){
+        return $this->notFoundResponse('No link found with that id');
+      }
     } else {
-      $link = Link::where('link', Input::get('link'))->where('user_id', Auth::user()->id)->first();
-      if(isset($link)) {
+      if($this->checkLinkExists(Input::get('link'))) {
         return $this->errorResponse(array('success' => false, 'error' => 'Link already exists'), IlluminateResponse::HTTP_UNPROCESSABLE_ENTITY);
       }
       $link = new Link;
@@ -108,6 +114,7 @@ class LinkController extends AstroBaseController {
       ->take(40)->get();
     foreach($links as $link) {
       $new_link = new Link();
+      $new_link->user_id = Auth::user()->id;
       $new_link->name = $link->name;
       $new_link->link = $link->link;
       $new_link->category = 'Unread';
@@ -121,19 +128,18 @@ class LinkController extends AstroBaseController {
 
     $links = [];
     foreach($importLinks as $importLink){
-      $link = Link::where('link', $importLink['url'])->where('user_id', Auth::user()->id)->first();
-      if(!isset($link)) {
+      if(!$this->checkLinkExists($importLink['url'])) {
         $link = new Link();
         $link->name = $importLink['name'];
         $link->link = $importLink['url'];
         $link->category = 'Unread';
         $link->user_id = Auth::user()->id;
         $link->save();
+        $links[] = $link;
       }
-      $links[] = $link;
     }
 
-    return $this->successResponse(array('count' => count($links)));
+    return $this->successResponse(array('count' => count($links), 'skipped' => (count($importLinks) - count($links))));
   }
 
   /**
@@ -150,6 +156,19 @@ class LinkController extends AstroBaseController {
       'times_loaded' => (int) $link['times_loaded'],
       'times_read' => (int) $link['times_read']
     ];
+  }
+
+  /**
+   * @param string
+   * @return bool
+   */
+  public function checkLinkExists($checkLink) {
+    $checkLink = substr($checkLink, strpos($checkLink, '//') + 2);
+    if (strstr($checkLink, '?')) {
+      $checkLink = substr($checkLink, 0, strpos($checkLink, '?'));
+    }
+    $link = Link::where('link', 'LIKE', "%$checkLink%")->where('user_id', Auth::user()->id)->first();
+    return isset($link);
   }
 
 }

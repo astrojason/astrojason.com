@@ -41,7 +41,11 @@ class GameController extends AstroBaseController {
       }
     }
     $games = $query->get();
-    return $this->successResponse(array('games' => $this->transformCollection($games), 'total' => $total, 'pages' => $pageCount));
+    return $this->successResponse([
+      'games' => $this->transformCollection($games),
+      'total' => $total,
+      'pages' => $pageCount
+    ]);
   }
 
   public function save($gameId = null) {

@@ -25,8 +25,7 @@ class DashboardController extends AstroBaseController {
     $total_read = $query->count();
 
 
-    return $this->successResponse(array(
-      'success' => true,
+    return $this->successResponse([
       'total_read' => $total_read,
       'categories' => $categories,
       'total_links' => $total_links,
@@ -36,7 +35,7 @@ class DashboardController extends AstroBaseController {
       'books_toread' => $books_unread,
       'games_toplay' => $games_unplayed,
       'songs_toplay' => $songs_unplayed
-    ));
+    ]);
   }
 
   public function transform($data) {

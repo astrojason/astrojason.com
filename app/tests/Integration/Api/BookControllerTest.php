@@ -24,10 +24,7 @@ class BookControllerTest extends TestCase {
   }
 
   public function test_query_existing_user() {
-    $testUser = new User();
-    $testUser->id = 1;
-
-    Auth::shouldReceive('user')->andReturn($testUser);
+    $this->mockUser(1);
 
     $bookController = new BookController();
     /** @var JsonResponse $response */
@@ -36,10 +33,7 @@ class BookControllerTest extends TestCase {
   }
 
   public function test_query_unknown_user() {
-    $testUser = new User();
-    $testUser->id = 2;
-
-    Auth::shouldReceive('user')->andReturn($testUser);
+    $this->mockUser(9999);
 
     $bookController = new BookController();
     /** @var JsonResponse $response */
@@ -49,10 +43,7 @@ class BookControllerTest extends TestCase {
   }
 
   public function test_recommendation_existing_user() {
-    $testUser = new User();
-    $testUser->id = 1;
-
-    Auth::shouldReceive('user')->andReturn($testUser);
+    $this->mockUser(1);
 
     /** @var Book $bookToSave */
     $book = Book::where('user_id', 1)->first();
@@ -62,11 +53,8 @@ class BookControllerTest extends TestCase {
     $this->assertEquals(IlluminateResponse::HTTP_OK, $response->getStatusCode());
   }
 
-  public function test_save_book_exists() {
-    $testUser = new User();
-    $testUser->id = 1;
-
-    Auth::shouldReceive('user')->andReturn($testUser);
+  public function test_add_book_exists() {
+    $this->mockUser(1);
 
     /** @var Book $bookToSave */
     $bookToSave = Book::where('user_id', 1)->first();
@@ -77,13 +65,46 @@ class BookControllerTest extends TestCase {
     $this->assertEquals(IlluminateResponse::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
   }
 
-  public function test_save_book_does_not_exist() {
+  public function test_save_book() {
+    $this->mockUser(1);
+
+    /** @var Book $bookToSave */
+    $bookToSave = Book::where('user_id', 1)->first();
+
+    /** @var JsonResponse $response */
+    $response = $this->call('POST', "/api/book/$bookToSave->id", $bookToSave->toArray());
+    $this->assertEquals(IlluminateResponse::HTTP_OK, $response->getStatusCode());
+  }
+
+  public function test_save_book_different_user() {
+    $this->mockUser(2);
+
+    /** @var Book $bookToSave */
+    $bookToSave = Book::where('user_id', 1)->first();
+
+    /** @var JsonResponse $response */
+    $response = $this->call('POST', "/api/book/$bookToSave->id", $bookToSave->toArray());
+    $this->assertEquals(IlluminateResponse::HTTP_NOT_FOUND, $response->getStatusCode());
+  }
+
+  public function test_add_book_exists_different_user() {
+    Book::where('user_id', 2)->delete();
+    $this->mockUser(2);
+
+    /** @var Book $bookToSave */
+    $bookToSave = Book::where('user_id', 1)->first();
+    unset($bookToSave['id']);
+    unset($bookToSave['user_id']);
+
+    /** @var JsonResponse $response */
+    $response = $this->call('POST', '/api/book', $bookToSave->toArray());
+    $this->assertEquals(IlluminateResponse::HTTP_OK, $response->getStatusCode());
+  }
+
+  public function test_add_book_does_not_exist() {
+    $this->mockUser(1);
+
     $faker = Faker\Factory::create();
-
-    $testUser = new User();
-    $testUser->id = 1;
-
-    Auth::shouldReceive('user')->andReturn($testUser);
 
     /** @var Book $bookToSave */
     $bookToSave = new Book();
@@ -102,10 +123,7 @@ class BookControllerTest extends TestCase {
   }
 
   public function test_delete_book_not_logged_in_users() {
-    $testUser = new User();
-    $testUser->id = 2;
-
-    Auth::shouldReceive('user')->andReturn($testUser);
+    $this->mockUser(2);
 
     /** @var Book $bookToDelete */
     $bookToDelete = Book::where('user_id', 1)->first();
@@ -116,10 +134,7 @@ class BookControllerTest extends TestCase {
   }
 
   public function test_delete_book_logged_in_users() {
-    $testUser = new User();
-    $testUser->id = 1;
-
-    Auth::shouldReceive('user')->andReturn($testUser);
+    $this->mockUser(1);
 
     /** @var Book $bookToDelete */
     $bookToDelete = Book::where('user_id', 1)->first();

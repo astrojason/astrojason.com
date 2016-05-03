@@ -104,6 +104,9 @@ class BookController extends AstroBaseController {
     }
     if($bookId) {
       $book = Book::where('id', $bookId)->where('user_id', Auth::user()->id)->first();
+      if(!isset($book)) {
+        return $this->notFoundResponse('No book found with that id');
+      }
     } else {
       $book = Book::where('title', $title)
         ->where('author_lname', $lname)
