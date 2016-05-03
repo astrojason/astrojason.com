@@ -4,6 +4,7 @@
 namespace Api;
 
 use Auth, DB, Input, Movie;
+use Illuminate\Http\Response as IlluminateResponse;
 
 class MovieController extends AstroBaseController {
 
@@ -36,13 +37,21 @@ class MovieController extends AstroBaseController {
     $date_watched = strtotime(Input::get('date_watched'));
     if($movieId) {
       $movie = Movie::where('user_id', Auth::user()->id)->where('id', $movieId)->first();
-      if(Input::get('rating_order')) {
-        $moving_movie = Movie::where('user_id', Auth::user()->id)->where('rating_order', Input::get('rating_order'))->first();
-        $moving_movie->rating_order = $movie->rating_order;
-        $moving_movie->save();
-        $movie->rating_order = Input::get('rating_order');
+      if(isset($movie)) {
+        if (Input::get('rating_order')) {
+          $moving_movie = Movie::where('user_id', Auth::user()->id)->where('rating_order', Input::get('rating_order'))->first();
+          $moving_movie->rating_order = $movie->rating_order;
+          $moving_movie->save();
+          $movie->rating_order = Input::get('rating_order');
+        }
+      } else {
+        return $this->notFoundResponse('There is no movie with id for this user.');
       }
     } else {
+      $movie = Movie::where('user_id', Auth::user()->id)->where('title', $title)->first();
+      if(isset($movie)) {
+        return $this->errorResponse('There is already a movie with that title', IlluminateResponse::HTTP_UNPROCESSABLE_ENTITY);
+      }
       $movie = new Movie();
       $movie->user_id = Auth::user()->id;
       $movie->rating_order = DB::table('movies')->max('rating_order') + 1;
