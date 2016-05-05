@@ -187,6 +187,13 @@ class LinkControllerTest extends TestCase {
     $this->assertEquals(1, $response->getData(true)['skipped']);
   }
 
+  public function test_update_read_count() {
+    $this->mockUser(1);
+
+    $response = $this->call('GET', '/api/link/readtoday');
+    $this->assertEquals(IlluminateResponse::HTTP_OK, $response->getStatusCode());
+  }
+
   private function generateNewLink() {
     $faker = Faker\Factory::create();
     return [

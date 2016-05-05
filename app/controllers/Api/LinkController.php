@@ -142,6 +142,20 @@ class LinkController extends AstroBaseController {
     return $this->successResponse(array('count' => count($links), 'skipped' => (count($importLinks) - count($links))));
   }
 
+  public function readToday() {
+    return $this->successResponse(['total_read' => $this->getReadTodayCount()]);
+  }
+
+  public function getReadTodayCount() {
+    $query = Link::where('is_read', true)
+      ->where('user_id', Auth::user()->id);
+    $query->where(function ($query) {
+      $query->where('updated_at', 'LIKE', '%' . date('Y-m-d') . '%')
+        ->orwhere('created_at', 'LIKE', '%' . date('Y-m-d') . '%');
+    });
+    return $query->count();
+  }
+
   /**
    * @param array $link
    * @return array

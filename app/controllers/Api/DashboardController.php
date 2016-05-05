@@ -16,17 +16,10 @@ class DashboardController extends AstroBaseController {
     $games_unplayed = Game::where('user_id', Auth::user()->id)->where('completed', false)->count();
     $songs_unplayed = Song::where('user_id', Auth::user()->id)->where('learned', false)->count();
     $categories = \LinkController::getLinkCategories();
-    $query = Link::where('is_read', true)
-      ->where('user_id', Auth::user()->id);
-    $query->where(function ($query) {
-      $query->where('updated_at', 'LIKE', '%' . date('Y-m-d') . '%')
-        ->orwhere('created_at', 'LIKE', '%' . date('Y-m-d') . '%');
-    });
-    $total_read = $query->count();
-
+    $linkController = new LinkController();
 
     return $this->successResponse([
-      'total_read' => $total_read,
+      'total_read' => $linkController->getReadTodayCount(),
       'categories' => $categories,
       'total_links' => $total_links,
       'links_read' => $links_read,
