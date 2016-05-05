@@ -18,7 +18,7 @@ class UserTableSeeder extends Seeder
       'firstname' => 'Jason',
       'lastname' => 'Sylvester',
       'email' => 'jason@astrojason.com',
-      'password' => 'a'
+      'password' => Hash::make('a')
     ]);
 
     foreach(range(1,20) as $index) {

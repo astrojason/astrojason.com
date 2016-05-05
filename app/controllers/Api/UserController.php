@@ -37,36 +37,48 @@ class UserController extends AstroBaseController {
   }
 
   public function checkEmail() {
-    $user = User::where('email', Input::get('email'))->get();
-    $available = true;
-    if(count($user) > 0) {
-      $available = false;
+    if($this->email_exists(Input::get('email'))) {
+      return $this->errorResponse();
     }
-    return $this->successResponse(array('available' => $available));
+    return $this->successResponse();
   }
 
   public function checkUsername() {
-    $user = User::where('username', Input::get('username'))->get();
-    $available = true;
-    if(count($user) > 0) {
-      return $this->errorResponse(array('available' => $available));
+
+    if($this->username_exists(Input::get('username'))) {
+      return $this->errorResponse();
     }
-    return $this->successResponse(array('available' => $available));
+    return $this->successResponse();
   }
 
   public function processRegistration(){
     try {
-      $user = new User;
-      $user->firstname = Input::get('first_name');
-      $user->lastname = Input::get('last_name');
-      $user->username = Input::get('username');
-      $user->email = Input::get('email');
-      $user->password = Hash::make(Input::get('password'));
-      $user->save();
-      return $this->successResponse();
+      if(!$this->email_exists(Input::get('email')) && !$this->username_exists(Input::get('username'))) {
+        $user = new User;
+        $user->firstname = Input::get('first_name');
+        $user->lastname = Input::get('last_name');
+        $user->username = Input::get('username');
+        $user->email = Input::get('email');
+        $user->password = Input::get('password');
+        $user->save();
+        return $this->successResponse();
+      } else {
+        return $this->errorResponse('Username and/or email already exists',
+          IlluminateResponse::HTTP_UNPROCESSABLE_ENTITY);
+      }
     } catch (Exception $exception) {
       return $this->errorResponse($exception->getMessage(), IlluminateResponse::HTTP_UNPROCESSABLE_ENTITY);
     }
+  }
+
+  public function username_exists($username) {
+    $user = User::where('username', $username)->first();
+    return isset($user);
+  }
+
+  public function email_exists($email) {
+    $user = User::where('email', $email)->first();
+    return isset($user);
   }
 
   public function transform($user) {
