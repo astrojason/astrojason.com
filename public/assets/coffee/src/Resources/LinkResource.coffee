@@ -5,6 +5,11 @@ angular.module('astroApp').factory 'LinkResource', ['$resource', ($resource)->
 
   resource_options =
 
+    readToday:
+      method: 'GET'
+      params:
+        id: 'readtoday'
+
     query:
       method: 'GET'
       isArray: true

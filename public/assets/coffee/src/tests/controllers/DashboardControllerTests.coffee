@@ -6,6 +6,7 @@ describe 'DashboardController tests', ->
   Link = null
   mockLinkResource = null
   mockLinkQuery = null
+  mockLinkReadToday = null
   mockDashboardGet = null
   mockUserService = null
   mockDashboardResource = null
@@ -21,6 +22,9 @@ describe 'DashboardController tests', ->
       Link = _Link_
 
       mockLinkResource =
+        readToday: ->
+          mockLinkReadToday = $q.defer()
+          $promise: mockLinkReadToday.promise
         query: ->
           mockLinkQuery = $q.defer()
           $promise: mockLinkQuery.promise
@@ -362,3 +366,8 @@ describe 'DashboardController tests', ->
     $scope.populateLinks()
     $httpBackend.flush()
     expect($scope.loadDashboard).not.toHaveBeenCalled()
+
+  it 'should call LinkResource.readToday when $scope.refreshReadCount is called', ->
+    spyOn(mockLinkResource, 'readToday').and.callThrough()
+    $scope.refreshReadCount()
+    expect(mockLinkResource.readToday).toHaveBeenCalled()

@@ -252,7 +252,7 @@ describe 'BookController unit tests', ->
   it 'should set $scope.errorMessage to the passed error message on delete failure', ->
     $scope.book = angular.copy mockBookQueryResponse.books[0]
     $scope.delete()
-    mockBookRemoveDeferred.reject 'This is a test message'
+    mockBookRemoveDeferred.reject data: error: 'This is a test message'
     $scope.$digest()
     expect($scope.errorMessage).toEqual 'This is a test message'
 

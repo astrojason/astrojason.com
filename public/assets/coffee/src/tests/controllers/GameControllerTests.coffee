@@ -10,10 +10,15 @@ describe 'GameController unit tests', ->
   mockGameQueryResponse = readJSON 'public/assets/coffee/src/tests/data/games.json'
   game = null
   GameModel = null
+  mockForm = """
+    <form name="game_form">
+      <input name="title" ng-model="game.title" />
+    </form>
+  """
 
   beforeEach ->
     module 'astroApp'
-    inject ($rootScope, $controller, $q, _Game_)->
+    inject ($rootScope, $controller, $q, _Game_, $compile)->
       $scope = $rootScope.$new()
       GameModel = _Game_
 
@@ -44,6 +49,10 @@ describe 'GameController unit tests', ->
         AlertifyService: mockAlertifyService
 
       game = mockGameQueryResponse.games[0]
+
+      element = angular.element mockForm
+      linker = $compile element
+      element = linker $scope
 
       GameController = $controller 'GameController', mockInjections
 
@@ -229,14 +238,14 @@ describe 'GameController unit tests', ->
     $scope.$digest()
     expect($scope.editing).toEqual false
 
-  it 'should set close the modal when GameResource.save succeeds and the game does not have an id', ->
+  it 'should close the modal when GameResource.save succeeds and the game does not have an id', ->
     spyOn($scope, '$emit').and.callThrough()
     $scope.game = angular.copy game
     $scope.game.id = null
     $scope.save()
-    mockGameSaveDeferred.resolve game: angular.copy $scope.game
+    mockGameSaveDeferred.resolve game: game
     $scope.$digest()
-    expect($scope.$emit).toHaveBeenCalledWith 'closeModal', $scope.game
+    expect($scope.$emit).toHaveBeenCalledWith 'closeModal', game
 
   it 'should set $scope.saving_game to false when GameResource.save fails', ->
     $scope.game = angular.copy game
@@ -248,7 +257,7 @@ describe 'GameController unit tests', ->
   it 'should set $scope.errorMessage to the returned value when GameResource.save fails and an error is passed', ->
     $scope.game = angular.copy game
     $scope.save()
-    mockGameSaveDeferred.reject data: error: 'This is the error'
+    mockGameSaveDeferred.reject data: 'This is the error'
     $scope.$digest()
     expect($scope.errorMessage).toEqual 'This is the error'
 

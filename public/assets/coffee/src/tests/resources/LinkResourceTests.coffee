@@ -54,3 +54,8 @@ describe 'LinkResource test', ->
   it 'should return undefined when the times_loaded is 10 or less', ->
     myLink = new LinkResource()
     expect(myLink.cssClass()).toEqual ''
+
+  it 'should call the read today endpoint', ->
+    $httpBackend.expectGET('/api/link/readtoday').respond total_read: 10
+    LinkResource.readToday()
+    $httpBackend.flush()

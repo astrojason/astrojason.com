@@ -10,10 +10,15 @@ describe 'SongController unit tests', ->
   mockSongRemoveDeferred = null
   mockSongQueryResponse = readJSON 'public/assets/coffee/src/tests/data/songs.json'
   mockSong = null
+  mockForm = """
+    <form name="song_form">
+      <input name="title" ng-model="song.title" />
+    </form>
+  """
 
   beforeEach ->
     module 'astroApp'
-    inject ($rootScope, $controller, _$timeout_, $q, _Song_)->
+    inject ($rootScope, $controller, _$timeout_, $q, _Song_, $compile)->
       $scope = $rootScope.$new()
       $timeout = _$timeout_
       Song = _Song_
@@ -39,7 +44,11 @@ describe 'SongController unit tests', ->
 
       SongController = $controller 'SongController', mockInjections
 
-    mockSong = angular.copy mockSongQueryResponse.songs[0]
+      mockSong = angular.copy mockSongQueryResponse.songs[0]
+
+      element = angular.element mockForm
+      linker = $compile element
+      element = linker $scope
 
   it 'should set the default variables', ->
     expect($scope.loading_songs).toEqual false

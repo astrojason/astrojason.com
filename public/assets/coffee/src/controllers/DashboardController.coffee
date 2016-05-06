@@ -184,4 +184,10 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
       populate_promise = $http.get '/api/links/populate'
       populate_promise.success ->
         $scope.loadDashboard()
+
+    $scope.refreshReadCount = ->
+      readCount_promise = LinkResource.readToday().$promise
+
+      readCount_promise.then (response)->
+        $scope.total_read = response.total_read
 ]

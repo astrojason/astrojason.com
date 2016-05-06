@@ -10,10 +10,15 @@ describe 'MovieController unit tests', ->
   mockMovieRemoveDeferred = null
   mockMovieQueryResponse = readJSON 'public/assets/coffee/src/tests/data/movies.json'
   mockMovie = null
+  mockForm = """
+    <form name="movie_form">
+      <input name="title" ng-model="movie.title" />
+    </form>
+  """
 
   beforeEach ->
     module 'astroApp'
-    inject ($rootScope, $controller, _$timeout_, $q, _Movie_)->
+    inject ($rootScope, $controller, _$timeout_, $q, _Movie_, $compile)->
       $scope = $rootScope.$new()
       $timeout = _$timeout_
       Movie = _Movie_
@@ -38,6 +43,10 @@ describe 'MovieController unit tests', ->
         AlertifyService: mockAlertifyService
 
       MovieController = $controller 'MovieController', mockInjections
+
+      element = angular.element mockForm
+      linker = $compile element
+      element = linker $scope
 
     mockMovie = angular.copy mockMovieQueryResponse.movies[0]
 

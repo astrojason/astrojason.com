@@ -121,7 +121,6 @@ angular.module('astroApp').controller 'GameController', ['$scope', '$filter', '$
           $scope.$emit 'closeModal', response.game
 
       game_promise.catch (response)->
-        console.log response
         if response?.data?
           $scope.errorMessage = response.data
         else
