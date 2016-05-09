@@ -1,4 +1,10 @@
-angular.module 'astroApp', ['ngMessages', 'ngResource', 'ngAnimate', '720kb.fx']
+angular.module 'astroApp', [
+  'ngMessages'
+  'ngResource'
+  'ngAnimate'
+  '720kb.fx'
+  'ui.bootstrap'
+]
 
 param = (data)->
   query = ''

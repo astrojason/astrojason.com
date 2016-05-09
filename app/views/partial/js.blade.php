@@ -9,6 +9,8 @@
 <script type="text/javascript" src="assets/bower/angular-messages/angular-messages.min.js"></script>
 <script type="text/javascript" src="assets/bower/moment/min/moment.min.js"></script>
 <script type="text/javascript" src="assets/bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="assets/bower/angular-bootstrap/ui-bootstrap.min.js"></script>
+<script type="text/javascript" src="assets/bower/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 <script type="text/javascript" src="assets/js/vendor/bootstrap.min.js"></script>
 <script type="text/javascript" src="assets/js/app.min.js"></script>
 <script type="text/javascript" src="assets/js/models.min.js"></script>

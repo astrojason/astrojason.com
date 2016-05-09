@@ -37,6 +37,7 @@
           </div>
 
           <div id="daily_links" class="link_container" ngfx-slide-in-down="daily_links.length > 0">
+            <loader ng-show="loading_daily" ng-cloak></loader>
             <table class="table table-condensed table-striped table-hover" ng-show="daily_links.length > 0" ng-cloak>
               <thead>
                 <tr>
@@ -56,7 +57,7 @@
             <table class="table table-condensed table-striped table-hover" ng-show="unread_links.length > 0" ng-cloak>
               <thead>
                 <tr>
-                  <th>Unread<span class="glyphicon glyphicon-refresh tool pull-right" ng-click="refreshUnreadArticles()"></span></th>
+                  <th>Unread<span class="glyphicon glyphicon-refresh tool pull-right" ng-click="getArticlesForCategory('Unread', 10, true, true)"></span></th>
                 </tr>
               </thead>
               <tbody>
@@ -66,6 +67,7 @@
               </tbody>
             </table>
           </div>
+
           <div id="category_links" class="link_container">
             <loader ng-show="loading_category" ng-cloak></loader>
             <table class="table table-condensed table-striped table-hover" ng-show="categories.length > 0" ng-cloak>
@@ -75,7 +77,12 @@
                     <select name="category" ng-model="display_category" ng-options="category for category in categories" class="form-control">
                       <option value="">Select category</option>
                     </select>
-                    <div class="input-group-addon"><span class="glyphicon glyphicon-refresh tool" ng-click="getCategoryArticles()"></span></div>
+                    <div class="input-group-addon">
+                      <span
+                        class="glyphicon glyphicon-refresh tool"
+                        ng-click="getArticlesForCategory(display_category, 10, true, false, 'selected')">
+                      </span>
+                    </div>
                   </th>
                 </tr>
               </thead>

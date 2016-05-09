@@ -48,8 +48,6 @@ describe 'DashboardController tests', ->
   it 'should set all the default variables', ->
     expect($scope.display_category).toEqual ''
     expect($scope.search_timeout).toEqual null
-    expect($scope.daily_links).toEqual []
-    expect($scope.selected_links).toEqual []
     expect($scope.link_results).toEqual []
     expect($scope.loading_unread).toEqual false
     expect($scope.recommendingBook).toEqual false
@@ -105,7 +103,7 @@ describe 'DashboardController tests', ->
     expect($scope.unread_links).toEqual expected_links
 
   it 'should filter out the changed items in the unread list when linkUpdated is broadcast', ->
-    spyOn($scope, 'getCategoryArticles').and.returnValue true
+    spyOn($scope, 'getArticlesForCategory').and.returnValue true
     $scope.display_category = 'Test'
     links = [{category: 'Unread', is_read: false}, {category: 'Unread', is_read: true}, {category: 'Test', is_read: false}]
     expected_links = [{category: 'Test', is_read: false}]
@@ -142,17 +140,17 @@ describe 'DashboardController tests', ->
     expect($scope.gameModalOpen).toEqual false
     expect($scope.songModalOpen).toEqual false
 
-  it 'should call getCategoryAricle when display_category is changed and it has a value', ->
-    spyOn($scope, 'getCategoryArticles').and.returnValue true
+  it 'should call getArticlesForCategory when display_category is changed and it has a value', ->
+    spyOn($scope, 'getArticlesForCategory').and.returnValue true
     $scope.display_category = 'Test'
     $scope.$digest()
-    expect($scope.getCategoryArticles).toHaveBeenCalled()
+    expect($scope.getArticlesForCategory).toHaveBeenCalled()
 
-  it 'should call getCategoryArticle when display_category is changed and has no value', ->
-    spyOn($scope, 'getCategoryArticles').and.returnValue true
+  it 'should call getArticlesForCategory when display_category is changed and has no value', ->
+    spyOn($scope, 'getArticlesForCategory').and.returnValue true
     $scope.display_category = ''
     $scope.$digest()
-    expect($scope.getCategoryArticles).not.toHaveBeenCalled()
+    expect($scope.getArticlesForCategory).not.toHaveBeenCalled()
 
   it 'should set $scope.searching to true when article_search changes', ->
     $scope.article_search = 'test'
@@ -199,38 +197,44 @@ describe 'DashboardController tests', ->
     $scope.$digest()
     expect($scope.newLink).toEqual new Link()
 
-  it 'should set the base variables when $scope.getCategoryArticles is called', ->
+  it 'should set the base variables when $scope.getArticlesForCategory is called for a page category', ->
     $scope.selected_links = ['test']
-    $scope.getCategoryArticles()
-    expect($scope.selected_links).toEqual []
-    expect($scope.loading_category).toEqual true
+    $scope.getArticlesForCategory 'daily', 10, true, false
+    expect($scope.daily_links).toEqual []
+    expect($scope.loading_daily).toEqual true
 
-  it 'should call LinkResource.query when $scope.getCategoryArticles is called', ->
+  it 'should set the base variables when $scope.getArticlesForCategory is called for a selection category', ->
+    $scope.selected_links = ['test']
+    $scope.getArticlesForCategory 'Test Category', 10, true, false, 'selected'
+    expect($scope.selected_links).toEqual []
+    expect($scope.loading_selected).toEqual true
+
+  it 'should call LinkResource.query when $scope.getArticlesForCategory is called', ->
     spyOn(mockLinkResource, 'query').and.callThrough()
-    $scope.getCategoryArticles()
+    $scope.getArticlesForCategory 'Daily'
     expect(mockLinkResource.query).toHaveBeenCalled()
 
   it 'should set $scope.selected_links to the returned value', ->
-    $scope.getCategoryArticles()
+    $scope.getArticlesForCategory 'Test Category', 10, true, false, 'selected'
     mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
     $scope.$digest()
     expect($scope.selected_links).toEqual mockLinkQueryResponse.links
 
   it 'should set $scope.loading_category to false when LinkResource.query succeeds', ->
-    $scope.getCategoryArticles()
+    $scope.getArticlesForCategory 'Test Category', 10, true, false, 'selected'
     mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
     $scope.$digest()
     expect($scope.loading_category).toEqual false
 
   it 'should set $scope.loading_category to false when LinkResource.query fails', ->
-    $scope.getCategoryArticles()
+    $scope.getArticlesForCategory 'Test Category', 10, true, false, 'selected'
     mockLinkQuery.reject()
     $scope.$digest()
     expect($scope.loading_category).toEqual false
 
   it 'should set emit an error when LinkResource.query fails', ->
     spyOn($scope, '$emit').and.callThrough()
-    $scope.getCategoryArticles()
+    $scope.getArticlesForCategory 'Test Category', 10, true, false, 'selected'
     mockLinkQuery.reject()
     $scope.$digest()
     expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Could not load links for category'
@@ -307,46 +311,6 @@ describe 'DashboardController tests', ->
     mockDashboardGet.reject()
     $scope.$digest()
     expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Problem loading daily results'
-
-  it 'should call LinkResource.query when loadDashboard is called', ->
-    spyOn($scope, 'refreshUnreadArticles').and.returnValue true
-    spyOn(mockLinkResource, 'query').and.callThrough()
-    $scope.loadDashboard()
-    expect(mockLinkResource.query).toHaveBeenCalled()
-
-  it 'should call refreshUnreadArticles when loadDashboard is called', ->
-    spyOn($scope, 'refreshUnreadArticles').and.callThrough
-    $scope.loadDashboard()
-    expect($scope.refreshUnreadArticles).toHaveBeenCalled()
-
-  it 'should call LinkResource.query when refreshUnreadArticles is called', ->
-    spyOn(mockLinkResource, 'query').and.callThrough()
-    $scope.refreshUnreadArticles()
-    expect(mockLinkResource.query).toHaveBeenCalled()
-
-  it 'should set the appropriate values to the initial variables when refreshUnreadArticles is called', ->
-    $scope.unread_links = [1,2,3,4]
-    $scope.refreshUnreadArticles()
-    expect($scope.unread_links).toEqual []
-    expect($scope.loading_unread).toEqual true
-
-  it 'should set $scope.loading_unread to false when LinkResource.query succeeds', ->
-    $scope.refreshUnreadArticles()
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
-    $scope.$digest()
-    expect($scope.loading_unread).toEqual false
-
-  it 'should set $scope.unread_links to the returned links when LinkResource.query succeeds', ->
-    $scope.refreshUnreadArticles()
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
-    $scope.$digest()
-    expect($scope.unread_links).toEqual mockLinkQueryResponse.links
-
-  it 'should set $scope.loading_unread to false when LinkResource.query fails', ->
-    $scope.refreshUnreadArticles()
-    mockLinkQuery.reject()
-    $scope.$digest()
-    expect($scope.loading_unread).toEqual false
 
   it 'should call /api/ilinks/populate when populateLinks is called', ->
     $httpBackend.expectGET('/api/links/populate').respond 200

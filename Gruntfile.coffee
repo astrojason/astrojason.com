@@ -58,6 +58,7 @@ module.exports = (grunt) ->
           'public/assets/bower/angular-messages/angular-messages.js'
           'public/assets/bower/angular-mocks/angular-mocks.js'
           'public/assets/bower/angular-resource/angular-resource.js'
+          'public/assets/bower/angular-bootstrap/ui-bootstrap.min.js'
           'public/assets/bower/jquery/dist/jquery.min.js'
           'public/assets/bower/karma-read-json/karma-read-json.js'
           'public/assets/bower/jasmine-collection-matchers/lib/pack.js'

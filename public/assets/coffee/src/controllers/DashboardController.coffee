@@ -1,11 +1,9 @@
 angular.module('astroApp').controller 'DashboardController', ['$scope', '$http', '$location', '$timeout', '$filter',
-  'UserService', 'DashboardResource', 'LinkResource', 'Link', 'Book', 'Movie', 'Game', 'Song', ($scope, $http, $location, $timeout,
-  $filter, UserService, DashboardResource, LinkResource, Link, Book, Movie, Game, Song)->
+  'UserService', 'DashboardResource', 'LinkResource', 'Link', 'Book', 'Movie', 'Game', 'Song', ($scope, $http,
+  $location, $timeout, $filter, UserService, DashboardResource, LinkResource, Link, Book, Movie, Game, Song)->
 
     $scope.display_category = $location.search().category || ''
     $scope.search_timeout = null
-    $scope.daily_links = []
-    $scope.selected_links = []
     $scope.link_results = []
     $scope.loading_unread = false
     $scope.loading_category = false
@@ -61,7 +59,7 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
 
     $scope.$watch 'display_category', (newValue)->
       if newValue != ''
-        $scope.getCategoryArticles()
+        $scope.getArticlesForCategory newValue, 10, true, false, 'selected'
 
     $scope.$watch 'article_search', (newValue)->
       $scope.searching = true
@@ -98,24 +96,33 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
       if !$scope.songModalOpen
         $scope.newSong = new Song()
 
-    $scope.getCategoryArticles = ->
-      $scope.selected_links = []
-      $scope.loading_category = true
+    $scope.getArticlesForCategory = (category, limit, randomize, update_load_count, list_name)->
+      if list_name?
+        link_list = list_name
+      else
+        link_list = "#{category.toLowerCase().replace(' ', '_')}"
+      $scope["#{link_list}_links"] = []
+      $scope["loading_#{link_list}"] = true
+
       data =
-        category: $scope.display_category
-        limit: 10
-        randomize: true
-        update_load_count: true
+        category: category
+
+      if limit?
+        data.limit = 10
+      if randomize
+        data.randomize = true
+      if update_load_count
+        data.update_load_count = true
 
       categoryLinksPromise = LinkResource.query(data).$promise
       categoryLinksPromise.then (links)->
-        $scope.selected_links = links
+        $scope["#{link_list}_links"] = links
 
       categoryLinksPromise.catch ->
         $scope.$emit 'errorOccurred', 'Could not load links for category'
 
       categoryLinksPromise.finally ->
-        $scope.loading_category = false
+        $scope["loading_#{link_list}"] = false
 
     $scope.search_articles = ->
       $scope.searching = true
@@ -157,27 +164,8 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
       daily_Promise.catch ->
         $scope.$emit 'errorOccurred', 'Problem loading daily results'
 
-      LinkResource.query category: 'Daily', (links)->
-        $scope.daily_links = links
-
-      $scope.refreshUnreadArticles()
-
-#   TODO: This is a duplicate call, should be able to combine it with getCategoryArticles
-    $scope.refreshUnreadArticles = ->
-      $scope.unread_links = []
-      $scope.loading_unread = true
-      data =
-        category: 'Unread'
-        limit: 20
-        randomize: true
-        update_load_count: true
-      unreadPromise = LinkResource.query(data).$promise
-
-      unreadPromise.then (links)->
-        $scope.unread_links = links
-
-      unreadPromise.finally ->
-        $scope.loading_unread = false
+      $scope.getArticlesForCategory 'Daily'
+      $scope.getArticlesForCategory 'Unread', 10, true, true
 
 #   TODO: Put this into the LinkResource service
     $scope.populateLinks = ->
