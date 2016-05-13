@@ -34,7 +34,13 @@ App::after(function($request, $response)
 */
 
 Route::filter('auth', function() {
-  if (Auth::guest()) return Response::json(array('success' => false, 'message' => 'noaccess'), 200);
+  if (Auth::guest()) {
+		if(Request::ajax()) {
+			return Response::json([], 403);
+		} else {
+			return Redirect::to('/');
+		}
+	}
 });
 
 Route::filter('auth.basic', function() {

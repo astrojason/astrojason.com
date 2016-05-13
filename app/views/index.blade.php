@@ -68,7 +68,7 @@
             </table>
           </div>
 
-          <div id="category_links" class="link_container">
+          <div id="category_links" class="link_selected">
             <loader ng-show="loading_category" ng-cloak></loader>
             <table class="table table-condensed table-striped table-hover" ng-show="categories.length > 0" ng-cloak>
               <thead>

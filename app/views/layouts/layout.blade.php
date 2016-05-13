@@ -39,10 +39,18 @@
             @endforeach
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li class="active">
-              <li>
-              <a ng-show="user" ng-cloak>Hello <span>{{ user.firstname }}</span> <span class="glyphicon glyphicon-remove-circle" ng-click="logout()" data-toggle="tooltip" data-placement="top" title="Log out"></span></a></li>
-              <form ng-show="!user" class="navbar-form navbar-right" role="form" ng-submit="login()" ng-cloak>
+            <li ng-show="user" uib-dropdown on-toggle="toggled(open)">
+              <a href id="simple-dropdown" uib-dropdown-toggle>
+                Hello <span>{{ user.firstname }}</span>
+                <small class="glyphicon" ng-class="open ? 'glyphicon-chevron-up' : 'glyphicon-chevron-down'"></small>
+              </a>
+              <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+                <li><a href="/account" target="_self">My account</a></li>
+                <li><a ng-click="logout()">Logout</a></li>
+              </ul>
+            </li>
+            <li ng-show="!user">
+              <form class="navbar-form navbar-right" role="form" ng-submit="login()" ng-cloak>
                 <div class="form-group">
                   <input type="text" placeholder="Username" class="form-control" ng-model="username">
                 </div>

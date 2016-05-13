@@ -16,11 +16,17 @@ Route::get('info', function(){
   return View::make('info');
 });
 
-Route::get('games', 'GameController@index');
-Route::get('links', 'LinkController@index');
-Route::get('movies', 'MovieController@index');
-Route::get('register', 'HomeController@register');
-Route::get('songs', 'SongController@index');
+Route::group(['before' => 'auth'], function(){
+  Route::get('games', 'GameController@index');
+  Route::get('links', 'LinkController@index');
+  Route::get('movies', 'MovieController@index');
+  Route::get('register', 'HomeController@register');
+  Route::get('songs', 'SongController@index');
+  Route::group(['prefix' => 'account'], function(){
+    Route::get('', 'UserController@account');
+    Route::post('', 'UserController@update');
+  });
+});
 
 Route::get('readlater', 'LinkController@readLater');
 
