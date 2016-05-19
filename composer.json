@@ -12,7 +12,8 @@
 		"doctrine/dbal": "~2.3",
 		"barryvdh/laravel-ide-helper": "~1.11",
 	  	"fzaninotto/faker": "~1.5@dev",
-		"mockery/mockery": "dev-master@dev"
+		"mockery/mockery": "dev-master@dev",
+		"way/generators": "~2.0"
 	},
 	"autoload": {
 		"classmap": [

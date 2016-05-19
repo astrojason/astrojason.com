@@ -1,10 +1,8 @@
 <?php
 
-class LinkTableSeeder extends Seeder
-{
+class LinkTableSeeder extends Seeder {
 
-  public function run()
-  {
+  public function run() {
     $this->command->info('Creating faker object.');
     $faker = Faker\Factory::create();
 
@@ -30,5 +28,38 @@ class LinkTableSeeder extends Seeder
       $daily->category = 'Daily';
       $daily->save();
     }
+    $todos = Link::where('is_read', false)->where('Category', '<>', 'Daily')->orderBy(DB::raw('RAND()'))->take(10)->get();
+    /** @var Link $daily */
+    foreach($todos as $todo){
+      $todo->category = 'ToDo';
+      $todo->save();
+    }
+
+    DashboardCategory::create([
+      'user_id' => 1,
+      'category' => 'ToDo',
+      'randomize' => false,
+      'num_items' => 0,
+      'track' => false,
+      'position' => 1
+    ]);
+
+    DashboardCategory::create([
+      'user_id' => 1,
+      'category' => 'Daily',
+      'randomize' => false,
+      'num_items' => 0,
+      'track' => false,
+      'position' => 2
+    ]);
+
+    DashboardCategory::create([
+      'user_id' => 1,
+      'category' => 'Daily',
+      'randomize' => true,
+      'num_items' => 20,
+      'track' => true,
+      'position' => 3
+    ]);
   }
 }
