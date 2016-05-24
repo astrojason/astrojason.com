@@ -47,7 +47,7 @@ class LinkController extends AstroBaseController {
     if($randomize){
       $query->orderBy(DB::raw('RAND()'));
     }
-    if (isset($limit)) {
+    if (isset($limit) && $limit > 0) {
       $pageCount = ceil($total / $limit);
       $query->take($limit);
       if (isset($page) && $page > 1 && !$randomize) {

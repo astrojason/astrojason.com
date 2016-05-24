@@ -45,20 +45,44 @@ describe 'DashboardController tests', ->
 
       DashboardController = $controller 'DashboardController', mockInjections
 
-  it 'should set all the default variables', ->
+  it 'should set display_category to the default value', ->
     expect($scope.display_category).toEqual ''
+
+  it 'should set search_timeout to the default value', ->
     expect($scope.search_timeout).toEqual null
+
+  it 'should set link_results to the default value', ->
     expect($scope.link_results).toEqual []
+
+  it 'should set loading_unread to the default value', ->
     expect($scope.loading_unread).toEqual false
-    expect($scope.recommendingBook).toEqual false
-    expect($scope.recommendingGame).toEqual false
-    expect($scope.recommendingSong).toEqual false
-    expect($scope.linkModalOpen).toEqual false
-    expect($scope.bookModalOpen).toEqual false
-    expect($scope.movieModalOpen).toEqual false
-    expect($scope.gameModalOpen).toEqual false
-    expect($scope.songModalOpen).toEqual false
+
+  it 'should set loading_category to the default value', ->
     expect($scope.loading_category).toEqual false
+
+  it 'should set recommendingBook to the default value', ->
+    expect($scope.recommendingBook).toEqual false
+
+  it 'should set recommendingGame to the default value', ->
+    expect($scope.recommendingGame).toEqual false
+
+  it 'should set recommendingSong to the default value', ->
+    expect($scope.recommendingSong).toEqual false
+
+  it 'should set linkModalOpen to the default value', ->
+    expect($scope.linkModalOpen).toEqual false
+
+  it 'should set bookModalOpen to the default value', ->
+    expect($scope.bookModalOpen).toEqual false
+
+  it 'should set movieModalOpen to the default value', ->
+    expect($scope.movieModalOpen).toEqual false
+
+  it 'should set gameModalOpen to the default value', ->
+    expect($scope.gameModalOpen).toEqual false
+
+  it 'should set songModalOpen to the default value', ->
+    expect($scope.songModalOpen).toEqual false
 
   it 'should call initDashboard when userLoggedIn is broadcast', ->
     spyOn($scope, 'initDashboard').and.returnValue true
@@ -112,14 +136,14 @@ describe 'DashboardController tests', ->
     $scope.$digest()
     expect($scope.selected_links).toEqual expected_links
 
-  it 'should update the links_read and total_read valuse when linkRead is broadcast with a link id', ->
+  it 'should update the links_read and total_read values when linkRead is broadcast with a link id', ->
     $scope.links_read = 20
     $scope.total_read = 100
     $scope.$broadcast 'linkRead', 1
     expect($scope.links_read).toEqual 21
     expect($scope.total_read).toEqual 101
 
-  it 'should update the links_read and total_read valuse when linkRead is broadcast with no link id', ->
+  it 'should update the links_read and total_read values when linkRead is broadcast with no link id', ->
     $scope.links_read = 20
     $scope.total_read = 100
     $scope.$broadcast 'linkRead'
@@ -200,14 +224,13 @@ describe 'DashboardController tests', ->
   it 'should set the base variables when $scope.getArticlesForCategory is called for a page category', ->
     $scope.selected_links = ['test']
     $scope.getArticlesForCategory 'daily', 10, true, false
-    expect($scope.daily_links).toEqual []
-    expect($scope.loading_daily).toEqual true
+    expect($scope.links_list).toEqual []
 
   it 'should set the base variables when $scope.getArticlesForCategory is called for a selection category', ->
     $scope.selected_links = ['test']
-    $scope.getArticlesForCategory 'Test Category', 10, true, false, 'selected'
+    $scope.getArticlesForCategory 'Test Category', 10, true, false, true
     expect($scope.selected_links).toEqual []
-    expect($scope.loading_selected).toEqual true
+    expect($scope.loading_category).toEqual true
 
   it 'should call LinkResource.query when $scope.getArticlesForCategory is called', ->
     spyOn(mockLinkResource, 'query').and.callThrough()
@@ -215,26 +238,26 @@ describe 'DashboardController tests', ->
     expect(mockLinkResource.query).toHaveBeenCalled()
 
   it 'should set $scope.selected_links to the returned value', ->
-    $scope.getArticlesForCategory 'Test Category', 10, true, false, 'selected'
+    $scope.getArticlesForCategory 'Test Category', 10, true, false, true
     mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
     $scope.$digest()
     expect($scope.selected_links).toEqual mockLinkQueryResponse.links
 
   it 'should set $scope.loading_category to false when LinkResource.query succeeds', ->
-    $scope.getArticlesForCategory 'Test Category', 10, true, false, 'selected'
+    $scope.getArticlesForCategory 'Test Category', 10, true, false
     mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
     $scope.$digest()
     expect($scope.loading_category).toEqual false
 
   it 'should set $scope.loading_category to false when LinkResource.query fails', ->
-    $scope.getArticlesForCategory 'Test Category', 10, true, false, 'selected'
+    $scope.getArticlesForCategory 'Test Category', 10, true, false
     mockLinkQuery.reject()
     $scope.$digest()
     expect($scope.loading_category).toEqual false
 
   it 'should set emit an error when LinkResource.query fails', ->
     spyOn($scope, '$emit').and.callThrough()
-    $scope.getArticlesForCategory 'Test Category', 10, true, false, 'selected'
+    $scope.getArticlesForCategory 'Test Category', 10, true, false
     mockLinkQuery.reject()
     $scope.$digest()
     expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Could not load links for category'

@@ -1,6 +1,9 @@
 @import "../../bower/bootstrap-sass-official/assets/stylesheets/bootstrap"
 @import "compass/css3"
 
+[ng\:cloak], [ng-cloak], .ng-cloak
+  display: none !important
+
 .main
   margin-top: 70px
 
@@ -63,3 +66,16 @@ span.disabled
 
 .underline
   text-decoration: underline
+
+.uib-tab
+  cursor: pointer
+
+.search-wrapper
+  position: relative
+  .clear-input
+    position: absolute
+    top: 10.5px
+    right: 20px
+    z-index: 999
+    cursor: pointer
+    color: #999999

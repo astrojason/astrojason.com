@@ -20,7 +20,13 @@
               <thead>
                 <tr>
                   <th class="input-group">
-                    <input type="text" ng-model="article_search" class="form-control" placeholder="Search Query" />
+                    <div class="search-wrapper">
+                      <input type="text" ng-model="article_search" class="form-control" placeholder="Search Query" />
+                      <small
+                        class="clear-input glyphicon glyphicon-remove-circle"
+                        ng-show="article_search"
+                        ng-click="article_search = ''; link_results = []"></small>
+                    </div>
                     <div class="input-group-addon"><input type="checkbox" ng-model="is_read" /> <label>Include read</label></div>
                   </th>
                 </tr>
@@ -35,39 +41,31 @@
               </tbody>
             </table>
           </div>
-
-          <div id="daily_links" class="link_container" ngfx-slide-in-down="daily_links.length > 0">
-            <loader ng-show="loading_daily" ng-cloak></loader>
-            <table class="table table-condensed table-striped table-hover" ng-show="daily_links.length > 0" ng-cloak>
-              <thead>
-                <tr>
-                  <th>Daily <small class="pull-right" ng-class="total_read < 10 ? (total_read < 5 ? 'text-danger' : 'text-warning') : 'text-success'">{{ total_read }} marked as read today&nbsp;<span class="glyphicon glyphicon-refresh tool pull-right" ng-click="refreshReadCount()"></span></small></th>
-                </tr>
-              </thead>
+          <uib-tabset active="active">
+            <uib-tab
+              index="$index"
+              ng-repeat="display_category in display_categories"
+              select="getArticlesForCategory(display_category.category, display_category.num_items, display_category.randomize, display_category.track)"
+              active="tab.active"
+              disable="tab.disabled">
+              <uib-tab-heading>
+                {{ display_category.category }}
+                <small
+                  class="glyphicon glyphicon-refresh tool"
+                  ng-show="tab.active && display_category.num_items > 0"
+                  ng-click="getArticlesForCategory(display_category.category, display_category.num_items, display_category.randomize, display_category.track)">
+                </small>
+              </uib-tab-heading>
+            </uib-tab>
+            <loader ng-show="loading_links" ng-cloak></loader>
+            <table class="table table-condensed table-striped table-hover" ng-cloak>
               <tbody>
-                <tr ng-repeat="link in daily_links">
+                <tr ng-repeat="link in links_list">
                   <td><link-form link="link"></link-form></td>
                 </tr>
               </tbody>
             </table>
-          </div>
-
-          <div id="unread_links" class="link_container">
-            <loader ng-show="loading_unread" ng-cloak></loader>
-            <table class="table table-condensed table-striped table-hover" ng-show="unread_links.length > 0" ng-cloak>
-              <thead>
-                <tr>
-                  <th>Unread<span class="glyphicon glyphicon-refresh tool pull-right" ng-click="getArticlesForCategory('Unread', 10, true, true)"></span></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="link in unread_links" ng-class="link.cssClass()">
-                  <td class="item"><link-form link="link"></link-form></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
+          </uib-tabset>
           <div id="category_links" class="link_selected">
             <loader ng-show="loading_category" ng-cloak></loader>
             <table class="table table-condensed table-striped table-hover" ng-show="categories.length > 0" ng-cloak>
@@ -80,7 +78,7 @@
                     <div class="input-group-addon">
                       <span
                         class="glyphicon glyphicon-refresh tool"
-                        ng-click="getArticlesForCategory(display_category, 10, true, false, 'selected')">
+                        ng-click="getArticlesForCategory(display_category, 10, true, false, 'selected', true)">
                       </span>
                     </div>
                   </th>
@@ -136,7 +134,7 @@
               <td>
                 <div ng-show="total_links" ng-cloak>
                   <h7>Links Read</h7><br />
-                  <small>{{ links_read }} of {{ total_links }} ({{ (links_read / total_links) * 100 | number:2 }}%)</small><br />
+                  <small>{{ links_read }} of {{ total_links }} ({{ (links_read / total_links) * 100 | number:2 }}%) (<span ng-class="total_read < 10 ? (total_read < 5 ? 'text-danger' : 'text-warning') : 'text-success'">{{ total_read }} today <small class="glyphicon glyphicon-refresh tool" ng-click="refreshReadCount()"></small></span>)</small><br />
                 </div>
                 <div ng-show="total_books" ng-cloak>
                   <h7>Books Read</h7><br />

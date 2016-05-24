@@ -35,6 +35,11 @@ class LinkTableSeeder extends Seeder {
       $todo->save();
     }
 
+    $this->command->info('Truncating DashboardCategory table');
+    DashboardCategory::truncate();
+
+
+    $this->command->info('Creating DashboardCategory entries');
     DashboardCategory::create([
       'user_id' => 1,
       'category' => 'ToDo',
@@ -55,7 +60,7 @@ class LinkTableSeeder extends Seeder {
 
     DashboardCategory::create([
       'user_id' => 1,
-      'category' => 'Daily',
+      'category' => 'Unread',
       'randomize' => true,
       'num_items' => 20,
       'track' => true,
