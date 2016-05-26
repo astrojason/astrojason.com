@@ -14,8 +14,9 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
       $scope.editing = true
 
     $scope.$on 'linkDeleted', (event, message)->
-      $scope.links = $filter('filter')($scope.links, {id: '!' + message})
+      $scope.links_list = $filter('filter')($scope.links_list, {id: '!' + message})
       $scope.link_results = $filter('filter')($scope.link_results, {id: '!' + message})
+      $scope.selected_links = $filter('filter')($scope.selected_links, {id: '!' + message})
 
     $scope.$watch 'link.link', (oldValue, newValue)->
       if oldValue != newValue
@@ -85,7 +86,7 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
       linkQueryPromise = LinkResource.query(data).$promise
 
       linkQueryPromise.then (links)->
-        $scope.links = links
+        $scope.links_list = links
         $scope.total = links.$total
         $scope.pages = links.$pages
         $scope.generatePages()

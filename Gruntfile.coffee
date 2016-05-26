@@ -55,6 +55,7 @@ module.exports = (grunt) ->
         files: [
           'public/assets/bower/angular/angular.js'
           'public/assets/bower/angular-animate/angular-animate.js'
+          'public/assets/bower/angular-sanitize/angular-sanitize.js'
           'public/assets/bower/angular-messages/angular-messages.js'
           'public/assets/bower/angular-mocks/angular-mocks.js'
           'public/assets/bower/angular-resource/angular-resource.js'

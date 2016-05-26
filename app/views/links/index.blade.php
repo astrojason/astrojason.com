@@ -52,7 +52,7 @@
             <tr ng-show="links_query && links.length == 0 && !loading_links">
               <td>No results for <strong>{{ links_query }}</strong>
             </tr>
-            <tr ng-repeat="link in links" ng-class="link.cssClass()">
+            <tr ng-repeat="link in links_list" ng-class="link.cssClass()">
               <td ng-class="{new: link.new}"><link-form link="link" editing="false" show-category="!display_category"></link-form></td>
             </tr>
           </tbody>

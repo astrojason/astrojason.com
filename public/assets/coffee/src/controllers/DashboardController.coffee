@@ -15,6 +15,7 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
     $scope.movieModalOpen = false
     $scope.gameModalOpen = false
     $scope.songModalOpen = false
+    $scope.viewing_category = ''
 
     $scope.$on 'userLoggedIn', ->
       $scope.initDashboard()
@@ -22,25 +23,22 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
     $scope.$on 'userLoggedOut', ->
       $scope.initDashboard()
 
-    $scope.$on 'linkDeleted', (event, message)->
-      $scope.daily_links = $filter('filter')($scope.daily_links, {id: '!' + message})
-      $scope.unread_links = $filter('filter')($scope.unread_links, {id: '!' + message})
-      $scope.selected_links = $filter('filter')($scope.selected_links, {id: '!' + message})
-      $scope.link_results = $filter('filter')($scope.link_results, {id: '!' + message})
+    $scope.$on 'linkDeleted', (event, linkId)->
+      $scope.links_list = $filter('filter')($scope.links_list, id: "!#{linkId}")
+      $scope.selected_links = $filter('filter')($scope.selected_links, id: "!#{linkId}")
+      $scope.link_results = $filter('filter')($scope.link_results, id: "!#{linkId}")
 
     $scope.$on 'linkUpdated', ->
-      daily_links =
-        category: 'Daily'
+      links_list_filter =
+        category: $scope.viewing_category
         is_read: false
-      unread_links =
-        category: 'Unread'
-        is_read: false
-      selected_links =
+      $scope.links_list = $filter('filter')($scope.links_list, links_list_filter)
+      category_filter =
         category: $scope.display_category
         is_read: false
-      $scope.daily_links = $filter('filter')($scope.daily_links, daily_links)
-      $scope.unread_links = $filter('filter')($scope.unread_links, unread_links)
-      $scope.selected_links = $filter('filter')($scope.selected_links, selected_links)
+      $scope.selected_links = $filter('filter')($scope.selected_links, category_filter)
+      if !$scope.is_read
+        $scope.link_results = $filter('filter')($scope.link_results, is_read: false)
 
     $scope.$on 'linkRead', (event, message)->
       if message
@@ -104,6 +102,7 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
         $scope.loading_category = true
         $scope.selected_links = []
       else
+        $scope.viewing_category = category
         $scope.loading_links = true
         $scope.links_list = []
       data =

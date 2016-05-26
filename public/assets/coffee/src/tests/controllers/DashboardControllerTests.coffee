@@ -99,42 +99,14 @@ describe 'DashboardController tests', ->
   it 'should call update the links when linkDeleted is broadcast', ->
     links = [{id: 1}, {id: 2}, {id: 3}]
     expected_links = [{id: 1}, {id: 3}]
-    $scope.daily_links = links
-    $scope.unread_links = links
+    $scope.links_list = links
     $scope.selected_links = links
     $scope.link_results = links
     $scope.$broadcast 'linkDeleted', 2
     $scope.$digest()
-    expect($scope.daily_links).toEqual expected_links
     expect($scope.selected_links).toEqual expected_links
-    expect($scope.unread_links).toEqual expected_links
+    expect($scope.links_list).toEqual expected_links
     expect($scope.link_results).toEqual expected_links
-
-  it 'should filter out the changed items in the daily list when linkUpdated is broadcast', ->
-    links = [{category: 'Daily', is_read: false}, {category: 'Daily', is_read: true}, {category: 'Test', is_read: false}]
-    expected_links = [{category: 'Daily', is_read: false}]
-    $scope.daily_links = links
-    $scope.$broadcast 'linkUpdated'
-    $scope.$digest()
-    expect($scope.daily_links).toEqual expected_links
-
-  it 'should filter out the changed items in the unread list when linkUpdated is broadcast', ->
-    links = [{category: 'Unread', is_read: false}, {category: 'Unread', is_read: true}, {category: 'Test', is_read: false}]
-    expected_links = [{category: 'Unread', is_read: false}]
-    $scope.unread_links = links
-    $scope.$broadcast 'linkUpdated'
-    $scope.$digest()
-    expect($scope.unread_links).toEqual expected_links
-
-  it 'should filter out the changed items in the unread list when linkUpdated is broadcast', ->
-    spyOn($scope, 'getArticlesForCategory').and.returnValue true
-    $scope.display_category = 'Test'
-    links = [{category: 'Unread', is_read: false}, {category: 'Unread', is_read: true}, {category: 'Test', is_read: false}]
-    expected_links = [{category: 'Test', is_read: false}]
-    $scope.selected_links = links
-    $scope.$broadcast 'linkUpdated'
-    $scope.$digest()
-    expect($scope.selected_links).toEqual expected_links
 
   it 'should update the links_read and total_read values when linkRead is broadcast with a link id', ->
     $scope.links_read = 20

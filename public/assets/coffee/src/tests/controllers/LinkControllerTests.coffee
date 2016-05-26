@@ -62,11 +62,11 @@ describe 'LinkController unit tests', ->
     expect($scope.importedCount).toEqual 0
     expect($scope.loading_links).toEqual false
 
-  it 'should filter out the deleted scopeLink from $scope.links when linkDeleted is broadcast', ->
-    $scope.links = angular.copy mockLinkQueryResponse.links
+  it 'should filter out the deleted scopeLink from $scope.links_list when linkDeleted is broadcast', ->
+    $scope.links_list = angular.copy mockLinkQueryResponse.links
     $scope.$broadcast 'linkDeleted', scopeLink.id
     $scope.$digest()
-    expect($scope.links[0]).not.toEqual scopeLink
+    expect($scope.links_list[0]).not.toEqual scopeLink
 
   it 'should filter out the deleted scopeLink from $scope.link_results when linkDeleted is broadcast', ->
     $scope.link_results = angular.copy mockLinkQueryResponse.links
@@ -232,7 +232,7 @@ describe 'LinkController unit tests', ->
     $scope.query()
     mockLinkQueryDeferred.resolve angular.copy(mockLinkQueryResponse.links)
     $scope.$digest()
-    expect($scope.links).toEqual mockLinkQueryResponse.links
+    expect($scope.links_list).toEqual mockLinkQueryResponse.links
 
   it 'should set $scope.total to the returned value when LinkResource.query succeeds', ->
     $scope.query()
@@ -478,12 +478,6 @@ describe 'LinkController unit tests', ->
     $scope.setCategories(myCategories)
     expect($scope.categories).toEqual myCategories
 
-  it 'should set the importedCount to 0 when importLinks is called', ->
-    spyOn $scope, 'splitImports'
-    $scope.importedCount = 20
-    $scope.importLinks()
-    expect($scope.importedCount).toEqual 0
-
   it 'should call LinkResource.import when importLinks is called', ->
     spyOn($scope, 'splitImports').and.returnValue [
       'http://www.google.com | Google'
@@ -499,9 +493,11 @@ describe 'LinkController unit tests', ->
       'http://www.goodreads.com | Goodreads'
     ]
     $scope.importLinks()
-    mockLinkImportDeferred.resolve count: 100
+    mockLinkImportDeferred.resolve
+      imported: [1]
+      skipped: []
     $scope.$digest()
-    expect($scope.importedCount).toEqual 100
+    expect($scope.alerts.length).toEqual 1
 
   it 'should set the errorMessage when LinkResource.import fails', ->
     spyOn($scope, 'splitImports').and.returnValue [
