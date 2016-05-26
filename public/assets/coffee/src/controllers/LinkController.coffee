@@ -140,7 +140,7 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
       $scope.categories = categories
 
     $scope.importLinks = ->
-      $scope.importedCount = 0
+      $scope.alerts = []
       submitLinks = []
       errorLinks = []
       links = $scope.splitImports $scope.links_to_import
@@ -160,7 +160,29 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
       importPromise = LinkResource.import($.param data).$promise
 
       importPromise.then (response)->
-        $scope.importedCount = response.count
+        imported = response.imported
+        if imported.length > 0
+          $scope.alerts.push
+            type: 'success'
+            msg: "Imported #{imported.length} link(s)."
+        skipped = response.skipped
+        if skipped.length > 0
+          message = """
+            Skipped #{skipped.length} link(s).
+            <ul class='list-unstyled'>
+          """
+          angular.forEach skipped, (link)->
+            message += """
+              <li>#{link.name}: #{link.reason}
+            """
+          message += """
+            </ul>
+          """
+
+          $scope.alerts.push
+            type: 'danger'
+            msg: message
+        $scope.links_to_import = ''
 
       importPromise.catch ->
         $scope.errorMessage = 'There was a problem with the import'
@@ -171,4 +193,7 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
 
     $scope.checkEditing = ->
       $scope.link?.id?
+
+    $scope.closeAlert = (index)->
+      $scope.alerts.splice index, 1
 ]

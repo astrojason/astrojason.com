@@ -60,7 +60,7 @@
             <loader ng-show="loading_links" ng-cloak></loader>
             <table class="table table-condensed table-striped table-hover" ng-cloak>
               <tbody>
-                <tr ng-repeat="link in links_list">
+                <tr ng-repeat="link in links_list" ng-class="link.cssClass()">
                   <td><link-form link="link"></link-form></td>
                 </tr>
               </tbody>

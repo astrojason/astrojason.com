@@ -125,7 +125,7 @@ class LinkController extends AstroBaseController {
 
   public function importLinks() {
     $importLinks = Input::get('importlist');
-
+    $unsavedLinks = [];
     $links = [];
     foreach($importLinks as $importLink){
       if(!$this->checkLinkExists($importLink['url'])) {
@@ -136,10 +136,16 @@ class LinkController extends AstroBaseController {
         $link->user_id = Auth::user()->id;
         $link->save();
         $links[] = $link;
+      } else {
+        $unsavedLinks[] = [
+          'name' => $importLink['name'],
+          'link' => $importLink['url'],
+          'reason' => 'Link already exists'
+        ];
       }
     }
 
-    return $this->successResponse(array('count' => count($links), 'skipped' => (count($importLinks) - count($links))));
+    return $this->successResponse(['imported' => $links, 'skipped' => $unsavedLinks]);
   }
 
   public function readToday() {

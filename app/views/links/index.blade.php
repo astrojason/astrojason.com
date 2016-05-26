@@ -77,18 +77,15 @@
             <h4 class="modal-title">Import from OneTab</h4>
           </div>
           <div class="modal-body">
-            <textarea ng-model="links_to_import" class="form-control" ng-show="importedCount == 0"></textarea>
-            <div class="alert alert-success" ng-show="importedCount > 0">
-              Imported {{ importedCount }} links.
-              <div ng-show="errorLinks.length > 0">
-                <h6>Could not add the following links:</h6>
-                <ul>
-                  <li ng-repeat="errorLink in errorLinks">
-                    {{ errorLink }}
-                  </li>
-                </ul>
-              </div>
-            </div>
+            <uib-alert
+              ng-repeat="alert in alerts"
+              type="{{ alert.type }}"
+              ng-bind-html="alert.msg"
+              close="closeAlert($index)">
+            </uib-alert>
+            <textarea
+              ng-model="links_to_import"
+              class="form-control"></textarea>
           </div>
           <div class="modal-footer">
             <button class="btn btn-primary" ng-click="importLinks()">Import</button>

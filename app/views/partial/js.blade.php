@@ -4,6 +4,7 @@
 <script type="text/javascript" src="assets/bower/angular/angular.min.js"></script>
 <script type="text/javascript" src="assets/bower/angular-resource/angular-resource.min.js"></script>
 <script type="text/javascript" src="assets/bower/angular-animate/angular-animate.min.js"></script>
+<script type="text/javascript" src="assets/bower/angular-sanitize/angular-sanitize.min.js"></script>
 <script type="text/javascript" src="assets/bower/alertifyjs/dist/js/alertify.js"></script>
 <script type="text/javascript" src="assets/bower/angular-fx/dist/angular-fx.min.js"></script>
 <script type="text/javascript" src="assets/bower/angular-messages/angular-messages.min.js"></script>

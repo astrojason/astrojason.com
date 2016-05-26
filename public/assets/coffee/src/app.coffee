@@ -2,6 +2,7 @@ angular.module 'astroApp', [
   'ngMessages'
   'ngResource'
   'ngAnimate'
+  'ngSanitize'
   '720kb.fx'
   'ui.bootstrap'
 ]

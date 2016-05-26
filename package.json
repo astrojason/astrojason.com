@@ -19,5 +19,6 @@
     "karma-jasmine-diff-reporter": "^0.3.2",
     "karma-phantomjs-launcher": "^0.1.4",
     "load-grunt-config": "^0.16.0"
-  }
+  },
+  "dependencies": {}
 }
