@@ -8,7 +8,25 @@
 class UserController extends BaseController {
 
   public function account() {
-    return View::make('user.account')->with(['user' => Auth::user()]);
+    $dashboardSettings = DashboardCategory::where('user_id', Auth::user()->id)->orderBy('position')->get();
+    $dashboardCategories = [];
+    foreach ($dashboardSettings as $dashboardSetting) {
+      $dashboardCategories[$dashboardSetting->position] = $dashboardSetting;
+    }
+    while(count($dashboardCategories) < 4) {
+      $newDashboardCategory = new DashboardCategory();
+      $newDashboardCategory->position = count($dashboardCategories) + 1;
+      $dashboardCategories[$newDashboardCategory->position] = $newDashboardCategory;
+    }
+    $displayCategories = LinkController::getLinkCategories();
+    $displayCategories[] = 'Daily';
+    $displayCategories[] = 'Unread';
+
+    return View::make('user.account')->with([
+      'user' => Auth::user(),
+      'dashboardLayout' => $dashboardCategories,
+      'categories' => $displayCategories
+    ]);
   }
 
   public function update() {

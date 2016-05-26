@@ -25,6 +25,10 @@ Route::group(['before' => 'auth'], function(){
   Route::group(['prefix' => 'account'], function(){
     Route::get('', 'UserController@account');
     Route::post('', 'UserController@update');
+    Route::group(['prefix' => 'dashboard-category'], function(){
+      Route::post('', 'DashboardCategoryController@add');
+      Route::post('{dashboardCategoryId}', 'DashboardCategoryController@update');
+    });
   });
 });
 
