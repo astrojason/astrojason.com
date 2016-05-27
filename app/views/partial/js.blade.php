@@ -10,7 +10,7 @@
 <script type="text/javascript" src="assets/bower/angular-messages/angular-messages.min.js"></script>
 <script type="text/javascript" src="assets/bower/angular-bootstrap/ui-bootstrap.min.js"></script>
 <script type="text/javascript" src="assets/bower/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-<script type="text/javascript" src="assets/bower/bootstrap-sass-official/assets/javascripts/bootstrap.min.js"></script>
+<script type="text/javascript" src="assets/bower/bootstrap-sass/assets/javascripts/bootstrap.min.js"></script>
 <script type="text/javascript" src="assets/js/app.min.js"></script>
 <script type="text/javascript" src="assets/js/models.min.js"></script>
 <script type="text/javascript" src="assets/js/directives.min.js"></script>
