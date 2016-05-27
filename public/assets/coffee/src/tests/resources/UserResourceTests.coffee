@@ -29,7 +29,7 @@ describe 'UserResource test', ->
     $httpBackend.flush()
 
   it 'should POST to the login endpoint', ->
-    $httpBackend.expectPOST('/api/user/login').respond 200
+    $httpBackend.expectPOST('/api/user/login').respond 200, user: {}
     UserResource.login()
     $httpBackend.flush()
 

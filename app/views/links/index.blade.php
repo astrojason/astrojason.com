@@ -49,7 +49,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-show="links_query && links.length == 0 && !loading_links">
+            <tr ng-show="links_query && links_list.length == 0 && !loading_links">
               <td>No results for <strong>{{ links_query }}</strong>
             </tr>
             <tr ng-repeat="link in links_list" ng-class="link.cssClass()">

@@ -88,6 +88,9 @@ angular.module('astroApp').controller 'BookController', ['$scope', '$controller'
         $scope.pages = response.pages
         $scope.generatePages()
 
+      bookPromise.catch ->
+        $scope.$broadcast 'errorOccurred', 'BookResource.query failed'
+
       bookPromise.finally ->
         $scope.loading_books = false
 
