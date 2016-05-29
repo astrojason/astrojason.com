@@ -85,13 +85,14 @@
     <hr />
   </div>
   <div class="form-group">
+    <div class="col-sm-1"></div>
     @foreach($dashboardLayout as $dashboardCategory)
       @if($dashboardCategory->id)
         <% Form::open(['class' => 'form-horizontal', 'url' => '/account/dashboard-category/' . $dashboardCategory->id]) %>
       @else
         <% Form::open(['class' => 'form-horizontal', 'url' => '/account/dashboard-category/']) %>
       @endif
-        <div class="col-sm-3">
+        <div class="col-sm-2">
           <div class="row">
             <input type="hidden" name="position" value="<% $dashboardCategory->position %>" />
             <div class="col-md-12">
@@ -117,7 +118,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 col-md-offset-2">
               <label class="checkbox">
                 <input
                   type="checkbox"
@@ -130,7 +131,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-10 col-md-offset-2">
               <label class="checkbox">
                 <input
                   type="checkbox"
@@ -143,12 +144,13 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" style="padding-top: 10px">
               <input type="submit" class="btn btn-primary" value="Update" />
             </div>
           </div>
         </div>
       <% Form::close() %>
     @endforeach
+    <div class="col-sm-1"></div>
   </div>
 @stop

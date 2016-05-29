@@ -5,6 +5,7 @@ angular.module 'astroApp', [
   'ngSanitize'
   '720kb.fx'
   'ui.bootstrap'
+  'siyfion.sfTypeahead'
 ]
 
 param = (data)->

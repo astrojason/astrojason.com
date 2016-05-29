@@ -13,7 +13,7 @@ class UserController extends BaseController {
     foreach ($dashboardSettings as $dashboardSetting) {
       $dashboardCategories[$dashboardSetting->position] = $dashboardSetting;
     }
-    while(count($dashboardCategories) < 4) {
+    while(count($dashboardCategories) < 5) {
       $newDashboardCategory = new DashboardCategory();
       $newDashboardCategory->position = count($dashboardCategories) + 1;
       $dashboardCategories[$newDashboardCategory->position] = $newDashboardCategory;
