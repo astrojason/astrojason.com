@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title') :: astrojason.com</title>
     <link href="assets/bower/alertifyjs/dist/css/alertify.css" rel="stylesheet" />
-    <link href="assets/bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="assets/bower/angular-fx/dist/angular-fx.min.css" rel="stylesheet" />
     <link href="assets/bower/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet" />
     <link href="assets/sass/build/vendor/loader.css" rel="stylesheet" />
+    <link href="assets/bower/typeahead.js-bootstrap3.less/typeaheadjs.css" rel="stylesheet" />
     <link href="assets/sass/build/base.css" rel="stylesheet" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

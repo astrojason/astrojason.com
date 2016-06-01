@@ -154,7 +154,7 @@ class LinkControllerTest extends TestCase {
     }
     /** @var JsonResponse $response */
     $response = $this->call('POST', '/api/link/import', ['importlist' => $importlist]);
-    $this->assertEquals(20, $response->getData(true)['count']);
+    $this->assertEquals(20, count($response->getData(true)['imported']));
   }
 
   public function test_import_existing_link() {
@@ -183,8 +183,8 @@ class LinkControllerTest extends TestCase {
     ];
     /** @var JsonResponse $response */
     $response = $this->call('POST', '/api/link/import', ['importlist' => $importList]);
-    $this->assertEquals(20, $response->getData(true)['count']);
-    $this->assertEquals(1, $response->getData(true)['skipped']);
+    $this->assertEquals(20, count($response->getData(true)['imported']));
+    $this->assertEquals(1, count($response->getData(true)['skipped']));
   }
 
   public function test_update_read_count() {

@@ -46,7 +46,15 @@
   </div>
   <div class="form-group">
     <label for="category">Category</label>
-    <select name="category" ng-model="link.category" ng-init="setCategories(<%% $categories %%>)" ng-options="category for category in categories" class="form-control"></select>
+    <input
+      type="text"
+      class="form-control"
+      sf-typeahead
+      datasets="categoryDataset"
+      options="{highlight: true, minLength: 3}"
+      ng-model="link.category"
+      ng-init="setCategories(<%% $categories %%>)"
+      required />
   </div>
   <div class="form-group" ng-show="link.category == 'New'">
     <input type="text" name="new_category" class="form-control" ng-model="new_category" placeholder="Category Name" ng-required="link.category == 'New'" />

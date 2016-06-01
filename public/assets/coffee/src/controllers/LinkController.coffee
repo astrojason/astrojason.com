@@ -13,6 +13,20 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
     if !$scope.link?.id?
       $scope.editing = true
 
+    $scope.categoryDataset =
+      display: (category)->
+        category
+
+      templates:
+        suggestion: (category) ->
+          """
+            <span class="locationTypeaheadItem">
+              <strong class="name">#{category}</strong>
+            </span>
+          """
+      source: (query, results)->
+        results $filter('filter')($scope.categories, query)
+
     $scope.$on 'linkDeleted', (event, message)->
       $scope.links_list = $filter('filter')($scope.links_list, {id: '!' + message})
       $scope.link_results = $filter('filter')($scope.link_results, {id: '!' + message})

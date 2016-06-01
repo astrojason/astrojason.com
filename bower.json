@@ -15,10 +15,11 @@
     "angular-messages": "^1.5.6",
     "angular-resource": "^1.5.6",
     "angular-sanitize": "^1.5.6",
+    "angular-typeahead": "^0.3.1",
     "bootstrap-sass": "bootstrap-sass-official#^3.3.6",
     "html5shiv": "^3.7.3",
     "respond": "^1.4.2",
-    "angular-typeahead": "^0.3.1"
+    "typeahead.js-bootstrap3.less": "typeahead.js-bootstrap-css#^1.2.1"
   },
   "devDependencies": {
     "angular-mocks": "^1.5.6",
