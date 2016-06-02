@@ -1,5 +1,5 @@
-angular.module('astroApp').controller 'DashboardController', ['$scope', '$http', '$location', '$timeout', '$filter',
-  'UserService', 'DashboardResource', 'LinkResource', 'Link', 'Book', 'Movie', 'Game', 'Song', ($scope, $http,
+angular.module('astroApp').controller 'DashboardController', ['$scope', '$location', '$timeout', '$filter',
+  'UserService', 'DashboardResource', 'LinkResource', 'Link', 'Book', 'Movie', 'Game', 'Song', ($scope,
   $location, $timeout, $filter, UserService, DashboardResource, LinkResource, Link, Book, Movie, Game, Song)->
 
     $scope.display_category = $location.search().category || ''
@@ -172,10 +172,9 @@ angular.module('astroApp').controller 'DashboardController', ['$scope', '$http',
       daily_Promise.catch ->
         $scope.$emit 'errorOccurred', 'Problem loading daily results'
 
-#   TODO: Put this into the LinkResource service
     $scope.populateLinks = ->
-      populate_promise = $http.get '/api/links/populate'
-      populate_promise.success ->
+      populate_promise = LinkResource.populate().$promise
+      populate_promise.then ->
         $scope.loadDashboard()
 
     $scope.refreshReadCount = ->

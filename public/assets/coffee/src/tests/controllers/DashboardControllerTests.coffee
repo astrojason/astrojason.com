@@ -6,6 +6,7 @@ describe 'DashboardController tests', ->
   Link = null
   mockLinkResource = null
   mockLinkQuery = null
+  mockLinkPopulate = null
   mockLinkReadToday = null
   mockDashboardGet = null
   mockUserService = null
@@ -28,6 +29,9 @@ describe 'DashboardController tests', ->
         query: ->
           mockLinkQuery = $q.defer()
           $promise: mockLinkQuery.promise
+        populate: ->
+          mockLinkPopulate = $q.defer()
+          $promise: mockLinkPopulate.promise
 
       mockUserService =
         get: ->
@@ -307,23 +311,25 @@ describe 'DashboardController tests', ->
     $scope.$digest()
     expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Problem loading daily results'
 
-  it 'should call /api/ilinks/populate when populateLinks is called', ->
-    $httpBackend.expectGET('/api/links/populate').respond 200
+  it 'should call LinkResource.populate when populateLinks is called', ->
+    spyOn(mockLinkResource, 'populate').and.callThrough()
     $scope.populateLinks()
-    $httpBackend.flush()
+    expect(mockLinkResource.populate).toHaveBeenCalled()
 
-  it 'should call loadDashboard when the $http get responds successfully', ->
+  it 'should call loadDashboard when the LinkResource.populate responds successfully', ->
     spyOn($scope, 'loadDashboard').and.callThrough()
-    $httpBackend.expectGET('/api/links/populate').respond 200
     $scope.populateLinks()
-    $httpBackend.flush()
+    mockLinkPopulate.resolve()
+    $scope.$digest()
     expect($scope.loadDashboard).toHaveBeenCalled()
 
-  it 'should not call loadDashboard when the $http get responds unsuccessfully', ->
+    expect($scope.loadDashboard).toHaveBeenCalled()
+
+  it 'should not call loadDashboard when the LinkResource.populate responds unsuccessfully', ->
     spyOn($scope, 'loadDashboard').and.callThrough()
-    $httpBackend.expectGET('/api/links/populate').respond 500
     $scope.populateLinks()
-    $httpBackend.flush()
+    mockLinkPopulate.reject()
+    $scope.$digest()
     expect($scope.loadDashboard).not.toHaveBeenCalled()
 
   it 'should call LinkResource.readToday when $scope.refreshReadCount is called', ->

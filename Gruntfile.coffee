@@ -5,10 +5,10 @@ module.exports = (grunt) ->
     pkg: grunt.file.readJSON 'package.json'
 
     coffee:
-      files:
+      compile:
         expand: true
         cwd: 'public/assets/coffee/src'
-        src: '**/*.coffee'
+        src: ['**/*.coffee']
         dest: 'public/assets/coffee/build'
         ext: '.js'
 
@@ -32,7 +32,6 @@ module.exports = (grunt) ->
         preserveComments: false
       build:
         files: {
-          'public/assets/js/vendor/bootstrap.min.js': 'public/assets/bower/bootstrap-sass-official/assets/javascripts/bootstrap.js'
           'public/assets/js/app.min.js': 'public/assets/coffee/build/app.js'
           'public/assets/js/bookmarklet.min.js': 'public/assets/coffee/build/bookmarklet.js'
           'public/assets/js/bookmarkletLoader.min.js': 'public/assets/coffee/build/bookmarkletLoader.js'
@@ -100,15 +99,15 @@ module.exports = (grunt) ->
 
       coffee:
         files: 'public/assets/coffee/src/**/*.coffee'
-        tasks: ['clean', 'coffee']
+        tasks: [
+          'clean'
+          'coffee'
+          'uglify'
+        ]
 
       compass:
         files: 'public/assets/sass/src/**/*.s{a,c}ss'
         tasks: 'compass'
-
-      uglify:
-        files: 'public/assets/coffee/build/**/*.js'
-        tasks: 'uglify'
 
   grunt.registerTask 'test', [
     'clean'

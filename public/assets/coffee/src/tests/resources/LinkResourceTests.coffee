@@ -59,3 +59,8 @@ describe 'LinkResource test', ->
     $httpBackend.expectGET('/api/link/readtoday').respond total_read: 10
     LinkResource.readToday()
     $httpBackend.flush()
+
+  it 'should call the populate endpoint', ->
+    $httpBackend.expectGET('/api/link/populate').respond 200
+    LinkResource.populate()
+    $httpBackend.flush()

@@ -5,10 +5,15 @@ angular.module('astroApp').factory 'LinkResource', ['$resource', ($resource)->
 
   resource_options =
 
-    readToday:
+    import:
+      method: 'POST'
+      params:
+        id: 'import'
+
+    populate:
       method: 'GET'
       params:
-        id: 'readtoday'
+        id: 'populate'
 
     query:
       method: 'GET'
@@ -24,10 +29,10 @@ angular.module('astroApp').factory 'LinkResource', ['$resource', ($resource)->
           response.resource.$total = response.data.$total
           response.resource
 
-    import:
-      method: 'POST'
+    readToday:
+      method: 'GET'
       params:
-        id: 'import'
+        id: 'readtoday'
 
   LinkResource = $resource '/api/link/:id', resource_parameter_defaults, resource_options
 
