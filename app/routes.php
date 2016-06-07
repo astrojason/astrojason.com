@@ -15,13 +15,9 @@ Route::get('', 'HomeController@showIndex');
 Route::get('info', function(){
   return View::make('info');
 });
+Route::get('register', 'HomeController@register');
 
 Route::group(['before' => 'auth'], function(){
-  Route::get('games', 'GameController@index');
-  Route::get('links', 'LinkController@index');
-  Route::get('movies', 'MovieController@index');
-  Route::get('register', 'HomeController@register');
-  Route::get('songs', 'SongController@index');
   Route::group(['prefix' => 'account'], function(){
     Route::get('', 'UserController@account');
     Route::post('', 'UserController@update');
@@ -30,9 +26,12 @@ Route::group(['before' => 'auth'], function(){
       Route::post('{dashboardCategoryId}', 'DashboardCategoryController@update');
     });
   });
+  Route::get('games', 'GameController@index');
+  Route::get('links', 'LinkController@index');
+  Route::get('movies', 'MovieController@index');
+  Route::get('readlater', 'LinkController@readLater');
+  Route::get('songs', 'SongController@index');
 });
-
-Route::get('readlater', 'LinkController@readLater');
 
 Route::group(['prefix' => 'books'], function(){
   @include('routes/books.php');
