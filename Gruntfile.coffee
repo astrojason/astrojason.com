@@ -72,6 +72,9 @@ module.exports = (grunt) ->
             included: false
           }
         ]
+        exclude: [
+          'public/assets/coffee/build/tests/e2e/*.js'
+        ]
         logLevel: 'ERROR'
         frameworks: ['jasmine']
         reporters: [
