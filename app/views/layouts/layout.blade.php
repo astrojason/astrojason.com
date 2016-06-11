@@ -39,26 +39,47 @@
             @endforeach
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li ng-show="user" uib-dropdown on-toggle="toggled(open)">
+            <li ng-show="user" uib-dropdown on-toggle="toggled(open)" id="user_nav">
               <a href id="simple-dropdown" uib-dropdown-toggle>
                 Hello <span>{{ user.firstname }}</span>
                 <small class="glyphicon" ng-class="open ? 'glyphicon-chevron-up' : 'glyphicon-chevron-down'"></small>
               </a>
               <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
                 <li><a href="/account" target="_self">My account</a></li>
-                <li><a ng-click="logout()">Logout</a></li>
+                <li><a ng-click="logout()" id="logout_button">Logout</a></li>
               </ul>
             </li>
             <li ng-show="!user">
-              <form class="navbar-form navbar-right" role="form" ng-submit="login()" ng-cloak>
+              <form id="login_form" name="login_form" class="navbar-form navbar-right" role="form" ng-submit="login()" ng-cloak>
                 <div class="form-group">
-                  <input type="text" placeholder="Username" class="form-control" ng-model="username">
+                  <input
+                    type="text"
+                    id="login_username"
+                    placeholder="Username"
+                    class="form-control"
+                    ng-model="username"
+                    required />
                 </div>
                 <div class="form-group">
-                  <input type="password" placeholder="Password" class="form-control" ng-model="password">
+                  <input
+                    type="password"
+                    id="login_password"
+                    placeholder="Password"
+                    class="form-control"
+                    ng-model="password"
+                    required />
                 </div>
-                <button type="submit" class="btn btn-success">Sign in</button>
-                <a href="register" class="btn btn-default" target="_self">Register</a>
+                <button
+                  type="submit"
+                  id="login_submit"
+                  ng-disabled="!login_form.$valid"
+                  ng-class="login_form.$valid ? 'btn-success' : 'btn-disabled'"
+                  class="btn">Sign in</button>
+                <a
+                  href="register"
+                  class="btn btn-default"
+                  id="register_link"
+                  target="_self">Register</a>
               </form>
             </li>
           </ul>

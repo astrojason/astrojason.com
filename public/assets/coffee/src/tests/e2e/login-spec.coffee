@@ -1,30 +1,52 @@
+http = require 'http'
+
+usernameInput = null
+passwordInput = null
+loginSubmit = null
+userNavItem = null
+logoutButton = null
+
 describe 'Protractor login tests', ->
 
-#  beforeEach ->
-#    browser.manage().window().setSize 800, 600
-#
-#  it 'should not show the login form', ->
-#    browser.get('http://127.0.0.1:8000/')
-#    browser.waitForAngular()
-#
-#    expect(browser.isElementPresent(By.id('loginForm'))).toBeFalsy()
-#
-#  it 'should open the login modal', ->
-#    browser.get('http://127.0.0.1:8000/')
-#    browser.waitForAngular()
-#    element(By.id('loginButton')).click()
-#    browser.wait ->
-#      browser.isElementPresent(By.name('loginForm'))
-#    , 3000
-#
-#    expect(element(By.name('loginForm')).isDisplayed()).toBeTruthy()
-#
-#  it 'should take the user to the forgot password page', ->
-#    browser.get('http://127.0.0.1:8000/')
-#    browser.waitForAngular()
-#    element(By.id('loginButton')).click()
-#    browser.wait ->
-#      browser.isElementPresent(By.name('loginForm'))
-#    , 3000
-#
-#    element(By.css('a[href="/password_reset/"]')).click()
+  beforeEach ->
+    browser.get 'http://localhost:8888/'
+    browser.waitForAngular()
+
+    usernameInput = element By.id 'login_username'
+    passwordInput = element By.id 'login_password'
+    loginSubmit = element By.id 'login_submit'
+    userNavItem = element By.id 'user_nav'
+    logoutButton = element By.id 'logout_button'
+
+  afterEach ->
+    browser.manage().deleteAllCookies()
+
+  it 'should show the login form', ->
+    expect(usernameInput.isDisplayed()).toBeTruthy()
+
+  it 'should not show the user nav', ->
+    expect(userNavItem.isDisplayed()).toBeFalsy()
+    
+  it 'should have a disabled submit button when the form is invalid', ->
+    expect(loginSubmit.isEnabled()).toEqual false
+
+  it 'should have a enabled submit button when the form is valid', ->
+    usernameInput.sendKeys 'test'
+    passwordInput.sendKeys 'test'
+    expect(loginSubmit.isEnabled()).toEqual true
+
+  it 'should log the user in', ->
+    usernameInput.sendKeys 'testuser'
+    passwordInput.sendKeys 'a'
+    loginSubmit.click()
+    browser.waitForAngular()
+    expect(userNavItem.isDisplayed()).toBeTruthy()
+
+#    TODO: Test what happens when the login fails
+  it 'should log the user in', ->
+    erroMessage = element By.className 'alert-danger'
+    usernameInput.sendKeys 'testuser'
+    passwordInput.sendKeys 'wrong'
+    loginSubmit.click()
+    browser.waitForAngular()
+    expect(erroMessage.getText()).toEqual 'Could not log you in.'

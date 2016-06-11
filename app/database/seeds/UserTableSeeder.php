@@ -21,6 +21,14 @@ class UserTableSeeder extends Seeder
       'password' => Hash::make('a')
     ]);
 
+    User::create([
+      'username' => 'testuser',
+      'firstname' => 'Test',
+      'lastname' => 'User',
+      'email' => 'test@astrojason.com',
+      'password' => Hash::make('a')
+    ]);
+
     foreach(range(1,20) as $index) {
       User::create([
         'username' => $faker->userName,

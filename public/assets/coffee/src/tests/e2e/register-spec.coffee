@@ -21,7 +21,7 @@ describe 'Protractor registration tests', ->
     confirmPasswordInput = element By.id('confirm_password')
     registerButton = element By.id('registerSubmit')
 
-  enderValidData = ->
+  enterValidData = ->
     random = Math.random()
     firstNameInput.sendKeys 'Test'
     lastNameInput.sendKeys 'User'
@@ -30,6 +30,12 @@ describe 'Protractor registration tests', ->
     passwordInput.sendKeys 'a'
     confirmPasswordInput.sendKeys 'a'
 
+  it 'should navigate to the registration page', ->
+    browser.get 'http://localhost:8888/'
+    browser.waitForAngular()
+    element(By.id('register_link')).click()
+    expect(browser.getCurrentUrl()).toEqual 'http://localhost:8888/register'
+
   it 'should got to the registration form', ->
     expect(browser.getTitle()).toEqual 'Registration :: astrojason.com'
 
@@ -37,13 +43,13 @@ describe 'Protractor registration tests', ->
     expect(registerButton.isEnabled()).toEqual false
 
   it 'should have an enabled save button when the form is valid', ->
-    enderValidData()
+    enterValidData()
     browser.waitForAngular()
 
     expect(registerButton.isEnabled()).toEqual true
 
   it 'should have a disabled save button when the passwords do not match', ->
-    enderValidData()
+    enterValidData()
     confirmPasswordInput.sendKeys 's'
     browser.waitForAngular()
 
@@ -78,7 +84,7 @@ describe 'Protractor registration tests', ->
     expect(element(By.id('usernameInUse')).isDisplayed()).toBeFalsy()
 
   it 'should submit the form and return successfully', ->
-    enderValidData()
+    enterValidData()
     browser.waitForAngular()
     registerButton.click()
     browser.waitForAngular()
