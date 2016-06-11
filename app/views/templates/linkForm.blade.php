@@ -49,6 +49,7 @@
     <input
       type="text"
       class="form-control"
+      select-on-focus
       sf-typeahead
       datasets="categoryDataset"
       options="{highlight: true, minLength: 3}"
