@@ -5,7 +5,7 @@ namespace Api;
 
 use Illuminate\Http\Response as IlluminateResponse;
 
-use Auth, DB, Exception, Input, Link;
+use Auth, Carbon, DB, Exception, Input, Link;
 
 /**
  * Class LinkController
@@ -82,10 +82,18 @@ class LinkController extends AstroBaseController {
       $link->user_id = Auth::user()->id;
     }
     try {
+      $isRead = filter_var(Input::get('is_read'), FILTER_VALIDATE_BOOLEAN);
       $link->name = Input::get('name');
       $link->link = Input::get('link');
       $link->category = Input::get('category');
-      $link->is_read = filter_var(Input::get('is_read'), FILTER_VALIDATE_BOOLEAN);
+      if($link->is_read != $isRead) {
+        $link->is_read = $isRead;
+        if($isRead) {
+          $link->read_at = Carbon\Carbon::now();
+        } else {
+          $link->read_at = null;
+        }
+      }
       $link->times_loaded = Input::get('times_loaded', 0);
       $link->times_loaded = Input::get('times_read', 0);
       if(Input::get('instapaper_id')) {
@@ -156,7 +164,7 @@ class LinkController extends AstroBaseController {
     $query = Link::where('is_read', true)
       ->where('user_id', Auth::user()->id);
     $query->where(function ($query) {
-      $query->where('updated_at', 'LIKE', '%' . date('Y-m-d') . '%')
+      $query->where('read_at', 'LIKE', '%' . date('Y-m-d') . '%')
         ->orwhere('created_at', 'LIKE', '%' . date('Y-m-d') . '%');
     });
     return $query->count();
@@ -184,7 +192,7 @@ class LinkController extends AstroBaseController {
    */
   public function checkLinkExists($checkLink) {
     $checkLink = substr($checkLink, strpos($checkLink, '//') + 2);
-    if (strstr($checkLink, '?')) {
+    if (strstr($checkLink, '?') && !strstr($checkLink, 'youtube')) {
       $checkLink = substr($checkLink, 0, strpos($checkLink, '?'));
     }
     $link = Link::where('link', 'LIKE', "%$checkLink%")->where('user_id', Auth::user()->id)->first();

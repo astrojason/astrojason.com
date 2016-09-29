@@ -13,6 +13,7 @@
  * @property integer $times_loaded
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $read_at
  * @property integer $times_read
  * @method static \Illuminate\Database\Query\Builder|\Link whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\Link whereName($value)
