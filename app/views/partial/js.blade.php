@@ -13,6 +13,10 @@
 <script type="text/javascript" src="assets/bower/bootstrap-sass/assets/javascripts/bootstrap.min.js"></script>
 <script type="text/javascript" src="assets/bower/typeahead.js/dist/typeahead.jquery.min.js"></script>
 <script type="text/javascript" src="assets/bower/angular-typeahead/angular-typeahead.min.js"></script>
+
+<script type="text/javascript" src="assets/bower/d3/d3.min.js"></script>
+<script type="text/javascript" src="assets/bower/dimple/dist/dimple.latest.min.js"></script>
+
 <script type="text/javascript" src="assets/js/app.min.js"></script>
 <script type="text/javascript" src="assets/js/models.min.js"></script>
 <script type="text/javascript" src="assets/js/directives.min.js"></script>

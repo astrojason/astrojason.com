@@ -1,11 +1,10 @@
 <?php
 
-
 namespace Api;
 
 use Illuminate\Http\Response as IlluminateResponse;
 
-use Auth, Carbon, DB, Exception, Input, Link;
+use Auth, Carbon\Carbon, DB, Exception, Input, Link;
 
 /**
  * Class LinkController
@@ -89,7 +88,7 @@ class LinkController extends AstroBaseController {
       if($link->is_read != $isRead) {
         $link->is_read = $isRead;
         if($isRead) {
-          $link->read_at = Carbon\Carbon::now();
+          $link->read_at = Carbon::now();
         } else {
           $link->read_at = null;
         }
@@ -162,12 +161,61 @@ class LinkController extends AstroBaseController {
 
   public function getReadTodayCount() {
     $query = Link::where('is_read', true)
-      ->where('user_id', Auth::user()->id);
-    $query->where(function ($query) {
-      $query->where('read_at', 'LIKE', '%' . date('Y-m-d') . '%')
-        ->orwhere('created_at', 'LIKE', '%' . date('Y-m-d') . '%');
-    });
+      ->where('user_id', Auth::user()->id)
+      ->where('read_at', 'LIKE', '%' . date('Y-m-d') . '%');
     return $query->count();
+  }
+
+  public function report() {
+    $today = Carbon::today();
+    $oneMonthAgo = Carbon::parse(date('Y-m-d', strtotime("-1 months")));
+
+    $report_query = Link::where('user_id', Auth::user()->id)
+      ->where(function($query) use ($oneMonthAgo){
+        $query->where('read_at', '>=', $oneMonthAgo)
+          ->orWhere('created_at', '>=', $oneMonthAgo);
+      });
+    $report_links = $report_query->get();
+    $report = new Report();
+
+    for($date = $oneMonthAgo; $date->lte($today); $date->addDay()) {
+      $report->{$date->format('Y-m-d')} = [
+          'read' => 0,
+          'created' => 0
+        ];
+    }
+    foreach ($report_links as $report_link) {
+      if($report_link->is_read) {
+        $row_date = $report_link->read_at;
+      } else {
+        $row_date = $report_link->created_at->toDateString();
+      }
+      if(isset($row_date)) {
+        if ($report_link->is_read == 1) {
+          $report->{$row_date}['read'] += 1;
+          if ($report_link->created_at->toDateString() == $row_date) {
+            $report->{$row_date}['created'] += 1;
+          }
+        } else {
+          $report->{$row_date}['created'] += 1;
+        }
+      }
+    }
+    $parsedReport = [];
+    foreach ($report as $key => $value) {
+      $parsedReport[] = [
+        'Date' => $key,
+        'Action' => 'Read',
+        'Articles' => $value['read']
+      ];
+      $parsedReport[] = [
+        'Date' => $key,
+        'Action' => 'Added',
+        'Articles' => $value['created']
+      ];
+    }
+
+    return $this->successResponse(['report' => $parsedReport]);
   }
 
   /**
@@ -200,3 +248,5 @@ class LinkController extends AstroBaseController {
   }
 
 }
+
+class Report {}

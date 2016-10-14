@@ -9,3 +9,4 @@ Route::group(['prefix' => '{linkId}'], function(){
   Route::delete('', 'LinkController@delete');
   Route::post('', 'LinkController@save');
 });
+Route::get('report', 'LinkController@report');

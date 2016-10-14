@@ -31,6 +31,7 @@ Route::group(['before' => 'auth'], function(){
   Route::get('movies', 'MovieController@index');
   Route::get('readlater', 'LinkController@readLater');
   Route::get('songs', 'SongController@index');
+  Route::get('charts', 'ChartController@index');
 });
 
 Route::group(['prefix' => 'books'], function(){

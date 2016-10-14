@@ -34,6 +34,11 @@ angular.module('astroApp').factory 'LinkResource', ['$resource', ($resource)->
       params:
         id: 'readtoday'
 
+    report:
+      method: 'GET'
+      params:
+        id: 'report'
+
   LinkResource = $resource '/api/link/:id', resource_parameter_defaults, resource_options
 
   LinkResource.prototype.cssClass = ()->

@@ -7,8 +7,9 @@ public/assets/sass/build/
 public/assets/js/*.min.js
 coverage/
 app/config/development/
+app/config/production/
+app/config/testing/
 app/storage/
-app/config/production
 bootstrap/compiled.php
 composer.lock
 .env.local.php

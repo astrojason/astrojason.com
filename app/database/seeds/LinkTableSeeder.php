@@ -12,16 +12,25 @@ class LinkTableSeeder extends Seeder {
     $this->command->info('Inserting sample records using Faker ...');
 
     foreach(range(1,1000) as $index) {
+      $read = $faker->boolean();
       Link::create([
         'user_id' => 1,
         'name' => ucwords(implode(' ', $faker->words(3))),
         'link' => $faker->url(),
         'category' => $faker->boolean() ? 'Unread' : $faker->monthName(),
-        'is_read' => $faker->boolean(),
+        'is_read' => $read,
         'times_loaded' => $faker->numberBetween(0, 50),
-        'times_read' => $faker->numberBetween(0, 10)
+        'times_read' => $faker->numberBetween(0, 10),
+        'read_at' => $read ? $faker->dateTimeThisMonth() : null
       ]);
     }
+    $changeCreated = Link::where('is_read', false)->get();
+    /** @var Link $daily */
+    foreach($changeCreated as $changingCreated){
+      $changingCreated->created_at =  $faker->dateTimeThisMonth();
+      $changingCreated->save();
+    }
+
     $dailies = Link::where('is_read', false)->orderBy(DB::raw('RAND()'))->take(10)->get();
     /** @var Link $daily */
     foreach($dailies as $daily){
