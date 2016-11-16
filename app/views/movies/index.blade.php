@@ -14,14 +14,20 @@
             <tr>
               <th>Movies<button class="btn btn-success btn-xs pull-right" ng-click="movieModalOpen = true">Add</button></th>
             </tr>
+            <tr>
+              <th>
+                <div class="search-wrapper">
+                  <input type="text" ng-model="movie_query" class="form-control" placeholder="Search Query" />
+                  <small
+                    class="clear-input glyphicon glyphicon-remove-circle"
+                    ng-show="movie_query"
+                    ng-click="movie_query = ''"></small>
+                </div>
+              </th>
+            </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <input type="text" ng-model="movie_query" class="form-control" placeholder="Search Query" />
-              </td>
-            </tr>
-            <tr ng-show="movie_query && movie.length == 0 && !loading_movies">
+            <tr ng-show="movie_query && movies.length == 0 && !loading_movies">
               <td>No results for <strong>{{ movie_query }}</strong>
             </tr>
             <tr ng-repeat="movie in movies" ng-class="{read: movie.is_watched}">
