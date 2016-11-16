@@ -16,7 +16,13 @@
             </tr>
             <tr>
               <th class="input-group">
-                <input type="text" ng-model="game_query" class="form-control" placeholder="Search Query" />
+                <div class="search-wrapper">
+                  <input type="text" ng-model="game_query" class="form-control" placeholder="Search Query" />
+                  <small
+                    class="clear-input glyphicon glyphicon-remove-circle"
+                    ng-show="game_query"
+                    ng-click="game_query = ''"></small>
+                </div>
                 <div class="input-group-addon"><input type="checkbox" ng-model="include_completed" /> <label>Include completed</label></div>
               </th>
             </tr>
