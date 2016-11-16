@@ -110,15 +110,29 @@
             </tr>
             <tr>
               <td>
-                <button class="btn btn-success btn-xs" ng-click="linkModalOpen = true">Add Link</button>
-                <button class="btn btn-success btn-xs" ng-click="bookModalOpen = true">Add Book</button>
-                <button class="btn btn-success btn-xs" ng-click="movieModalOpen = true">Add Movie</button>
+                <div class="row">
+                  <div class="col-md-4 col-sm-6">
+                    <button class="btn btn-success btn-xs" ng-click="linkModalOpen = true">Add Link</button>
+                  </div>
+                  <div class="col-md-4 col-sm-6">
+                    <button class="btn btn-success btn-xs" ng-click="bookModalOpen = true">Add Book</button>
+                  </div>
+                  <div class="col-md-4 col-md-offset-0 col-sm-6 col-sm-offset-3">
+                    <button class="btn btn-success btn-xs" ng-click="movieModalOpen = true">Add Movie</button>
+                  </div>
+                </div>
               </td>
             </tr>
             <tr>
               <td>
-                <button class="btn btn-success btn-xs" ng-click="gameModalOpen = true">Add Game</button>
-                <button class="btn btn-success btn-xs" ng-click="songModalOpen = true">Add Song</button>
+                <div class="row">
+                  <div class="col-md-4">
+                    <button class="btn btn-success btn-xs" ng-click="gameModalOpen = true">Add Game</button>
+                  </div>
+                  <div class="col-md-4">
+                    <button class="btn btn-success btn-xs" ng-click="songModalOpen = true">Add Song</button>
+                  </div>
+                </div>
               </td>
             </tr>
             <tr ng-show="books_toread" ng-cloak>
