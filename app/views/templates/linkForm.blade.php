@@ -16,6 +16,7 @@
     <div class="row">
       <div class="col-xs-8" ng-class="showCategory ? 'col-md-6' : 'col-md-10'">
         <a ng-href="{{ link.link }}" ng-click="linkOpened()" target="_blank">{{ link.name }}</a>
+        <small ng-show="link.times_read > 0" ng-cloak>read {{ link.times_read }} time(s)</small>
       </div>
       <div class="col-md-2 hidden-xs" ng-show="showCategory">
         {{ link.category }}
