@@ -16,7 +16,13 @@
             </tr>
             <tr>
               <th class="input-group">
-                <input type="text" ng-model="song_query" class="form-control" placeholder="Search Query" />
+                <div class="search-wrapper">
+                  <input type="text" ng-model="song_query" class="form-control" placeholder="Search Query" />
+                  <small
+                    class="clear-input glyphicon glyphicon-remove-circle"
+                    ng-show="song_query"
+                    ng-click="song_query = ''"></small>
+                </div>
                 <div class="input-group-addon"><input type="checkbox" ng-model="include_learned" /> <label>Include learned</label></div>
               </th>
             </tr>
