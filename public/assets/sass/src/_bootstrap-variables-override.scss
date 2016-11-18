@@ -1,0 +1,11 @@
+//$brand-primary: darken(#395C6B, 6.5%);
+//$brand-success: #80A4ED;
+//$brand-info: #E6E1C5;
+//$brand-warning: #D4CB92;
+//$brand-danger: #d9534f;
+
+$body-bg: #fff;
+
+$navbar-default-bg: lighten($body-bg, 10%);
+
+$jumbotron-bg: darken($navbar-default-bg, 6.5%);

@@ -17,7 +17,7 @@ module.exports = (grunt) ->
         environment: 'production'
         outputStyle: 'compressed'
         noLineComments: true
-        importPath: 'public/'
+        importPath: 'public/assets/bower/bootstrap-sass/assets/stylesheets'
 
       compile:
         options:
