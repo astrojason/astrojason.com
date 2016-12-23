@@ -76,6 +76,10 @@ class TemplateController extends BaseController {
     }
   }
 
+  public function accountForm() {
+    return View::make('templates.accountForm');
+  }
+
   public function songForm() {
     return View::make('templates.songForm');
   }
@@ -102,6 +106,10 @@ class TemplateController extends BaseController {
 
   public function gameModal() {
     return View::make('templates.gameModal');
+  }
+
+  public function accountModal() {
+    return View::make('templates.accountModal');
   }
 
   public function movieModal() {

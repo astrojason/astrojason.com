@@ -4,7 +4,7 @@ namespace Api;
 
 use Illuminate\Http\Response as IlluminateResponse;
 
-use Auth, Carbon\Carbon, DB, Exception, Input, Link;
+use App\Models\Report, Auth, Carbon\Carbon, DB, Exception, Input, Link;
 
 /**
  * Class LinkController
@@ -248,5 +248,3 @@ class LinkController extends AstroBaseController {
   }
 
 }
-
-class Report {}

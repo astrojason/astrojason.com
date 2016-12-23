@@ -23,5 +23,8 @@
   },
   "scripts": {
     "test": "protractor public/assets/coffee/build/tests/e2e/protractor.js"
+  },
+  "dependencies": {
+    "angular-bootstrap": "^0.12.2"
   }
 }
