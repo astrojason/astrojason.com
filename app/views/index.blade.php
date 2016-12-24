@@ -133,8 +133,9 @@
             <tr ng-show="total_books || total_books" ng-cloak>
               <td>
                 <div ng-show="total_links" ng-cloak>
-                  <h7>Links Read</h7><br />
-                  <small>{{ links_read }} of {{ total_links }} ({{ (links_read / total_links) * 100 | number:2 }}%) (<span ng-class="total_read < 10 ? (total_read < 5 ? 'text-danger' : 'text-warning') : 'text-success'">{{ total_read }} today <small class="glyphicon glyphicon-refresh tool" ng-click="refreshReadCount()"></small></span>)</small><br />
+                  <h7>Links Read <small>{{ links_read }} of {{ total_links }} ({{ (links_read / total_links) * 100 | number:2 }}%)</small></h7>
+                  <em>Today <small>({{ total_read }} of 10)</small></em><br />
+                  <progress max="10" value="{{ total_read }}" ng-click="refreshReadCount()"></progress>
                 </div>
                 <div ng-show="total_books" ng-cloak>
                   <h7>Books Read</h7><br />

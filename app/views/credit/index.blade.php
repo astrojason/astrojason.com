@@ -24,12 +24,21 @@
                   </small>)
                 </div>
                 <div class="form-inline" ng-show="account.editing">
-                  <input class="form-control" ng-model="account.newBalance" placeholder="{{ account.balances[0].amount }}" />
+                  <input class="form-control" ng-model="account.newBalance" placeholder="{{ account.current_balance }}" />
                   <button class="btn btn-primary" ng-click="updateBalance(account)">Save</button>
                   <button class="btn btn-default" ng-click="account.editing = false">Cancel</button>
                 </div>
               </td>
-              <td class="pull-right">{{ account.last_update | date:'shortDate' }}</td>
+              <td>
+                <span
+                  class="glyphicon glyphicon-ban-circle text-danger pull-right"
+                  style="margin-left: 10px"
+                  ng-click="disableAccount(account)">
+                </span>
+                <div class="pull-right">
+                  {{ account.last_update | date:'shortDate' }}
+                </div>
+              </td>
             </tr>
           </tbody>
           <tfoot>

@@ -13,6 +13,7 @@ class CreditController extends AstroBaseController {
 
   public function report() {
     $accountsQuery = Account::where('user_id', Auth::user()->id)
+      ->where('active', true)
       ->with('Balances')
       ->get();
 
@@ -28,11 +29,13 @@ class CreditController extends AstroBaseController {
           $chart[] = [
             'Date' => $balance->created_at->toDateString(),
             'Account' => $account->name,
-            'Amount' => $balance->amount
+            'Amount' => $balance->amount,
+            'Percentage' => $balance->amount / $account->limit
           ];
         }
       }
       $accounts[] = [
+        'id' => (int) $account->id,
         'name' => $account->name,
         'limit' => $account->limit,
         'current_balance' => $current_balance->amount,
@@ -56,8 +59,13 @@ class CreditController extends AstroBaseController {
     $newBalance->account_id = $newAccount->id;
     $newBalance->amount = Input::get('balance', 0);
     $newBalance->save();
-    $newAccount->balances = [
-      $newBalance
+
+    $newAccount = [
+      'id' => (int) $newAccount->id,
+      'name' => $newAccount->name,
+      'limit' => $newAccount->limit,
+      'current_balance' => $newBalance->amount,
+      'last_update' => $newBalance->created_at->toDateString()
     ];
     return $this->successResponse(['account' => $newAccount]);
   }
@@ -68,6 +76,13 @@ class CreditController extends AstroBaseController {
     $newBalance->amount = Input::get('newBalance', 0);
     $newBalance->save();
     return $this->successResponse(['balance' => $newBalance]);
+  }
+
+  public function disable($id) {
+    $account = Account::whereId($id)->firstOrFail();
+    $account->active = false;
+    $account->save();
+    return $this->successResponse(['account' => $account]);
   }
 
   public function transform($item) {

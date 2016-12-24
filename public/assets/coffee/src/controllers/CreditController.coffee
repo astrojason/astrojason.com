@@ -26,16 +26,16 @@ angular.module('astroApp').controller 'CreditController', [
         myChart.addLegend 65, 10, 960, 20, "right"
         x = myChart.addCategoryAxis "x", 'Date'
         x.addOrderRule 'Date'
-        y = myChart.addMeasureAxis "y", 'Amount'
+        y = myChart.addMeasureAxis "y", 'Percentage'
         myChart.addSeries 'Account', dimple.plot.line
         myChart.draw()
 
     $scope.updateBalance = (account)->
       save_promise = CreditResource.save(account).$promise
       save_promise.then ->
-        account.balances.unshift
-          amount: account.newBalance
-          created_at: new Date()
+        account.current_balance = account.newBalance
+        account.last_update = new Date()
+        account.newBalance = ''
         account.editing = false
 
     $scope.addAccount = ->
@@ -56,6 +56,11 @@ angular.module('astroApp').controller 'CreditController', [
 
       account_promise.finally ->
         delete $scope.newAccount.saving
+
+    $scope.disableAccount = (account, index)->
+      promise = CreditResource.disable(account).$promise
+      promise.then ->
+        $scope.accounts.splice index, 1
 
     $scope.resetAccount = ->
       $scope.newAccount = angular.copy $scope.basicAccount

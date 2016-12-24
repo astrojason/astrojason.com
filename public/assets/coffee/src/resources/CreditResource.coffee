@@ -9,6 +9,9 @@ angular.module('astroApp').factory 'CreditResource', ['$resource', ($resource)->
           wrappedResponse = wrappedResponse.account
         wrappedResponse
 
+    disable:
+      method: 'DELETE'
+
     query:
       method: 'GET'
       isArray: false
