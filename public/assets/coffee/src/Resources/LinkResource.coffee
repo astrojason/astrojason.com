@@ -42,15 +42,15 @@ angular.module('astroApp').factory 'LinkResource', ['$resource', ($resource)->
   LinkResource = $resource '/api/link/:id', resource_parameter_defaults, resource_options
 
   LinkResource.prototype.cssClass = ()->
-    cssClass = ''
+    classes = []
     if @.times_loaded > 20
-      cssClass = ' text-danger'
+      classes.push 'bg-danger'
     else if @.times_loaded > 10
-      cssClass = 'text-warning'
+      classes.push 'bg-warning'
     if @.is_read
-      cssClass += ' read'
+      classes.push 'read'
 
-    cssClass.trim()
+    classes.join(' ')
 
   LinkResource
 ]

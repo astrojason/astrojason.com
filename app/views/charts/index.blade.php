@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-  <div ng-controller="ChartController" class="row">
+  <div ng-controller="ChartController" ng-init="init()" class="row">
     <div id="chart_container" class="col-md-12"></div>
   </div>
 @stop

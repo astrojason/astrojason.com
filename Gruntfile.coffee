@@ -118,6 +118,12 @@ module.exports = (grunt) ->
     'karma:dev'
   ]
 
+  grunt.registerTask 'cover', [
+    'clean'
+    'coffee'
+    'karma:report'
+  ]
+
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-compass'
