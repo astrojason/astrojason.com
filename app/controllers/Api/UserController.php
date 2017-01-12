@@ -59,7 +59,7 @@ class UserController extends AstroBaseController {
         $user->lastname = Input::get('last_name');
         $user->username = Input::get('username');
         $user->email = Input::get('email');
-        $user->password = Input::get('password');
+        $user->password = Hash::make(Input::get('password'));
         $user->save();
         return $this->successResponse();
       } else {
