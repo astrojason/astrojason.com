@@ -27,6 +27,7 @@ angular.module('astroApp').controller 'CreditController', [
         x = myChart.addCategoryAxis "x", 'Date'
         x.addOrderRule 'Date'
         y = myChart.addMeasureAxis "y", 'Percentage'
+        y.tickFormat d3.format(".0%")
         myChart.addSeries 'Account', dimple.plot.line
         myChart.draw()
 
