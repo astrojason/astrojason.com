@@ -94,7 +94,7 @@ class LinkController extends AstroBaseController {
         }
       }
       $link->times_loaded = Input::get('times_loaded', 0);
-      $link->times_loaded = Input::get('times_read', 0);
+      $link->times_read = Input::get('times_read', 0);
       if(Input::get('instapaper_id')) {
         $link->instapaper_id = Input::get('instapaper_id');
       }

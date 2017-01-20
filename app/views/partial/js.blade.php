@@ -14,6 +14,8 @@
 <script type="text/javascript" src="assets/bower/typeahead.js/dist/typeahead.jquery.min.js"></script>
 <script type="text/javascript" src="assets/bower/angular-typeahead/angular-typeahead.min.js"></script>
 
+<script type="text/javascript" src="assets/bower/moment/min/moment.min.js"></script>
+
 <script type="text/javascript" src="assets/bower/d3/d3.min.js"></script>
 <script type="text/javascript" src="assets/bower/dimple/dist/dimple.latest.min.js"></script>
 
