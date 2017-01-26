@@ -78,18 +78,18 @@ angular.module('astroApp').controller 'SongController', ['$scope', '$timeout', '
       if $scope.display_artist
         data['artist'] = $scope.display_artist
 
-      songPromise = SongResource.query(data).$promise
+      song_promise = SongResource.query(data).$promise
 
-      songPromise.then (songs)->
+      song_promise.then (songs)->
         $scope.songs = songs
         $scope.total = songs.$total
         $scope.pages = songs.$pages
         $scope.generatePages()
 
-      songPromise.catch (response)->
+      song_promise.catch (response)->
         $scope.errorMessage = response?.data.error || 'There was a problem getting the songs.'
 
-      songPromise.finally ->
+      song_promise.finally ->
         $scope.loading_songs = false
 
     $scope.save = ()->
@@ -147,4 +147,21 @@ angular.module('astroApp').controller 'SongController', ['$scope', '$timeout', '
 
     $scope.setArtists = (artists)->
       $scope.artists = artists
+
+    $scope.populateSongs = ->
+      $scope.loading_songs = true
+
+      song_promise = SongResource.populate().$promise
+
+      song_promise.then (songs)->
+        $scope.songs = songs
+        $scope.total = songs.$total
+        $scope.pages = songs.$pages
+        $scope.generatePages()
+
+      song_promise.catch (response)->
+        $scope.errorMessage = response?.data.error || 'There was a problem getting the songs.'
+
+      song_promise.finally ->
+        $scope.loading_songs = false
 ]

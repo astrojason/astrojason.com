@@ -6,6 +6,17 @@
 
 @section('content')
   <div ng-controller="SongController" ng-init="setArtists(<% $song_artists %>)">
+    <div class="row" ng-show="songs.length == 0 && !loading_songs && !song_query" ng-cloak>
+      <div class="col-xs-12">
+        <div class="alert alert-info text-center">
+          You do not have any songs, would you like me to
+          <button class="btn btn-default" ng-click="populateSongs()">
+            Randomize
+          </button>
+          some for you?
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-12">
         <loader ng-show="loading_songs" ng-cloak></loader>

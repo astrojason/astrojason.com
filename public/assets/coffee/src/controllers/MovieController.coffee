@@ -53,18 +53,18 @@ angular.module('astroApp').controller 'MovieController', ['$scope',  '$controlle
       if $scope.movie_query
         data['q'] = $scope.movie_query
 
-      moviePromise = MovieResource.query(data).$promise
+      movie_promise = MovieResource.query(data).$promise
 
-      moviePromise.then (movies)->
+      movie_promise.then (movies)->
         $scope.movies = movies
         $scope.total = movies.$total
         $scope.pages = movies.$pages
         $scope.generatePages()
 
-      moviePromise.catch (response)->
+      movie_promise.catch (response)->
         $scope.errorMessage = response?.data.error || 'There was a problem getting the movies.'
 
-      moviePromise.finally ->
+      movie_promise.finally ->
         $scope.loading_movies = false
 
     $scope.toggleWatched = ->
@@ -101,4 +101,19 @@ angular.module('astroApp').controller 'MovieController', ['$scope',  '$controlle
 
     $scope.checkEditing = ->
       return if $scope.movie?.id then true else false
+
+    $scope.populateMovies = ->
+      $scope.loading_movies = true
+
+      movie_promise = MovieResource.populate().$promise
+
+      movie_promise.then (movies)->
+        $scope.movies = movies
+        $scope.generatePages()
+
+      movie_promise.catch (response)->
+        $scope.errorMessage = response?.data.error || 'There was a problem getting the movies.'
+
+      movie_promise.finally ->
+        $scope.loading_movies = false
 ]

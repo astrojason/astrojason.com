@@ -84,6 +84,19 @@ class GameController extends AstroBaseController {
     }
   }
 
+  public function populate() {
+    $games = Game::orderBy(DB::raw('RAND()'))->take(20)->get();
+    foreach ($games as $game) {
+      $userGame = new Game();
+      $userGame->title = $game->title;
+      $userGame->user_id = Auth::user()->id;
+      $userGame->platform = $game->platform;
+      $userGame->save();
+    }
+    $games = Game::query()->where('user_id', Auth::user()->id)->get();
+    return $this->successResponse(array('games' => $this->transformCollection($games)));
+  }
+
   public function recommend() {
     $game = Game::where('completed', false)
       ->where('user_id', Auth::user()->id)

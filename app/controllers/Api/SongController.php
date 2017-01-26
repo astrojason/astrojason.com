@@ -89,6 +89,19 @@ class SongController extends AstroBaseController {
     return $this->successResponse(array('song' => $this->transform($song)));
   }
 
+  public function populate() {
+    $songs = Song::orderBy(DB::raw('RAND()'))->take(20)->get();
+    foreach ($songs as $song) {
+      $newSong = new Song();
+      $newSong->user_id = Auth::user()->id;
+      $newSong->title = $song->title;
+      $newSong->artist = $song->artist;
+      $newSong->save();
+    }
+    $songs = Song::where('user_id', Auth::user()->id)->get();
+    return $this->successResponse(array('songs' => $this->transformCollection($songs)));
+  }
+
   public function delete($songId) {
     if($songId) {
       $song = Song::where('id', $songId)

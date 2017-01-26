@@ -85,6 +85,18 @@ class MovieController extends AstroBaseController {
     }
   }
 
+  public function populate() {
+    $movies = Movie::orderBy(DB::raw('RAND()'))->take(20)->get();
+    foreach ($movies as $movie) {
+      $newMovie = new Movie();
+      $newMovie->user_id = Auth::user()->id;
+      $newMovie->title = $movie->title;
+      $newMovie->save();
+    }
+    $movies = Movie::where('user_id', Auth::user()->id)->get();
+    return $this->successResponse(array('movies' => $this->transformCollection($movies)));
+  }
+
   public function transform($movie){
     return [
       'is_watched' => filter_var($movie['is_watched'], FILTER_VALIDATE_BOOLEAN),

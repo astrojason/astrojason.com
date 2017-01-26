@@ -166,4 +166,19 @@ angular.module('astroApp').controller 'GameController', ['$scope', '$filter', '$
 
     $scope.setPlatforms = (platforms)->
       $scope.platforms = platforms
+
+    $scope.populateGames = ->
+      $scope.loading_games = true
+
+      gamePromise = GameResource.populate().$promise
+
+      gamePromise.then (response)->
+        $scope.games = response.games
+        $scope.generatePages()
+
+      gamePromise.catch ->
+        $scope.$emit 'errorOccurred', 'Could not load games'
+
+      gamePromise.finally ->
+        $scope.loading_games = false
 ]

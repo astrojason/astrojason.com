@@ -6,6 +6,17 @@
 
 @section('content')
   <div ng-controller="BookController" ng-init="setCategories(<% $book_categories %>)">
+    <div class="row" ng-show="books.length == 0 && !searching_books && !book_query && !filter_category" ng-cloak>
+      <div class="col-xs-12">
+        <div class="alert alert-info text-center">
+          You do not have any books, would you like me to
+          <button class="btn btn-default" ng-click="populateBooks()">
+            Randomize
+          </button>
+          some for you?
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-12">
         <loader ng-show="loading_books" ng-cloak></loader>

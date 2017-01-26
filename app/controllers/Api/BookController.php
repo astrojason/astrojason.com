@@ -58,6 +58,23 @@ class BookController extends AstroBaseController {
     return $this->successResponse(array('books' => $this->transformCollection($books), 'total' => $total, 'pages' => $pageCount));
   }
 
+  public function populate() {
+    $books = Book::orderBy(DB::raw('RAND()'))->take(20)->get();
+    foreach ($books as $book) {
+      $userBook = new Book();
+      $userBook->title = $book->title;
+      $userBook->user_id = Auth::user()->id;
+      $userBook->author_fname = $book->author_fname;
+      $userBook->author_lname = $book->author_lname;
+      $userBook->category = 'To Read';
+      $userBook->series = $book->series;
+      $userBook->series_order = $book->series_order;
+      $userBook->save();
+    }
+    $books = Book::query()->where('user_id', Auth::user()->id)->get();
+    return $this->successResponse(array('books' => $this->transformCollection($books)));
+  }
+
   public function recommendation($category) {
     $book = Book::where('is_read', false)
       ->where('category', $category)

@@ -1,6 +1,11 @@
 angular.module('astroApp').factory 'GameResource', ['$resource', ($resource)->
   resource_options =
 
+    populate:
+      method: 'GET'
+      params:
+        id: 'populate'
+
     query:
       method: 'GET'
       isArray: false

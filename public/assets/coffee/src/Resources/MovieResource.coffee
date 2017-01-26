@@ -5,6 +5,15 @@ angular.module('astroApp').factory 'MovieResource', ['$resource', ($resource)->
 
   resource_options =
 
+    populate:
+      method: 'GET'
+      params:
+        id: 'populate'
+      isArray: true
+      transformResponse: (response)->
+        wrappedResponse = angular.fromJson response
+        wrappedResponse.movies
+
     query:
       method: 'GET'
       isArray: true

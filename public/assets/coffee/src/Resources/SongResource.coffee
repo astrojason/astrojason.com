@@ -4,6 +4,15 @@ angular.module('astroApp').factory 'SongResource', ['$resource', ($resource)->
     id: '@id'
 
   resource_options =
+    populate:
+      method: 'GET'
+      isArray: true
+      params:
+        id: 'populate'
+      transformResponse: (response)->
+        wrappedResponse = angular.fromJson response
+        wrappedResponse.songs
+
     query:
       method: 'GET'
       isArray: true

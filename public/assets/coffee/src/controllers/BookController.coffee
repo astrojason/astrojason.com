@@ -80,18 +80,18 @@ angular.module('astroApp').controller 'BookController', ['$scope', '$controller'
       if $scope.descending
         data['descending'] = true
 
-      bookPromise = BookResource.query(data).$promise
+      book_promise = BookResource.query(data).$promise
 
-      bookPromise.then (response)->
+      book_promise.then (response)->
         $scope.books = response.books
         $scope.total = response.total
         $scope.pages = response.pages
         $scope.generatePages()
 
-      bookPromise.catch ->
+      book_promise.catch ->
         $scope.$broadcast 'errorOccurred', 'BookResource.query failed'
 
-      bookPromise.finally ->
+      book_promise.finally ->
         $scope.loading_books = false
 
     $scope.save = ->
@@ -146,4 +146,18 @@ angular.module('astroApp').controller 'BookController', ['$scope', '$controller'
 
     $scope.checkEditing = ->
       $scope.book?.id?
+
+    $scope.populateBooks = ->
+      $scope.loading_books = true
+      book_promise = BookResource.populate($scope.book).$promise
+
+      book_promise.then (response)->
+        $scope.books = response.books
+        $scope.generatePages()
+
+      book_promise.catch ->
+        $scope.$broadcast 'errorOccurred', 'BookResource.populateBooks failed'
+
+      book_promise.finally ->
+        $scope.loading_books = false
 ]

@@ -6,6 +6,17 @@
 
 @section('content')
   <div ng-controller="GameController" ng-init="setPlatforms(<% $platforms %>)">
+    <div class="row" ng-show="games.length == 0 && !loading_games && !game_query" ng-cloak>
+      <div class="col-xs-12">
+        <div class="alert alert-info text-center">
+          You do not have any games, would you like me to
+          <button class="btn btn-default" ng-click="populateGames()">
+            Randomize
+          </button>
+          some for you?
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-12">
         <loader ng-show="loading_games" ng-cloak></loader>
