@@ -6,7 +6,7 @@
 
 @section('content')
   <div ng-controller="CreditController" ng-init="initList()">
-    <div class="row">
+    <div class="row" ng-hide="accounts.length == 0">
       <div id="chart_container" class="col-md-12"></div>
     </div>
     <div class="row">
