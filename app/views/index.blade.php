@@ -101,13 +101,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <a
-                  href="javascript:<% $bookmarklet %>"
-                  class="btn btn-info btn-xs">Read Later</a>
-              </td>
-            </tr>
+            @if($bookmarklet)
+              <tr>
+                <td>
+                  <a
+                    href="javascript:<% $bookmarklet %>"
+                    class="btn btn-info btn-xs">Read Later</a>
+                </td>
+              </tr>
+            @endif
             <tr>
               <td>
                 <button class="btn btn-success btn-xs" ng-click="linkModalOpen = true">Add Link</button>

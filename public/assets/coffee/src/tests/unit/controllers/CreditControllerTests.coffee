@@ -4,6 +4,9 @@ describe 'CreditController unit tests', ->
   mockCreditResource = null
   mockCreditReportDeferred = null
   mockCreditSaveDeferred = null
+  mockResponse =
+    accounts: [1,2,3,4]
+    chart: [1,2,3,4]
 
   beforeEach ->
     module 'astroApp'
@@ -25,6 +28,8 @@ describe 'CreditController unit tests', ->
 
       CreditController = $controller 'CreditController', mockInjections
 
+    spyOn $scope, 'drawChart'
+
   it 'should call CreditResource.report', ->
     spyOn(mockCreditResource, 'report').and.callThrough()
     $scope.initList()
@@ -32,7 +37,7 @@ describe 'CreditController unit tests', ->
 
   it 'should set $scope.accounts to the accounts returned by the promise', ->
     $scope.initList()
-    mockCreditReportDeferred.resolve [1,2,3,4]
+    mockCreditReportDeferred.resolve mockResponse
     $scope.$digest()
     expect($scope.accounts).toEqual [1,2,3,4]
 

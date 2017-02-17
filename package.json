@@ -22,7 +22,9 @@
     "protractor": "^2.5.1"
   },
   "scripts": {
-    "test": "protractor public/assets/coffee/build/tests/e2e/protractor.js"
+    "e2e": "protractor public/assets/coffee/build/tests/e2e/protractor.js",
+    "cover": "grunt cover",
+    "test": "grunt test"
   },
   "dependencies": {
     "angular-bootstrap": "^0.12.2"

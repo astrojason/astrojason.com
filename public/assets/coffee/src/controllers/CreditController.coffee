@@ -40,16 +40,8 @@ angular.module('astroApp').controller 'CreditController', [
           Amount: 30
           Percentage: 0.30
 
-        svg = dimple.newSvg '#chart_container', 1020, 600
-        myChart = new dimple.chart svg, chart
-        myChart.setBounds 60, 30, 960, 510
-        myChart.addLegend 65, 10, 960, 20, "right"
-        x = myChart.addCategoryAxis "x", 'Date'
-        x.addOrderRule 'Date'
-        y = myChart.addMeasureAxis "y", 'Percentage'
-        y.tickFormat = '%'
-        myChart.addSeries 'Account', dimple.plot.line
-        myChart.draw()
+        $scope.drawChart chart
+
 
     $scope.updateBalance = (account)->
       save_promise = CreditResource.save(account).$promise
@@ -86,5 +78,17 @@ angular.module('astroApp').controller 'CreditController', [
     $scope.resetAccount = ->
       $scope.newAccount = angular.copy $scope.basicAccount
       $scope.credit_account_form.$setPristine()
+
+    $scope.drawChart = (chart)->
+      svg = dimple.newSvg '#chart_container', 1020, 600
+      myChart = new dimple.chart svg, chart
+      myChart.setBounds 60, 30, 960, 510
+      myChart.addLegend 65, 10, 960, 20, "right"
+      x = myChart.addCategoryAxis "x", 'Date'
+      x.addOrderRule 'Date'
+      y = myChart.addMeasureAxis "y", 'Percentage'
+      y.tickFormat = '%'
+      myChart.addSeries 'Account', dimple.plot.line
+      myChart.draw()
 
 ]

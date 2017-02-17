@@ -2,6 +2,8 @@
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
+  public $user;
+
 	/**
 	 * Creates the application.
 	 *
@@ -21,6 +23,11 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     $testUser->id = $userId;
 
     Auth::shouldReceive('user')->andReturn($testUser);
+  }
+
+  public function logUserIn() {
+	  $this->user = User::whereId(1)->first();
+	  Auth::login($this->user);
   }
 
 }
