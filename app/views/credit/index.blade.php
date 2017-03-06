@@ -14,6 +14,13 @@
         <table class="table table-condensed table-striped table-hover">
           <tbody>
             <tr ng-repeat="account in accounts">
+              <td>
+                <span
+                  class="glyphicon glyphicon-edit"
+                  style="margin-left: 10px"
+                  ng-click="disableAccount(account)">
+                </span>
+              </td>
               <td>{{ account.name }}</td>
               <td>{{ account.limit | currency }}</td>
               <td>

@@ -22,6 +22,7 @@
     "protractor": "^2.5.1"
   },
   "scripts": {
+    "watch": "grunt watch",
     "e2e": "protractor public/assets/coffee/build/tests/e2e/protractor.js",
     "cover": "grunt cover",
     "test": "grunt test"
