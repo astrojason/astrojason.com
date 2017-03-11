@@ -26,6 +26,7 @@
  * @method static \Illuminate\Database\Query\Builder|\Link whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Link whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Link whereTimesRead($value)
+ * @method static \Illuminate\Database\Query\Builder|\Link whereReadAt($value)
  */
 class Link extends Eloquent {
 

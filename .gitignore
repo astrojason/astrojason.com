@@ -19,4 +19,4 @@ composer.lock
 Thumbs.db
 .idea
 VagrantFile
-_ide_helper.php
+_ide_helper*

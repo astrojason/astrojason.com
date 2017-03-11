@@ -15,7 +15,7 @@
  * @method static \Illuminate\Database\Query\Builder|\DashboardCategory whereRandomize($value)
  * @method static \Illuminate\Database\Query\Builder|\DashboardCategory whereNumItems($value)
  * @method static \Illuminate\Database\Query\Builder|\DashboardCategory whereTrack($value)
- * @property integer $position 
+ * @property integer $position
  * @method static \Illuminate\Database\Query\Builder|\DashboardCategory wherePosition($value)
  */
 class DashboardCategory extends \Eloquent {
