@@ -25,12 +25,13 @@
  * Time: 11:11 AM
  */
 
-namespace Unit\Api;
+namespace Unit\Api\Article;
 
-use Api\ArticleController, TestCase;
-use Articles\Article;
-use Articles\Category;
+use Api\Article\ArticleController;
+use Article\Article;
+use Article\Category;
 use Faker\Factory;
+use TestCase;
 
 class ArticleControllerTest extends TestCase {
   /** @var  ArticleController $articleController */

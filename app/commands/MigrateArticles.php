@@ -1,9 +1,9 @@
 <?php
 
-use Articles\Article;
-use Articles\Category;
-use Articles\Read;
-use Articles\Recommended;
+use Article\Article;
+use Article\Category;
+use Article\Read;
+use Article\Recommended;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
@@ -86,7 +86,7 @@ class MigrateArticles extends Command {
         }
 
       }
-      $this->info('Links migrated to Articles');
+      $this->info('Links migrated to Article');
 	}
 
 	/**

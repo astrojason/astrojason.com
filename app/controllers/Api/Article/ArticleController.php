@@ -25,13 +25,14 @@
  * Time: 11:03 AM
  */
 
-namespace Api;
+namespace Api\Article;
 
-use Articles\Article;
-use Articles\Category;
-use Articles\DailySetting;
-use Articles\Read;
-use Articles\Recommended;
+use Article\Article;
+use Article\Category;
+use Article\DailySetting;
+use Article\Read;
+use Article\Recommended;
+use Api\AstroBaseController;
 use Auth;
 use Carbon\Carbon;
 use DB;

@@ -1,7 +1,7 @@
 <?php
 
-use Articles\Article;
-use Articles\Recommended;
+use Article\Article;
+use Article\Recommended;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;

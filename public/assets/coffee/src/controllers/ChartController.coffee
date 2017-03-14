@@ -17,7 +17,7 @@ angular.module('astroApp').controller 'ChartController', [
         myChart.addLegend 65, 10, 960, 20, "right"
         x = myChart.addCategoryAxis "x", 'Date'
         x.addOrderRule 'Date'
-        y = myChart.addMeasureAxis "y", 'Articles'
+        y = myChart.addMeasureAxis "y", 'Article'
         myChart.addSeries 'Action', dimple.plot.line
         myChart.draw()
 ]

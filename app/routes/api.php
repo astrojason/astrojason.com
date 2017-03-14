@@ -7,7 +7,7 @@ Route::group(['prefix' => 'user'], function(){
 });
 
 Route::group(['before' => 'auth'], function() {
-  Route::group(['prefix' => 'article'], function(){
+  Route::group(['prefix' => 'article', 'namespace' => 'Article'], function(){
     @include('api/article.php');
   });
   Route::group(['prefix' => 'book'], function(){

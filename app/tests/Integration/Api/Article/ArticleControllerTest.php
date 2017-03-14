@@ -25,10 +25,10 @@
  * Time: 11:52 AM
  */
 
-namespace Integration\Api;
+namespace Integration\Api\Article;
 
-use Articles\Article;
-use Articles\Recommended;
+use Article\Article;
+use Article\Recommended;
 use Artisan;
 use Carbon\Carbon;
 use Faker\Factory;

@@ -206,12 +206,12 @@ class LinkController extends AstroBaseController {
       $parsedReport[] = [
         'Date' => $key,
         'Action' => 'Read',
-        'Articles' => $value['read']
+        'Article' => $value['read']
       ];
       $parsedReport[] = [
         'Date' => $key,
         'Action' => 'Added',
-        'Articles' => $value['created']
+        'Article' => $value['created']
       ];
     }
 

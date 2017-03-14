@@ -1,6 +1,6 @@
 <?php
 
-use Articles\Recommended;
+use Article\Recommended;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -42,7 +42,8 @@ class ClearTodayRecommendations extends Command {
     $today = Carbon::create();
     $yesterday = Carbon::create()->subDay(1);
     Recommended::where('created_at', 'LIKE', $today->toDateString() . '%')
-      ->orWhere('created_at', 'LIKE', $yesterday->toDateString() . '%')
+      ->delete();
+    Recommended::where('created_at', 'LIKE', $yesterday->toDateString() . '%')
       ->delete();
   }
 

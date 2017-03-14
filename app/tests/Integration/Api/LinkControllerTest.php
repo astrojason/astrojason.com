@@ -148,14 +148,15 @@ class LinkControllerTest extends TestCase {
     $faker = Faker\Factory::create();
 
     for($i = 0; $i < 20; $i++) {
-      $url = $faker->url();
+      do {
+        $url = $faker->url();
+      } while(in_array($url, $urls));
       $urls[] = $url;
       $importlist[] = [
         'name' => ucwords(implode(' ', $faker->words(3))),
         'url' => $url
       ];
     }
-    Link::where('user_id', 2)->whereIn('link', $urls)->delete();
     /** @var JsonResponse $response */
     $response = $this->call('POST', '/api/link/import', ['importlist' => $importlist]);
     $this->assertEquals(20, count($response->getData(true)['imported']));
