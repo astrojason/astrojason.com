@@ -10,5 +10,6 @@
 | the console gets access to each of the command object instances.
 |
 */
-
+Artisan::add(new ClearTodayRecommendations);
 Artisan::add(new MigrateArticles);
+Artisan::add(new RecommendAllArticles);

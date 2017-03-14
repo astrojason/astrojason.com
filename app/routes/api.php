@@ -2,16 +2,14 @@
 
 Route::get('dashboard', 'DashboardController@get');
 
-Route::get('articles', function(){
-  $articles = \Articles\Article::with('read', 'categories', 'recommended')->take(20)->get();
-  return Response::json(['articles' => $articles->toArray()]);
-});
-
 Route::group(['prefix' => 'user'], function(){
   @include('api/user.php');
 });
 
 Route::group(['before' => 'auth'], function() {
+  Route::group(['prefix' => 'article'], function(){
+    @include('api/article.php');
+  });
   Route::group(['prefix' => 'book'], function(){
     @include('api/book.php');
   });

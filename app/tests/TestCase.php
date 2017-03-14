@@ -4,19 +4,20 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
   public $user;
 
-	/**
-	 * Creates the application.
-	 *
-	 * @return \Symfony\Component\HttpKernel\HttpKernelInterface
-	 */
-	public function createApplication()
-	{
-		$unitTesting = true;
+  public $defaultUserId = 1;
 
-		$testEnvironment = 'testing';
+  /**
+   * Creates the application.
+   *
+   * @return \Symfony\Component\HttpKernel\HttpKernelInterface
+   */
+  public function createApplication() {
+    $unitTesting = true;
 
-		return require __DIR__.'/../../bootstrap/start.php';
-	}
+    $testEnvironment = 'testing';
+
+    return require __DIR__.'/../../bootstrap/start.php';
+  }
   
   public function mockUser($userId) {
     $testUser = new User();
@@ -26,8 +27,8 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
   }
 
   public function logUserIn() {
-	  $this->user = User::whereId(1)->first();
-	  Auth::login($this->user);
+    $this->user = User::whereId($this->defaultUserId)->first();
+    Auth::login($this->user);
   }
 
 }

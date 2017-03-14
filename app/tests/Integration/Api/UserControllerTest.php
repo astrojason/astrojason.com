@@ -49,13 +49,13 @@ class UserControllerTest extends TestCase {
 
   public function test_login_failure_wrong_password() {
     /** @var JsonResponse $response */
-    $response = $this->call('POST', '/api/user/login', ['username' => 'astrojason', 'password' => 'z']);
+    $response = $this->call('POST', '/api/user/login', ['username' => 'primaryuser', 'password' => 'z']);
     $this->assertEquals(IlluminateResponse::HTTP_UNAUTHORIZED, $response->getStatusCode());
   }
 
   public function test_login_correct_password() {
     /** @var JsonResponse $response */
-    $response = $this->call('POST', '/api/user/login', ['username' => 'astrojason', 'password' => 'a']);
+    $response = $this->call('POST', '/api/user/login', ['username' => 'primaryuser', 'password' => 'a']);
     $this->assertEquals(IlluminateResponse::HTTP_OK, $response->getStatusCode());
     $this->assertEquals(Auth::user()->toArray()['username'], $response->getData(true)['user']['username']);
   }
@@ -67,7 +67,7 @@ class UserControllerTest extends TestCase {
 
   public function test_logout_logged_in() {
     $userdata = [
-      'username' 	=> 'astrojason',
+      'username' 	=> 'primaryuser',
       'password' 	=> 'a'
     ];
     Auth::attempt($userdata, true);
@@ -77,7 +77,7 @@ class UserControllerTest extends TestCase {
 
   public function test_check_username_exists() {
   /** @var JsonResponse $response */
-  $response = $this->call('POST', '/api/user/checkusername', ['username' => 'astrojason']);
+  $response = $this->call('POST', '/api/user/checkusername', ['username' => 'primaryuser']);
   $this->assertEquals(IlluminateResponse::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
 }
 
@@ -101,7 +101,7 @@ class UserControllerTest extends TestCase {
 
   public function test_user_create_existing_username() {
     $data = $this->generateRegistrationInfo();
-    $data['username'] = 'astrojason';
+    $data['username'] = 'primaryuser';
     /** @var JsonResponse $response */
     $response = $this->call('PUT', '/api/user', $data);
     $this->assertEquals(IlluminateResponse::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());

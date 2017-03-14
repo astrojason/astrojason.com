@@ -39,8 +39,7 @@ class MigrateArticles extends Command {
 	 *
 	 * @return mixed
 	 */
-	public function fire()
-	{
+	public function fire() {
       Article::truncate();
       Category::truncate();
       Read::truncate();
@@ -58,7 +57,8 @@ class MigrateArticles extends Command {
           $category = Category::where('name', $link->category)->first();
           if(!isset($category)) {
             $category = Category::create([
-              'name' => $link->category
+              'name' => $link->category,
+              'user_id' => $link->user_id
             ]);
           }
           $article->categories()->attach($category);
@@ -77,6 +77,7 @@ class MigrateArticles extends Command {
           for($i = 0; $i < $link->times_loaded; $i++) {
             $loaded_date = $dt->subDay();
             $recommended = new Recommended();
+            $recommended->user_id = $link->user_id;
             $recommended->article_id = $article->id;
             $recommended->setUpdatedAt($loaded_date);
             $recommended->setCreatedAt($loaded_date);
@@ -93,8 +94,7 @@ class MigrateArticles extends Command {
 	 *
 	 * @return array
 	 */
-	protected function getArguments()
-	{
+	protected function getArguments() {
 		return [];
 	}
 
@@ -103,8 +103,7 @@ class MigrateArticles extends Command {
 	 *
 	 * @return array
 	 */
-	protected function getOptions()
-	{
+	protected function getOptions() {
 		return [];
 	}
 

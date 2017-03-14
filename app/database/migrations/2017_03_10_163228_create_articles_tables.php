@@ -15,6 +15,7 @@ class CreateArticlesTables extends Migration {
     Schema::create('article_categories', function($table) {
       $table->increments('id');
       $table->string('name', 255);
+      $table->integer('user_id')->references('id')->on('users');
       $table->timestamps();
     });
 
@@ -41,7 +42,9 @@ class CreateArticlesTables extends Migration {
 
     Schema::create('articles_recommended', function($table) {
       $table->increments('id');
+      $table->integer('user_id')->references('id')->on('users');
       $table->integer('article_id')->references('id')->on('articles');
+      $table->boolean('postpone')->default(false);
       $table->timestamps();
     });
   }

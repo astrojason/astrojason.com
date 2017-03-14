@@ -11,13 +11,13 @@ class UserTableSeeder extends Seeder
     $this->command->info('Truncating User table');
     User::truncate();
 
-    $this->command->info('Inserting sample records using Faker ...');
+    $this->command->info('Creating test users ...');
 
     User::create([
-      'username' => 'astrojason',
-      'firstname' => 'Jason',
-      'lastname' => 'Sylvester',
-      'email' => 'jason@astrojason.com',
+      'username' => 'primaryuser',
+      'firstname' => 'Primary',
+      'lastname' => 'User',
+      'email' => 'primary',
       'password' => Hash::make('a')
     ]);
 
@@ -28,6 +28,8 @@ class UserTableSeeder extends Seeder
       'email' => 'test@astrojason.com',
       'password' => Hash::make('a')
     ]);
+
+    $this->command->info('Inserting sample records using Faker ...');
 
     foreach(range(1,20) as $index) {
       User::create([
