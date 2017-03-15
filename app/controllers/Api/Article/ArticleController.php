@@ -185,6 +185,20 @@ class ArticleController extends AstroBaseController {
     return Response::json([], IlluminateResponse::HTTP_NOT_FOUND);
   }
 
+  public function import() {
+    $importArticles = Input::get('importlist');
+    $articles = [];
+    foreach($importArticles as $importLink){
+      $params = [
+        'title' => $importLink['name'],
+        'url' => $importLink['url'],
+        'categories' => []
+      ];
+      $articles[] = $this->add(Auth::user()->id, $params);
+    }
+    return Response::json(['articles' => $this->transformCollection($articles)]);
+  }
+
   /**
    * @param int $user_id
    * @param array $params
@@ -343,7 +357,8 @@ class ArticleController extends AstroBaseController {
       'url' => $item['url'],
       'categories' => [],
       'read' => [],
-      'recommended' => []
+      'recommended' => [],
+      'justAdded' => (bool)$item->justAdded
     ];
     /** @var Category $category */
     foreach($item->categories as $category) {

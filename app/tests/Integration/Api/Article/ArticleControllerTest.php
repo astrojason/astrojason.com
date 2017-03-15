@@ -249,4 +249,109 @@ class ArticleControllerTest extends TestCase {
     $response = $this->call('GET', "/api/article/category");
     $this->assertEquals(IlluminateResponse::HTTP_OK, $response->getStatusCode());
   }
+
+  public function test_import_articles() {
+    $this->mockUser(2);
+    $importlist = [];
+    $urls = [];
+
+    for($i = 0; $i < 20; $i++) {
+      do {
+        $url = $this->faker->url();
+      } while(in_array($url, $urls));
+      $urls[] = $url;
+      $importlist[] = [
+        'name' => ucwords(implode(' ', $this->faker->words(3))),
+        'url' => $url
+      ];
+    }
+    /** @var JsonResponse $response */
+    $response = $this->call('POST', '/api/article/import', ['importlist' => $importlist]);
+    $this->assertEquals(20, count($response->getData(true)['articles']));
+  }
+
+  public function test_import_articles_flagged_added() {
+    Article::where('user_id', 2)->delete();
+    $this->mockUser(2);
+    $importlist = [];
+    $urls = [];
+
+    for($i = 0; $i < 20; $i++) {
+      do {
+        $url = $this->faker->url();
+      } while(in_array($url, $urls));
+      $urls[] = $url;
+      $importlist[] = [
+        'name' => ucwords(implode(' ', $this->faker->words(3))),
+        'url' => $url
+      ];
+    }
+    /** @var JsonResponse $response */
+    $response = $this->call('POST', '/api/article/import', ['importlist' => $importlist]);
+    $articles = $response->getData(true)['articles'];
+    foreach ($articles as $article) {
+      $this->assertTrue($article['justAdded']);
+    }
+  }
+
+  public function test_import_articles_with_dupes() {
+    $this->mockUser($this->defaultUserId);
+    $importlist = [];
+    $urls = [];
+    $articles = Article::where('user_id', $this->defaultUserId)->take(2)->get();
+    foreach($articles as $article) {
+      $urls[] = $article->url;
+      $importlist[] = [
+        'name' => $article->title,
+        'url' => $article->url
+      ];
+    }
+    for($i = 0; $i < 18; $i++) {
+      do {
+        $url = $this->faker->url();
+      } while(in_array($url, $urls));
+      $urls[] = $url;
+      $importlist[] = [
+        'name' => ucwords(implode(' ', $this->faker->words(3))),
+        'url' => $url
+      ];
+    }
+    /** @var JsonResponse $response */
+    $response = $this->call('POST', '/api/article/import', ['importlist' => $importlist]);
+    $this->assertEquals(20, count($response->getData(true)['articles']));
+  }
+
+  public function test_import_articles_dupes_not_flagged_as_added() {
+    $this->mockUser($this->defaultUserId);
+    $importlist = [];
+    $urls = [];
+    $articles = Article::where('user_id', $this->defaultUserId)->take(2)->get();
+    $dupeArticle = $articles[0];
+    foreach($articles as $article) {
+      $urls[] = $article->url;
+      $importlist[] = [
+        'name' => $article->title,
+        'url' => $article->url
+      ];
+    }
+    for($i = 0; $i < 18; $i++) {
+      do {
+        $url = $this->faker->url();
+      } while(in_array($url, $urls));
+      $urls[] = $url;
+      $importlist[] = [
+        'name' => ucwords(implode(' ', $this->faker->words(3))),
+        'url' => $url
+      ];
+    }
+    /** @var JsonResponse $response */
+    $response = $this->call('POST', '/api/article/import', ['importlist' => $importlist]);
+    $articles = $response->getData(true)['articles'];
+    foreach ($articles as $article) {
+      if($article['title'] == $dupeArticle->title) {
+        $this->assertFalse($article['justAdded']);
+        break;
+      }
+    }
+  }
 }

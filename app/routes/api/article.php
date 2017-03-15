@@ -30,6 +30,7 @@ Route::get('daily', 'ArticleController@daily');
 Route::group(['prefix' => 'category'], function(){
   Route::get('', 'CategoryController@query');
 });
+Route::post('import', 'ArticleController@import');
 Route::group(['prefix' => '{article_id}'], function(){
   Route::post('', 'ArticleController@post');
   Route::delete('', 'ArticleController@delete');
