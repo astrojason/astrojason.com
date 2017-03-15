@@ -30,6 +30,9 @@ namespace Unit\Api\Article;
 use Api\Article\ArticleController;
 use Article\Article;
 use Article\Category;
+use Article\Recommended;
+use Artisan;
+use Carbon\Carbon;
 use Faker\Factory;
 use TestCase;
 
@@ -195,5 +198,47 @@ class ArticleControllerTest extends TestCase {
     ];
     $article = $this->articleController->save($this->defaultUserId, $article, $params);
     $this->assertEquals(2, count($article->categories));
+  }
+
+  public function test_create_today_links() {
+    $this->articleController->generateDailyLinks($this->defaultUserId);
+    $today = Carbon::create();
+    $daily_articles = Recommended::where('created_at', 'LIKE', $today->toDateString() . '%')->get();
+    $this->assertFalse(count($daily_articles) == 0);
+  }
+
+  public function test_clear_today_links() {
+    $this->articleController->generateDailyLinks($this->defaultUserId);
+    Artisan::call('articles:clearrecentrecommendations');
+    $today = Carbon::create();
+    $daily_articles = Recommended::where('created_at', 'LIKE', $today->toDateString() . '%')->get();
+    $this->assertEquals(0, count($daily_articles));
+  }
+
+  public function test_clear_yesterday_links() {
+    $yesterday = Carbon::create()->subDay(1);
+    $recommended = Recommended::create([
+      'article_id' => $this->article->id,
+      'user_id' => $this->defaultUserId
+    ]);
+    $recommended->setUpdatedAt($yesterday);
+    $recommended->setCreatedAt($yesterday);
+    $recommended->save();
+    Artisan::call('articles:clearrecentrecommendations');
+    $yesterday_articles = Recommended::where('created_at', 'LIKE', $yesterday->toDateString() . '%')->get();
+    $this->assertEquals(0, count($yesterday_articles));
+  }
+
+  public function test_return_today_links_already_created() {
+    Artisan::call('articles:clearrecentrecommendations');
+    $initialTodayLinks = $this->articleController->generateDailyLinks($this->defaultUserId);
+    usort($initialTodayLinks, function($a, $b) {
+      return strcmp($a['title'], $b['title']);
+    });
+    $secondTodayLinks = $this->articleController->generateDailyLinks($this->defaultUserId);
+    usort($secondTodayLinks, function($a, $b) {
+      return strcmp($a['title'], $b['title']);
+    });
+    $this->assertEquals($initialTodayLinks, $secondTodayLinks);
   }
 }

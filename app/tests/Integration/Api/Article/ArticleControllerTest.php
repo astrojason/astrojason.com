@@ -144,39 +144,24 @@ class ArticleControllerTest extends TestCase {
     $this->assertEquals(IlluminateResponse::HTTP_FORBIDDEN, $response->getStatusCode());
   }
 
-  public function test_get_daily_articles_new() {
+  public function test_get_daily_articles() {
     $this->mockUser($this->defaultUserId);
-    Artisan::call('articles:cleartoday');
+    Artisan::call('articles:clearrecentrecommendations');
 
     /** @var JsonResponse $response */
     $response = $this->call('GET', "/api/article/daily");
     $this->assertEquals(IlluminateResponse::HTTP_OK, $response->getStatusCode());
   }
 
-  public function test_get_daily_repeat() {
-    $this->mockUser($this->defaultUserId);
-    Artisan::call('articles:cleartoday');
-
-    /** @var JsonResponse $response */
-    $response = $this->call('GET', "/api/article/daily");
-    $expectedRecommendations = $response->getData(true)['articles'];
-    sort($expectedRecommendations);
-
-    $response = $this->call('GET', "/api/article/daily");
-    $receivedRecommendations = $response->getData(true)['articles'];
-    sort($receivedRecommendations);
-    $this->assertEquals($expectedRecommendations, $receivedRecommendations);
-  }
-
   public function test_get_daily_with_postponed() {
     $this->mockUser($this->defaultUserId);
-    Artisan::call('articles:cleartoday');
+    Artisan::call('articles:clearrecentrecommendations');
 
     /** @var JsonResponse $response */
     $response = $this->call('GET', "/api/article/daily");
     $normalCount = count($response->getData(true)['articles']);
 
-    Artisan::call('articles:cleartoday');
+    Artisan::call('articles:clearrecentrecommendations');
     $recommended = Recommended::where('user_id', $this->defaultUserId)
       ->where('created_at', 'NOT LIKE', Carbon::create()->toDateString() . '%')
       ->first();
@@ -244,7 +229,7 @@ class ArticleControllerTest extends TestCase {
 
   public function test_postpone_article_user() {
     $this->mockUser($this->defaultUserId);
-    Artisan::call('articles:cleartoday');
+    Artisan::call('articles:clearrecentrecommendations');
 
     /** @var JsonResponse $response */
     $response = $this->call('GET', "/api/article/daily");
@@ -254,6 +239,14 @@ class ArticleControllerTest extends TestCase {
 
     /** @var JsonResponse $response */
     $response = $this->call('GET', "/api/article/$articleId/postpone");
+    $this->assertEquals(IlluminateResponse::HTTP_OK, $response->getStatusCode());
+  }
+
+  public function test_get_categories() {
+    $this->mockUser($this->defaultUserId);
+
+    /** @var JsonResponse $response */
+    $response = $this->call('GET', "/api/article/category");
     $this->assertEquals(IlluminateResponse::HTTP_OK, $response->getStatusCode());
   }
 }

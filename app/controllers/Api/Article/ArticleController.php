@@ -86,61 +86,7 @@ class ArticleController extends AstroBaseController {
    * @return JsonResponse
    */
   public function daily(){
-    $today = Carbon::create();
-    $userId = Auth::user()->id;
-    $dailyArticles = Recommended::where('user_id', $userId)
-      ->where('created_at', 'LIKE', $today->toDateString() . '%')->get();
-    if(count($dailyArticles) == 0) {
-      $yesterday = Carbon::create()->subDay(1);
-      /** @var Recommended $postponedArticles */
-      $postponedArticles = Recommended::where('user_id', Auth::user()->id)
-        ->where('created_at', 'LIKE', $yesterday->toDateString() . '%')
-        ->where('postpone', true)
-        ->get();
-      $ids = [];
-      foreach ($postponedArticles as $postponedArticle) {
-        $ids[] = $postponedArticle->article_id;
-      }
-      if(count($ids) > 0) {
-        $dailyArticles = Article::whereIn('id', $ids)->get();
-        $dailyArticles = $this->transformCollection($dailyArticles);
-      }
-      $userSettings = DailySetting::where('user_id', Auth::user()->id)->get();
-      foreach ($userSettings as $userSetting) {
-        $query = Article::where('user_id', Auth::user()->id);
-        if ($userSetting->category_id) {
-          $query->whereHas('categories', function ($query) use ($userSetting) {
-            $query->where('category_id', $userSetting->category_id);
-          });
-        } else {
-          $query->has('categories', '<', 1);
-        }
-        $query->whereHas('recommended', function ($query) use ($today) {
-          $query->where('articles_recommended.created_at', '<', $today->subDay(7));
-        });
-        $query->orHas('recommended', '<', 1);
-        if(!$userSetting->allow_read) {
-          $query->has('read', '<', 1);
-        }
-        $query->orderBy(DB::raw('RAND()'));
-        $articles = $query->take($userSetting->number)->get();
-        foreach ($articles as $article) {
-          Recommended::create([
-            'article_id' => $article->id,
-            'user_id' => $article->user_id
-          ]);
-          $dailyArticles[] = $this->transform($article);
-        }
-      }
-    } else {
-      $ids = [];
-      foreach ($dailyArticles as $dailyArticle) {
-        $ids[] = $dailyArticle->article_id;
-      }
-      $dailyArticles = Article::whereIn('id', $ids)->get();
-      $dailyArticles = $this->transformCollection($dailyArticles);
-    }
-    return Response::json(['articles' => $dailyArticles]);
+    return Response::json(['articles' => $this->generateDailyLinks(Auth::user()->id)]);
   }
 
   /**
@@ -279,6 +225,68 @@ class ArticleController extends AstroBaseController {
       $article->save();
     }
     return $article;
+  }
+
+  public function generateDailyLinks($userId) {
+    $today = Carbon::create();
+    $returnArticles = [];
+    $ids = [];
+    $dailyArticles = Recommended::where('user_id', $userId)
+      ->where('created_at', 'LIKE', $today->toDateString() . '%')->get();
+
+    if(count($dailyArticles) == 0) {
+      $yesterday = Carbon::create()->subDay(1);
+      /** @var Recommended $postponedArticles */
+      $postponedArticles = Recommended::where('user_id', $userId)
+        ->where('created_at', 'LIKE', $yesterday->toDateString() . '%')
+        ->where('postpone', true)
+        ->get();
+      $ids = [];
+      foreach ($postponedArticles as $postponedArticle) {
+        $ids[] = $postponedArticle->article_id;
+      }
+      if(count($ids) > 0) {
+        $dailyArticles = Article::whereIn('id', $ids)->get();
+        $returnArticles = $this->transformCollection($dailyArticles);
+      }
+      $userSettings = DailySetting::where('user_id', $userId)->get();
+      foreach ($userSettings as $userSetting) {
+
+        $query = Article::where('user_id', $userId);
+        if ($userSetting->category_id) {
+          $query->whereHas('categories', function ($query) use ($userSetting) {
+            $query->where('category_id', $userSetting->category_id);
+          });
+        } else {
+          $query->doesntHave('categories');
+        }
+        $query->doesntHave('recommended')->orWhereHas('recommended', function ($query) use ($today) {
+          $query->where('articles_recommended.created_at', '<', $today->subDay(7));
+        });
+        if (!$userSetting->allow_read) {
+          $query->has('read', '<', 1);
+        }
+        $query->whereNotIn('id', $ids);
+        $query->orderBy(DB::raw('RAND()'));
+        $articles = $query->take($userSetting->number)->get();
+        foreach ($articles as $article) {
+          Recommended::create([
+            'article_id' => $article->id,
+            'user_id' => $article->user_id
+          ]);
+          $ids[] = $article->id;
+          $returnArticles[] = $this->transform($article);
+        }
+
+      }
+    } else {
+      foreach ($dailyArticles as $dailyArticle) {
+        $ids[] = $dailyArticle->article_id;
+      }
+      $dailyArticles = Article::whereIn('id', $ids)->get();
+      $returnArticles = $this->transformCollection($dailyArticles);
+    }
+    return  $returnArticles;
   }
 
   /**

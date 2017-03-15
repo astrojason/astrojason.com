@@ -6,14 +6,14 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class ClearTodayRecommendations extends Command {
+class ClearRecentRecommendations extends Command {
 
   /**
    * The console command name.
    *
    * @var string
    */
-  protected $name = 'articles:cleartoday';
+  protected $name = 'articles:clearrecentrecommendations';
 
   /**
    * The console command description.
@@ -38,12 +38,9 @@ class ClearTodayRecommendations extends Command {
    * @return mixed
    */
   public function fire() {
-    $this->info("Clearing today's recommendations");
-    $today = Carbon::create();
-    $yesterday = Carbon::create()->subDay(1);
-    Recommended::where('created_at', 'LIKE', $today->toDateString() . '%')
-      ->delete();
-    Recommended::where('created_at', 'LIKE', $yesterday->toDateString() . '%')
+    $this->info("Clearing recent recommendations");
+    $recent = Carbon::create()->subDay(3);
+    Recommended::where('created_at', '>', $recent->toDateString())
       ->delete();
   }
 
