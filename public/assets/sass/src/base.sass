@@ -1,85 +1,54 @@
-@import "bootstrap-variables-override"
-@import "bootstrap"
-@import "compass/css3"
+/*!
+ * Bootstrap v4.0.0-alpha.6 (https://getbootstrap.com)
+ * Copyright 2011-2017 The Bootstrap Authors
+ * Copyright 2011-2017 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
 
-[ng\:cloak], [ng-cloak], .ng-cloak
-  display: none !important
+// Core variables and mixins
+@import "variables";
+@import "mixins";
+@import "custom";
 
-[ng-click]
-  cursor: pointer
+// Reset and dependencies
+@import "normalize";
+@import "print";
 
-.main
-  margin-top: $navbar-height
+// Core CSS
+@import "reboot";
+@import "type";
+@import "images";
+@import "code";
+@import "grid";
+@import "tables";
+@import "forms";
+@import "buttons";
 
-input.ng-invalid.ng-dirty
-  border: 1px solid $brand-warning
-  color: $brand-warning
+// Components
+@import "transitions";
+@import "dropdown";
+@import "button-group";
+@import "input-group";
+@import "custom-forms";
+@import "nav";
+@import "navbar";
+@import "card";
+@import "breadcrumb";
+@import "pagination";
+@import "badge";
+@import "jumbotron";
+@import "alert";
+@import "progress";
+@import "media";
+@import "list-group";
+@import "responsive-embed";
+@import "close";
 
-input.ng-valid.ng-dirty
-  border: 1px solid $brand-success
-  color: $brand-success
+// Components w/ JavaScript
+@import "modal";
+@import "tooltip";
+@import "popover";
+@import "carousel";
 
-.error
-  color: $brand-danger
-
-.tool
-  cursor: pointer
-  &:hover
-    color: darkorange
-
-.read
-  color: darkgray
-  a
-    color: inherit
-
-.text-warning, .text-danger
-  a
-    color: inherit
-
-.top-margin
-  margin-top: 15px
-
-.link_container
-  position: relative
-
-span.disabled
-  color: #CCC
-  cursor: default
-  &:hover
-    color: #CCC
-
-.pagination
-  li
-    a.current
-      background-color: #428bca
-      color: #FFFFFF
-
-.item.ng-move,
-.item.ng-enter,
-.item.ng-leave
-  -webkit-transition: all linear 0.5s
-  transition: all linear 0.5s
-
-.new
-  @include single-transition(background, 1s, ease-in)
-  background-color: limegreen !important
-
-.alert-danger
-  .btn-danger
-    color: white
-
-.underline
-  text-decoration: underline
-
-.uib-tab
-  cursor: pointer
-
-.search-wrapper
-  position: relative
-  .clear-input
-    position: absolute
-    top: 10.5px
-    right: 20px
-    z-index: 999
-    cursor: pointer
-    color: #999999
+// Utility classes
+@import "utilities";

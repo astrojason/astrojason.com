@@ -33,16 +33,21 @@ param = (data)->
 
   if query.length then query.substr(0, query.length - 1) else query
 
-angular.module('astroApp').config(['$httpProvider', '$locationProvider', ($httpProvider, $locationProvider)->
-  $httpProvider.defaults.xsrfCookieName = 'csrftoken'
-  $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken'
-  $httpProvider.defaults.withCredentials = true
-  $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-  $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded'
-  $httpProvider.defaults.transformRequest = [
-    (data)->
-      if angular.isObject(data) && String(data) != '[object File]' then param(data) else data
-  ]
+angular.module('astroApp').config [
+  '$httpProvider'
+  '$locationProvider'
+  '$qProvider'
+  ($httpProvider, $locationProvider, $qProvider)->
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken'
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken'
+    $httpProvider.defaults.withCredentials = true
+    $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+    $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded'
+    $httpProvider.defaults.transformRequest = [
+      (data)->
+        if angular.isObject(data) && String(data) != '[object File]' then param(data) else data
+    ]
 
-  $locationProvider.html5Mode true
-])
+    $locationProvider.html5Mode true
+    $qProvider.errorOnUnhandledRejections false
+]

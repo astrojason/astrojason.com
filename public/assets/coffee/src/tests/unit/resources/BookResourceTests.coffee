@@ -34,3 +34,8 @@ describe 'BookResource test', ->
     $httpBackend.expectDELETE('/api/book/1234').respond 200
     BookResource.delete id: 1234
     $httpBackend.flush()
+
+  it 'should call goodreads endpoint when goodreads is called', ->
+    $httpBackend.expectGET('/api/book/goodreads').respond 200
+    BookResource.goodreads()
+    $httpBackend.flush()

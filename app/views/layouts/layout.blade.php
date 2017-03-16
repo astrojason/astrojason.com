@@ -19,7 +19,9 @@
       <script type="text/javascript" src="assets/bower/respond/dest/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body ng-controller="MasterController"@if(Auth::user()) ng-init="initUser({ id: <% Auth::user()->id %>, username: '<% Auth::user()->username %>', firstname: '<% Auth::user()->firstname %>', lastname: '<% Auth::user()->lastname %>', email: '<% Auth::user()->email %>' })"@endif>
+  <body
+    ng-controller="MasterController"@if(Auth::user())
+    ng-init="initUser({ id: <% Auth::user()->id %>, username: '<% Auth::user()->username %>', firstname: '<% Auth::user()->firstname %>', lastname: '<% Auth::user()->lastname %>', email: '<% Auth::user()->email %>' })"@endif>
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">

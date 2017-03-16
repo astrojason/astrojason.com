@@ -1,6 +1,11 @@
 angular.module('astroApp').factory 'BookResource', ['$resource', ($resource)->
   resource_options =
 
+    goodreads:
+      method: 'GET'
+      params:
+        id: 'goodreads'
+
     populate:
       method: 'GET'
       params:

@@ -14,7 +14,14 @@
       </tbody>
       <tfoot ng-show="pages > 1">
         <tr>
-          <td><paginator page="page" pages="pages" nav-pages="nav_pages"></paginator></td>
+          <td>
+            <paginator
+              page="page"
+              pages="pages"
+              nav-pages="nav_pages"
+              page-change-func="getGoodReadsBooks()">
+            </paginator>
+          </td>
         </tr>
       </tfoot>
     </table>
