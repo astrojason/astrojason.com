@@ -21,4 +21,7 @@ class HomeController extends BaseController {
 	public function register() {
 		return View::make('register');
 	}
+  public function showIndexV2() {
+	  return View::make('index-v2');
+}
 }

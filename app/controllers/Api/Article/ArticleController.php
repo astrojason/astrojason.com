@@ -374,8 +374,8 @@ class ArticleController extends AstroBaseController {
     /** @var Recommended $recommended */
     foreach($item->recommended as $recommended) {
       $returnValue['recommended'][] = [
-        'id' => $recommended->id,
-        'date' => $recommended->created_at->toDateString()
+        'date' => $recommended->created_at->toDateString(),
+        'postponed' => (bool)$recommended->postpone
       ];
     }
     return $returnValue;

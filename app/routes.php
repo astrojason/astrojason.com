@@ -12,6 +12,7 @@
 */
 
 Route::get('', 'HomeController@showIndex');
+
 Route::get('info', function(){
   return View::make('info');
 });
@@ -45,4 +46,8 @@ Route::group(['prefix' => 'api', 'namespace' => 'Api'], function() {
 
 Route::group(array('prefix' => 'templates'), function(){
   @include('routes/templates.php');
+});
+
+Route::group(['prefix' => 'v2'], function(){
+  Route::get('', 'HomeController@showIndexV2');
 });

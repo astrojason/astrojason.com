@@ -1,338 +1,76 @@
 describe 'DashboardController tests', ->
   $scope = null
-  $timeout = null
-  $httpBackend = null
   DashboardController = null
-  Link = null
-  mockLinkResource = null
-  mockLinkQuery = null
-  mockLinkPopulate = null
-  mockLinkReadToday = null
-  mockDashboardGet = null
-  mockUserService = null
-  mockDashboardResource = null
-  mockLinkQueryResponse = readJSON 'public/assets/coffee/src/tests/data/links.json'
-  mockDashboardQueryResponse = readJSON 'public/assets/coffee/src/tests/data/dahsboard.json'
+  mockArticleResource = null
+  mockArticleResourceDailyDeferred = null
 
   beforeEach ->
     module 'astroApp'
-    inject ($rootScope, $controller, _$timeout_, _$httpBackend_, $q, _Link_)->
+
+    inject ($rootScope, $controller, $q)->
       $scope = $rootScope.$new()
-      $timeout = _$timeout_
-      $httpBackend = _$httpBackend_
-      Link = _Link_
 
-      mockLinkResource =
-        readToday: ->
-          mockLinkReadToday = $q.defer()
-          $promise: mockLinkReadToday.promise
-        query: ->
-          mockLinkQuery = $q.defer()
-          $promise: mockLinkQuery.promise
-        populate: ->
-          mockLinkPopulate = $q.defer()
-          $promise: mockLinkPopulate.promise
-
-      mockUserService =
-        get: ->
-
-      mockDashboardResource =
-        get: ->
-          mockDashboardGet = $q.defer()
-          $promise: mockDashboardGet.promise
+      mockArticleResource =
+        daily: ->
+          mockArticleResourceDailyDeferred = $q.defer()
+          $promise: mockArticleResourceDailyDeferred.promise
 
       mockInjections =
         $scope: $scope
-        LinkResource: mockLinkResource
-        UserService: mockUserService
-        DashboardResource: mockDashboardResource
+        ArticleResource: mockArticleResource
 
       DashboardController = $controller 'DashboardController', mockInjections
 
-  it 'should set display_category to the default value', ->
-    expect($scope.display_category).toEqual ''
+  it 'the default value for $scope.loadingArticles should be false', ->
+    expect($scope.loadingArticles).toBe false
 
-  it 'should set search_timeout to the default value', ->
-    expect($scope.search_timeout).toEqual null
+  it 'the default value for $scope.loadArticlesError should be false', ->
+    expect($scope.loadArticlesError).toBe false
 
-  it 'should set link_results to the default value', ->
-    expect($scope.link_results).toEqual []
+  it 'the default value of articles should be an empty array', ->
+    expect($scope.articles).toEqual []
 
-  it 'should set loading_unread to the default value', ->
-    expect($scope.loading_unread).toEqual false
+  it 'should call $scope.getDailyArticles when $scope.init is called', ->
+    spyOn $scope, 'getDailyArticles'
+    $scope.init()
+    expect($scope.getDailyArticles).toHaveBeenCalled()
 
-  it 'should set loading_category to the default value', ->
-    expect($scope.loading_category).toEqual false
+  it '$scope.loadingArticles should be set to true when $scope.getDailyArticles is called', ->
+    $scope.getDailyArticles()
+    expect($scope.loadingArticles).toBe true
 
-  it 'should set recommendingBook to the default value', ->
-    expect($scope.recommendingBook).toEqual false
+  it '$scope.loadArticlesError should be set to false when $scope.getDailyArticles is called', ->
+    $scope.loadArticlesError = true
+    $scope.getDailyArticles()
+    expect($scope.loadArticlesError).toBe false
 
-  it 'should set recommendingGame to the default value', ->
-    expect($scope.recommendingGame).toEqual false
+  it 'ArticleResource.daily should be called when $scope.getDailyArticles is called', ->
+    spyOn(mockArticleResource, 'daily').and.callThrough()
+    $scope.getDailyArticles()
+    expect(mockArticleResource.daily).toHaveBeenCalled()
 
-  it 'should set recommendingSong to the default value', ->
-    expect($scope.recommendingSong).toEqual false
-
-  it 'should set linkModalOpen to the default value', ->
-    expect($scope.linkModalOpen).toEqual false
-
-  it 'should set bookModalOpen to the default value', ->
-    expect($scope.bookModalOpen).toEqual false
-
-  it 'should set movieModalOpen to the default value', ->
-    expect($scope.movieModalOpen).toEqual false
-
-  it 'should set gameModalOpen to the default value', ->
-    expect($scope.gameModalOpen).toEqual false
-
-  it 'should set songModalOpen to the default value', ->
-    expect($scope.songModalOpen).toEqual false
-
-  it 'should call initDashboard when userLoggedIn is broadcast', ->
-    spyOn($scope, 'initDashboard').and.returnValue true
-    $scope.$broadcast 'userLoggedIn'
+  it 'should call $scope.watchArticles when ArticleResource.daily succeeds', ->
+    spyOn $scope, 'watchArticles'
+    $scope.getDailyArticles()
+    mockArticleResourceDailyDeferred.resolve [1,2,3,4]
     $scope.$digest()
-    expect($scope.initDashboard).toHaveBeenCalled()
+    expect($scope.watchArticles).toHaveBeenCalled()
 
-  it 'should call initDashboard when userLoggedOut is broadcast', ->
-    spyOn($scope, 'initDashboard').and.returnValue true
-    $scope.$broadcast 'userLoggedOut'
+  it '$scope.loadingArticles should be false when ArticleResource.daily succeeds', ->
+    spyOn $scope, 'watchArticles'
+    $scope.getDailyArticles()
+    mockArticleResourceDailyDeferred.resolve [1,2,3,4]
     $scope.$digest()
-    expect($scope.initDashboard).toHaveBeenCalled()
+    expect($scope.loadingArticles).toBe false
 
-  it 'should call update the links when linkDeleted is broadcast', ->
-    links = [{id: 1}, {id: 2}, {id: 3}]
-    expected_links = [{id: 1}, {id: 3}]
-    $scope.links_list = links
-    $scope.selected_links = links
-    $scope.link_results = links
-    $scope.$broadcast 'linkDeleted', 2
+  it '$scope.loadArticlesError should be true when ArticleResource.daily fails', ->
+    $scope.getDailyArticles()
+    mockArticleResourceDailyDeferred.reject()
     $scope.$digest()
-    expect($scope.selected_links).toEqual expected_links
-    expect($scope.links_list).toEqual expected_links
-    expect($scope.link_results).toEqual expected_links
+    expect($scope.loadArticlesError).toBe true
 
-  it 'should update the links_read and total_read values when linkRead is broadcast with a link id', ->
-    $scope.links_read = 20
-    $scope.total_read = 100
-    $scope.$broadcast 'linkRead', 1
-    expect($scope.links_read).toEqual 21
-    expect($scope.total_read).toEqual 101
-
-  it 'should update the links_read and total_read values when linkRead is broadcast with no link id', ->
-    $scope.links_read = 20
-    $scope.total_read = 100
-    $scope.$broadcast 'linkRead'
-    expect($scope.links_read).toEqual 19
-    expect($scope.total_read).toEqual 99
-
-  it 'should set all the closeModal variables to false when closeModal is broadcast', ->
-    $scope.linkModalOpen = true
-    $scope.bookModalOpen = true
-    $scope.movieModalOpen = true
-    $scope.gameModalOpen = true
-    $scope.songModalOpen = true
-    $scope.$broadcast 'closeModal'
+  it '$scope.loadingArticles should be false when ArticleResource.daily fails', ->
+    $scope.getDailyArticles()
+    mockArticleResourceDailyDeferred.reject()
     $scope.$digest()
-    expect($scope.linkModalOpen).toEqual false
-    expect($scope.bookModalOpen).toEqual false
-    expect($scope.movieModalOpen).toEqual false
-    expect($scope.gameModalOpen).toEqual false
-    expect($scope.songModalOpen).toEqual false
-
-  it 'should call getArticlesForCategory when display_category is changed and it has a value', ->
-    spyOn($scope, 'getArticlesForCategory').and.returnValue true
-    $scope.display_category = 'Test'
-    $scope.$digest()
-    expect($scope.getArticlesForCategory).toHaveBeenCalled()
-
-  it 'should call getArticlesForCategory when display_category is changed and has no value', ->
-    spyOn($scope, 'getArticlesForCategory').and.returnValue true
-    $scope.display_category = ''
-    $scope.$digest()
-    expect($scope.getArticlesForCategory).not.toHaveBeenCalled()
-
-  it 'should set $scope.searching to true when article_search changes', ->
-    $scope.article_search = 'test'
-    $scope.$digest()
-    expect($scope.searching).toEqual true
-
-  it 'should call $scope.search_articles if article_search is long enough', ->
-    spyOn($scope, 'search_articles').and.returnValue true
-    $scope.article_search = 'test'
-    $scope.$digest()
-#    Make sure there is a timeout pending
-    $timeout ->
-    $timeout.flush()
-    expect($scope.search_articles).toHaveBeenCalled()
-
-  it 'should not call $scope.search_articles if article_search is not long enough', ->
-    spyOn($scope, 'search_articles').and.returnValue true
-    $scope.article_search = 'te'
-    $scope.$digest()
-#    This is necessary since there will be no timeout created if the code works properly
-    $timeout ->
-    $timeout.flush()
-    expect($scope.search_articles).not.toHaveBeenCalled()
-
-  it 'should call $scope.search_articles when there is a long enough search term and is_read is changed', ->
-    spyOn($scope, 'search_articles').and.returnValue true
-    $scope.article_search = 'test'
-    $scope.$digest()
-    #    Make sure there is a timeout pending
-    $timeout ->
-    $timeout.flush()
-    $scope.search_articles.calls.reset()
-    $scope.is_read = true
-    $scope.$digest()
-    #    Make sure there is a timeout pending
-    $timeout ->
-    $timeout.flush()
-    expect($scope.search_articles).toHaveBeenCalled()
-
-  it 'should set the newLink model to a new Link', ->
-    $scope.linkModalOpen = true
-    $scope.$digest()
-    $scope.linkModalOpen = false
-    $scope.$digest()
-    expect($scope.newLink).toEqual new Link()
-
-  it 'should set the base variables when $scope.getArticlesForCategory is called for a page category', ->
-    $scope.selected_links = ['test']
-    $scope.getArticlesForCategory 'daily', 10, true, false
-    expect($scope.links_list).toEqual []
-
-  it 'should set the base variables when $scope.getArticlesForCategory is called for a selection category', ->
-    $scope.selected_links = ['test']
-    $scope.getArticlesForCategory 'Test Category', 10, true, false, true
-    expect($scope.selected_links).toEqual []
-    expect($scope.loading_category).toEqual true
-
-  it 'should call LinkResource.query when $scope.getArticlesForCategory is called', ->
-    spyOn(mockLinkResource, 'query').and.callThrough()
-    $scope.getArticlesForCategory 'Daily'
-    expect(mockLinkResource.query).toHaveBeenCalled()
-
-  it 'should set $scope.selected_links to the returned value', ->
-    $scope.getArticlesForCategory 'Test Category', 10, true, false, true
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
-    $scope.$digest()
-    expect($scope.selected_links).toEqual mockLinkQueryResponse.links
-
-  it 'should set $scope.loading_category to false when LinkResource.query succeeds', ->
-    $scope.getArticlesForCategory 'Test Category', 10, true, false
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
-    $scope.$digest()
-    expect($scope.loading_category).toEqual false
-
-  it 'should set $scope.loading_category to false when LinkResource.query fails', ->
-    $scope.getArticlesForCategory 'Test Category', 10, true, false
-    mockLinkQuery.reject()
-    $scope.$digest()
-    expect($scope.loading_category).toEqual false
-
-  it 'should set emit an error when LinkResource.query fails', ->
-    spyOn($scope, '$emit').and.callThrough()
-    $scope.getArticlesForCategory 'Test Category', 10, true, false
-    mockLinkQuery.reject()
-    $scope.$digest()
-    expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Could not load links for category'
-
-  it 'should set the appropriate variables when search_articles is called', ->
-    $scope.link_results = ['test']
-    $scope.search_articles()
-    expect($scope.link_results).toEqual []
-    expect($scope.searching).toEqual true
-
-  it 'should set $scope.link_results to the returned values when LinkResource.query succeeds', ->
-    $scope.search_articles()
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
-    $scope.$digest()
-    expect($scope.link_results).toEqual mockLinkQueryResponse.links
-
-  it 'should set $scope.searching to false when LinkResource.query succeeds', ->
-    $scope.search_articles()
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
-    $scope.$digest()
-    expect($scope.loading_category).toEqual false
-
-  it 'should set $scope.searching to false when LinkResource.query succeeds', ->
-    $scope.search_articles()
-    mockLinkQuery.reject()
-    $scope.$digest()
-    expect($scope.loading_category).toEqual false
-
-  it 'should set $scope.$emit to be called when LinkResource.query succeeds', ->
-    spyOn($scope, '$emit').and.callThrough()
-    $scope.search_articles()
-    mockLinkQuery.reject()
-    $scope.$digest()
-    expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Could not get perform the search'
-
-  it 'should call UserService.get when $scope.initDashboard is called', ->
-    spyOn(mockUserService, 'get').and.callThrough()
-    $scope.initDashboard()
-    expect(mockUserService.get).toHaveBeenCalled()
-
-  it 'should not call $scope.loadDashboard when $scope.initDashboard is called and UserService.get does not return a user', ->
-    spyOn($scope, 'loadDashboard').and.callThrough()
-    $scope.initDashboard()
-    expect($scope.loadDashboard).not.toHaveBeenCalled()
-
-  it 'should call $scope.loadDashboard when $scope.initDashboard is called and UserService.get does return a user', ->
-    spyOn(mockUserService, 'get').and.returnValue id: 1
-    spyOn($scope, 'loadDashboard').and.callThrough()
-    $scope.initDashboard()
-    expect($scope.loadDashboard).toHaveBeenCalled()
-
-  it 'should call DashboardResource.get when $scope.loadDashboard() is called', ->
-    spyOn(mockDashboardResource, 'get').and.callThrough()
-    $scope.loadDashboard()
-    expect(mockDashboardResource.get).toHaveBeenCalled()
-
-  it 'should set the appropriate values to what is returned from DashboardResource.get on success', ->
-    $scope.loadDashboard()
-    mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
-    $scope.$digest()
-    expect($scope.total_read).toEqual mockDashboardQueryResponse.total_read
-    expect($scope.categories).toEqual mockDashboardQueryResponse.categories
-    expect($scope.total_links).toEqual mockDashboardQueryResponse.total_links
-    expect($scope.links_read).toEqual mockDashboardQueryResponse.links_read
-    expect($scope.total_books).toEqual mockDashboardQueryResponse.total_books
-    expect($scope.books_read).toEqual mockDashboardQueryResponse.books_read
-    expect($scope.books_toread).toEqual mockDashboardQueryResponse.books_toread
-    expect($scope.games_toplay).toEqual mockDashboardQueryResponse.games_toplay
-    expect($scope.songs_toplay).toEqual mockDashboardQueryResponse.songs_toplay
-
-  it 'should emit an error when Dashboard.get fails', ->
-    spyOn($scope, '$emit').and.callThrough()
-    $scope.loadDashboard()
-    mockDashboardGet.reject()
-    $scope.$digest()
-    expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Problem loading daily results'
-
-  it 'should call LinkResource.populate when populateLinks is called', ->
-    spyOn(mockLinkResource, 'populate').and.callThrough()
-    $scope.populateLinks()
-    expect(mockLinkResource.populate).toHaveBeenCalled()
-
-  it 'should call loadDashboard when the LinkResource.populate responds successfully', ->
-    spyOn($scope, 'loadDashboard').and.callThrough()
-    $scope.populateLinks()
-    mockLinkPopulate.resolve()
-    $scope.$digest()
-    expect($scope.loadDashboard).toHaveBeenCalled()
-
-    expect($scope.loadDashboard).toHaveBeenCalled()
-
-  it 'should not call loadDashboard when the LinkResource.populate responds unsuccessfully', ->
-    spyOn($scope, 'loadDashboard').and.callThrough()
-    $scope.populateLinks()
-    mockLinkPopulate.reject()
-    $scope.$digest()
-    expect($scope.loadDashboard).not.toHaveBeenCalled()
-
-  it 'should call LinkResource.readToday when $scope.refreshReadCount is called', ->
-    spyOn(mockLinkResource, 'readToday').and.callThrough()
-    $scope.refreshReadCount()
-    expect(mockLinkResource.readToday).toHaveBeenCalled()
+    expect($scope.loadingArticles).toBe false

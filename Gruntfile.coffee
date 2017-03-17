@@ -23,7 +23,7 @@ module.exports = (grunt) ->
         options:
           sassDir: 'public/assets/sass/src'
           cssDir: 'public/assets/sass/build'
-          specify: 'public/assets/sass/src/**/*.s{a,c}ss'
+          specify: 'public/assets/sass/src/**/*.sass'
 
     uglify:
       options:
@@ -110,7 +110,7 @@ module.exports = (grunt) ->
         ]
 
       compass:
-        files: 'public/assets/sass/src/**/*.s{a,c}ss'
+        files: 'public/assets/sass/src/**/*.sass'
         tasks: 'compass'
 
   grunt.registerTask 'test', [

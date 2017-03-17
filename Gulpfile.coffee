@@ -19,7 +19,7 @@ gulp.task 'bootstrapCss', (done)->
     includePaths: [
       "#{__dirname}/node_modules/bootstrap/scss"
     ]
-  gulp.src "#{assetPath}/sass/src/**/*.s{a,c}ss"
+  gulp.src "#{assetPath}/sass/src/**/*.scss"
     .pipe sass sassOptions
     .pipe cssmin keepSpecialComments: 0
     .pipe gulp.dest "#{assetPath}/sass/build"
