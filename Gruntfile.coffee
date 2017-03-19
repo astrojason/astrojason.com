@@ -7,9 +7,9 @@ module.exports = (grunt) ->
     coffee:
       compile:
         expand: true
-        cwd: 'public/assets/coffee/src'
+        cwd: 'public/assets/coffee/src/v1'
         src: ['**/*.coffee']
-        dest: 'public/assets/coffee/build'
+        dest: 'public/assets/coffee/build/v1'
         ext: '.js'
 
     compass:
@@ -21,9 +21,20 @@ module.exports = (grunt) ->
 
       compile:
         options:
-          sassDir: 'public/assets/sass/src'
-          cssDir: 'public/assets/sass/build'
+          sassDir: 'public/assets/sass/src/v1'
+          cssDir: 'public/assets/sass/build/v1'
           specify: 'public/assets/sass/src/**/*.sass'
+
+    copy:
+      main:
+        files: [
+          expand: true
+          cwd: 'public/assets/bower/bootstrap/fonts/'
+          src: [
+            'glyphicons-halflings-regular.*'
+          ]
+          dest: 'public/assets/sass/build/fonts/bootstrap/'
+        ]
 
     uglify:
       options:
@@ -32,23 +43,23 @@ module.exports = (grunt) ->
         preserveComments: false
       build:
         files: {
-          'public/assets/js/app.min.js': 'public/assets/coffee/build/app.js'
-          'public/assets/js/bookmarklet.min.js': 'public/assets/coffee/build/bookmarklet.js'
-          'public/assets/js/bookmarkletLoader.min.js': 'public/assets/coffee/build/bookmarkletLoader.js'
-          'public/assets/js/models.min.js': 'public/assets/coffee/build/models/*'
-          'public/assets/js/controllers.min.js': 'public/assets/coffee/build/controllers/*'
-          'public/assets/js/directives.min.js': 'public/assets/coffee/build/directives/*'
-          'public/assets/js/filters.min.js': 'public/assets/coffee/build/filters/*'
-          'public/assets/js/services.min.js': 'public/assets/coffee/build/services/*'
-          'public/assets/js/resources.min.js': 'public/assets/coffee/build/resources/*'
+          'public/assets/js/v1/app.min.js': 'public/assets/coffee/build/v1/app.js'
+          'public/assets/js/v1/bookmarklet.min.js': 'public/assets/coffee/build/v1/bookmarklet.js'
+          'public/assets/js/v1/bookmarkletLoader.min.js': 'public/assets/coffee/build/v1/bookmarkletLoader.js'
+          'public/assets/js/v1/models.min.js': 'public/assets/coffee/build/v1/models/*'
+          'public/assets/js/v1/controllers.min.js': 'public/assets/coffee/build/v1/controllers/*'
+          'public/assets/js/v1/directives.min.js': 'public/assets/coffee/build/v1/directives/*'
+          'public/assets/js/v1/filters.min.js': 'public/assets/coffee/build/v1/filters/*'
+          'public/assets/js/v1/services.min.js': 'public/assets/coffee/build/v1/services/*'
+          'public/assets/js/v1/resources.min.js': 'public/assets/coffee/build/v1/resources/*'
         }
 
     clean:
       main: [
-        'public/assets/coffee/build/*'
-        'public/assets/js/*.js'
+        'public/assets/coffee/build/v1/*'
+        'public/assets/js/v1/*.js'
       ]
-#TODO: Split this out into karma.conf
+    #TODO: Split this out into karma.conf
     karma:
       options:
         files: [
@@ -66,15 +77,15 @@ module.exports = (grunt) ->
           'public/assets/bower/angular-typeahead/angular-typeahead.min.js'
           'public/assets/bower/moment/min/moment.min.js'
 
-          'public/assets/coffee/build/**/*.js'
+          'public/assets/coffee/build/v1/**/*.js'
 
           {
-            pattern: 'public/assets/coffee/src/tests/data/**/*.json'
+            pattern: 'public/assets/coffee/src/v1/tests/data/**/*.json'
             included: false
           }
         ]
         exclude: [
-          'public/assets/coffee/build/tests/e2e/*.js'
+          'public/assets/coffee/build/v1/tests/e2e/*.js'
         ]
         logLevel: 'ERROR'
         frameworks: ['jasmine']
@@ -93,7 +104,7 @@ module.exports = (grunt) ->
         browsers: ['PhantomJS']
         singleRun: true
         preprocessors:
-          'public/assets/coffee/build/**/*.js': ['coverage']
+          'public/assets/coffee/build/v1/**/*.js': ['coverage']
         reporters: ['coverage']
 
     watch:
@@ -102,7 +113,7 @@ module.exports = (grunt) ->
         atBegin: true
 
       coffee:
-        files: 'public/assets/coffee/src/**/*.coffee'
+        files: 'public/assets/coffee/src/v1/**/*.coffee'
         tasks: [
           'clean'
           'coffee'
@@ -110,8 +121,11 @@ module.exports = (grunt) ->
         ]
 
       compass:
-        files: 'public/assets/sass/src/**/*.sass'
-        tasks: 'compass'
+        files: 'public/assets/sass/src/v1/**/*.sass'
+        tasks: [
+          'compass'
+          'copy'
+        ]
 
   grunt.registerTask 'test', [
     'clean'
@@ -128,6 +142,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-compass'
+  grunt.loadNpmTasks 'grunt-contrib-copy'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-karma'

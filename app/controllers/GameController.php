@@ -23,7 +23,7 @@ class GameController extends BaseController {
     $platformsString .= ']';
 
 
-    return View::make('games.index')->with('platforms', $platformsString);
+    return View::make('v1.games.index')->with('platforms', $platformsString);
   }
 
 }

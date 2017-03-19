@@ -22,7 +22,7 @@ class UserController extends BaseController {
     $displayCategories[] = 'Daily';
     $displayCategories[] = 'Unread';
 
-    return View::make('user.account')->with([
+    return View::make('v1.user.account')->with([
       'user' => Auth::user(),
       'dashboardLayout' => $dashboardCategories,
       'categories' => $displayCategories

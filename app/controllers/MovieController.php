@@ -3,7 +3,7 @@
 class MovieController extends BaseController {
 
   public function index() {
-    return View::make('movies.index');
+    return View::make('v1.movies.index');
   }
 
 }

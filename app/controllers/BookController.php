@@ -6,12 +6,12 @@ class BookController extends BaseController {
 
   public function index() {
     $categoriesString = BookController::getBookCategoryString();
-    return View::make('books.index')->with('book_categories', $categoriesString);
+    return View::make('v1.books.index')->with('book_categories', $categoriesString);
   }
 
 
   public function goodreads() {
-    return View::make('books.goodreads');
+    return View::make('v1.books.goodreads');
   }
 
   /**

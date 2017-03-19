@@ -49,5 +49,5 @@ Route::group(array('prefix' => 'templates'), function(){
 });
 
 Route::group(['prefix' => 'v2'], function(){
-  Route::get('', 'HomeController@showIndexV2');
+  Route::get('', 'HomeController@dashboard');
 });

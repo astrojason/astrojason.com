@@ -4,7 +4,7 @@ class SongController extends BaseController {
 
   public function index() {
     $artists = SongController::getSongArtistsString();
-    return View::make('songs.index')->with('song_artists', $artists);
+    return View::make('v1.songs.index')->with('song_artists', $artists);
   }
 
   /**

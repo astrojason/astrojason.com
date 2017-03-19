@@ -8,7 +8,7 @@
 class ChartController extends BaseController {
 
   public function index() {
-    return View::make('charts.index');
+    return View::make('v1.charts.index');
   }
 
 }

@@ -8,13 +8,13 @@ class LinkController extends BaseController {
 
   public function index() {
     $categories = LinkController::getLinkCategoryString();
-    return View::make('links.index')->with('link_categories', $categories);
+    return View::make('v1.links.index')->with('link_categories', $categories);
   }
 
   public function readLater() {
     $title = addslashes(Input::get('title'));
     $link = Input::get('link');
-    return View::make('readlater')->with('title', $title)->with('link', $link);
+    return View::make('v1.readlater')->with('title', $title)->with('link', $link);
   }
 
   /**

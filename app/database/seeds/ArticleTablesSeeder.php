@@ -26,11 +26,11 @@
  * Time: 9:57 AM
  */
 
-use Articles\Article;
-use Articles\Category;
-use Articles\DailySetting;
-use Articles\Read;
-use Articles\Recommended;
+use Article\Article;
+use Article\Category;
+use Article\DailySetting;
+use Article\Read;
+use Article\Recommended;
 
 class ArticleTablesSeeder extends Seeder {
   public function run() {

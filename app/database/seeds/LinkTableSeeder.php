@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 class LinkTableSeeder extends Seeder {
 
   public function run() {
@@ -13,7 +15,12 @@ class LinkTableSeeder extends Seeder {
 
     foreach(range(1,1000) as $index) {
       $read = $faker->boolean();
-      Link::create([
+      /** @var DateTime $fakedDate */
+      $fakedDate = $faker->dateTimeThisMonth();
+
+      $createdDate = Carbon::create($fakedDate->format('Y'), $fakedDate->format('m'), $fakedDate->format('d'));
+
+      $link = Link::create([
         'user_id' => 1,
         'name' => ucwords(implode(' ', $faker->words(3))),
         'link' => $faker->url(),
@@ -21,14 +28,16 @@ class LinkTableSeeder extends Seeder {
         'is_read' => $read,
         'times_loaded' => $faker->numberBetween(0, 50),
         'times_read' => $faker->numberBetween(0, 10),
-        'read_at' => $read ? $faker->dateTimeThisMonth() : null
+        'read_at' => $read ? $createdDate->toDateString() : null
       ]);
-    }
-    $changeCreated = Link::where('is_read', false)->get();
-    /** @var Link $daily */
-    foreach($changeCreated as $changingCreated){
-      $changingCreated->created_at =  $faker->dateTimeThisMonth();
-      $changingCreated->save();
+      $link->setCreatedAt($createdDate);
+      if($read) {
+        $link->setUpdatedAt($createdDate);
+        if($faker->boolean()) {
+          $link->setCreatedAt($createdDate->subDay($faker->numberBetween(1, 90)));
+        }
+      }
+      $link->save();
     }
 
     $dailies = Link::where('is_read', false)->orderBy(DB::raw('RAND()'))->take(10)->get();
@@ -46,7 +55,6 @@ class LinkTableSeeder extends Seeder {
 
     $this->command->info('Truncating DashboardCategory table');
     DashboardCategory::truncate();
-
 
     $this->command->info('Creating DashboardCategory entries');
     DashboardCategory::create([

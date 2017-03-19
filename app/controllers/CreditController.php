@@ -8,7 +8,7 @@
 class CreditController extends BaseController {
 
   public function index() {
-    return View::make('credit.index');
+    return View::make('v1.credit.index');
   }
 
 }

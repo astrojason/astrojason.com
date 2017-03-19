@@ -15,13 +15,13 @@ class HomeController extends BaseController {
       }
       $categoriesString = BookController::getBookCategoryString();
     }
-		return View::make('index')->with('bookmarklet', $bookmarklet)->with('book_categories', $categoriesString);
+		return View::make('v1.index')->with('bookmarklet', $bookmarklet)->with('book_categories', $categoriesString);
 	}
 
 	public function register() {
-		return View::make('register');
+		return View::make('v1.register');
 	}
-  public function showIndexV2() {
-	  return View::make('index-v2');
+  public function dashboard() {
+	  return View::make('v2.index');
 }
 }
