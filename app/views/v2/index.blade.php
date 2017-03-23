@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Welcome :: astrojason.com</title>
     <script src="https://use.fontawesome.com/9d7ddf6f44.js"></script>
+    <link type="text/css" href="assets/bower/chosen/chosen.css" rel="stylesheet" />
     <link type="text/css" href="assets/sass/build/v2/base.css" rel="stylesheet" />
   </head>
   <body>
@@ -16,13 +17,13 @@
     <div class="container-fluid" ng-controller="DashboardController" ng-init="init()">
       <div class="row">
         <div class="col-4">
-          <table class="table table-sm table-striped">
+          <table class="table table-sm table-striped daily-articles">
             <thead class="thead-inverse">
               <tr>
                 <th>Today's Links <a class="float-right mr-1"><small>manage</small></a></th>
               </tr>
             </thead>
-            @include('partial.articles')
+            @include('v2.partial.articles')
           </table>
         </div>
         <div class="col-4">
@@ -44,7 +45,7 @@
               </tr>
             </tbody>
           </table>
-          @include('partial.tasks')
+          @include('v2.partial.tasks')
         </div>
         <div class="col-4">
           <table class="table table-sm table-striped">
@@ -113,6 +114,6 @@
         </div>
       </div>
     </div>
-    @include('partial.js')
+    @include('v2.partial.js')
   </body>
 </html>

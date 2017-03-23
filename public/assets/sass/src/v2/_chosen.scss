@@ -1,0 +1,128 @@
+.chosen-container {
+  @extend .form-control
+}
+
+.chosen-container-multi {
+  background-image: none;
+
+  .chosen-choices {
+    background-image: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+
+    .search-field {
+      input[type="text"] {
+        margin: 0 !important;
+      }
+    }
+  }
+
+  .chosen-drop {
+    margin: 0;
+    border-radius: 0;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.12);
+
+    ul.chosen-results {
+      margin: 0;
+      padding: 0;
+
+      li {
+        line-height: 21px;
+        padding: 0.8rem 1rem;
+        color: rgba(0, 0, 0, 0.87);
+
+        &.highlighted {
+          background-color: rgba(0, 0, 0, 0.06);
+          background-image: none;
+        }
+
+        &:first-child {
+          margin-top: 0.8em;
+        }
+      }
+    }
+  }
+}
+
+.chosen-container-single.form-control {
+  background: none;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+  top: 8px;
+
+  a.chosen-single.chosen-default {
+    background: none;
+    box-shadow: none;
+    color: #373737;
+    font-family: -apple-system, BlinkMacSystemFont, "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    height: auto;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(204, 204, 204, 1);
+    padding: 7px 0 7px 11px;
+
+    span {
+      margin-right: 10px;
+    }
+
+    div {
+      display: none;
+    }
+
+    ::after {
+      font-size: 12px;
+      height: 12px;
+      width: 12px;
+      content: "";
+      display: inline-block;
+      font-family: AUIcons;
+      line-height: normal;
+      text-align: center;
+      vertical-align: middle;
+      border-width: 0px;
+      border-style: initial;
+      border-color: initial;
+      border-image: initial;
+      padding: 0px;
+      margin: (-3px) 0px 0px 0.8rem;
+    }
+  }
+
+  .chosen-drop {
+    margin: (-7px) 0 0 10px;
+    border-radius: 0 0 3px 3px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.12);
+
+    .chosen-search input[type="text"] {
+      border-radius: 3px;
+      font-family: -apple-system, BlinkMacSystemFont, "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    ul.chosen-results {
+      margin: 0;
+      padding: 0;
+
+      li {
+        line-height: 21px;
+        padding: 0.8rem 1rem;
+        color: rgba(0, 0, 0, 0.87);
+
+        &.highlighted {
+          background-color: rgba(0, 0, 0, 0.06);
+          background-image: none;
+        }
+
+        &:first-child {
+          margin-top: 0.8em;
+        }
+      }
+    }
+  }
+}
+
+.input-group .form-control.chosen-with-drop {
+  z-index: 3;
+}

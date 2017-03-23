@@ -50,4 +50,9 @@ Route::group(array('prefix' => 'templates'), function(){
 
 Route::group(['prefix' => 'v2'], function(){
   Route::get('', 'HomeController@dashboard');
+  Route::group(['prefix' => 'modals'], function(){
+    Route::get('article', function(){
+      return View::make('v2.modals.article');
+    });
+  });
 });

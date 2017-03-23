@@ -19,7 +19,8 @@ angular.module('astroApp').controller 'DashboardController', [
       articlePromise = ArticleResource.daily().$promise
 
       articlePromise.then (articles)->
-        $scope.articles = articles
+        filtered_articles = $scope.filterArticles articles
+        $scope.articles = filtered_articles
         $scope.watchArticles()
 
       articlePromise.catch ->
@@ -31,10 +32,10 @@ angular.module('astroApp').controller 'DashboardController', [
     $scope.watchArticles = ->
       $scope.$watch 'articles', ->
         if $scope.articles
-          $scope.filterArticles()
+          $scope.articles = $scope.filterArticles $scope.articles
       , true
 
-    $scope.filterArticles = ->
-      $scope.articles = $scope.articles.filter (article)->
-        !article.readToday() && !article.postponedToday()
+    $scope.filterArticles = (articles)->
+      articles.filter (article)->
+        !article.readToday() && !article.postponedToday() && !article.deleted
 ]

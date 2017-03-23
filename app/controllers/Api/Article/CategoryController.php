@@ -41,7 +41,7 @@ class CategoryController extends AstroBaseController {
    */
   public function query() {
     $categories = Category::where('user_id', Auth::user()->id)->get();
-    return Response::json(['articles' => $this->transformCollection($categories)]);
+    return Response::json(['categories' => $this->transformCollection($categories)]);
   }
 
   public function transformCollection($items) {

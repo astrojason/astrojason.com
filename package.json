@@ -30,10 +30,18 @@
     "watch": "grunt watch",
     "e2e": "protractor public/assets/coffee/build/tests/e2e/protractor.js",
     "cover": "grunt cover",
-    "test": "grunt test"
+    "test": "grunt test",
+    "dev": "gulp dev"
   },
   "dependencies": {
     "angular-bootstrap": "^0.12.2",
-    "bootstrap": "^4.0.0-alpha.6"
+    "bootstrap": "^4.0.0-alpha.6",
+    "gulp-coffee": "^2.3.4",
+    "gulp-concat": "^2.6.1",
+    "gulp-if": "^2.0.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.1.0",
+    "gulp-watch": "^4.3.11",
+    "node-notifier": "^5.1.2"
   }
 }
