@@ -20,3 +20,4 @@ Thumbs.db
 .idea
 VagrantFile
 _ide_helper*
+npm-debug.log

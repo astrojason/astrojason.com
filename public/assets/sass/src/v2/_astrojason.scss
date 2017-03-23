@@ -13,3 +13,13 @@
   font-weight: lighter;
  }
 }
+
+.postpone-button {
+  display: none;
+}
+
+.daily-articles {
+  .postpone-button {
+    display: inline;
+  }
+}
