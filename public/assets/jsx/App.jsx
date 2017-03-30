@@ -1,6 +1,7 @@
 import React from 'react';
-import {render} from 'react-dom';
-import {createStore} from 'redux';
+import { render } from 'react-dom';
+import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk'
 
 import ArticleList from './Components/Article/ArticleList.jsx'
 import User from './Components/User/User.jsx'
@@ -11,10 +12,15 @@ import Songs from './Components/Guitar/Song.jsx'
 import Books from './Components/Book/Book.jsx'
 
 import articles from './reducers/articles.jsx'
-import user from './reducers/user.jsx'
+import userApp from './reducers/user/reducers.jsx'
+
+import { receivedLogin } from './reducers/user/actions.jsx'
 
 let articlesApp = createStore(articles);
-let userApp = createStore(user);
+let userStore = createStore(
+  userApp,
+  applyMiddleware(thunkMiddleware)
+);
 
 let renderArticles = () => {
   render(<ArticleList title="Today's Links" articles={articlesApp}/>, document.getElementById('articles-root'));
@@ -52,14 +58,14 @@ let renderApp = () => {
 };
 
 let renderUser = () => {
-  let user = userApp;
+  let user = userStore;
   render(<User user={user}/>, document.getElementById('user-root'));
   if (user.getState().id) {
     renderApp();
   }
 };
 
-userApp.subscribe(renderUser);
+userStore.subscribe(renderUser);
 
 window.onload = () => {
   let userRoot = document.getElementById('user-root');
@@ -68,8 +74,5 @@ window.onload = () => {
   if (userData.user) {
     user = JSON.parse(userData.user);
   }
-  userApp.dispatch({
-    type: "RETURN",
-    user: user
-  });
+  userStore.dispatch(receivedLogin(user));
 };

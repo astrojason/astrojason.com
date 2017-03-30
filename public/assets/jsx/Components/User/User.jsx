@@ -1,6 +1,8 @@
 import React from 'react';
-import {render} from 'react-dom';
-import {Dropdown, DropdownMenu, DropdownItem} from 'reactstrap';
+import { render } from 'react-dom';
+import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
+
+import { login, logout } from '../../reducers/user/actions.jsx'
 
 export default class User extends React.Component {
   constructor(props) {
@@ -53,10 +55,10 @@ export default class User extends React.Component {
             <DropdownMenu right>
               <DropdownItem>Settings</DropdownItem>
               <DropdownItem onClick={() =>
-                userStore.dispatch({
-                  type: "LOGOUT",
-                })
-              }>Log Out</DropdownItem>
+                userStore.dispatch(logout())
+              }>
+                Log Out
+              </DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
@@ -68,6 +70,12 @@ export default class User extends React.Component {
             Log In
           </div>
           <div className="card-block">
+            {
+              user.loginError ?
+                <div className="alert alert-danger">Unable to log you in</div>
+                :
+                ''
+            }
             <div className="form-group">
               <label htmlFor="email">Username:</label>
               <input
@@ -89,12 +97,9 @@ export default class User extends React.Component {
             <button
               className="btn btn-block btn-primary"
               onClick={() =>
-                userStore.dispatch({
-                  type: "LOGIN",
-                  username: this.state.username,
-                  password: this.state.password
-                })
-              }>Login
+                userStore.dispatch(login(this.state.username, this.state.password))
+              }>
+              Login
             </button>
             <button className="btn btn-block btn-link">Register</button>
           </div>
