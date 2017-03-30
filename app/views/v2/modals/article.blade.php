@@ -28,13 +28,13 @@
           placeholder="Article url" />
       </div>
       <div class="form-group">
-        <label for="title">Category</label>
+        <label for="categories">Category</label>
         <select
           class="form-control"
-          chosen
+          id="categories"
+          name="categories"
           multiple
-          placeholder-text-multiple="'Select one or more categories (or not)'"
-          ng-options="cat.name as cat.id for cat in categories"
+          ng-options="cat.id as cat.name for cat in resources.categories"
           ng-model="form_article.categories">
         </select>
       </div>

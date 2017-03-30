@@ -18,6 +18,7 @@ angular.module('astroApp').factory 'ArticleResource', [
           wrappedResponse.articles
         else
           wrappedResponse
+
       interceptor:
         response: (response)->
           response.resource.$page_count = response.data.$page_count
@@ -34,13 +35,6 @@ angular.module('astroApp').factory 'ArticleResource', [
         method: 'GET'
         params:
           id: 'category'
-        transformResponse: (response)->
-          wrappedResponse = angular.fromJson response
-          if wrappedResponse.categories
-            $log.debug wrappedResponse.categories
-            wrappedResponse.categories
-          else
-            wrappedResponse
 
       daily: angular.merge {}, arrayResponder,
         method: 'GET'

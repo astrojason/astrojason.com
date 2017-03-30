@@ -10,6 +10,10 @@ concat = require 'gulp-concat'
 gulpif = require 'gulp-if'
 rename = require 'gulp-rename'
 notifier = require 'node-notifier'
+del = require 'del'
+browserify = require 'browserify'
+source = require 'vinyl-source-stream'
+buffer = require 'vinyl-buffer'
 
 assetPath = 'public/assets'
 coffeePath = "#{assetPath}/coffee"
@@ -24,6 +28,22 @@ plumberErr = (err)->
     message: err.message
     sound: "Glass"
   console.log err.message
+
+gulp.task 'cleanJs', ->
+  del [
+    "#{assetPath}/coffee/build/v2/**/*"
+    "#{assetPath}/js/v2/**/*"
+  ]
+
+gulp.task 'cleanCss', ->
+  del [
+    "#{assetPath}/sass/build/v2/**/*"
+  ]
+
+gulp.task 'clean',  gulp.series [
+  'cleanJs'
+  'cleanCss'
+  ]
 
 gulp.task 'toggleNotifications', (done)->
   notifications = true
@@ -105,6 +125,21 @@ gulp.task 'resources', (done)->
     .pipe gulp.dest "#{coffeePath}/build/v2/"
   done()
 
+gulp.task 'build:jsx', ->
+  bundler = browserify "./#{assetPath}/jsx/app.jsx"
+
+  options =
+    presets: [
+      'es2015'
+      'react'
+    ]
+
+  bundler.transform 'babelify', options
+    .bundle()
+    .pipe source('app.js')
+    .pipe buffer()
+    .pipe gulp.dest("#{assetPath}/js/v2")
+
 gulp.task 'coffee', gulp.series [
   'astroBase'
   'controllers'
@@ -114,19 +149,29 @@ gulp.task 'coffee', gulp.series [
 ]
 
 gulp.task 'prepare', gulp.series [
+  'clean'
   'bootstrapJs'
   'bootstrapCss'
   'coffee'
+  'build:jsx'
 ]
 
 gulp.task 'watch', ->
   coffeeSrc = gulp.watch "#{coffeePath}/src/v2/**/*.coffee"
   coffeeSrc.on 'all', gulp.series [
+    'cleanJs'
     'coffee'
   ]
   cssSrc = gulp.watch "#{assetPath}/sass/src/v2/*.scss"
   cssSrc.on 'all', gulp.series [
+    'cleanCss'
     'bootstrapCss'
+  ]
+
+  jsxSource = gulp.watch "#{assetPath}/jsx/**/*.jsx"
+  jsxSource.on 'all', gulp.series [
+    'cleanJs'
+    'build:jsx'
   ]
 
 gulp.task 'dev', gulp.series [

@@ -17,7 +17,7 @@ class UserTableSeeder extends Seeder
       'username' => 'primaryuser',
       'firstname' => 'Primary',
       'lastname' => 'User',
-      'email' => 'primary',
+      'email' => 'primary@astrojason.com',
       'password' => Hash::make('a')
     ]);
 

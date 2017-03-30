@@ -7,6 +7,8 @@ angular.module('astroApp').controller 'ArticleFormController', [
   ($scope, $log, $controller, ArticleResource, article)->
     $scope.article = article
     $scope.form_article = angular.copy article
+    $scope.resources =
+      categories: []
 
     $scope.init = ->
       $scope.fetchCategories()
@@ -15,7 +17,6 @@ angular.module('astroApp').controller 'ArticleFormController', [
 
       categoryPromise = ArticleResource.categories().$promise
 
-      categoryPromise.then (categories)->
-        $scope.categories = categories
-        $log.debug categories
+      categoryPromise.then (response)->
+        $scope.resources.categories = response.categories
 ]

@@ -56,3 +56,7 @@ Route::group(['prefix' => 'v2'], function(){
     });
   });
 });
+
+Route::group(['prefix' => 'react'], function(){
+  Route::get('', 'HomeController@react');
+});
