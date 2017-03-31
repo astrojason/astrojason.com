@@ -1,4 +1,15 @@
-import { DELETE, READ, LOADING_ARTICLES, POSTPONE, RECEIVE_ARTICLES } from './actions.jsx'
+import {
+  CONFIRM_DELETE,
+  DELETE,
+  EDIT,
+  READ,
+  LOADING_ARTICLES,
+  POSTPONE,
+  RECEIVE_ARTICLES,
+  removeArticleFromList,
+  toggleArticleDelete,
+  toggleArticleEdit
+} from './actions.jsx'
 
 const initialState = [
   {
@@ -27,17 +38,15 @@ const initialState = [
   }
 ];
 
-const removeArticleFromList = (current_list, article_to_remove) => {
-  return current_list.filter(function (state_article) {
-    return state_article.id != article_to_remove.id;
-  });
-};
-
 const articles = (state = initialState, action)=> {
   switch(action.type) {
+    case CONFIRM_DELETE:
+      return toggleArticleDelete(state, action.article);
     case DELETE:
       console.log(`Deleting ${action.article.id}`);
       return removeArticleFromList(state, action.article);
+    case EDIT:
+      return toggleArticleEdit(state, action.article);
     case LOADING_ARTICLES:
       console.log(`Received ${LOADING_ARTICLES}`);
       return state;
