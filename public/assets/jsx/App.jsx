@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunkMiddleware from 'redux-thunk'
 
 import ArticleList from './Components/Article/ArticleList.jsx'
@@ -11,19 +11,23 @@ import Practice from './Components/Guitar/Practice.jsx'
 import Songs from './Components/Guitar/Song.jsx'
 import Books from './Components/Book/Book.jsx'
 
-import articles from './reducers/articles.jsx'
-import userApp from './reducers/user/reducers.jsx'
+import articles from './reducers/article/reducers.jsx'
+import user from './reducers/user/reducers.jsx'
 
 import { receivedLogin } from './reducers/user/actions.jsx'
 
-let articlesApp = createStore(articles);
-let userStore = createStore(
-  userApp,
+let astroApp = combineReducers({
+  user,
+  articles
+});
+
+let astroStore = createStore(
+  astroApp,
   applyMiddleware(thunkMiddleware)
 );
 
 let renderArticles = () => {
-  render(<ArticleList title="Today's Links" articles={articlesApp}/>, document.getElementById('articles-root'));
+  render(<ArticleList title="Today's Links" articles={astroStore} />, document.getElementById('articles-root'));
 };
 
 let renderChains = () => {
@@ -46,7 +50,7 @@ let renderBooks = () => {
   render(<Books />, document.getElementById('books-root'));
 };
 
-articlesApp.subscribe(renderArticles);
+astroStore.subscribe(renderArticles);
 
 let renderApp = () => {
   renderArticles();
@@ -58,14 +62,13 @@ let renderApp = () => {
 };
 
 let renderUser = () => {
-  let user = userStore;
-  render(<User user={user}/>, document.getElementById('user-root'));
-  if (user.getState().id) {
+  render(<User user={astroStore}/>, document.getElementById('user-root'));
+  if (astroStore.getState().user.id) {
     renderApp();
   }
 };
 
-userStore.subscribe(renderUser);
+astroStore.subscribe(renderUser);
 
 window.onload = () => {
   let userRoot = document.getElementById('user-root');
@@ -74,5 +77,5 @@ window.onload = () => {
   if (userData.user) {
     user = JSON.parse(userData.user);
   }
-  userStore.dispatch(receivedLogin(user));
+  astroStore.dispatch(receivedLogin(user));
 };

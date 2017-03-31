@@ -1,5 +1,6 @@
 export const RECEIVED_LOGIN = "RECEIVED_LOGIN";
 export const LOGIN_ERROR = "LOGIN_ERROR";
+export const TOGGLE_DROPDOWN = "TOGGLE_DROPDOWN";
 
 const defaultOpts = {
   method: 'POST',
@@ -47,5 +48,11 @@ export const receivedLogin = (user) => {
   return {
     type: RECEIVED_LOGIN,
     user
+  }
+};
+
+export const toggleUserDropdown = () => {
+  return {
+    type: TOGGLE_DROPDOWN
   }
 };
