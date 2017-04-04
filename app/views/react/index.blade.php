@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <script src="https://use.fontawesome.com/9d7ddf6f44.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/react-select/dist/react-select.css">
     <link type="text/css" href="assets/sass/build/v2/base.css" rel="stylesheet" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Welcome :: astrojason.com</title>

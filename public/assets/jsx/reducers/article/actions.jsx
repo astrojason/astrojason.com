@@ -6,6 +6,10 @@ export const LOADING_ARTICLES = "LOADING_ARTICLES";
 export const POSTPONE = "POSTPONE";
 export const READ = "READ";
 export const RECEIVE_ARTICLES = "RECEIVE_ARTICLES";
+export const RECEIVE_CATEGORIES = "RECEIVE_CATEGORIES";
+export const UPDATE = "UPDATE";
+
+const HTTP_OK = 200;
 
 const defaultOpts = {
   method: 'GET',
@@ -27,10 +31,11 @@ export const loadingArticles = () => {
   }
 };
 
-export const readArticle = (article) => {
+export const readArticle = (article, remove) => {
   return {
     type: READ,
-    article
+    article,
+    remove
   }
 };
 
@@ -41,6 +46,13 @@ export const receivedArticles = (articles) => {
   }
 };
 
+export const receivedCategories = (categories) => {
+  return {
+    type: RECEIVE_CATEGORIES,
+    categories
+  }
+};
+
 export const confirmArticleDelete = (article) => {
   return {
     type: CONFIRM_DELETE,
@@ -48,23 +60,9 @@ export const confirmArticleDelete = (article) => {
   }
 };
 
-export const deleteArticle = (article) => {
-  return {
-    type: DELETE,
-    article
-  }
-};
-
 export const editArticle = (article) => {
   return {
     type: EDIT,
-    article
-  }
-};
-
-export const postponeArticle = (article) => {
-  return {
-    type: POSTPONE,
     article
   }
 };
@@ -88,15 +86,95 @@ export const toggleArticleDelete = (current_list, article_to_toggle) => {
 };
 
 export const fetchDailyArticles = () => {
-  console.log('About to fetch the articles');
   return (dispatch) => {
-    dispatch(loadingArticles());
     return fetch('/api/article/daily', defaultOpts).then((response) => {
-      if(response.status != 200) { // Magic numbers are BAD
+      if(response.status != HTTP_OK) {
         dispatch(articlesError())
       } else {
         response.json().then((json) => {
           dispatch(receivedArticles(json.articles));
+        });
+      }
+    });
+  }
+};
+
+export const fetchArticleCategories = () => {
+  return (dispatch) => {
+    return fetch('/api/article/category', defaultOpts).then((response) => {
+      if(response.status != HTTP_OK) {
+        dispatch(articlesError())
+      } else {
+        response.json().then((json) => {
+          let categories = json.categories.map((category) => {
+            return {
+              value: category.id,
+              label: category.name
+            }
+          });
+          dispatch(receivedCategories(categories));
+        });
+      }
+    });
+  }
+};
+
+export const markArticleRead = (article, remove) => {
+  return (dispatch) => {
+    return fetch(`/api/article/${article.id}/read`, defaultOpts).then((response) => {
+      if(response.status != HTTP_OK) {
+        dispatch(articlesError())
+      } else {
+        dispatch(readArticle(article, remove));
+      }
+    });
+  }
+};
+
+export const postponeArticle = (article) => {
+  return (dispatch) => {
+    return fetch(`/api/article/${article.id}/postpone`, defaultOpts).then((response) => {
+      if(response.status != HTTP_OK) {
+        dispatch(articlesError())
+      } else {
+        dispatch({
+          type: POSTPONE,
+          article
+        });
+      }
+    });
+  }
+};
+
+export const saveArticle = (article) => {
+  return (dispatch) => {
+    let opts = Object.assign({}, defaultOpts, {
+      body: JSON.stringify(article),
+      method: 'POST'
+    });
+    return fetch(`/api/article/${article.id}`, opts).then((response) => {
+      if(response.status != HTTP_OK) {
+        dispatch(articlesError())
+      } else {
+        dispatch({
+          type: UPDATE,
+          article
+        });
+      }
+    });
+  }
+};
+
+export const deleteArticle = (article) => {
+  let opts = Object.assign({}, defaultOpts, {method: 'DELETE'});
+  return (dispatch) => {
+    return fetch(`/api/article/${article.id}`, opts).then((response) => {
+      if(response.status != HTTP_OK) {
+        dispatch(articlesError())
+      } else {
+        dispatch({
+          type: DELETE,
+          article
         });
       }
     });

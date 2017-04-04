@@ -6,58 +6,65 @@ import {
   LOADING_ARTICLES,
   POSTPONE,
   RECEIVE_ARTICLES,
+  RECEIVE_CATEGORIES,
   removeArticleFromList,
   toggleArticleDelete,
   toggleArticleEdit
 } from './actions.jsx'
 
-const initialState = [
-  {
-    id: 1,
-    title: 'This is my article',
-    url: 'http://www.google.com',
-    read: false
-  },
-  {
-    id: 2,
-    title: 'This is my second article',
-    url: 'http://www.yahoo.com',
-    read: false
-  },
-  {
-    id: 3,
-    title: 'This is my third article',
-    url: 'http://www.msn.com',
-    read: false
-  },
-  {
-    id: 4,
-    title: 'This is my fourth article',
-    url: 'http://www.cnn.com',
-    read: false
-  }
-];
+const initialState = {
+  loading: true,
+  list: [],
+  categories: [],
+  fetched: false
+};
 
 const articles = (state = initialState, action)=> {
   switch(action.type) {
     case CONFIRM_DELETE:
-      return toggleArticleDelete(state, action.article);
+      let articles = toggleArticleDelete(state.list, action.article);
+      return Object.assign({}, state, {
+        list: articles
+      });
     case DELETE:
-      console.log(`Deleting ${action.article.id}`);
-      return removeArticleFromList(state, action.article);
+      articles = removeArticleFromList(state.list, action.article);
+      return Object.assign({}, state, {
+        list: articles
+      });
     case EDIT:
-      return toggleArticleEdit(state, action.article);
+      articles = toggleArticleEdit(state.list, action.article);
+      return Object.assign({}, state, {
+        list: articles
+      });
     case LOADING_ARTICLES:
-      console.log(`Received ${LOADING_ARTICLES}`);
-      return state;
+      return Object.assign({}, state, {
+        list: [],
+        loading: true
+      });
     case POSTPONE:
-      console.log(`Marking ${action.article.id} as postponed`);
-      return removeArticleFromList(state, action.article);
+      articles = removeArticleFromList(state.list, action.article);
+      return Object.assign({}, state, {
+        list: articles
+      });
     case READ:
-      console.log(`Marking ${action.article.id} as read`);
-      return removeArticleFromList(state, action.article);
+      if(action.remove) {
+        articles = removeArticleFromList(state.list, action.article);
+        return Object.assign({}, state, {
+          list: articles
+        });
+      } else {
+        return state;
+      }
     case RECEIVE_ARTICLES:
-      return Object.assign({}, state, action.articles);
+      return Object.assign({}, state, {
+        list: action.articles,
+        loading: false,
+        fetched: true
+      });
+    case RECEIVE_CATEGORIES:
+      return Object.assign({}, state, {
+        categories: action.categories
+      });
     default:
       return state;
   }

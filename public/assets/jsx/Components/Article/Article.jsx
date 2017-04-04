@@ -9,7 +9,9 @@ const Article = ({
   onPostpone,
   onEdit,
   onDelete,
-  onDeleteConfirm
+  onSave,
+  onDeleteConfirm,
+  categories
 }) => (
   <div className="article p-2">
     <a href={ article.url } target="_blank">
@@ -41,7 +43,12 @@ const Article = ({
         <button className="btn btn-default btn-block" onClick={ onDeleteConfirm }>No!</button>
       </PopoverContent>
     </Popover>
-    <ArticleForm article={ article } toggle={ onEdit } modal={ article.editingMode }/>
+    <ArticleForm
+      article={ article }
+      categories={ categories }
+      toggle={ onEdit }
+      onSave={ onSave }
+      modal={ article.editingMode } />
   </div>
 );
 

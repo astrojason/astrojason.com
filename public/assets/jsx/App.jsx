@@ -15,6 +15,7 @@ import articles from './reducers/article/reducers.jsx'
 import user from './reducers/user/reducers.jsx'
 
 import { receivedLogin } from './reducers/user/actions.jsx'
+import { fetchDailyArticles } from './reducers/article/actions.jsx'
 
 let astroApp = combineReducers({
   user,
@@ -26,8 +27,15 @@ let astroStore = createStore(
   applyMiddleware(thunkMiddleware)
 );
 
+let renderUser = () => {
+  render(<User user={astroStore}/>, document.getElementById('user-root'));
+};
+
 let renderArticles = () => {
-  render(<ArticleList title="Today's Links" articles={astroStore} />, document.getElementById('articles-root'));
+  render(<ArticleList title="Today's Links" articles={astroStore} removeRead={true} />, document.getElementById('articles-root'));
+  if(!astroStore.getState().articles.fetched) {
+    astroStore.dispatch(fetchDailyArticles());
+  }
 };
 
 let renderChains = () => {
@@ -50,9 +58,8 @@ let renderBooks = () => {
   render(<Books />, document.getElementById('books-root'));
 };
 
-astroStore.subscribe(renderArticles);
-
 let renderApp = () => {
+  renderUser();
   renderArticles();
   renderChains();
   renderTasks();
@@ -61,14 +68,7 @@ let renderApp = () => {
   renderBooks();
 };
 
-let renderUser = () => {
-  render(<User user={astroStore}/>, document.getElementById('user-root'));
-  if (astroStore.getState().user.id) {
-    renderApp();
-  }
-};
-
-astroStore.subscribe(renderUser);
+astroStore.subscribe(renderApp);
 
 window.onload = () => {
   let userRoot = document.getElementById('user-root');
