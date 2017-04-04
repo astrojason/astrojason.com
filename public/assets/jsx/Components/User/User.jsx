@@ -30,33 +30,51 @@ export default class User extends React.Component {
     });
   }
 
+  componentDidMount() {
+    const { store } = this.context;
+    this.unsubscribe = store.subscribe(() =>
+      this.forceUpdate()
+    );
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
   render() {
-    let userStore = this.props.user;
-    let user = userStore.getState().user;
-    if (user.id) {
-      return <UserNav
-        user={user}
-        dropdownOpen={user.dropdownOpen}
+    const props = this.props;
+    const { store } = this.context;
+    const state = store.getState();
+    const user = state.user;
+
+    return (
+      user.id ?
+      <UserNav
+        user={ user }
+        dropdownOpen={ user.dropdownOpen }
         onToggle={() =>
-            userStore.dispatch(toggleUserDropdown())
+          store.dispatch(toggleUserDropdown())
         }
         onLogout={() =>
-          userStore.dispatch(logout())
-        }
-        />
-    } else {
-      return <UserLoginForm
-        loginError={user.loginError}
-
-        username={this.state.username}
-        password={this.state.password}
-        usernameChange={this.handleUsernameChange}
-        passwordChange={this.handlePasswordChange}
-
-        onLogin={() =>
-          userStore.dispatch(login(this.state.username, this.state.password))
+          store.dispatch(logout())
         }
       />
-    }
+      :
+      <UserLoginForm
+        loginError={ user.loginError }
+
+        username={ this.state.username }
+        password={ this.state.password }
+        usernameChange={ this.handleUsernameChange }
+        passwordChange={ this.handlePasswordChange }
+
+        onLogin={() =>
+          store.dispatch(login(this.state.username, this.state.password))
+        }
+      />
+    )
   }
 }
+User.contextTypes = {
+  store: React.PropTypes.object
+};

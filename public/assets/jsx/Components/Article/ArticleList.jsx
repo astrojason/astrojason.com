@@ -14,10 +14,28 @@ import {
 import Article from './Article.jsx';
 
 export default class ArticleList extends React.Component {
+  componentDidMount() {
+    const { store } = this.context;
+    const props = this.props;
+    this.unsubscribe = store.subscribe(() =>
+      this.forceUpdate()
+    );
+
+    if(!store.getState().articles.fetched) {
+      store.dispatch(props.articleQuery());
+    }
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
   render() {
-    let articlesStore = this.props.articles;
-    let articles = articlesStore.getState().articles.list;
-    let removeRead = this.props.removeRead;
+    const props = this.props;
+    const { store } = this.context;
+
+    let articles = store.getState().articles.list;
+    let removeRead = props.removeRead;
     let displayArticles = articles;
     if(removeRead) {
       let today = (new moment()).format('YYYY-MM-DD');
@@ -31,15 +49,15 @@ export default class ArticleList extends React.Component {
         return (!article.read.includes(today) && !articlePostponedToday);
       });
     }
-    if(articlesStore.getState().articles.categories.length == 0) {
-      articlesStore.dispatch(fetchArticleCategories())
+    if(store.getState().articles.categories.length == 0) {
+      store.dispatch(fetchArticleCategories())
     }
-    return <div>
+    return <div className="col-4 daily-articles">
       <div className="bg-inverse text-white p-2">
-        { this.props.title }
+        { props.title }
       </div>
       {
-        articlesStore.getState().articles.loading ?
+        store.getState().articles.loading ?
           <div className="article p-2 text-center">Loading Articles</div>
           :
           displayArticles.length > 0 ?
@@ -47,24 +65,24 @@ export default class ArticleList extends React.Component {
               return <Article
                 article={article}
                 onRead={() =>
-                  articlesStore.dispatch(markArticleRead(article, removeRead))
+                  store.dispatch(markArticleRead(article, removeRead))
                 }
                 onDelete={() =>
-                  articlesStore.dispatch(deleteArticle(article))
+                  store.dispatch(deleteArticle(article))
                 }
                 onPostpone={() =>
-                  articlesStore.dispatch(postponeArticle(article))
+                  store.dispatch(postponeArticle(article))
                 }
                 onEdit={() =>
-                  articlesStore.dispatch(editArticle(article))
+                  store.dispatch(editArticle(article))
                 }
                 onDeleteConfirm={()=>
-                  articlesStore.dispatch(confirmArticleDelete(article))
+                  store.dispatch(confirmArticleDelete(article))
                 }
                 onSave={() =>
-                  articlesStore.dispatch(saveArticle(article))
+                  store.dispatch(saveArticle(article))
                 }
-                categories={articlesStore.getState().articles.categories}
+                categories={store.getState().articles.categories}
                 key={ article.id }/>
             })
           :
@@ -76,3 +94,7 @@ export default class ArticleList extends React.Component {
     </div>
   }
 }
+
+ArticleList.contextTypes = {
+  store: React.PropTypes.object
+};

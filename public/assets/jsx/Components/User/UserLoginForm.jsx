@@ -26,8 +26,8 @@ const UserLoginForm = ({
                 type="username"
                 id="username"
                 className="form-control"
-                value={username}
-                onChange={usernameChange}/>
+                value={ username }
+                onChange={ usernameChange } />
             </div>
             <div className="form-group">
               <label htmlFor="password">Password:</label>
@@ -35,12 +35,12 @@ const UserLoginForm = ({
                 type="password"
                 id="password"
                 className="form-control"
-                value={password}
-                onChange={passwordChange}/>
+                value={ password }
+                onChange={ passwordChange } />
             </div>
             <button
               className="btn btn-block btn-primary"
-              onClick={onLogin}>
+              onClick={ onLogin }>
               Login
             </button>
             <button className="btn btn-block btn-link">Register</button>

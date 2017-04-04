@@ -47,7 +47,7 @@ class Song extends React.Component {
 
 export default class Songs extends React.Component {
   render() {
-    return <div>
+    return <div className="mt-2">
       <div className="bg-inverse text-white p-2">Songs</div>
       {
         songsList.map(function (song) {

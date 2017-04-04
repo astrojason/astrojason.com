@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunkMiddleware from 'redux-thunk'
+import { Provider } from 'react-redux'
 
 import ArticleList from './Components/Article/ArticleList.jsx'
 import User from './Components/User/User.jsx'
@@ -14,7 +15,6 @@ import Books from './Components/Book/Book.jsx'
 import articles from './reducers/article/reducers.jsx'
 import user from './reducers/user/reducers.jsx'
 
-import { receivedLogin } from './reducers/user/actions.jsx'
 import { fetchDailyArticles } from './reducers/article/actions.jsx'
 
 let astroApp = combineReducers({
@@ -22,60 +22,52 @@ let astroApp = combineReducers({
   articles
 });
 
-let astroStore = createStore(
-  astroApp,
-  applyMiddleware(thunkMiddleware)
+const createAstroStore = (user) => (
+  createStore(
+    astroApp,
+    {
+      user: user
+    },
+    applyMiddleware(thunkMiddleware)
+  )
 );
 
-let renderUser = () => {
-  render(<User user={astroStore}/>, document.getElementById('user-root'));
-};
-
-let renderArticles = () => {
-  render(<ArticleList title="Today's Links" articles={astroStore} removeRead={true} />, document.getElementById('articles-root'));
-  if(!astroStore.getState().articles.fetched) {
-    astroStore.dispatch(fetchDailyArticles());
-  }
-};
-
-let renderChains = () => {
-  render(<Chains />, document.getElementById('chain-root'));
-};
-
-let renderTasks = () => {
-  render(<Tasks />, document.getElementById('tasks-root'));
-};
-
-let renderPractice = () => {
-  render(<Practice />, document.getElementById('practice-root'));
-};
-
-let renderSongs = () => {
-  render(<Songs />, document.getElementById('songs-root'));
-};
-
-let renderBooks = () => {
-  render(<Books />, document.getElementById('books-root'));
-};
-
-let renderApp = () => {
-  renderUser();
-  renderArticles();
-  renderChains();
-  renderTasks();
-  renderPractice();
-  renderSongs();
-  renderBooks();
-};
-
-astroStore.subscribe(renderApp);
+const AstroApp = () => (
+  <div>
+    <User />
+    <div className="container-fluid">
+      <div className="row">
+        <ArticleList
+          title="Today's Links"
+          articleQuery={()=>
+            fetchDailyArticles()
+          }
+          removeRead={ true } />
+        <div className="col-4">
+          <Chains />
+          <Tasks />
+        </div>
+        <div className="col-4">
+          <Practice />
+          <Songs />
+          <Books />
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 window.onload = () => {
-  let userRoot = document.getElementById('user-root');
+  let userRoot = document.getElementById('react-root');
   let userData = userRoot.dataset;
   let user = {};
   if (userData.user) {
     user = JSON.parse(userData.user);
   }
-  astroStore.dispatch(receivedLogin(user));
+  render(
+    <Provider store={createAstroStore(user)}>
+      <AstroApp />
+    </Provider>,
+    document.getElementById('react-root')
+  );
 };

@@ -29,7 +29,7 @@ class Book extends React.Component {
 
 export default class Books extends React.Component {
   render() {
-    return <div>
+    return <div className="mt-2">
       <div className="bg-inverse text-white p-2">Books</div>
       <Book book={currentBook} current={true}/>
       <Book book={nextBook} current={false}/>

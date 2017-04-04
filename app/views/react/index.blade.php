@@ -11,21 +11,7 @@
     <title>Welcome :: astrojason.com</title>
   </head>
   <body>
-    <div id="user-root" data-user="<%% Auth::user() %%>"></div>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-4 daily-articles" id="articles-root"></div>
-        <div class="col-4">
-          <div id="chain-root"></div>
-          <div id="tasks-root" class="mt-2"></div>
-        </div>
-        <div class="col-4">
-          <div id="practice-root"></div>
-          <div id="songs-root" class="mt-2"></div>
-          <div id="books-root" class="mt-2"></div>
-        </div>
-      </div>
-    </div>
+    <div id="react-root" data-user="<%% Auth::user() %%>"></div>
     <script type="text/javascript" src="assets/js/v2/app.js"></script>
   </body>
 </html>
