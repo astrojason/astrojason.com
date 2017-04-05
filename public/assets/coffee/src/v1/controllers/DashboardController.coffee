@@ -1,6 +1,28 @@
-angular.module('astroApp').controller 'DashboardController', ['$scope', '$location', '$timeout', '$filter',
-  'UserService', 'DashboardResource', 'LinkResource', 'Link', 'Book', 'Movie', 'Game', 'Song', ($scope,
-    $location, $timeout, $filter, UserService, DashboardResource, LinkResource, Link, Book, Movie, Game, Song)->
+angular.module('astroApp').controller 'DashboardController', [
+  '$scope'
+  '$location'
+  '$timeout'
+  '$filter'
+  'UserService'
+  'DashboardResource'
+  'LinkResource'
+  'Link'
+  'Book'
+  'Movie'
+  'Game'
+  'Song'
+  ($scope,
+    $location,
+    $timeout,
+    $filter,
+    UserService,
+    DashboardResource,
+    LinkResource,
+    Link,
+    Book,
+    Movie,
+    Game,
+    Song)->
 
     $scope.display_category = $location.search().category || ''
     $scope.search_timeout = null

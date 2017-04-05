@@ -21,10 +21,6 @@ class HomeController extends BaseController {
     return View::make('v1.register');
   }
 
-  public function dashboard() {
-    return View::make('v2.index');
-  }
-
   public function react() {
     return View::make('react.index');
   }

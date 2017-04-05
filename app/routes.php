@@ -48,15 +48,6 @@ Route::group(array('prefix' => 'templates'), function(){
   @include('routes/templates.php');
 });
 
-Route::group(['prefix' => 'v2'], function(){
-  Route::get('', 'HomeController@dashboard');
-  Route::group(['prefix' => 'modals'], function(){
-    Route::get('article', function(){
-      return View::make('v2.modals.article');
-    });
-  });
-});
-
 Route::group(['prefix' => 'react'], function(){
   Route::get('', 'HomeController@react');
 });

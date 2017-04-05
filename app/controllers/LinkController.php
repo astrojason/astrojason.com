@@ -13,8 +13,8 @@ class LinkController extends BaseController {
 
   public function readLater() {
     $title = addslashes(Input::get('title'));
-    $link = Input::get('link');
-    return View::make('v1.readlater')->with('title', $title)->with('link', $link);
+    $url = Input::get('url');
+    return View::make('v1.readlater')->with('title', $title)->with('url', $url);
   }
 
   /**

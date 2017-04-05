@@ -6,7 +6,7 @@ window.addEventListener 'message', (e)->
 
 addTheLink = ->
   title = escape document.title
-  link = escape location.href
+  url = escape location.href
   containerStyle =
     position: 'absolute'
     top: 0
@@ -25,7 +25,7 @@ addTheLink = ->
   container = $('<div />').attr('id', 'readlaterwrapper').css containerStyle
   container.on 'click', ->
     container.remove()
-  iframe = $('<iframe />').attr 'src', "http://astrojason.com/readlater?title=" + title + "&link=" + link
+  iframe = $('<iframe />').attr 'src', "http://astrojason.com/readlater?title=" + title + "&url=" + url
   iframe.css frameStyle
   container.append iframe
   $('body').append container
