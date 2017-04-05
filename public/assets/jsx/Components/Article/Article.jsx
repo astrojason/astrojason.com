@@ -9,7 +9,6 @@ const Article = ({
   onPostpone,
   onEdit,
   onDelete,
-  onSave,
   onDeleteConfirm,
   categories
 }) => (
@@ -47,7 +46,6 @@ const Article = ({
       article={ article }
       categories={ categories }
       toggle={ onEdit }
-      onSave={ onSave }
       modal={ article.editingMode } />
   </div>
 );

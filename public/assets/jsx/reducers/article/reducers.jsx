@@ -7,9 +7,11 @@ import {
   POSTPONE,
   RECEIVE_ARTICLES,
   RECEIVE_CATEGORIES,
+  UPDATE,
   removeArticleFromList,
   toggleArticleDelete,
-  toggleArticleEdit
+  toggleArticleEdit,
+  updateArticle
 } from './actions.jsx'
 
 const initialState = {
@@ -64,6 +66,10 @@ const articles = (state = initialState, action)=> {
     case RECEIVE_CATEGORIES:
       return Object.assign({}, state, {
         categories: action.categories
+      });
+    case UPDATE:
+      return Object.assign({}, state, {
+        list: updateArticle(state.list, action.article)
       });
     default:
       return state;

@@ -4,6 +4,8 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Select from 'react-select';
 import moment from 'moment';
 
+import { saveArticle } from '../../reducers/article/actions.jsx'
+
 export default class ArticleForm extends React.Component {
   constructor(props) {
     super(props);
@@ -12,6 +14,7 @@ export default class ArticleForm extends React.Component {
     this.handleUrlChange = this.handleUrlChange.bind(this);
     this.handleCategoriesChange = this.handleCategoriesChange.bind(this);
     this.handleReadChange = this.handleReadChange.bind(this);
+    this.handleArticleSave = this.handleArticleSave.bind(this);
     this.state = Object.assign({}, this.props.article, {
       savedTitle: this.props.article.title,
       articleCategories: [],
@@ -55,6 +58,11 @@ export default class ArticleForm extends React.Component {
     this.setState({
       categories: newCategories
     });
+  }
+
+  handleArticleSave() {
+    const { store } = this.context;
+    store.dispatch(saveArticle(this.state));
   }
 
   render() {
@@ -108,9 +116,13 @@ export default class ArticleForm extends React.Component {
         </form>
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onClick={ this.props.onSave }>Save</Button>{' '}
+        <Button color="primary" onClick={ this.handleArticleSave }>Save</Button>{' '}
         <Button color="secondary" onClick={ this.props.toggle }>Cancel</Button>
       </ModalFooter>
     </Modal>
   }
 }
+
+ArticleForm.contextTypes = {
+  store: React.PropTypes.object
+};

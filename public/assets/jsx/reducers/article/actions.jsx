@@ -186,3 +186,14 @@ export const removeArticleFromList = (current_list, article_to_remove) => {
     return state_article.id != article_to_remove.id;
   });
 };
+
+export const updateArticle = (current_list, article_to_update) => {
+  article_to_update.editingMode = false;
+  return current_list.map(function (state_article) {
+    if(state_article.id != article_to_update.id) {
+      return state_article;
+    } else {
+      return article_to_update;
+    }
+  });
+};

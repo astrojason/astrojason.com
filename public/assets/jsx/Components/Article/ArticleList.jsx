@@ -79,9 +79,6 @@ export default class ArticleList extends React.Component {
                 onDeleteConfirm={()=>
                   store.dispatch(confirmArticleDelete(article))
                 }
-                onSave={() =>
-                  store.dispatch(saveArticle(article))
-                }
                 categories={store.getState().articles.categories}
                 key={ article.id }/>
             })
