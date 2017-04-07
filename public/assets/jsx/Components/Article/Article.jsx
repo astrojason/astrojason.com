@@ -12,7 +12,7 @@ const Article = ({
   onDeleteConfirm,
   categories
 }) => (
-  <div className="article p-2">
+  <div className="article p-2 clearfix">
     <a href={ article.url } target="_blank">
       { article.title }
     </a>

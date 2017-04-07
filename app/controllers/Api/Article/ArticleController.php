@@ -55,11 +55,11 @@ class ArticleController extends AstroBaseController {
     $page = Input::get('page', 1);
     $q = Input::get('q');
     $category = Input::get('category');
-    $include_read = filter_var(Input::get('include_read'), FILTER_VALIDATE_BOOLEAN);
+    $include_read = filter_var(Input::get('include_read', false), FILTER_VALIDATE_BOOLEAN);
 
     $query = Article::where('user_id', Auth::user()->id);
     if(!$include_read){
-      $query->has('read', '<', 1);
+      $query->doesntHave('read');
     }
     if(isset($category)){
       $query->whereHas('categories', function($query) use ($category){
@@ -267,6 +267,9 @@ class ArticleController extends AstroBaseController {
       foreach ($userSettings as $userSetting) {
 
         $query = Article::where('user_id', $userId);
+        if (!$userSetting->allow_read) {
+          $query->doesntHave('read');
+        }
         if ($userSetting->category_id) {
           $query->whereHas('categories', function ($query) use ($userSetting) {
             $query->where('category_id', $userSetting->category_id);
@@ -277,9 +280,6 @@ class ArticleController extends AstroBaseController {
         $query->doesntHave('recommended')->orWhereHas('recommended', function ($query) use ($today) {
           $query->where('articles_recommended.created_at', '<', $today->subDay(7));
         });
-        if (!$userSetting->allow_read) {
-          $query->has('read', '<', 1);
-        }
         $query->whereNotIn('id', $ids);
         $query->orderBy(DB::raw('RAND()'));
         $articles = $query->take($userSetting->number)->get();
