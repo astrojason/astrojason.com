@@ -1,6 +1,24 @@
-angular.module('astroApp').controller 'LinkController', ['$scope', '$controller', '$filter', '$timeout', '$location',
-  'LinkResource', 'Link', 'AlertifyService',
-  ($scope, $controller, $filter, $timeout, $location, LinkResource, Link, AlertifyService)->
+angular.module('astroApp').controller 'LinkController', [
+  '$scope'
+  '$controller'
+  '$filter'
+  '$timeout'
+  '$location'
+  '$log'
+  'LinkResource'
+  'Link'
+  'AlertifyService'
+  'ArticleResource'
+  ($scope,
+    $controller,
+    $filter,
+    $timeout,
+    $location,
+    $log,
+    LinkResource,
+    Link,
+    AlertifyService,
+    ArticleResource)->
 
     $controller 'FormMasterController', $scope: $scope
 
@@ -172,26 +190,28 @@ angular.module('astroApp').controller 'LinkController', ['$scope', '$controller'
       data =
         importlist: submitLinks
 
-      importPromise = LinkResource.import($.param data).$promise
+      importPromise = ArticleResource.import($.param data).$promise
 
-      importPromise.then (response)->
-        imported = response.imported
+      importPromise.then (articles)->
+        imported = articles.filter (article)->
+          article.justAdded == true
+        skipped = articles.filter (article)->
+          article.justAdded == false
         if imported.length > 0
           $scope.alerts.push
             type: 'success'
             msg: "Imported #{imported.length} link(s)."
-        skipped = response.skipped
         if skipped.length > 0
           message = """
             Skipped #{skipped.length} link(s).
-            <ul class='list-unstyled'>
+            <table class='table table-striped'>
           """
-          angular.forEach skipped, (link)->
+          angular.forEach skipped, (article)->
             message += """
-              <li>#{link.name}: #{link.reason}
+              <tr><td><a href="#{article.url}" target='_blank'>#{article.title}</a></td></tr>
             """
           message += """
-            </ul>
+            </table>
           """
 
           $scope.alerts.push

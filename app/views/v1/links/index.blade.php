@@ -15,7 +15,6 @@
               <th>
                 Links
                 <ul class="list-inline pull-right">
-                  <li><button class="btn btn-success btn-xs pull-right" ng-click="linkModalOpen = true">Add</button></li>
                   <li><button class="btn btn-success btn-xs pull-right" ng-click="importModalOpen = true">Import from OneTab</button></li>
                 </ul>
               </th>

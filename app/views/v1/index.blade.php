@@ -112,7 +112,7 @@
             @endif
             <tr>
               <td>
-                <button class="btn btn-success btn-xs" ng-click="linkModalOpen = true">Add Link</button>
+                <a class="btn btn-success btn-xs" href="/readlater" target="_self">Add Article</a>
                 <button class="btn btn-success btn-xs" ng-click="bookModalOpen = true">Add Book</button>
                 <button class="btn btn-success btn-xs" ng-click="movieModalOpen = true">Add Movie</button>
               </td>
