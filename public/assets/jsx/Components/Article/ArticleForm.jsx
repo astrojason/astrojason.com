@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Select from 'react-select';
@@ -6,7 +6,7 @@ import moment from 'moment';
 
 import { saveArticle } from '../../reducers/article/actions.jsx'
 
-export default class ArticleForm extends React.Component {
+export default class ArticleForm extends Component {
   constructor(props) {
     super(props);
 

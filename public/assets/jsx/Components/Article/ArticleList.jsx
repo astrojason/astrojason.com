@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { render } from 'react-dom';
 import moment from 'moment';
 import {
@@ -8,12 +8,11 @@ import {
   markArticleRead,
   postponeArticle,
   fetchArticleCategories,
-  saveArticle
 } from '../../reducers/article/actions.jsx'
 
 import Article from './Article.jsx';
 
-export default class ArticleList extends React.Component {
+export default class ArticleList extends Component {
   componentDidMount() {
     const { store } = this.context;
     const props = this.props;

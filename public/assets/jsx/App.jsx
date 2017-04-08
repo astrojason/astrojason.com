@@ -6,11 +6,11 @@ import { Provider } from 'react-redux'
 
 import ArticleList from './Components/Article/ArticleList.jsx'
 import User from './Components/User/User.jsx'
-import Chains from './Components/Habit/Chain.jsx'
-import Tasks from './Components/Task/Tasks.jsx'
-import Practice from './Components/Guitar/Practice.jsx'
-import Songs from './Components/Guitar/Song.jsx'
-import Books from './Components/Book/Book.jsx'
+import ChainList from './Components/Habit/ChainList.jsx'
+import TaskList from './Components/Task/TaskList.jsx'
+import PracticeList from './Components/Guitar/PracticeList.jsx'
+import SongList from './Components/Guitar/SongList.jsx'
+import BookList from './Components/Book/BookList.jsx'
 
 import articles from './reducers/article/reducers.jsx'
 import user from './reducers/user/reducers.jsx'
@@ -44,13 +44,13 @@ const AstroApp = () => (
           }
           removeRead={ true } />
         <div className="col-4">
-          <Chains />
-          <Tasks />
+          <ChainList />
+          <TaskList />
         </div>
         <div className="col-4">
-          <Practice />
-          <Songs />
-          <Books />
+          <PracticeList />
+          <SongList />
+          <BookList />
         </div>
       </div>
     </div>

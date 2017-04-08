@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { render } from 'react-dom';
 
 import UserNav from "./UserNav.jsx"
@@ -6,7 +6,7 @@ import UserLoginForm from './UserLoginForm.jsx'
 
 import { login, logout, toggleUserDropdown } from '../../reducers/user/actions.jsx'
 
-export default class User extends React.Component {
+export default class User extends Component {
   constructor(props) {
     super(props);
 
@@ -76,5 +76,5 @@ export default class User extends React.Component {
   }
 }
 User.contextTypes = {
-  store: React.PropTypes.object
+  store: PropTypes.object
 };
