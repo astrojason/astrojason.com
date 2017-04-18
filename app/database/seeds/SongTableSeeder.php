@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Song;
+
 class SongTableSeeder extends Seeder
 {
 

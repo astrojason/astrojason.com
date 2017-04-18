@@ -13,3 +13,5 @@
 Artisan::add(new ClearRecentRecommendations);
 Artisan::add(new MigrateArticles);
 Artisan::add(new RecommendAllArticles);
+Artisan::add(new MigrateBooks);
+Artisan::add(new MigrateSongs);

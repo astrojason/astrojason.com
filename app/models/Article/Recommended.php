@@ -18,6 +18,8 @@ use Eloquent;
  * @method static \Illuminate\Database\Query\Builder|\Article\Recommended whereArticleId($value)
  * @method static \Illuminate\Database\Query\Builder|\Article\Recommended whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Article\Recommended whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Article\Recommended whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Article\Recommended wherePostpone($value)
  */
 class Recommended extends Eloquent {
   protected $fillable = [

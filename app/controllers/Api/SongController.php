@@ -1,11 +1,10 @@
 <?php
 
-
 namespace Api;
 
 use Illuminate\Http\Response as IlluminateResponse;
 
-use Auth, DB, Input, Response, Song;
+use Auth, DB, Input, Response, App\Models\Song;;
 
 class SongController extends AstroBaseController {
 

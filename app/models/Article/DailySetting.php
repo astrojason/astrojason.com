@@ -46,6 +46,7 @@ use Eloquent;
  * @method static \Illuminate\Database\Query\Builder|\Article\DailySetting whereNumber($value)
  * @method static \Illuminate\Database\Query\Builder|\Article\DailySetting whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Article\DailySetting whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Article\DailySetting whereAllowRead($value)
  */
 
 class DailySetting extends Eloquent {
