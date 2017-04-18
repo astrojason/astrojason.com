@@ -114,12 +114,11 @@
               <td>
                 <a class="btn btn-success btn-xs" href="/readlater" target="_self">Add Article</a>
                 <button class="btn btn-success btn-xs" ng-click="bookModalOpen = true">Add Book</button>
-                <button class="btn btn-success btn-xs" ng-click="movieModalOpen = true">Add Movie</button>
+                <button class="btn btn-success btn-xs" ng-click="gameModalOpen = true">Add Game</button>
               </td>
             </tr>
             <tr>
               <td>
-                <button class="btn btn-success btn-xs" ng-click="gameModalOpen = true">Add Game</button>
                 <button class="btn btn-success btn-xs" ng-click="songModalOpen = true">Add Song</button>
               </td>
             </tr>
@@ -193,8 +192,6 @@
     <link-modal></link-modal>
 
     <book-modal></book-modal>
-
-    <movie-modal></movie-modal>
 
     <game-modal></game-modal>
 
