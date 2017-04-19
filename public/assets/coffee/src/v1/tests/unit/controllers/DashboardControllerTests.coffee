@@ -79,8 +79,6 @@ describe 'DashboardController tests', ->
   it 'should set bookModalOpen to the default value', ->
     expect($scope.bookModalOpen).toEqual false
 
-  it 'should set movieModalOpen to the default value', ->
-    expect($scope.movieModalOpen).toEqual false
 
   it 'should set gameModalOpen to the default value', ->
     expect($scope.gameModalOpen).toEqual false
@@ -129,14 +127,12 @@ describe 'DashboardController tests', ->
   it 'should set all the closeModal variables to false when closeModal is broadcast', ->
     $scope.linkModalOpen = true
     $scope.bookModalOpen = true
-    $scope.movieModalOpen = true
     $scope.gameModalOpen = true
     $scope.songModalOpen = true
     $scope.$broadcast 'closeModal'
     $scope.$digest()
     expect($scope.linkModalOpen).toEqual false
     expect($scope.bookModalOpen).toEqual false
-    expect($scope.movieModalOpen).toEqual false
     expect($scope.gameModalOpen).toEqual false
     expect($scope.songModalOpen).toEqual false
 

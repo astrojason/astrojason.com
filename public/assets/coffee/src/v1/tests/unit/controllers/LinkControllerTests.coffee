@@ -6,12 +6,13 @@ describe 'LinkController unit tests', ->
   Link = null
   scopeLink = null
   mockLinkResource = null
+  mockArticlesResource = null
   mockAlertifyService = null
   mockLinkQueryDeferred = null
   mockLinkSaveDeferred = null
   mockLinkRemoveDeferred = null
-  mockLinkImportDeferred = null
   mockLinkQueryResponse = readJSON 'public/assets/coffee/src/v1/tests/data/links.json'
+  mockArticleImportDeferred = null
   mockForm = """
     <form name="link_form">
       <input name="name" ng-model="link.name" />
@@ -39,9 +40,10 @@ describe 'LinkController unit tests', ->
           mockLinkRemoveDeferred = $q.defer()
           $promise: mockLinkRemoveDeferred.promise
 
+      mockArticlesResource =
         import: ->
-          mockLinkImportDeferred = $q.defer()
-          $promise: mockLinkImportDeferred.promise
+          mockArticleImportDeferred = $q.defer()
+          $promise: mockArticleImportDeferred.promise
 
       mockAlertifyService =
         success: ->
@@ -51,6 +53,7 @@ describe 'LinkController unit tests', ->
         $scope: $scope
         LinkResource: mockLinkResource
         AlertifyService: mockAlertifyService
+        ArticleResource: mockArticlesResource
 
       LinkController = $controller 'LinkController', mockInjections
 
@@ -478,34 +481,39 @@ describe 'LinkController unit tests', ->
     $scope.setCategories(myCategories)
     expect($scope.categories).toEqual myCategories
 
-  it 'should call LinkResource.import when importLinks is called', ->
+  it 'should call ArticleResource.import when importLinks is called', ->
     spyOn($scope, 'splitImports').and.returnValue [
       'http://www.google.com | Google'
       'http://www.goodreads.com | Goodreads'
     ]
-    spyOn(mockLinkResource, 'import').and.callThrough()
+    spyOn(mockArticlesResource, 'import').and.callThrough()
     $scope.importLinks()
-    expect(mockLinkResource.import).toHaveBeenCalled()
+    expect(mockArticlesResource.import).toHaveBeenCalled()
 
-  it 'should set the number of imported items when LinkResource.import succeeds', ->
+  it 'should set the number of imported items when ArticleResource.import succeeds', ->
     spyOn($scope, 'splitImports').and.returnValue [
       'http://www.google.com | Google'
       'http://www.goodreads.com | Goodreads'
     ]
     $scope.importLinks()
-    mockLinkImportDeferred.resolve
-      imported: [1]
-      skipped: []
+    mockArticleImportDeferred.resolve [
+        justAdded: true
+      ,
+        justAdded: true
+      ]
     $scope.$digest()
-    expect($scope.alerts.length).toEqual 1
+    expect($scope.alerts).toEqual [
+      type: 'success'
+      msg: "Imported 2 link(s)."
+    ]
 
-  it 'should set the errorMessage when LinkResource.import fails', ->
+  it 'should set the errorMessage when ArticleResource.import fails', ->
     spyOn($scope, 'splitImports').and.returnValue [
       'http://www.google.com | Google'
       'http://www.goodreads.com | Goodreads'
     ]
     $scope.importLinks()
-    mockLinkImportDeferred.reject()
+    mockArticleImportDeferred.reject()
     $scope.$digest()
     expect($scope.errorMessage).toEqual 'There was a problem with the import'
 

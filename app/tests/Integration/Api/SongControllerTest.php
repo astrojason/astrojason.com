@@ -7,7 +7,7 @@
 
 namespace Integration\Api;
 
-use Song;
+use App\Models\Song;
 use Mockery, TestCase;
 use Faker;
 use Illuminate\Http\JsonResponse;

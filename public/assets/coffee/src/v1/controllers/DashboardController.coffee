@@ -8,7 +8,6 @@ angular.module('astroApp').controller 'DashboardController', [
   'LinkResource'
   'Link'
   'Book'
-  'Movie'
   'Game'
   'Song'
   ($scope,
@@ -20,7 +19,6 @@ angular.module('astroApp').controller 'DashboardController', [
     LinkResource,
     Link,
     Book,
-    Movie,
     Game,
     Song)->
 
@@ -34,7 +32,6 @@ angular.module('astroApp').controller 'DashboardController', [
     $scope.recommendingSong = false
     $scope.linkModalOpen = false
     $scope.bookModalOpen = false
-    $scope.movieModalOpen = false
     $scope.gameModalOpen = false
     $scope.songModalOpen = false
     $scope.viewing_category = ''
@@ -73,7 +70,6 @@ angular.module('astroApp').controller 'DashboardController', [
     $scope.$on 'closeModal', ->
       $scope.linkModalOpen = false
       $scope.bookModalOpen = false
-      $scope.movieModalOpen = false
       $scope.gameModalOpen = false
       $scope.songModalOpen = false
 
@@ -103,10 +99,6 @@ angular.module('astroApp').controller 'DashboardController', [
     $scope.$watch 'bookModalOpen', ->
       if !$scope.bookModalOpen
         $scope.newBook = new Book()
-
-    $scope.$watch 'movieModalOpen', ->
-      if !$scope.movieModalOpen
-        $scope.newMovie = new Movie()
 
     $scope.$watch 'gameModalOpen', ->
       if !$scope.gameModalOpen

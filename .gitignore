@@ -21,3 +21,4 @@ Thumbs.db
 VagrantFile
 _ide_helper*
 npm-debug.log
+/public/assets/coffee/src/v1/tests/unit/models/MovieTests.coffee
