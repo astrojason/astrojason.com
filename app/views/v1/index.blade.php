@@ -42,30 +42,10 @@
             </table>
           </div>
 
-          <table class="table table-condensed table-striped table-hover" ng-cloak>
+          <table id="daily_articles" class="table table-condensed table-striped table-hover" ng-cloak>
             <tbody>
               <tr ng-repeat="article in daily_articles">
-                <td>
-                  <a ng-href="{{ article.url }}" target="_blank">{{ article.title }}</a>
-                </td>
-                <td>
-                  <span
-                    class="glyphicon glyphicon-ok-circle text-success"
-                    ng-click="readArticle(article, 'daily_articles')">
-                  </span>
-                </td>
-                <td>
-                  <span
-                    class=" glyphicon glyphicon-calendar text-info"
-                    ng-click="postponeArticle(article)">
-                  </span>
-                </td>
-                <td>
-                  <span
-                    class=" glyphicon glyphicon-remove-circle text-danger"
-                    ng-click="article.warnDelete()">
-                  </span>
-                </td>
+                @include('v1.partials.article_row')
               </tr>
             </tbody>
           </table>
@@ -79,7 +59,7 @@
                     <select
                       name="category"
                       ng-model="display_category"
-                      ng-options="category for category in categories"
+                      ng-options="category.name for category in categories"
                       class="form-control">
                       <option value="">Select category</option>
                     </select>
@@ -93,8 +73,8 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="link in selected_links">
-                  <td><link-form link="link"></link-form></td>
+                <tr ng-repeat="article in selected_articles">
+                  @include('v1.partials.article_row')
                 </tr>
               </tbody>
             </table>

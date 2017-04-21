@@ -38,7 +38,6 @@ angular.module('astroApp').controller 'DashboardController', [
     $scope.bookModalOpen = false
     $scope.gameModalOpen = false
     $scope.songModalOpen = false
-    $scope.viewing_category = ''
 
     $scope.$on 'userLoggedIn', ->
       $scope.initDashboard()
@@ -48,7 +47,7 @@ angular.module('astroApp').controller 'DashboardController', [
 
     $scope.$on 'linkDeleted', (event, linkId)->
       $scope.links_list = $filter('filter')($scope.links_list, id: "!#{linkId}")
-      $scope.selected_links = $filter('filter')($scope.selected_links, id: "!#{linkId}")
+      $scope.selected_articles = $filter('filter')($scope.selected_articles, id: "!#{linkId}")
       $scope.link_results = $filter('filter')($scope.link_results, id: "!#{linkId}")
 
     $scope.$on 'linkUpdated', ->
@@ -59,7 +58,7 @@ angular.module('astroApp').controller 'DashboardController', [
       category_filter =
         category: $scope.display_category
         is_read: false
-      $scope.selected_links = $filter('filter')($scope.selected_links, category_filter)
+      $scope.selected_articles = $filter('filter')($scope.selected_articles, category_filter)
       if !$scope.is_read
         $scope.link_results = $filter('filter')($scope.link_results, is_read: false)
 
@@ -118,13 +117,12 @@ angular.module('astroApp').controller 'DashboardController', [
     $scope.getArticlesForCategory = (category, limit, randomize, update_load_count, isCategoryList = false)->
       if isCategoryList
         $scope.loading_category = true
-        $scope.selected_links = []
+        $scope.selected_articles = []
       else
-        $scope.viewing_category = category
         $scope.loading_links = true
         $scope.links_list = []
       data =
-        category: category
+        category: category.id
 
       if randomize
         data.randomize = true
@@ -135,17 +133,17 @@ angular.module('astroApp').controller 'DashboardController', [
       if limit
         data.limit = limit
 
-      categoryLinksPromise = ArticleResource.query(data).$promise
-      categoryLinksPromise.then (links)->
+      categoryArticlesPromise = ArticleResource.query(data).$promise
+      categoryArticlesPromise.then (articles)->
         if isCategoryList
-          $scope.selected_links = links
+          $scope.selected_articles = articles
         else
-          $scope.links_list = links
+          $scope.links_list = articles
 
-      categoryLinksPromise.catch ->
+      categoryArticlesPromise.catch ->
         $scope.$emit 'errorOccurred', 'Could not load links for category'
 
-      categoryLinksPromise.finally ->
+      categoryArticlesPromise.finally ->
         $scope.loading_links = false
         $scope.loading_category = false
 
@@ -219,12 +217,19 @@ angular.module('astroApp').controller 'DashboardController', [
       article.postpone().then ->
         $scope.removeArticleFromList(article, 'daily_articles')
 
-    $scope.$watch 'daily_articles', ->
-      if $scope.daily_articles
-        deleted_articles = $scope.daily_articles.filter (article)->
+    $scope.filterDeletedArticles = (list)->
+      if $scope[list]
+        deleted_articles = $scope[list].filter (article)->
           article.deleted
         if deleted_articles.length > 0
           deleted_articles.forEach (article)->
-            $scope.removeArticleFromList(article, 'daily_articles')
+            $scope.removeArticleFromList(article, list)
+
+    $scope.$watch 'daily_articles', ->
+      $scope.filterDeletedArticles('daily_articles')
+    , true
+
+    $scope.$watch 'selected_articles', ->
+      $scope.filterDeletedArticles('selected_articles')
     , true
 ]

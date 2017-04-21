@@ -56,13 +56,6 @@ class ArticleController extends AstroBaseController {
     $page = Input::get('page', 1);
     $q = Input::get('q');
     $category = Input::get('category');
-//    TODO: Remove this once v1 has been updated to use category id
-    if(!is_numeric($category)){
-     $category = Category::where('name', $category)->where('user_id', $userId)->first();
-     if(isset($category)) {
-       $category = $category->id;
-     }
-    }
 
     $include_read = filter_var(Input::get('include_read', false), FILTER_VALIDATE_BOOLEAN);
 

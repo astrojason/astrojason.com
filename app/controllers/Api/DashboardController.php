@@ -3,11 +3,12 @@
 
 namespace Api;
 
-use Auth, App\Models\Book, Game, Link, App\Models\Song;
+use Auth, App\Models\Book, Game, Link, App\Models\Song, Api\Article\CategoryController;
 
 class DashboardController extends AstroBaseController {
 
   public function get() {
+    $categoryController = new CategoryController();
     $user_id = Auth::user()->id;
     $total_links = Link::where('user_id', $user_id)->count();
     $links_read = Link::where('user_id', $user_id)->where('is_read', true)->count();
@@ -16,7 +17,7 @@ class DashboardController extends AstroBaseController {
     $books_unread = Book::where('user_id', $user_id)->where('is_read', false)->count();
     $games_unplayed = Game::where('user_id', $user_id)->where('completed', false)->count();
     $songs_unplayed = Song::where('user_id', $user_id)->where('learned', false)->count();
-    $categories = \LinkController::getLinkCategories();
+    $categories = $categoryController->query();
     $dashboard_layout = \DashboardCategory::where('user_id', $user_id)->get();
     $linkController = new LinkController();
 

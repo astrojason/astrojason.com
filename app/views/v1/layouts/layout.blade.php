@@ -96,6 +96,6 @@
         @yield('content')
       </div>
     </div><!-- /container -->
-    @include('v1.partial.js')
+    @include('v1.partials.js')
   </body>
 </html>
