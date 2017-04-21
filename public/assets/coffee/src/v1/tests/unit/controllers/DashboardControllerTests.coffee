@@ -115,11 +115,11 @@ describe 'DashboardController tests', ->
     links = [{id: 1}, {id: 2}, {id: 3}]
     expected_links = [{id: 1}, {id: 3}]
     $scope.links_list = links
-    $scope.selected_links = links
+    $scope.selected_articles = links
     $scope.link_results = links
     $scope.$broadcast 'linkDeleted', 2
     $scope.$digest()
-    expect($scope.selected_links).toEqual expected_links
+    expect($scope.selected_articles).toEqual expected_links
     expect($scope.links_list).toEqual expected_links
     expect($scope.link_results).toEqual expected_links
 
@@ -207,14 +207,14 @@ describe 'DashboardController tests', ->
     expect($scope.newLink).toEqual new Link()
 
   it 'should set the base variables when $scope.getArticlesForCategory is called for a page category', ->
-    $scope.selected_links = ['test']
+    $scope.selected_articles = ['test']
     $scope.getArticlesForCategory 'daily', 10, true, false
     expect($scope.links_list).toEqual []
 
   it 'should set the base variables when $scope.getArticlesForCategory is called for a selection category', ->
-    $scope.selected_links = ['test']
+    $scope.selected_articles = ['test']
     $scope.getArticlesForCategory 'Test Category', 10, true, false, true
-    expect($scope.selected_links).toEqual []
+    expect($scope.selected_articles).toEqual []
     expect($scope.loading_category).toEqual true
 
   it 'should call LinkResource.query when $scope.getArticlesForCategory is called', ->
@@ -222,11 +222,11 @@ describe 'DashboardController tests', ->
     $scope.getArticlesForCategory 'Daily'
     expect(mockArticleResource.query).toHaveBeenCalled()
 
-  it 'should set $scope.selected_links to the returned value', ->
+  it 'should set $scope.selected_articles to the returned value', ->
     $scope.getArticlesForCategory 'Test Category', 10, true, false, true
     mockArticleQuery.resolve angular.copy(mockArticleQueryResponse.articles)
     $scope.$digest()
-    expect($scope.selected_links).toEqual mockArticleQueryResponse.articles
+    expect($scope.selected_articles).toEqual mockArticleQueryResponse.articles
 
   it 'should set $scope.loading_category to false when LinkResource.query succeeds', ->
     $scope.getArticlesForCategory 'Test Category', 10, true, false
