@@ -25,18 +25,18 @@
                       <small
                         class="clear-input glyphicon glyphicon-remove-circle"
                         ng-show="article_search"
-                        ng-click="article_search = ''; link_results = []"></small>
+                        ng-click="article_search = ''; article_results = []"></small>
                     </div>
                     <div class="input-group-addon"><input type="checkbox" ng-model="is_read" /> <label>Include read</label></div>
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <tr ng-show="article_search && link_results.length == 0 && !searching">
+                <tr ng-show="article_search && article_results.length == 0 && !searching">
                   <td>No results for <strong>{{ article_search }}</strong>
                 </tr>
-                <tr ng-repeat="link in link_results" ng-show="link_results.length > 0" ng-cloak>
-                  <td ng-class="(link.is_read | boolparse) ? 'read' : ''"><link-form link="link"></link-form></td>
+                <tr ng-repeat="article in article_results" ng-show="article_results.length > 0" ng-cloak>
+                  @include('v1.partials.article_row')
                 </tr>
               </tbody>
             </table>

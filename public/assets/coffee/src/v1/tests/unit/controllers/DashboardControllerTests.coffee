@@ -68,8 +68,8 @@ describe 'DashboardController tests', ->
   it 'should set search_timeout to the default value', ->
     expect($scope.search_timeout).toEqual null
 
-  it 'should set link_results to the default value', ->
-    expect($scope.link_results).toEqual []
+  it 'should set article_results to the default value', ->
+    expect($scope.article_results).toEqual []
 
   it 'should set loading_unread to the default value', ->
     expect($scope.loading_unread).toEqual false
@@ -116,12 +116,12 @@ describe 'DashboardController tests', ->
     expected_links = [{id: 1}, {id: 3}]
     $scope.links_list = links
     $scope.selected_articles = links
-    $scope.link_results = links
+    $scope.article_results = links
     $scope.$broadcast 'linkDeleted', 2
     $scope.$digest()
     expect($scope.selected_articles).toEqual expected_links
     expect($scope.links_list).toEqual expected_links
-    expect($scope.link_results).toEqual expected_links
+    expect($scope.article_results).toEqual expected_links
 
   it 'should update the links_read and total_read values when linkRead is broadcast with a link id', ->
     $scope.links_read = 20
@@ -248,33 +248,33 @@ describe 'DashboardController tests', ->
     expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Could not load links for category'
 
   it 'should set the appropriate variables when search_articles is called', ->
-    $scope.link_results = ['test']
+    $scope.article_results = ['test']
     $scope.search_articles()
-    expect($scope.link_results).toEqual []
+    expect($scope.article_results).toEqual []
     expect($scope.searching).toEqual true
 
-  it 'should set $scope.link_results to the returned values when LinkResource.query succeeds', ->
+  it 'should set $scope.article_results to the returned values when LinkResource.query succeeds', ->
     $scope.search_articles()
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
+    mockArticleQuery.resolve angular.copy(mockArticleQueryResponse.links)
     $scope.$digest()
-    expect($scope.link_results).toEqual mockLinkQueryResponse.links
+    expect($scope.article_results).toEqual mockArticleQueryResponse.links
 
   it 'should set $scope.searching to false when LinkResource.query succeeds', ->
     $scope.search_articles()
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
+    mockArticleQuery.resolve angular.copy(mockArticleQueryResponse.links)
     $scope.$digest()
     expect($scope.loading_category).toEqual false
 
   it 'should set $scope.searching to false when LinkResource.query succeeds', ->
     $scope.search_articles()
-    mockLinkQuery.reject()
+    mockArticleQuery.reject()
     $scope.$digest()
     expect($scope.loading_category).toEqual false
 
   it 'should set $scope.$emit to be called when LinkResource.query succeeds', ->
     spyOn($scope, '$emit').and.callThrough()
     $scope.search_articles()
-    mockLinkQuery.reject()
+    mockArticleQuery.reject()
     $scope.$digest()
     expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Could not get perform the search'
 

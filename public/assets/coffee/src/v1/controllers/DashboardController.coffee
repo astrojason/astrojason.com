@@ -28,7 +28,7 @@ angular.module('astroApp').controller 'DashboardController', [
 
     $scope.display_category = $location.search().category || ''
     $scope.search_timeout = null
-    $scope.link_results = []
+    $scope.article_results = []
     $scope.loading_unread = false
     $scope.loading_category = false
     $scope.recommendingBook = false
@@ -48,7 +48,7 @@ angular.module('astroApp').controller 'DashboardController', [
     $scope.$on 'linkDeleted', (event, linkId)->
       $scope.links_list = $filter('filter')($scope.links_list, id: "!#{linkId}")
       $scope.selected_articles = $filter('filter')($scope.selected_articles, id: "!#{linkId}")
-      $scope.link_results = $filter('filter')($scope.link_results, id: "!#{linkId}")
+      $scope.article_results = $filter('filter')($scope.article_results, id: "!#{linkId}")
 
     $scope.$on 'linkUpdated', ->
       links_list_filter =
@@ -60,7 +60,7 @@ angular.module('astroApp').controller 'DashboardController', [
         is_read: false
       $scope.selected_articles = $filter('filter')($scope.selected_articles, category_filter)
       if !$scope.is_read
-        $scope.link_results = $filter('filter')($scope.link_results, is_read: false)
+        $scope.article_results = $filter('filter')($scope.article_results, is_read: false)
 
     $scope.$on 'linkRead', (event, message)->
       if message
@@ -149,17 +149,17 @@ angular.module('astroApp').controller 'DashboardController', [
 
     $scope.search_articles = ->
       $scope.searching = true
-      $scope.link_results = []
+      $scope.article_results = []
 
       data =
         q: $scope.article_search
       if $scope.is_read
         data['include_read'] = true
 
-      searchPromise = LinkResource.query(data).$promise
+      searchPromise = ArticleResource.query(data).$promise
 
-      searchPromise.then (links)->
-        $scope.link_results = links
+      searchPromise.then (articles)->
+        $scope.article_results = articles
 
       searchPromise.catch ->
         $scope.$emit 'errorOccurred', 'Could not get perform the search'
@@ -231,5 +231,9 @@ angular.module('astroApp').controller 'DashboardController', [
 
     $scope.$watch 'selected_articles', ->
       $scope.filterDeletedArticles('selected_articles')
+    , true
+
+    $scope.$watch 'article_results', ->
+      $scope.filterDeletedArticles('article_results')
     , true
 ]
