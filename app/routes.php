@@ -28,7 +28,7 @@ Route::group(['before' => 'auth'], function(){
     });
   });
   Route::get('games', 'GameController@index');
-  Route::get('links', 'LinkController@index');
+  Route::get('articles', 'LinkController@index');
   Route::get('readlater', 'LinkController@readLater');
   Route::get('songs', 'SongController@index');
   Route::get('charts', 'ChartController@index');

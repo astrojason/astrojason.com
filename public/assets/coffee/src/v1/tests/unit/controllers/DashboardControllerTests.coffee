@@ -5,14 +5,18 @@ describe 'DashboardController tests', ->
   DashboardController = null
   Link = null
   mockLinkResource = null
+  mockArticleResource = null
   mockLinkQuery = null
+  mockArticleQuery = null
+  mockArticleDailyQuery = null
   mockLinkPopulate = null
   mockLinkReadToday = null
   mockDashboardGet = null
   mockUserService = null
   mockDashboardResource = null
   mockLinkQueryResponse = readJSON 'public/assets/coffee/src/v1/tests/data/links.json'
-  mockDashboardQueryResponse = readJSON 'public/assets/coffee/src/v1/tests/data/dahsboard.json'
+  mockArticleQueryResponse = readJSON 'public/assets/coffee/src/v1/tests/data/articles.json'
+  mockDashboardQueryResponse = readJSON 'public/assets/coffee/src/v1/tests/data/dashboard.json'
 
   beforeEach ->
     module 'astroApp'
@@ -33,6 +37,14 @@ describe 'DashboardController tests', ->
           mockLinkPopulate = $q.defer()
           $promise: mockLinkPopulate.promise
 
+      mockArticleResource =
+        query: ->
+          mockArticleQuery = $q.defer()
+          $promise: mockArticleQuery.promise
+        daily: ->
+          mockArticleDailyQuery = $q.defer()
+          $promise: mockArticleDailyQuery.promise
+
       mockUserService =
         get: ->
 
@@ -46,6 +58,7 @@ describe 'DashboardController tests', ->
         LinkResource: mockLinkResource
         UserService: mockUserService
         DashboardResource: mockDashboardResource
+        ArticleResource: mockArticleResource
 
       DashboardController = $controller 'DashboardController', mockInjections
 
@@ -205,32 +218,32 @@ describe 'DashboardController tests', ->
     expect($scope.loading_category).toEqual true
 
   it 'should call LinkResource.query when $scope.getArticlesForCategory is called', ->
-    spyOn(mockLinkResource, 'query').and.callThrough()
+    spyOn(mockArticleResource, 'query').and.callThrough()
     $scope.getArticlesForCategory 'Daily'
-    expect(mockLinkResource.query).toHaveBeenCalled()
+    expect(mockArticleResource.query).toHaveBeenCalled()
 
   it 'should set $scope.selected_links to the returned value', ->
     $scope.getArticlesForCategory 'Test Category', 10, true, false, true
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
+    mockArticleQuery.resolve angular.copy(mockArticleQueryResponse.articles)
     $scope.$digest()
-    expect($scope.selected_links).toEqual mockLinkQueryResponse.links
+    expect($scope.selected_links).toEqual mockArticleQueryResponse.articles
 
   it 'should set $scope.loading_category to false when LinkResource.query succeeds', ->
     $scope.getArticlesForCategory 'Test Category', 10, true, false
-    mockLinkQuery.resolve angular.copy(mockLinkQueryResponse.links)
+    mockArticleQuery.resolve angular.copy(mockArticleQueryResponse.articles)
     $scope.$digest()
     expect($scope.loading_category).toEqual false
 
   it 'should set $scope.loading_category to false when LinkResource.query fails', ->
     $scope.getArticlesForCategory 'Test Category', 10, true, false
-    mockLinkQuery.reject()
+    mockArticleQuery.reject()
     $scope.$digest()
     expect($scope.loading_category).toEqual false
 
   it 'should set emit an error when LinkResource.query fails', ->
     spyOn($scope, '$emit').and.callThrough()
     $scope.getArticlesForCategory 'Test Category', 10, true, false
-    mockLinkQuery.reject()
+    mockArticleQuery.reject()
     $scope.$digest()
     expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Could not load links for category'
 

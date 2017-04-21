@@ -89,7 +89,7 @@ class UserControllerTest extends TestCase {
 
   public function test_check_email_exists() {
     /** @var JsonResponse $response */
-    $response = $this->call('POST', '/api/user/checkemail', ['email' => 'jason@astrojason.com']);
+    $response = $this->call('POST', '/api/user/checkemail', ['email' => 'primary@testuser.com']);
     $this->assertEquals(IlluminateResponse::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
   }
 
@@ -109,7 +109,7 @@ class UserControllerTest extends TestCase {
 
   public function test_user_create_existing_email() {
     $data = $this->generateRegistrationInfo();
-    $data['email'] = 'jason@astrojason.com';
+    $data['email'] = 'primary@testuser.com';
     /** @var JsonResponse $response */
     $response = $this->call('PUT', '/api/user', $data);
     $this->assertEquals(IlluminateResponse::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());

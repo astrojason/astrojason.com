@@ -66,15 +66,19 @@ angular.module('astroApp').factory 'ArticleResource', [
       readPromise.then ->
         article.read.push (new moment()).format('YYYY-MM-DD')
 
+      readPromise
+
     ArticleResource.prototype.postpone = ->
       today = (new moment()).format('YYYY-MM-DD')
       article = @
-      readPromise = $http.get "/api/article/#{article.id}/postpone"
+      postponePromise = $http.get "/api/article/#{article.id}/postpone"
 
-      readPromise.then ->
+      postponePromise.then ->
         angular.forEach article.recommended, (recommended)->
           if recommended.date == today
             recommended.postponed = true
+
+      postponePromise
 
     ArticleResource.prototype.warnDelete = ->
       article = @

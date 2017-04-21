@@ -41,38 +41,46 @@
               </tbody>
             </table>
           </div>
-          <uib-tabset active="active">
-            <uib-tab
-              index="$index"
-              ng-repeat="display_category in display_categories"
-              select="getArticlesForCategory(display_category.category, display_category.num_items, display_category.randomize, display_category.track)"
-              active="tab.active"
-              disable="tab.disabled">
-              <uib-tab-heading>
-                {{ display_category.category }}
-                <small
-                  class="glyphicon glyphicon-refresh tool"
-                  ng-show="tab.active && display_category.num_items > 0"
-                  ng-click="getArticlesForCategory(display_category.category, display_category.num_items, display_category.randomize, display_category.track)">
-                </small>
-              </uib-tab-heading>
-            </uib-tab>
-            <loader ng-show="loading_links" ng-cloak></loader>
-            <table class="table table-condensed table-striped table-hover" ng-cloak>
-              <tbody>
-                <tr ng-repeat="link in links_list" ng-class="link.cssClass()">
-                  <td><link-form link="link"></link-form></td>
-                </tr>
-              </tbody>
-            </table>
-          </uib-tabset>
+
+          <table class="table table-condensed table-striped table-hover" ng-cloak>
+            <tbody>
+              <tr ng-repeat="article in daily_articles">
+                <td>
+                  <a ng-href="{{ article.url }}" target="_blank">{{ article.title }}</a>
+                </td>
+                <td>
+                  <span
+                    class="glyphicon glyphicon-ok-circle text-success"
+                    ng-click="readArticle(article, 'daily_articles')">
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class=" glyphicon glyphicon-calendar text-info"
+                    ng-click="postponeArticle(article)">
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class=" glyphicon glyphicon-remove-circle text-danger"
+                    ng-click="article.warnDelete()">
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
           <div id="category_links" class="link_selected">
             <loader ng-show="loading_category" ng-cloak></loader>
             <table class="table table-condensed table-striped table-hover" ng-show="categories.length > 0" ng-cloak>
               <thead>
                 <tr>
                   <th class="input-group">
-                    <select name="category" ng-model="display_category" ng-options="category for category in categories" class="form-control">
+                    <select
+                      name="category"
+                      ng-model="display_category"
+                      ng-options="category for category in categories"
+                      class="form-control">
                       <option value="">Select category</option>
                     </select>
                     <div class="input-group-addon">

@@ -51,13 +51,22 @@ class ArticleController extends AstroBaseController {
    * @return JsonResponse
    */
   public function query() {
+    $userId = Auth::user()->id;
     $page_size = Input::get('page_size');
     $page = Input::get('page', 1);
     $q = Input::get('q');
     $category = Input::get('category');
+//    TODO: Remove this once v1 has been updated to use category id
+    if(!is_numeric($category)){
+     $category = Category::where('name', $category)->where('user_id', $userId)->first();
+     if(isset($category)) {
+       $category = $category->id;
+     }
+    }
+
     $include_read = filter_var(Input::get('include_read', false), FILTER_VALIDATE_BOOLEAN);
 
-    $query = Article::where('user_id', Auth::user()->id);
+    $query = Article::where('user_id', $userId);
     if(!$include_read){
       $query->doesntHave('read');
     }

@@ -3,9 +3,11 @@ angular.module('astroApp').controller 'DashboardController', [
   '$location'
   '$timeout'
   '$filter'
+  '$log'
   'UserService'
   'DashboardResource'
   'LinkResource'
+  'ArticleResource'
   'Link'
   'Book'
   'Game'
@@ -14,9 +16,11 @@ angular.module('astroApp').controller 'DashboardController', [
     $location,
     $timeout,
     $filter,
+    $log,
     UserService,
     DashboardResource,
     LinkResource,
+    ArticleResource,
     Link,
     Book,
     Game,
@@ -131,7 +135,7 @@ angular.module('astroApp').controller 'DashboardController', [
       if limit
         data.limit = limit
 
-      categoryLinksPromise = LinkResource.query(data).$promise
+      categoryLinksPromise = ArticleResource.query(data).$promise
       categoryLinksPromise.then (links)->
         if isCategoryList
           $scope.selected_links = links
@@ -171,6 +175,12 @@ angular.module('astroApp').controller 'DashboardController', [
         $scope.loadDashboard()
 
     $scope.loadDashboard = ->
+      articles_promise = ArticleResource.daily().$promise
+
+      articles_promise.then (articles)->
+        $scope.daily_articles = articles.filter (article)->
+          !article.readToday() && !article.postponedToday()
+
       daily_Promise = DashboardResource.get().$promise
       daily_Promise.then (response)->
         $scope.total_read = response.total_read
@@ -196,4 +206,25 @@ angular.module('astroApp').controller 'DashboardController', [
 
       readCount_promise.then (response)->
         $scope.total_read = response.total_read
+
+    $scope.removeArticleFromList = (article, list)->
+      $scope[list] = $scope[list].filter (list_article)->
+        list_article.id != article.id
+
+    $scope.readArticle = (article, list)->
+      article.markRead().then ->
+        $scope.removeArticleFromList(article, list)
+
+    $scope.postponeArticle = (article)->
+      article.postpone().then ->
+        $scope.removeArticleFromList(article, 'daily_articles')
+
+    $scope.$watch 'daily_articles', ->
+      if $scope.daily_articles
+        deleted_articles = $scope.daily_articles.filter (article)->
+          article.deleted
+        if deleted_articles.length > 0
+          deleted_articles.forEach (article)->
+            $scope.removeArticleFromList(article, 'daily_articles')
+    , true
 ]
