@@ -3,10 +3,8 @@ describe 'DashboardController tests', ->
   $timeout = null
   $httpBackend = null
   DashboardController = null
-  Link = null
   mockLinkResource = null
   mockArticleResource = null
-  mockLinkQuery = null
   mockArticleQuery = null
   mockArticleDailyQuery = null
   mockLinkPopulate = null
@@ -14,25 +12,20 @@ describe 'DashboardController tests', ->
   mockDashboardGet = null
   mockUserService = null
   mockDashboardResource = null
-  mockLinkQueryResponse = readJSON 'public/assets/coffee/src/v1/tests/data/links.json'
   mockArticleQueryResponse = readJSON 'public/assets/coffee/src/v1/tests/data/articles.json'
   mockDashboardQueryResponse = readJSON 'public/assets/coffee/src/v1/tests/data/dashboard.json'
 
   beforeEach ->
     module 'astroApp'
-    inject ($rootScope, $controller, _$timeout_, _$httpBackend_, $q, _Link_)->
+    inject ($rootScope, $controller, _$timeout_, _$httpBackend_, $q)->
       $scope = $rootScope.$new()
       $timeout = _$timeout_
       $httpBackend = _$httpBackend_
-      Link = _Link_
 
       mockLinkResource =
         readToday: ->
           mockLinkReadToday = $q.defer()
           $promise: mockLinkReadToday.promise
-        query: ->
-          mockLinkQuery = $q.defer()
-          $promise: mockLinkQuery.promise
         populate: ->
           mockLinkPopulate = $q.defer()
           $promise: mockLinkPopulate.promise
@@ -86,12 +79,8 @@ describe 'DashboardController tests', ->
   it 'should set recommendingSong to the default value', ->
     expect($scope.recommendingSong).toEqual false
 
-  it 'should set linkModalOpen to the default value', ->
-    expect($scope.linkModalOpen).toEqual false
-
   it 'should set bookModalOpen to the default value', ->
     expect($scope.bookModalOpen).toEqual false
-
 
   it 'should set gameModalOpen to the default value', ->
     expect($scope.gameModalOpen).toEqual false
@@ -111,42 +100,22 @@ describe 'DashboardController tests', ->
     $scope.$digest()
     expect($scope.initDashboard).toHaveBeenCalled()
 
-  it 'should call update the links when linkDeleted is broadcast', ->
-    links = [{id: 1}, {id: 2}, {id: 3}]
-    expected_links = [{id: 1}, {id: 3}]
-    $scope.links_list = links
-    $scope.selected_articles = links
-    $scope.article_results = links
-    $scope.$broadcast 'linkDeleted', 2
-    $scope.$digest()
-    expect($scope.selected_articles).toEqual expected_links
-    expect($scope.links_list).toEqual expected_links
-    expect($scope.article_results).toEqual expected_links
-
-  it 'should update the links_read and total_read values when linkRead is broadcast with a link id', ->
-    $scope.links_read = 20
-    $scope.total_read = 100
-    $scope.$broadcast 'linkRead', 1
-    expect($scope.links_read).toEqual 21
-    expect($scope.total_read).toEqual 101
-
-  it 'should update the links_read and total_read values when linkRead is broadcast with no link id', ->
-    $scope.links_read = 20
-    $scope.total_read = 100
-    $scope.$broadcast 'linkRead'
-    expect($scope.links_read).toEqual 19
-    expect($scope.total_read).toEqual 99
-
-  it 'should set all the closeModal variables to false when closeModal is broadcast', ->
-    $scope.linkModalOpen = true
+  it 'should set bookModalOpen to false when closeModal is broadcast', ->
     $scope.bookModalOpen = true
+    $scope.$broadcast 'closeModal'
+    $scope.$digest()
+    expect($scope.bookModalOpen).toEqual false
+
+  it 'should set gameModalOpen to false when closeModal is broadcast', ->
     $scope.gameModalOpen = true
+    $scope.$broadcast 'closeModal'
+    $scope.$digest()
+    expect($scope.gameModalOpen).toEqual false
+
+  it 'should set songModalOpen to false when closeModal is broadcast', ->
     $scope.songModalOpen = true
     $scope.$broadcast 'closeModal'
     $scope.$digest()
-    expect($scope.linkModalOpen).toEqual false
-    expect($scope.bookModalOpen).toEqual false
-    expect($scope.gameModalOpen).toEqual false
     expect($scope.songModalOpen).toEqual false
 
   it 'should call getArticlesForCategory when display_category is changed and it has a value', ->
@@ -198,18 +167,6 @@ describe 'DashboardController tests', ->
     $timeout ->
     $timeout.flush()
     expect($scope.search_articles).toHaveBeenCalled()
-
-  it 'should set the newLink model to a new Link', ->
-    $scope.linkModalOpen = true
-    $scope.$digest()
-    $scope.linkModalOpen = false
-    $scope.$digest()
-    expect($scope.newLink).toEqual new Link()
-
-  it 'should set the base variables when $scope.getArticlesForCategory is called for a page category', ->
-    $scope.selected_articles = ['test']
-    $scope.getArticlesForCategory 'daily', 10, true, false
-    expect($scope.links_list).toEqual []
 
   it 'should set the base variables when $scope.getArticlesForCategory is called for a selection category', ->
     $scope.selected_articles = ['test']

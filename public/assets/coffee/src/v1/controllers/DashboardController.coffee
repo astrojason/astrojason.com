@@ -8,7 +8,6 @@ angular.module('astroApp').controller 'DashboardController', [
   'DashboardResource'
   'LinkResource'
   'ArticleResource'
-  'Link'
   'Book'
   'Game'
   'Song'
@@ -21,7 +20,6 @@ angular.module('astroApp').controller 'DashboardController', [
     DashboardResource,
     LinkResource,
     ArticleResource,
-    Link,
     Book,
     Game,
     Song)->
@@ -34,7 +32,6 @@ angular.module('astroApp').controller 'DashboardController', [
     $scope.recommendingBook = false
     $scope.recommendingGame = false
     $scope.recommendingSong = false
-    $scope.linkModalOpen = false
     $scope.bookModalOpen = false
     $scope.gameModalOpen = false
     $scope.songModalOpen = false
@@ -45,33 +42,7 @@ angular.module('astroApp').controller 'DashboardController', [
     $scope.$on 'userLoggedOut', ->
       $scope.initDashboard()
 
-    $scope.$on 'linkDeleted', (event, linkId)->
-      $scope.links_list = $filter('filter')($scope.links_list, id: "!#{linkId}")
-      $scope.selected_articles = $filter('filter')($scope.selected_articles, id: "!#{linkId}")
-      $scope.article_results = $filter('filter')($scope.article_results, id: "!#{linkId}")
-
-    $scope.$on 'linkUpdated', ->
-      links_list_filter =
-        category: $scope.viewing_category
-        is_read: false
-      $scope.links_list = $filter('filter')($scope.links_list, links_list_filter)
-      category_filter =
-        category: $scope.display_category
-        is_read: false
-      $scope.selected_articles = $filter('filter')($scope.selected_articles, category_filter)
-      if !$scope.is_read
-        $scope.article_results = $filter('filter')($scope.article_results, is_read: false)
-
-    $scope.$on 'linkRead', (event, message)->
-      if message
-        $scope.links_read += 1
-        $scope.total_read += 1
-      else
-        $scope.links_read -= 1
-        $scope.total_read -= 1
-
     $scope.$on 'closeModal', ->
-      $scope.linkModalOpen = false
       $scope.bookModalOpen = false
       $scope.gameModalOpen = false
       $scope.songModalOpen = false
@@ -95,10 +66,6 @@ angular.module('astroApp').controller 'DashboardController', [
           $scope.search_articles()
         , 500
 
-    $scope.$watch 'linkModalOpen', ->
-      if !$scope.linkModalOpen
-        $scope.newLink = new Link()
-
     $scope.$watch 'bookModalOpen', ->
       if !$scope.bookModalOpen
         $scope.newBook = new Book()
@@ -111,16 +78,9 @@ angular.module('astroApp').controller 'DashboardController', [
       if !$scope.songModalOpen
         $scope.newSong = new Song()
 
-    $scope.getListName = (category)->
-      "#{category.toLowerCase().replace(' ', '_')}"
-
     $scope.getArticlesForCategory = (category, limit, randomize, update_load_count, isCategoryList = false)->
-      if isCategoryList
-        $scope.loading_category = true
-        $scope.selected_articles = []
-      else
-        $scope.loading_links = true
-        $scope.links_list = []
+      $scope.loading_category = true
+      $scope.selected_articles = []
       data =
         category: category.id
 
@@ -135,16 +95,12 @@ angular.module('astroApp').controller 'DashboardController', [
 
       categoryArticlesPromise = ArticleResource.query(data).$promise
       categoryArticlesPromise.then (articles)->
-        if isCategoryList
-          $scope.selected_articles = articles
-        else
-          $scope.links_list = articles
+        $scope.selected_articles = articles
 
       categoryArticlesPromise.catch ->
         $scope.$emit 'errorOccurred', 'Could not load links for category'
 
       categoryArticlesPromise.finally ->
-        $scope.loading_links = false
         $scope.loading_category = false
 
     $scope.search_articles = ->
