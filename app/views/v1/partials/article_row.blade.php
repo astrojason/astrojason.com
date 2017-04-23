@@ -1,5 +1,6 @@
 <td>
   <a ng-href="{{ article.url }}" target="_blank">{{ article.title }}</a>
+  <span class="badge category-badge" ng-repeat="category in article.categories">{{ category.name }}</span>
   <div class="pull-right">
     <span
       class="glyphicon glyphicon-ok-circle text-success"
