@@ -3,12 +3,11 @@ describe 'DashboardController tests', ->
   $timeout = null
   $httpBackend = null
   DashboardController = null
-  mockLinkResource = null
   mockArticleResource = null
   mockArticleQuery = null
   mockArticleDailyQuery = null
   mockArticlePopulate = null
-  mockLinkReadToday = null
+  mockArticleReadToday = null
   mockDashboardGet = null
   mockUserService = null
   mockDashboardResource = null
@@ -22,11 +21,6 @@ describe 'DashboardController tests', ->
       $timeout = _$timeout_
       $httpBackend = _$httpBackend_
 
-      mockLinkResource =
-        readToday: ->
-          mockLinkReadToday = $q.defer()
-          $promise: mockLinkReadToday.promise
-
       mockArticleResource =
         query: ->
           mockArticleQuery = $q.defer()
@@ -37,6 +31,9 @@ describe 'DashboardController tests', ->
         populate: ->
           mockArticlePopulate = $q.defer()
           $promise: mockArticlePopulate.promise
+        readToday: ->
+          mockArticleReadToday = $q.defer()
+          $promise: mockArticleReadToday.promise
 
       mockUserService =
         get: ->
@@ -48,7 +45,6 @@ describe 'DashboardController tests', ->
 
       mockInjections =
         $scope: $scope
-        LinkResource: mockLinkResource
         UserService: mockUserService
         DashboardResource: mockDashboardResource
         ArticleResource: mockArticleResource
@@ -256,18 +252,58 @@ describe 'DashboardController tests', ->
     $scope.loadDashboard()
     expect(mockDashboardResource.get).toHaveBeenCalled()
 
-  it 'should set the appropriate values to what is returned from DashboardResource.get on success', ->
+  it 'should set the articles_read_today value to what is returned from DashboardResource.get on success', ->
     $scope.loadDashboard()
     mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
     $scope.$digest()
-    expect($scope.total_read).toEqual mockDashboardQueryResponse.total_read
+    expect($scope.articles_read_today).toEqual mockDashboardQueryResponse.articles_read_today
+
+  it 'should set the categories value to what is returned from DashboardResource.get on success', ->
+    $scope.loadDashboard()
+    mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
+    $scope.$digest()
     expect($scope.categories).toEqual mockDashboardQueryResponse.categories
-    expect($scope.total_links).toEqual mockDashboardQueryResponse.total_links
-    expect($scope.links_read).toEqual mockDashboardQueryResponse.links_read
+
+  it 'should set the total_articles value to what is returned from DashboardResource.get on success', ->
+    $scope.loadDashboard()
+    mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
+    $scope.$digest()
+    expect($scope.total_articles).toEqual mockDashboardQueryResponse.total_articles
+
+  it 'should set the articles_read value to what is returned from DashboardResource.get on success', ->
+    $scope.loadDashboard()
+    mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
+    $scope.$digest()
+    expect($scope.articles_read).toEqual mockDashboardQueryResponse.articles_read
+
+  it 'should set the total_books value to what is returned from DashboardResource.get on success', ->
+    $scope.loadDashboard()
+    mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
+    $scope.$digest()
     expect($scope.total_books).toEqual mockDashboardQueryResponse.total_books
+
+  it 'should set the books_read value to what is returned from DashboardResource.get on success', ->
+    $scope.loadDashboard()
+    mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
+    $scope.$digest()
     expect($scope.books_read).toEqual mockDashboardQueryResponse.books_read
+
+  it 'should set the books_toread value to what is returned from DashboardResource.get on success', ->
+    $scope.loadDashboard()
+    mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
+    $scope.$digest()
     expect($scope.books_toread).toEqual mockDashboardQueryResponse.books_toread
+
+  it 'should set the games_toplay value to what is returned from DashboardResource.get on success', ->
+    $scope.loadDashboard()
+    mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
+    $scope.$digest()
     expect($scope.games_toplay).toEqual mockDashboardQueryResponse.games_toplay
+
+  it 'should set the songs_toplay value to what is returned from DashboardResource.get on success', ->
+    $scope.loadDashboard()
+    mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
+    $scope.$digest()
     expect($scope.songs_toplay).toEqual mockDashboardQueryResponse.songs_toplay
 
   it 'should emit an error when Dashboard.get fails', ->
@@ -298,7 +334,7 @@ describe 'DashboardController tests', ->
     $scope.$digest()
     expect($scope.loadDashboard).not.toHaveBeenCalled()
 
-  it 'should call LinkResource.readToday when $scope.refreshReadCount is called', ->
-    spyOn(mockLinkResource, 'readToday').and.callThrough()
+  it 'should call ArticleResource.readToday when $scope.refreshReadCount is called', ->
+    spyOn(mockArticleResource, 'readToday').and.callThrough()
     $scope.refreshReadCount()
-    expect(mockLinkResource.readToday).toHaveBeenCalled()
+    expect(mockArticleResource.readToday).toHaveBeenCalled()

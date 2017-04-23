@@ -28,10 +28,10 @@ class DashboardControllerTest extends TestCase {
     $response = $this->call('GET', '/api/dashboard');
     $this->assertEquals(IlluminateResponse::HTTP_OK, $response->getStatusCode());
     $responseData = $response->getData(true);
-    $this->assertTrue(array_key_exists('total_read', $responseData));
+    $this->assertTrue(array_key_exists('articles_read_today', $responseData));
     $this->assertTrue(array_key_exists('categories', $responseData));
-    $this->assertTrue(array_key_exists('total_links', $responseData));
-    $this->assertTrue(array_key_exists('links_read', $responseData));
+    $this->assertTrue(array_key_exists('total_articles', $responseData));
+    $this->assertTrue(array_key_exists('articles_read', $responseData));
     $this->assertTrue(array_key_exists('total_books', $responseData));
     $this->assertTrue(array_key_exists('books_read', $responseData));
     $this->assertTrue(array_key_exists('books_toread', $responseData));

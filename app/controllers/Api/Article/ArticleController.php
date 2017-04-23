@@ -217,6 +217,24 @@ class ArticleController extends AstroBaseController {
     return $this->successResponse();
   }
 
+  public function getReadToday() {
+    return $this->successResponse(['articles_read_today' => $this->readToday()]);
+  }
+
+  public function readCount() {
+    return Article::where('user_id', Auth::user()->id)->has('read')->count();
+  }
+
+  public function articleCount() {
+    return Article::where('user_id', Auth::user()->id)->count();
+  }
+
+  public function readToday() {
+    return Article::where('user_id', Auth::user()->id)->whereHas('read', function($query){
+      $query->where('created_at', 'LIKE', Carbon::create()->toDateString() . '%');
+    })->count();
+  }
+
   /**
    * @param int $user_id
    * @param array $params

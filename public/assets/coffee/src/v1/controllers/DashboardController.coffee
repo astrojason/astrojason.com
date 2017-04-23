@@ -6,7 +6,6 @@ angular.module('astroApp').controller 'DashboardController', [
   '$log'
   'UserService'
   'DashboardResource'
-  'LinkResource'
   'ArticleResource'
   'Book'
   'Game'
@@ -18,7 +17,6 @@ angular.module('astroApp').controller 'DashboardController', [
     $log,
     UserService,
     DashboardResource,
-    LinkResource,
     ArticleResource,
     Book,
     Game,
@@ -137,10 +135,10 @@ angular.module('astroApp').controller 'DashboardController', [
 
       daily_Promise = DashboardResource.get().$promise
       daily_Promise.then (response)->
-        $scope.total_read = response.total_read
+        $scope.articles_read_today = response.articles_read_today
         $scope.categories = response.categories
-        $scope.total_links = response.total_links
-        $scope.links_read = response.links_read
+        $scope.total_articles = response.total_articles
+        $scope.articles_read = response.articles_read
         $scope.total_books = response.total_books
         $scope.books_read = response.books_read
         $scope.books_toread = response.books_toread
@@ -156,10 +154,10 @@ angular.module('astroApp').controller 'DashboardController', [
         $scope.loadDashboard()
 
     $scope.refreshReadCount = ->
-      readCount_promise = LinkResource.readToday().$promise
+      readCount_promise = ArticleResource.readToday().$promise
 
       readCount_promise.then (response)->
-        $scope.total_read = response.total_read
+        $scope.articles_read_today = response.articles_read_today
 
     $scope.removeArticleFromList = (article, list)->
       $scope[list] = $scope[list].filter (list_article)->

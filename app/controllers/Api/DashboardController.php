@@ -3,15 +3,16 @@
 
 namespace Api;
 
-use Auth, App\Models\Book, Game, Link, App\Models\Song, Api\Article\CategoryController;
+use Auth, App\Models\Book, Game, App\Models\Song, Api\Article\CategoryController, Api\Article\ArticleController;
 
 class DashboardController extends AstroBaseController {
 
   public function get() {
     $categoryController = new CategoryController();
+    $articleController = new ArticleController();
     $user_id = Auth::user()->id;
-    $total_links = Link::where('user_id', $user_id)->count();
-    $links_read = Link::where('user_id', $user_id)->where('is_read', true)->count();
+    $total_articles = $articleController->articleCount();
+    $articles_read = $articleController->readCount();
     $total_books = Book::where('user_id', $user_id)->count();
     $books_read = Book::where('user_id', $user_id)->where('is_read', true)->count();
     $books_unread = Book::where('user_id', $user_id)->where('is_read', false)->count();
@@ -19,13 +20,12 @@ class DashboardController extends AstroBaseController {
     $songs_unplayed = Song::where('user_id', $user_id)->where('learned', false)->count();
     $categories = $categoryController->query();
     $dashboard_layout = \DashboardCategory::where('user_id', $user_id)->get();
-    $linkController = new LinkController();
 
     return $this->successResponse([
-      'total_read' => $linkController->getReadTodayCount(),
+      'articles_read_today' => $articleController->readToday(),
       'categories' => $categories,
-      'total_links' => $total_links,
-      'links_read' => $links_read,
+      'total_articles' => $total_articles,
+      'articles_read' => $articles_read,
       'total_books' => $total_books,
       'books_read' => $books_read,
       'books_toread' => $books_unread,

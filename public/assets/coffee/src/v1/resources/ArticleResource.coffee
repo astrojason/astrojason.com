@@ -53,6 +53,11 @@ angular.module('astroApp').factory 'ArticleResource', [
 
       query: angular.merge {}, arrayResponder, method: 'GET'
 
+      readToday:
+        method: 'GET'
+        params:
+          id: 'read-today'
+
     ArticleResource = $resource '/api/article/:id', resource_parameter_defaults, resource_options
 
     ArticleResource.prototype.edit = ->

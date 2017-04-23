@@ -10,7 +10,7 @@
     </div>
     <div class="row" ng-show="user.id">
       <div class="col-lg-9 col-sm-12">
-        <div ng-show="total_links == 0" ng-cloak>
+        <div ng-show="total_articles == 0" ng-cloak>
           You do not have any links, would you like me to <button class="btn btn-default" ng-click="populateLinks()">Randomize</button> some for you?
         </div>
         <div>
@@ -119,12 +119,12 @@
             <tr ng-show="songs_toplay" ng-cloak>
               <td><button class="btn btn-success btn-xs" ng-click="recommendingSong = true">Song Recommendation</button></td>
             </tr>
-            <tr ng-show="total_books || total_books" ng-cloak>
+            <tr ng-show="total_articles || total_books" ng-cloak>
               <td>
-                <div ng-show="total_links" ng-cloak>
-                  <h7>Links Read <small>{{ links_read }} of {{ total_links }} ({{ (links_read / total_links) * 100 | number:2 }}%)</small></h7>
-                  <em>Today <small>({{ total_read }} of 10)</small></em><br />
-                  <progress max="10" value="{{ total_read }}" ng-click="refreshReadCount()"></progress>
+                <div ng-show="total_articles" ng-cloak>
+                  <h5>Links Read <small>{{ articles_read }} of {{ total_articles }} ({{ (articles_read / total_articles) * 100 | number:2 }}%)</small></h5>
+                  <em>Today <small>({{ articles_read_today }} of 10)</small></em><br />
+                  <progress max="10" value="{{ articles_read_today }}" ng-click="refreshReadCount()"></progress>
                 </div>
                 <div ng-show="total_books" ng-cloak>
                   <h7>Books Read</h7><br />
