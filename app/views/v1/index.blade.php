@@ -122,7 +122,7 @@
             <tr ng-show="total_articles || total_books" ng-cloak>
               <td>
                 <div ng-show="total_articles" ng-cloak>
-                  <h5>Links Read <small>{{ articles_read }} of {{ total_articles }} ({{ (articles_read / total_articles) * 100 | number:2 }}%)</small></h5>
+                  <h5>Articles Read <small>{{ articles_read }} of {{ total_articles }} ({{ (articles_read / total_articles) * 100 | number:2 }}%)</small></h5>
                   <em>Today <small>({{ articles_read_today }} of 10)</small></em><br />
                   <progress max="10" value="{{ articles_read_today }}" ng-click="refreshReadCount()"></progress>
                 </div>
