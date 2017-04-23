@@ -354,4 +354,10 @@ class ArticleControllerTest extends TestCase {
       }
     }
   }
+
+  public function test_populate_articles() {
+    $this->mockUser(17);
+    $this->call('GET', '/api/article/populate');
+    $this->assertResponseOk();
+  }
 }

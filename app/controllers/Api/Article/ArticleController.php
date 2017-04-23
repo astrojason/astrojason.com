@@ -79,7 +79,7 @@ class ArticleController extends AstroBaseController {
     }
     $articles = $query->get();
 
-    return Response::json([
+    return $this->successResponse([
       'articles' => $this->transformCollection($articles)
     ]);
   }
@@ -88,7 +88,7 @@ class ArticleController extends AstroBaseController {
    * @return JsonResponse
    */
   public function daily(){
-    return Response::json(['articles' => $this->generateDailyLinks(Auth::user()->id)]);
+    return $this->successResponse(['articles' => $this->generateDailyLinks(Auth::user()->id)]);
   }
 
   /**
@@ -97,7 +97,7 @@ class ArticleController extends AstroBaseController {
   public function put() {
     $article = $this->add(Auth::user()->id, Input::all());
     if($article->justAdded) {
-      return Response::json(
+      return $this->successResponse(
         ['article' => $this->transform($article)]
       );
     } else {
@@ -120,14 +120,14 @@ class ArticleController extends AstroBaseController {
     if(isset($article)){
       if($article->user_id == Auth::user()->id){
         $article = $this->save(Auth::user()->id, $article, Input::all());
-        return Response::json(
+        return $this->successResponse(
           ['article' => $this->transform($article)]
         );
       } else {
-        return Response::json([], IlluminateResponse::HTTP_FORBIDDEN);
+        return $this->errorResponse('', IlluminateResponse::HTTP_FORBIDDEN);
       }
     }
-    return Response::json([], IlluminateResponse::HTTP_NOT_FOUND);
+    return $this->errorResponse('', IlluminateResponse::HTTP_NOT_FOUND);
   }
 
   /**
@@ -139,12 +139,12 @@ class ArticleController extends AstroBaseController {
     if(isset($article)){
       if($article->user_id == Auth::user()->id){
         $article->delete();
-        return Response::json([], IlluminateResponse::HTTP_OK);
+        return $this->successResponse();
       } else {
-        return Response::json([], IlluminateResponse::HTTP_FORBIDDEN);
+        return $this->errorResponse('', IlluminateResponse::HTTP_FORBIDDEN);
       }
     }
-    return Response::json([], IlluminateResponse::HTTP_NOT_FOUND);
+    return $this->errorResponse('', IlluminateResponse::HTTP_NOT_FOUND);
   }
 
   /**
@@ -158,12 +158,12 @@ class ArticleController extends AstroBaseController {
         Read::create([
           'article_id' => $article_id
         ]);
-        return Response::json([], IlluminateResponse::HTTP_OK);
+        return $this->successResponse();
       } else {
-        return Response::json([], IlluminateResponse::HTTP_FORBIDDEN);
+        return $this->errorResponse('', IlluminateResponse::HTTP_FORBIDDEN);
       }
     }
-    return Response::json([], IlluminateResponse::HTTP_NOT_FOUND);
+    return $this->errorResponse('', IlluminateResponse::HTTP_NOT_FOUND);
   }
 
   /**
@@ -179,12 +179,12 @@ class ArticleController extends AstroBaseController {
       if($article->user_id == Auth::user()->id){
         $article->postpone = true;
         $article->save();
-        return Response::json([], IlluminateResponse::HTTP_OK);
+        return $this->successResponse();
       } else {
-        return Response::json([], IlluminateResponse::HTTP_FORBIDDEN);
+        return $this->errorResponse('', IlluminateResponse::HTTP_FORBIDDEN);
       }
     }
-    return Response::json([], IlluminateResponse::HTTP_NOT_FOUND);
+    return $this->errorResponse('', IlluminateResponse::HTTP_NOT_FOUND);
   }
 
   public function import() {
@@ -198,7 +198,23 @@ class ArticleController extends AstroBaseController {
       ];
       $articles[] = $this->add(Auth::user()->id, $params);
     }
-    return Response::json(['articles' => $this->transformCollection($articles)]);
+    return $this->successResponse(['articles' => $this->transformCollection($articles)]);
+  }
+
+  public function populate() {
+    $articles = Article::doesntHave('categories', Category::where('name', 'At Home')->first())
+      ->orderBy(DB::raw('RAND()'))
+      ->take(40)
+      ->get();
+    /** @var Article $article */
+    foreach ($articles as $article) {
+      Article::create([
+        'title' => $article->title,
+        'url' => $article->url,
+        'user_id' => Auth::user()->id
+      ]);
+    }
+    return $this->successResponse();
   }
 
   /**

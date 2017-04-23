@@ -98,7 +98,7 @@ angular.module('astroApp').controller 'DashboardController', [
         $scope.selected_articles = articles
 
       categoryArticlesPromise.catch ->
-        $scope.$emit 'errorOccurred', 'Could not load links for category'
+        $scope.$emit 'errorOccurred', 'Could not load articles for category'
 
       categoryArticlesPromise.finally ->
         $scope.loading_category = false
@@ -151,7 +151,7 @@ angular.module('astroApp').controller 'DashboardController', [
         $scope.$emit 'errorOccurred', 'Problem loading daily results'
 
     $scope.populateLinks = ->
-      populate_promise = LinkResource.populate().$promise
+      populate_promise = ArticleResource.populate().$promise
       populate_promise.then ->
         $scope.loadDashboard()
 

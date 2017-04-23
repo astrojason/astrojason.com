@@ -7,7 +7,7 @@ describe 'DashboardController tests', ->
   mockArticleResource = null
   mockArticleQuery = null
   mockArticleDailyQuery = null
-  mockLinkPopulate = null
+  mockArticlePopulate = null
   mockLinkReadToday = null
   mockDashboardGet = null
   mockUserService = null
@@ -26,9 +26,6 @@ describe 'DashboardController tests', ->
         readToday: ->
           mockLinkReadToday = $q.defer()
           $promise: mockLinkReadToday.promise
-        populate: ->
-          mockLinkPopulate = $q.defer()
-          $promise: mockLinkPopulate.promise
 
       mockArticleResource =
         query: ->
@@ -37,6 +34,9 @@ describe 'DashboardController tests', ->
         daily: ->
           mockArticleDailyQuery = $q.defer()
           $promise: mockArticleDailyQuery.promise
+        populate: ->
+          mockArticlePopulate = $q.defer()
+          $promise: mockArticlePopulate.promise
 
       mockUserService =
         get: ->
@@ -174,7 +174,7 @@ describe 'DashboardController tests', ->
     expect($scope.selected_articles).toEqual []
     expect($scope.loading_category).toEqual true
 
-  it 'should call LinkResource.query when $scope.getArticlesForCategory is called', ->
+  it 'should call ArticleResource.query when $scope.getArticlesForCategory is called', ->
     spyOn(mockArticleResource, 'query').and.callThrough()
     $scope.getArticlesForCategory 'Daily'
     expect(mockArticleResource.query).toHaveBeenCalled()
@@ -185,24 +185,24 @@ describe 'DashboardController tests', ->
     $scope.$digest()
     expect($scope.selected_articles).toEqual mockArticleQueryResponse.articles
 
-  it 'should set $scope.loading_category to false when LinkResource.query succeeds', ->
+  it 'should set $scope.loading_category to false when ArticleResource.query succeeds', ->
     $scope.getArticlesForCategory 'Test Category', 10, true, false
     mockArticleQuery.resolve angular.copy(mockArticleQueryResponse.articles)
     $scope.$digest()
     expect($scope.loading_category).toEqual false
 
-  it 'should set $scope.loading_category to false when LinkResource.query fails', ->
+  it 'should set $scope.loading_category to false when ArticleResource.query fails', ->
     $scope.getArticlesForCategory 'Test Category', 10, true, false
     mockArticleQuery.reject()
     $scope.$digest()
     expect($scope.loading_category).toEqual false
 
-  it 'should set emit an error when LinkResource.query fails', ->
+  it 'should set emit an error when ArticleResource.query fails', ->
     spyOn($scope, '$emit').and.callThrough()
     $scope.getArticlesForCategory 'Test Category', 10, true, false
     mockArticleQuery.reject()
     $scope.$digest()
-    expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Could not load links for category'
+    expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Could not load articles for category'
 
   it 'should set the appropriate variables when search_articles is called', ->
     $scope.article_results = ['test']
@@ -210,25 +210,25 @@ describe 'DashboardController tests', ->
     expect($scope.article_results).toEqual []
     expect($scope.searching).toEqual true
 
-  it 'should set $scope.article_results to the returned values when LinkResource.query succeeds', ->
+  it 'should set $scope.article_results to the returned values when ArticleResource.query succeeds', ->
     $scope.search_articles()
     mockArticleQuery.resolve angular.copy(mockArticleQueryResponse.links)
     $scope.$digest()
     expect($scope.article_results).toEqual mockArticleQueryResponse.links
 
-  it 'should set $scope.searching to false when LinkResource.query succeeds', ->
+  it 'should set $scope.searching to false when ArticleResource.query succeeds', ->
     $scope.search_articles()
     mockArticleQuery.resolve angular.copy(mockArticleQueryResponse.links)
     $scope.$digest()
     expect($scope.loading_category).toEqual false
 
-  it 'should set $scope.searching to false when LinkResource.query succeeds', ->
+  it 'should set $scope.searching to false when ArticleResource.query succeeds', ->
     $scope.search_articles()
     mockArticleQuery.reject()
     $scope.$digest()
     expect($scope.loading_category).toEqual false
 
-  it 'should set $scope.$emit to be called when LinkResource.query succeeds', ->
+  it 'should set $scope.$emit to be called when ArticleResource.query succeeds', ->
     spyOn($scope, '$emit').and.callThrough()
     $scope.search_articles()
     mockArticleQuery.reject()
@@ -277,24 +277,24 @@ describe 'DashboardController tests', ->
     $scope.$digest()
     expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Problem loading daily results'
 
-  it 'should call LinkResource.populate when populateLinks is called', ->
-    spyOn(mockLinkResource, 'populate').and.callThrough()
+  it 'should call ArticleResource.populate when populateLinks is called', ->
+    spyOn(mockArticleResource, 'populate').and.callThrough()
     $scope.populateLinks()
-    expect(mockLinkResource.populate).toHaveBeenCalled()
+    expect(mockArticleResource.populate).toHaveBeenCalled()
 
-  it 'should call loadDashboard when the LinkResource.populate responds successfully', ->
+  it 'should call loadDashboard when the ArticleResource.populate responds successfully', ->
     spyOn($scope, 'loadDashboard').and.callThrough()
     $scope.populateLinks()
-    mockLinkPopulate.resolve()
+    mockArticlePopulate.resolve()
     $scope.$digest()
     expect($scope.loadDashboard).toHaveBeenCalled()
 
     expect($scope.loadDashboard).toHaveBeenCalled()
 
-  it 'should not call loadDashboard when the LinkResource.populate responds unsuccessfully', ->
+  it 'should not call loadDashboard when the ArticleResource.populate responds unsuccessfully', ->
     spyOn($scope, 'loadDashboard').and.callThrough()
     $scope.populateLinks()
-    mockLinkPopulate.reject()
+    mockArticlePopulate.reject()
     $scope.$digest()
     expect($scope.loadDashboard).not.toHaveBeenCalled()
 

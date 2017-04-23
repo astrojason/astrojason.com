@@ -46,6 +46,11 @@ angular.module('astroApp').factory 'ArticleResource', [
         params:
           id: 'import'
 
+      populate:
+        method: 'GET'
+        params:
+          id: 'populate'
+
       query: angular.merge {}, arrayResponder, method: 'GET'
 
     ArticleResource = $resource '/api/article/:id', resource_parameter_defaults, resource_options
