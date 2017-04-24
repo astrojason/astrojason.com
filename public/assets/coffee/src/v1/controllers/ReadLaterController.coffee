@@ -22,6 +22,7 @@ angular.module('astroApp').controller 'ReadLaterController', [
           $scope.categories = response.categories
 
       $scope.save = ->
+        $scope.error = null
         save_promise = ArticleResource.add($scope.article).$promise
 
         save_promise.then ->

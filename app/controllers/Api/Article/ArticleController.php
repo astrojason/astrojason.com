@@ -267,7 +267,7 @@ class ArticleController extends AstroBaseController {
       $article->categories()->detach();
       $article->save();
     }
-    if(count($params['categories']) > 0){
+    if(array_has($params, 'categories') && count($params['categories']) > 0){
       foreach($params['categories'] as $articleCategory){
         $category = $this->categoryCreateOrReturn($user_id, $articleCategory);
         $article->categories()->attach($category);
