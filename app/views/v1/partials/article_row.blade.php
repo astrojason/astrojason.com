@@ -7,6 +7,10 @@
       ng-click="readArticle(article, 'daily_articles')">
     </span>
     <span
+      class="glyphicon glyphicon-edit"
+      ng-click="article.edit()">
+    </span>
+    <span
       class="glyphicon glyphicon-calendar text-info postpone-button"
       ng-click="postponeArticle(article)">
     </span>

@@ -63,7 +63,7 @@ angular.module('astroApp').factory 'ArticleResource', [
     ArticleResource.prototype.edit = ->
       article = @
       $uibModal.open
-        templateUrl: "v2/modals/article"
+        templateUrl: "modals/article-form"
         controller: "ArticleFormController"
         resolve:
           article: ->

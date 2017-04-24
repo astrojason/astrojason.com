@@ -47,6 +47,10 @@ Route::group(array('prefix' => 'templates'), function(){
   @include('routes/templates.php');
 });
 
+Route::group(['prefix' => 'modals'], function(){
+  Route::get('article-form', 'ModalController@articleForm');
+});
+
 Route::group(['prefix' => 'react'], function(){
   Route::get('', 'HomeController@react');
 });
