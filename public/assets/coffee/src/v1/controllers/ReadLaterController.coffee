@@ -30,9 +30,9 @@ angular.module('astroApp').controller 'ReadLaterController', [
           $scope.closeWindow()
 
         save_promise.catch (response)->
-          $scope.error = response?.data?.error || 'There was an error saving the selected article.'
+          $scope.error = response?.data?.message || 'There was an error saving the selected article.'
 
-      $scope.closeWindow = ->
+    $scope.closeWindow = ->
         $timeout ->
           $window.parent.postMessage 'closeWindow', '*'
         , 1000
