@@ -21,7 +21,7 @@ addTheLink = ->
     marginLeft: 'calc(50% - 200px)'
     marginTop: '100px'
     padding: '10px'
-    height: '325px'
+    height: '445px'
   container = $('<div />').attr('id', 'readlaterwrapper').css containerStyle
   container.on 'click', ->
     container.remove()

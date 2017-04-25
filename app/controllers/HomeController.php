@@ -3,7 +3,7 @@
 class HomeController extends BaseController {
 
   public function showIndex() {
-    $fileName = 'assets/js/bookmarkletLoader.min.js';
+    $fileName = 'assets/js/v1/bookmarkletLoader.min.js';
     $bookmarklet = null;
     $categoriesString = null;
     if(Auth::user()) {

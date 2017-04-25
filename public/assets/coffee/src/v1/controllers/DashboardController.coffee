@@ -76,7 +76,7 @@ angular.module('astroApp').controller 'DashboardController', [
       if !$scope.songModalOpen
         $scope.newSong = new Song()
 
-    $scope.getArticlesForCategory = (category, limit, randomize, update_load_count, isCategoryList = false)->
+    $scope.getArticlesForCategory = (category, limit, randomize, update_load_count)->
       $scope.loading_category = true
       $scope.selected_articles = []
       data =
@@ -127,11 +127,13 @@ angular.module('astroApp').controller 'DashboardController', [
         $scope.loadDashboard()
 
     $scope.loadDashboard = ->
+      $scope.loading_category = true
       articles_promise = ArticleResource.daily().$promise
 
       articles_promise.then (articles)->
         $scope.daily_articles = articles.filter (article)->
           !article.readToday() && !article.postponedToday()
+        $scope.loading_category = false
 
       daily_Promise = DashboardResource.get().$promise
       daily_Promise.then (response)->
