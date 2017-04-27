@@ -1,5 +1,5 @@
 angular.module('astroApp').directive 'linkModal', ->
   templateUrl: 'templates/link-modal'
   restrict: 'E'
-  controller: 'LinkController'
+  controller: 'ArticleController'
   replace: true

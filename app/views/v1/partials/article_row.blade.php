@@ -1,22 +1,18 @@
 <td>
-  <a ng-href="{{ article.url }}" target="_blank">{{ article.title }}</a>
-  <span class="badge category-badge" ng-repeat="category in article.categories">{{ category.name }}</span>
-  <div class="pull-right">
-    <span
-      class="glyphicon glyphicon-ok-circle text-success"
-      ng-click="readArticle(article, 'daily_articles')">
-    </span>
-    <span
-      class="glyphicon glyphicon-edit"
-      ng-click="article.edit()">
-    </span>
-    <span
-      class="glyphicon glyphicon-calendar text-info postpone-button"
-      ng-click="postponeArticle(article)">
-    </span>
-    <span
-      class="glyphicon glyphicon-remove-circle text-danger"
-      ng-click="article.warnDelete()">
-    </span>
+  <div class="col-xs-6" ng-class="!display_category ? 'col-md-6' : 'col-md-10'">
+    <a ng-href="{{ article.url }}" target="_blank">{{ article.title }}</a>
   </div>
+  <div class="col-md-4 hidden-xs" ng-show="!display_category">
+    <ul class="list-unstyled">
+      <li ng-repeat="category in article.categories">
+        <span class="badge category-badge">{{ category.name }}</span>
+      </li>
+    </ul>
+  </div>
+  @if($detail_view)
+    <div class="col-md-2 hidden-xs" ng-show="!display_category">
+      {{ article.recommended.length }}
+    </div>
+  @endif
+  @include('v1.partials.article_controls')
 </td>

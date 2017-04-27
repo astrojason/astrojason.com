@@ -135,8 +135,8 @@ angular.module('astroApp').controller 'DashboardController', [
           !article.readToday() && !article.postponedToday()
         $scope.loading_category = false
 
-      daily_Promise = DashboardResource.get().$promise
-      daily_Promise.then (response)->
+      daily_promise = DashboardResource.get().$promise
+      daily_promise.then (response)->
         $scope.articles_read_today = response.articles_read_today
         $scope.categories = response.categories
         $scope.total_articles = response.total_articles
@@ -147,7 +147,7 @@ angular.module('astroApp').controller 'DashboardController', [
         $scope.games_toplay = response.games_toplay
         $scope.songs_toplay = response.songs_toplay
         $scope.display_categories = response.dashboard_layout
-      daily_Promise.catch ->
+      daily_promise.catch ->
         $scope.$emit 'errorOccurred', 'Problem loading daily results'
 
     $scope.populateLinks = ->
@@ -165,6 +165,14 @@ angular.module('astroApp').controller 'DashboardController', [
       $scope[list] = $scope[list].filter (list_article)->
         list_article.id != article.id
 
+    $scope.filterDeletedArticles = (list)->
+      if $scope[list]
+        deleted_articles = $scope[list].filter (article)->
+          article.deleted
+        if deleted_articles.length > 0
+          deleted_articles.forEach (article)->
+            $scope.removeArticleFromList(article, list)
+
     $scope.readArticle = (article, list)->
       article.markRead().then ->
         $scope.removeArticleFromList(article, list)
@@ -175,14 +183,6 @@ angular.module('astroApp').controller 'DashboardController', [
     $scope.postponeArticle = (article)->
       article.postpone().then ->
         $scope.removeArticleFromList(article, 'daily_articles')
-
-    $scope.filterDeletedArticles = (list)->
-      if $scope[list]
-        deleted_articles = $scope[list].filter (article)->
-          article.deleted
-        if deleted_articles.length > 0
-          deleted_articles.forEach (article)->
-            $scope.removeArticleFromList(article, list)
 
     $scope.$watch 'daily_articles', ->
       $scope.filterDeletedArticles('daily_articles')

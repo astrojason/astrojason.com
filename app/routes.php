@@ -28,8 +28,8 @@ Route::group(['before' => 'auth'], function(){
     });
   });
   Route::get('games', 'GameController@index');
-  Route::get('articles', 'LinkController@index');
-  Route::get('readlater', 'LinkController@readLater');
+  Route::get('articles', 'ArticleController@index');
+  Route::get('readlater', 'ArticleController@readLater');
   Route::get('songs', 'SongController@index');
   Route::get('charts', 'ChartController@index');
   Route::get('credit', 'CreditController@index');

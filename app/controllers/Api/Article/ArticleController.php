@@ -51,11 +51,14 @@ class ArticleController extends AstroBaseController {
    * @return JsonResponse
    */
   public function query() {
+    $pageCount = 0;
     $userId = Auth::user()->id;
     $page_size = Input::get('page_size');
     $page = Input::get('page', 1);
     $q = Input::get('q');
     $category = Input::get('category');
+    $sort = Input::get('sort');
+    $descending = filter_var(Input::get('descending'), FILTER_VALIDATE_BOOLEAN);
 
     $include_read = filter_var(Input::get('include_read', false), FILTER_VALIDATE_BOOLEAN);
 
@@ -74,13 +77,20 @@ class ArticleController extends AstroBaseController {
           ->orwhere('url', 'LIKE', '%' . $q . '%');
       });
     }
+    $total = $query->count();
+    if(isset($sort)) {
+      $query->orderBy($sort, $descending ? 'DESC' : 'ASC');
+    }
     if(isset($page_size)){
+      $pageCount = ceil($total / $page_size);
       $query->take($page_size)->skip($page_size * ($page - 1));
     }
     $articles = $query->get();
 
     return $this->successResponse([
-      'articles' => $this->transformCollection($articles)
+      'articles' => $this->transformCollection($articles),
+      'page_count' => $pageCount,
+      'total' => $total
     ]);
   }
 

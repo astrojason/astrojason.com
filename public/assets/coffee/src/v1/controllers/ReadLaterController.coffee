@@ -32,10 +32,10 @@ angular.module('astroApp').controller 'ReadLaterController', [
         save_promise.catch (response)->
           $scope.error = response?.data?.message || 'There was an error saving the selected article.'
 
-    $scope.closeWindow = ->
-        $timeout ->
-          $window.parent.postMessage 'closeWindow', '*'
-        , 1000
+      $scope.closeWindow = ->
+          $timeout ->
+            $window.parent.postMessage 'closeWindow', '*'
+          , 1000
 
       $scope.addCategory = ->
         exists = false

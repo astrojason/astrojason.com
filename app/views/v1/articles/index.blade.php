@@ -1,11 +1,11 @@
 @extends('v1.layouts.layout')
 
 @section('title')
-  Links
+  Articles
 @stop
 
 @section('content')
-  <div ng-controller="LinkController" ng-init="setCategories(<% $link_categories %>)">
+  <div ng-controller="ArticleController">
     <div class="row">
       <div class="col-md-12">
         <loader ng-show="loading_links" ng-cloak></loader>
@@ -13,7 +13,7 @@
           <thead>
             <tr>
               <th>
-                Links
+                Articles
                 <ul class="list-inline pull-right">
                   <li><button class="btn btn-success btn-xs pull-right" ng-click="importModalOpen = true">Import from OneTab</button></li>
                 </ul>
@@ -22,11 +22,11 @@
             <tr>
               <th class="input-group">
                 <div class="search-wrapper">
-                  <input type="text" ng-model="links_query" class="form-control" placeholder="Search Query" />
+                  <input type="text" ng-model="article_query" class="form-control" placeholder="Search Query" />
                   <small
                     class="clear-input glyphicon glyphicon-remove-circle"
-                    ng-show="links_query"
-                    ng-click="links_query = ''"></small>
+                    ng-show="article_query"
+                    ng-click="article_query = ''"></small>
                 </div>
                 <div class="input-group-addon"><input type="checkbox" ng-model="include_read" /> <label>Include read</label></div>
               </th>
@@ -34,31 +34,37 @@
             <tr>
               <th class="input-group">
                 <div class="input-group-addon">Category</div>
-                <select name="category" ng-model="display_category" ng-options="category for category in categories" class="form-control">
+                <select
+                  name="category"
+                  ng-model="display_category"
+                  ng-options="category as category.name for category in categories"
+                  class="form-control">
                   <option value="">All</option>
                 </select>
               </th>
             </tr>
             <tr>
               <th>
-                <div class="col-xs-8" ng-class="!display_category ? 'col-md-6' : 'col-md-10'">
-                  <a href="#" ng-click="toggleSort('name')">Title</a>
-                </div>
-                <div class="col-md-2 hidden-xs" ng-show="!display_category">
-                  <a href="#" ng-click="toggleSort('category')">Category</a>
+                <div class="col-xs-6" ng-class="!display_category ? 'col-md-6' : 'col-md-10'">
+                  <a href="#" ng-click="toggleSort('title')">Title</a>
                 </div>
                 <div class="col-md-4 hidden-xs" ng-show="!display_category">
-                  <a href="#" ng-click="toggleSort('times_loaded')">Times Recommended</a>
+                  Category
+                  <!--a href="#" ng-click="toggleSort('category')">Category</a-->
+                </div>
+                <div class="col-md-2 hidden-xs" ng-show="!display_category">
+                  Recommend
+                  <!--a href="#" ng-click="toggleSort('times_loaded')">Times Recommended</a-->
                 </div>
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-show="links_query && links_list.length == 0 && !loading_links">
-              <td>No results for <strong>{{ links_query }}</strong>
+            <tr ng-show="article_query && articles.length == 0 && !loading_articles">
+              <td>No results for <strong>{{ article_query }}</strong>
             </tr>
-            <tr ng-repeat="link in links_list" ng-class="link.cssClass()">
-              <td ng-class="{new: link.new}"><link-form link="link" editing="false" show-category="!display_category"></link-form></td>
+            <tr ng-repeat="article in articles">
+              @include('v1.partials.article_row', ['detail_view' => true])
             </tr>
           </tbody>
           <tfoot ng-show="pages > 1">
@@ -69,7 +75,6 @@
         </table>
       </div>
     </div>
-    <link-modal></link-modal>
     <div
       class="modal fade"
       id="imporLinksModal"

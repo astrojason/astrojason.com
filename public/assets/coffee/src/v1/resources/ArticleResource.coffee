@@ -13,7 +13,8 @@ angular.module('astroApp').factory 'ArticleResource', [
       transformResponse: (response)->
         wrappedResponse = angular.fromJson response
         if wrappedResponse.articles
-          wrappedResponse.articles.$page_count = wrappedResponse.pageCount
+          wrappedResponse.articles.$page_count = wrappedResponse.page_count
+          wrappedResponse.articles.$total = wrappedResponse.$total
 
           wrappedResponse.articles
         else

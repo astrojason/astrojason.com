@@ -1,7 +1,7 @@
 angular.module('astroApp').directive 'linkForm', ->
   templateUrl: 'templates/link-form'
   restrict: 'E'
-  controller: 'LinkController'
+  controller: 'ArticleController'
   scope:
     link: '='
     showCategory: '='

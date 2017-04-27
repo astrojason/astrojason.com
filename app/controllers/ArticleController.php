@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Class LinkController
+ * Class ArticleController
  */
 
-class LinkController extends BaseController {
+class ArticleController extends BaseController {
 
   public function index() {
-    $categories = LinkController::getLinkCategoryString();
-    return View::make('v1.links.index')->with('link_categories', $categories);
+    $categories = ArticleController::getLinkCategoryString();
+    return View::make('v1.articles.index')->with('link_categories', $categories);
   }
 
   public function readLater() {

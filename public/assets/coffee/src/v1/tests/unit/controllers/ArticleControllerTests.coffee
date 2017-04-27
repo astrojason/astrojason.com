@@ -1,8 +1,8 @@
-describe 'LinkController unit tests', ->
+describe 'ArticleController unit tests', ->
   $scope = null
   $compile = null
   $timeout = null
-  LinkController = null
+  ArticleController = null
   Link = null
   scopeLink = null
   mockLinkResource = null
@@ -55,7 +55,7 @@ describe 'LinkController unit tests', ->
         AlertifyService: mockAlertifyService
         ArticleResource: mockArticlesResource
 
-      LinkController = $controller 'LinkController', mockInjections
+      ArticleController = $controller 'ArticleController', mockInjections
 
       scopeLink = angular.copy mockLinkQueryResponse.links[0]
 

@@ -10,7 +10,7 @@ namespace Unit\Api;
 use Api\LinkController as LinkController, TestCase;
 
 
-class LinkControllerTest extends TestCase {
+class ArticleControllerTest extends TestCase {
 
   public function test_transform() {
     $linkToTransform = [

@@ -18,7 +18,7 @@ class UserController extends BaseController {
       $newDashboardCategory->position = count($dashboardCategories) + 1;
       $dashboardCategories[$newDashboardCategory->position] = $newDashboardCategory;
     }
-    $displayCategories = LinkController::getLinkCategories();
+    $displayCategories = ArticleController::getLinkCategories();
     $displayCategories[] = 'Daily';
     $displayCategories[] = 'Unread';
 

@@ -36,7 +36,7 @@
                   <td>No results for <strong>{{ article_search }}</strong>
                 </tr>
                 <tr ng-repeat="article in article_results" ng-show="article_results.length > 0" ng-cloak>
-                  @include('v1.partials.article_row')
+                  @include('v1.partials.article_row', ['detail_view' => false])
                 </tr>
               </tbody>
             </table>
@@ -45,7 +45,7 @@
           <table id="daily_articles" class="table table-condensed table-striped table-hover" ng-cloak>
             <tbody>
               <tr ng-repeat="article in daily_articles">
-                @include('v1.partials.article_row')
+                @include('v1.partials.article_row', ['detail_view' => false])
               </tr>
             </tbody>
           </table>
@@ -74,7 +74,7 @@
               </thead>
               <tbody>
                 <tr ng-repeat="article in selected_articles">
-                  @include('v1.partials.article_row')
+                  @include('v1.partials.article_row', ['detail_view' => false])
                 </tr>
               </tbody>
             </table>
@@ -176,8 +176,6 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
-    <link-modal></link-modal>
 
     <book-modal></book-modal>
 
