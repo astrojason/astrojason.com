@@ -36,6 +36,7 @@ use Api\AstroBaseController;
 use Auth;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response as IlluminateResponse;
 use Illuminate\Http\JsonResponse;
 use Input;
@@ -57,15 +58,25 @@ class ArticleController extends AstroBaseController {
     $page = Input::get('page', 1);
     $q = Input::get('q');
     $category = Input::get('category');
-    $sort = Input::get('sort');
+    $sort = Input::get('sort', 'title');
     $descending = filter_var(Input::get('descending'), FILTER_VALIDATE_BOOLEAN);
 
     $include_read = filter_var(Input::get('include_read', false), FILTER_VALIDATE_BOOLEAN);
 
-    $query = Article::where('user_id', $userId);
+    $query = Article::select(DB::raw('articles.*, count(articles_recommended.id) as times_recommended'))
+      ->join(
+        'articles_recommended',
+        'articles.id',
+        '=',
+        'articles_recommended.article_id',
+        'left outer')
+      ->groupBy('article_id')
+      ->where('articles.user_id', '=', $userId);
+
     if(!$include_read){
       $query->doesntHave('read');
     }
+
     if(isset($category)){
       $query->whereHas('categories', function($query) use ($category){
         $query->where('category_id', $category);
@@ -77,15 +88,20 @@ class ArticleController extends AstroBaseController {
           ->orwhere('url', 'LIKE', '%' . $q . '%');
       });
     }
+
     $total = $query->count();
-    if(isset($sort)) {
-      $query->orderBy($sort, $descending ? 'DESC' : 'ASC');
-    }
     if(isset($page_size)){
       $pageCount = ceil($total / $page_size);
-      $query->take($page_size)->skip($page_size * ($page - 1));
     }
-    $articles = $query->get();
+
+    /** @var Collection $results */
+    $results = $query->get();
+
+    $articles = $results->sortBy($sort, SORT_REGULAR, $descending);
+    if($page > 1) {
+      $articles = $articles->slice($page_size * $page, count($results));
+    }
+    $articles = $articles->take($page_size);
 
     return $this->successResponse([
       'articles' => $this->transformCollection($articles),
@@ -404,7 +420,8 @@ class ArticleController extends AstroBaseController {
       'categories' => [],
       'read' => [],
       'recommended' => [],
-      'justAdded' => (bool)$item->justAdded
+      'justAdded' => (bool)$item->justAdded,
+      'times_recommended' => $item['times_recommended']
     ];
     /** @var Category $category */
     foreach($item->categories as $category) {

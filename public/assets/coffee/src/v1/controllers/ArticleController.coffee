@@ -25,7 +25,7 @@ angular.module('astroApp').controller 'ArticleController', [
     query_data = $location.search()
 
     $scope.page_size = query_data.page_size || 20
-    $scope.page = query_data.page || 1
+    $scope.page = parseInt(query_data.page) || 1
     $scope.article_query = query_data.q || ''
     $scope.deleting = false
     $scope.errorMessage = false
@@ -69,7 +69,10 @@ angular.module('astroApp').controller 'ArticleController', [
 
       $scope.$watch 'sort', ->
         if !$scope.loading_articles
-          $scope.query()
+          if $scope.page > 1
+            $scope.page = 1
+          else
+            $scope.query()
 
       $scope.$watch 'descending', ->
         if !$scope.loading_articles

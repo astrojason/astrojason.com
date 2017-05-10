@@ -53,8 +53,7 @@
                   <!--a href="#" ng-click="toggleSort('category')">Category</a-->
                 </div>
                 <div class="col-md-2 hidden-xs" ng-show="!display_category">
-                  Recommend
-                  <!--a href="#" ng-click="toggleSort('times_loaded')">Times Recommended</a-->
+                  <a href="#" ng-click="toggleSort('times_recommended')">Times Recommended</a>
                 </div>
               </th>
             </tr>
