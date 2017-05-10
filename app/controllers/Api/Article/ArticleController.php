@@ -277,6 +277,12 @@ class ArticleController extends AstroBaseController {
       $article->justAdded = true;
     }
     $article = $this->save($user_id, $article, $params);
+    if($params['is_read']) {
+      Read::create([
+        'article_id' => $article->id
+      ]);
+    }
+
     return $article;
   }
 
