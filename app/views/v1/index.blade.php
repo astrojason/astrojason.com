@@ -15,13 +15,13 @@
         </div>
         <div>
           <div id="search_links" class="link_container">
-            <loader ng-show="loading_search" ng-cloak></loader>
+            <loader ng-show="searching" ng-cloak></loader>
             <table class="table table-condensed table-striped table-hover">
               <thead>
                 <tr>
                   <th class="input-group">
                     <div class="search-wrapper">
-                      <input type="text" ng-model="article_search" class="form-control" placeholder="Search Query" />
+                      <input type="text" ng-model="article_search" class="form-control" placeholder="Article Search" />
                       <small
                         class="clear-input glyphicon glyphicon-remove-circle"
                         ng-show="article_search"
@@ -29,6 +29,9 @@
                     </div>
                     <div class="input-group-addon"><input type="checkbox" ng-model="is_read" /> <label>Include read</label></div>
                   </th>
+                </tr>
+                <tr ng-show="article_results.length > 0">
+                  <th>Search Results</th>
                 </tr>
               </thead>
               <tbody>
@@ -43,6 +46,11 @@
           </div>
 
           <table id="daily_articles" class="table table-condensed table-striped table-hover" ng-cloak>
+            <thead ng-show="article_results.length > 0">
+              <tr>
+                <th>Daily Articles</th>
+              </tr>
+            </thead>
             <tbody>
               <tr ng-repeat="article in daily_articles">
                 @include('v1.partials.article_row', ['detail_view' => false])

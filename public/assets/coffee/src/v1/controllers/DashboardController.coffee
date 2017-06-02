@@ -1,7 +1,6 @@
 angular.module('astroApp').controller 'DashboardController', [
   '$scope'
   '$location'
-  '$timeout'
   '$filter'
   '$log'
   'UserService'
@@ -12,7 +11,6 @@ angular.module('astroApp').controller 'DashboardController', [
   'Song'
   ($scope,
     $location,
-    $timeout,
     $filter,
     $log,
     UserService,
@@ -50,19 +48,15 @@ angular.module('astroApp').controller 'DashboardController', [
         $scope.getArticlesForCategory newValue, 10, true, false, true
 
     $scope.$watch 'article_search', (newValue)->
-      $scope.searching = true
-      $timeout.cancel $scope.search_timeout
-      if newValue?.length >= 3
-        $scope.search_timeout = $timeout ->
-          $scope.search_articles()
-        , 500
+      if newValue
+        $scope.searching = true
+        $scope.search_articles()
+      else
+        $scope.article_results = []
 
-    $scope.$watch 'is_read', ->
-      $timeout.cancel $scope.search_timeout
-      if $scope.article_search?.length >= 3
-        $scope.search_timeout = $timeout ->
-          $scope.search_articles()
-        , 500
+    $scope.$watch 'is_read', (newValue, oldValue)->
+      if newValue != oldValue
+        $scope.search_articles()
 
     $scope.$watch 'bookModalOpen', ->
       if !$scope.bookModalOpen

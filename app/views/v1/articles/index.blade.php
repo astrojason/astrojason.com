@@ -8,7 +8,7 @@
   <div ng-controller="ArticleController">
     <div class="row">
       <div class="col-md-12">
-        <loader ng-show="loading_links" ng-cloak></loader>
+        <loader ng-show="loading_articles" ng-cloak></loader>
         <table class="table table-condensed table-striped table-hover" ng-init="initList()">
           <thead>
             <tr>

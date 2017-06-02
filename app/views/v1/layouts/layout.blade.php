@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="astroApp">
+<html
+  lang="en" ng-app="astroApp">
   <base href="/" />
   <head>
     <meta charset="utf-8">
@@ -20,8 +21,12 @@
     <![endif]-->
   </head>
   <body
-    ng-controller="MasterController"@if(Auth::user())
-    ng-init="initUser({ id: <% Auth::user()->id %>, username: '<% Auth::user()->username %>', firstname: '<% Auth::user()->firstname %>', lastname: '<% Auth::user()->lastname %>', email: '<% Auth::user()->email %>' })"@endif>
+    ng-controller="MasterController"
+    ng-model-options="{
+      updateOn: 'default blur',
+      debounce: { 'default': 500, 'blur': 0 }
+    }"
+    @if(Auth::user())ng-init="initUser({ id: <% Auth::user()->id %>, username: '<% Auth::user()->username %>', firstname: '<% Auth::user()->firstname %>', lastname: '<% Auth::user()->lastname %>', email: '<% Auth::user()->email %>' })"@endif>
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
