@@ -55,7 +55,7 @@ angular.module('astroApp').controller 'DashboardController', [
         $scope.article_results = []
 
     $scope.$watch 'is_read', (newValue, oldValue)->
-      if newValue != oldValue
+      if newValue != oldValue && $scope.article_search
         $scope.search_articles()
 
     $scope.$watch 'bookModalOpen', ->
