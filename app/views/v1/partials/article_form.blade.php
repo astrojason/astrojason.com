@@ -27,7 +27,7 @@
     <select
       class="form-control"
       ng-model="article.categories"
-      ng-options="category as category.name for category in categories"
+      ng-options="category as category.name for category in categories | orderBy: 'name'"
       multiple>
     </select>
   </div>

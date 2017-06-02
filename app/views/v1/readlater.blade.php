@@ -22,7 +22,7 @@
     <div id="overlay" ng-show="init" class="overlay"></div>
     <div
       ng-controller="ReadLaterController"
-      ng-init="article = {title: '<%% $title %%>', url: '<%% $url %%>', categories: []}">
+      ng-init="initArticle({title: '<%% $title %%>', url: '<%% $url %%>'})">
       @if(Auth::check())
         <div
           class="alert alert-danger"

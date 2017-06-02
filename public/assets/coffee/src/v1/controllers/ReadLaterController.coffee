@@ -15,6 +15,15 @@ angular.module('astroApp').controller 'ReadLaterController', [
       $scope.editing = true
       $scope.error = false
 
+      new_article =
+        title: ''
+        url: ''
+        categories: []
+        is_read: false
+
+      $scope.initArticle = (article)->
+        $scope.article = angular.extend {}, new_article, article
+
       $scope.init = ->
         category_promise = ArticleResource.categories().$promise
 
@@ -35,6 +44,8 @@ angular.module('astroApp').controller 'ReadLaterController', [
       $scope.closeWindow = ->
           $timeout ->
             $window.parent.postMessage 'closeWindow', '*'
+            $scope.article = angular.copy new_article
+            $scope.article_form.$setPristine()
           , 1000
 
       $scope.addCategory = ->
