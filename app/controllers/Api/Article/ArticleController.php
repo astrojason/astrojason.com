@@ -350,7 +350,10 @@ class ArticleController extends AstroBaseController {
         });
         $query->whereNotIn('id', $ids);
         $query->orderBy(DB::raw('RAND()'));
-        $articles = $query->take($userSetting->number)->get();
+        if($userSetting->number > 0) {
+          $query->take($userSetting->number);
+        }
+        $articles = $query->get();
         foreach ($articles as $article) {
           Recommended::create([
             'article_id' => $article->id,
