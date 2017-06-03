@@ -114,7 +114,7 @@ class ArticleController extends AstroBaseController {
    * @return JsonResponse
    */
   public function daily(){
-    return $this->successResponse(['articles' => $this->generateDailyLinks(Auth::user()->id)]);
+    return $this->successResponse(['articles' => $this->generateDailyArticles(Auth::user()->id)]);
   }
 
   /**
@@ -309,69 +309,82 @@ class ArticleController extends AstroBaseController {
     return $article;
   }
 
-  public function generateDailyLinks($userId) {
+  public function generateDailyArticles($userId) {
     $today = Carbon::create();
     $returnArticles = [];
-    $ids = [];
+//  Check if the daily articles list has already been created
     $dailyArticles = Recommended::where('user_id', $userId)
       ->where('created_at', 'LIKE', $today->toDateString() . '%')->get();
 
     if(count($dailyArticles) == 0) {
-      $yesterday = Carbon::create()->subDay(1);
-      /** @var Recommended $postponedArticles */
-      $postponedArticles = Recommended::where('user_id', $userId)
-        ->where('created_at', 'LIKE', $yesterday->toDateString() . '%')
-        ->where('postpone', true)
-        ->get();
-      $ids = [];
-      foreach ($postponedArticles as $postponedArticle) {
-        $ids[] = $postponedArticle->article_id;
-      }
-      if(count($ids) > 0) {
-        $dailyArticles = Article::whereIn('id', $ids)->get();
-        $returnArticles = $this->transformCollection($dailyArticles);
-      }
+//    Get all the postponed articles from yesterday
+      $dailyArticles = $this->getPostponedArticles($userId);
+      $selectedArticleIds = array_map(function($article){return $article->id;}, $dailyArticles);
+//    Get the user's settings
       $userSettings = DailySetting::where('user_id', $userId)->get();
+      $allArticles = Article::where('user_id', $userId)
+        ->get();
       foreach ($userSettings as $userSetting) {
-
-        $query = Article::where('user_id', $userId);
+        $settingArticles = $allArticles->filter(function($article) use ($selectedArticleIds, $today) {
+          return !(in_array($article->id, $selectedArticleIds))
+            &&
+            !(in_array($today->subDay(7), $article['recommended']->toArray()));
+        });
         if (!$userSetting->allow_read) {
-          $query->doesntHave('read');
+          $settingArticles = $settingArticles->filter(function($article){
+            return !(count($article['read']) > 0);
+          });
         }
         if ($userSetting->category_id) {
-          $query->whereHas('categories', function ($query) use ($userSetting) {
-            $query->where('category_id', $userSetting->category_id);
+          $settingArticles = $settingArticles->filter(function($article) use ($userSetting) {
+            return in_array($userSetting->category_id,
+              array_map(function($category){return $category['id'];}, $article['categories']->toArray()));
           });
-        } else {
-          $query->doesntHave('categories');
         }
-        $query->doesntHave('recommended')->orWhereHas('recommended', function ($query) use ($today) {
-          $query->where('articles_recommended.created_at', '<', $today->subDay(7));
-        });
-        $query->whereNotIn('id', $ids);
-        $query->orderBy(DB::raw('RAND()'));
+        $settingArticles->shuffle();
         if($userSetting->number > 0) {
-          $query->take($userSetting->number);
+          $settingArticles = $settingArticles->take($userSetting->number);
         }
-        $articles = $query->get();
-        foreach ($articles as $article) {
-          Recommended::create([
-            'article_id' => $article->id,
-            'user_id' => $article->user_id
-          ]);
-          $ids[] = $article->id;
-          $returnArticles[] = $this->transform($article);
-        }
-
+        $returnArticles = array_merge($returnArticles, $this->transformCollection($settingArticles));
+        $selectedArticleIds = array_merge(
+          array_map(function($article) use ($userId){
+            Recommended::create([
+              'article_id' => $article['id'],
+              'user_id' => $userId
+            ]);
+            return $article['id'];
+            },
+            $settingArticles->toArray())
+          , $selectedArticleIds);
       }
     } else {
-      foreach ($dailyArticles as $dailyArticle) {
-        $ids[] = $dailyArticle->article_id;
-      }
+      $ids = array_map(function($article){
+          return $article['article_id'];
+        },
+        $dailyArticles->toArray());
       $dailyArticles = Article::whereIn('id', $ids)->get();
       $returnArticles = $this->transformCollection($dailyArticles);
     }
-    return  $returnArticles;
+    return $returnArticles;
+  }
+
+  private function getPostponedArticles($userId) {
+    $returnArticles = [];
+    $yesterday = Carbon::create()->subDay(1);
+    /** @var Recommended $postponedArticles */
+    $postponedArticles = Recommended::where('user_id', $userId)
+      ->where('created_at', 'LIKE', $yesterday->toDateString() . '%')
+      ->where('postpone', true)
+      ->get();
+    $ids = [];
+    foreach ($postponedArticles as $postponedArticle) {
+      $ids[] = $postponedArticle->article_id;
+    }
+    if(count($ids) > 0) {
+      $dailyArticles = Article::whereIn('id', $ids)->get();
+      $returnArticles = $this->transformCollection($dailyArticles);
+    }
+    return $returnArticles;
   }
 
   /**

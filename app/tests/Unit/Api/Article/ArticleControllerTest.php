@@ -201,14 +201,14 @@ class ArticleControllerTest extends TestCase {
   }
 
   public function test_create_today_links() {
-    $this->articleController->generateDailyLinks($this->defaultUserId);
+    $this->articleController->generateDailyArticles($this->defaultUserId);
     $today = Carbon::create();
     $daily_articles = Recommended::where('created_at', 'LIKE', $today->toDateString() . '%')->get();
     $this->assertFalse(count($daily_articles) == 0);
   }
 
   public function test_clear_today_links() {
-    $this->articleController->generateDailyLinks($this->defaultUserId);
+    $this->articleController->generateDailyArticles($this->defaultUserId);
     Artisan::call('articles:clearrecentrecommendations');
     $today = Carbon::create();
     $daily_articles = Recommended::where('created_at', 'LIKE', $today->toDateString() . '%')->get();
@@ -231,11 +231,11 @@ class ArticleControllerTest extends TestCase {
 
   public function test_return_today_links_already_created() {
     Artisan::call('articles:clearrecentrecommendations');
-    $initialTodayLinks = $this->articleController->generateDailyLinks($this->defaultUserId);
+    $initialTodayLinks = $this->articleController->generateDailyArticles($this->defaultUserId);
     usort($initialTodayLinks, function($a, $b) {
       return strcmp($a['title'], $b['title']);
     });
-    $secondTodayLinks = $this->articleController->generateDailyLinks($this->defaultUserId);
+    $secondTodayLinks = $this->articleController->generateDailyArticles($this->defaultUserId);
     usort($secondTodayLinks, function($a, $b) {
       return strcmp($a['title'], $b['title']);
     });
