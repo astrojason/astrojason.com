@@ -63,39 +63,36 @@ class ArticleController extends AstroBaseController {
 
     $include_read = filter_var(Input::get('include_read', false), FILTER_VALIDATE_BOOLEAN);
 
-    $query = Article::select(DB::raw('articles.*, count(articles_recommended.id) as times_recommended'))
-      ->join(
-        'articles_recommended',
-        'articles.id',
-        '=',
-        'articles_recommended.article_id',
-        'left outer')
-      ->groupBy('article_id')
-      ->where('articles.user_id', '=', $userId);
+    /** @var Collection $results */
+    $results = Article::where('user_id', $userId)->get();
+
+    /** @var Article $result */
+    foreach ($results as $result) {
+      $result->times_recommended = count($result->recommended);
+    }
 
     if(!$include_read){
-      $query->doesntHave('read');
+      $results = $results->filter(function($article){
+        return !(count($article->read) > 0);
+      });
     }
 
     if(isset($category)){
-      $query->whereHas('categories', function($query) use ($category){
-        $query->where('category_id', $category);
+      $results = $results->filter(function($article) use ($category) {
+        return in_array($category,
+          array_map(function($category){return $category['id'];}, $article['categories']->toArray()));
       });
     }
     if(isset($q)) {
-      $query->where(function ($query) use ($q) {
-        $query->where('title', 'LIKE', '%' . $q . '%')
-          ->orwhere('url', 'LIKE', '%' . $q . '%');
+      $results = $results->filter(function($article) use ($q) {
+        return (strpos($article->title, $q) || strpos($article->url, $q));
       });
     }
 
-    $total = $query->count();
+    $total = $results->count();
     if(isset($page_size)){
       $pageCount = ceil($total / $page_size);
     }
-
-    /** @var Collection $results */
-    $results = $query->get();
 
     $articles = $results->sortBy($sort, SORT_REGULAR, $descending);
     if($page > 1) {

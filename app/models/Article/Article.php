@@ -24,6 +24,9 @@ use Eloquent;
  * @method static \Illuminate\Database\Query\Builder|\Article\Article whereUpdatedAt($value)
  */
 class Article extends Eloquent {
+
+  public $times_recommended;
+
   protected $fillable = [
     'user_id',
     'title',
