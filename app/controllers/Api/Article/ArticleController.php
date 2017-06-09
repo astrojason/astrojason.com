@@ -337,6 +337,10 @@ class ArticleController extends AstroBaseController {
             return in_array($userSetting->category_id,
               array_map(function($category){return $category['id'];}, $article['categories']->toArray()));
           });
+        } else {
+          $settingArticles = $settingArticles->filter(function($article){
+            return !(count($article['categories']) > 0);
+          });
         }
         $settingArticles->shuffle();
         if($userSetting->number > 0) {
