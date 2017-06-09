@@ -50,7 +50,13 @@ use Eloquent;
  */
 
 class DailySetting extends Eloquent {
-  protected $fillable = [];
+
+  protected $fillable = [
+    'user_id',
+    'category_id',
+    'number',
+    'allow_read'
+  ];
 
   protected $table = 'daily_articles_settings';
 

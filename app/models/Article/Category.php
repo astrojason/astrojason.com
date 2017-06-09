@@ -29,4 +29,5 @@ class Category extends Eloquent {
   public function articles() {
     return $this->belongsToMany('Article\Article', 'article_category');
   }
+
 }
