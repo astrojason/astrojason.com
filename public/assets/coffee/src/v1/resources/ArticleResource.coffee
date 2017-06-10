@@ -142,5 +142,12 @@ angular.module('astroApp').factory 'ArticleResource', [
         recommended.date == today && recommended.postponed == true
       read.length > 0
 
+    ArticleResource.prototype.lastRead = ->
+      readDates = @read.sort().reverse()
+      if readDates.length > 0
+        readDates[0]
+      else
+        null
+
     ArticleResource
 ]
