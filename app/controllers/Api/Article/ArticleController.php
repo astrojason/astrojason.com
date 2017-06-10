@@ -85,7 +85,7 @@ class ArticleController extends AstroBaseController {
     }
     if(isset($q)) {
       $results = $results->filter(function($article) use ($q) {
-        return (strpos($article->title, $q) || strpos($article->url, $q));
+        return (strpos($article->title, $q) !== false || strpos($article->url, $q) !== false);
       });
     }
 

@@ -1,5 +1,7 @@
 <td>
-  <div class="col-xs-6" ng-class="!display_category ? 'col-md-6' : 'col-md-10'">
+  <div
+    class="col-xs-6"
+    ng-class="!display_category ? 'col-md-6' : 'col-md-10'">
     <a ng-href="{{ article.url }}" target="_blank">{{ article.title }}</a>
   </div>
   <div class="col-md-4 hidden-xs" ng-show="!display_category">

@@ -38,7 +38,11 @@
                 <tr ng-show="article_search && article_results.length == 0 && !searching">
                   <td>No results for <strong>{{ article_search }}</strong>
                 </tr>
-                <tr ng-repeat="article in article_results" ng-show="article_results.length > 0" ng-cloak>
+                <tr
+                  ng-repeat="article in article_results"
+                  ng-show="article_results.length > 0"
+                  ng-class="{read: article.read.length > 0}"
+                  ng-cloak>
                   @include('v1.partials.article_row', ['detail_view' => false])
                 </tr>
               </tbody>

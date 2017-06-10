@@ -62,7 +62,9 @@
             <tr ng-show="article_query && articles.length == 0 && !loading_articles">
               <td>No results for <strong>{{ article_query }}</strong>
             </tr>
-            <tr ng-repeat="article in articles">
+            <tr
+              ng-repeat="article in articles"
+              ng-class="{read: article.read.length > 0}">
               @include('v1.partials.article_row', ['detail_view' => true])
             </tr>
           </tbody>
