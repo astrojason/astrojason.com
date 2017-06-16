@@ -9,7 +9,8 @@
       Do you have too much stuff to read, paralyzed by choices. Let me decide! Create an account now.
     </div>
     <div class="row" ng-show="user.id">
-      <div class="col-lg-9 col-sm-12">
+      <div class="col-lg-5 col-sm-12 panel">
+        <h3>Articles</h3>
         <div ng-show="total_articles == 0" ng-cloak>
           You do not have any links, would you like me to <button class="btn btn-default" ng-click="populateLinks()">Randomize</button> some for you?
         </div>
@@ -48,7 +49,6 @@
               </tbody>
             </table>
           </div>
-
           <table id="daily_articles" class="table table-condensed table-striped table-hover" ng-cloak>
             <thead ng-show="article_results.length > 0">
               <tr>
@@ -61,7 +61,6 @@
               </tr>
             </tbody>
           </table>
-
           <div id="category_links" class="link_selected">
             <loader ng-show="loading_category" ng-cloak></loader>
             <table class="table table-condensed table-striped table-hover" ng-show="categories.length > 0" ng-cloak>
@@ -93,6 +92,11 @@
           </div>
         </div>
       </div>
+
+      <div class="col-lg-4 col-sm-12 panel">
+        <h3>Tasks</h3>
+      </div>
+
       <div class="col-lg-3 hidden-sm">
         <table class="table table-condensed table-hover">
           <thead>

@@ -6,6 +6,7 @@ angular.module('astroApp').controller 'DashboardController', [
   'UserService'
   'DashboardResource'
   'ArticleResource'
+  'TaskResource'
   'Book'
   'Game'
   'Song'
@@ -16,6 +17,7 @@ angular.module('astroApp').controller 'DashboardController', [
     UserService,
     DashboardResource,
     ArticleResource,
+    TaskResource,
     Book,
     Game,
     Song)->
@@ -130,6 +132,7 @@ angular.module('astroApp').controller 'DashboardController', [
         $scope.loading_category = false
 
       daily_promise = DashboardResource.get().$promise
+
       daily_promise.then (response)->
         $scope.articles_read_today = response.articles_read_today
         $scope.categories = response.categories
@@ -141,8 +144,17 @@ angular.module('astroApp').controller 'DashboardController', [
         $scope.games_toplay = response.games_toplay
         $scope.songs_toplay = response.songs_toplay
         $scope.display_categories = response.dashboard_layout
+
       daily_promise.catch ->
-        $scope.$emit 'errorOccurred', 'Problem loading daily results'
+        $scope.$emit 'errorOccurred', 'Problem loading daily articles'
+
+      task_promise = TaskResource.daily().$promise
+
+      task_promise.then (tasks)->
+        $scope.tasks = tasks
+
+      task_promise.catch ->
+        $scope.$emit 'errorOccurred', 'Problem loading daily tasks'
 
     $scope.populateLinks = ->
       populate_promise = ArticleResource.populate().$promise
