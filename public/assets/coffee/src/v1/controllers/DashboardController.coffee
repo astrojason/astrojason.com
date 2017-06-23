@@ -153,7 +153,8 @@ angular.module('astroApp').controller 'DashboardController', [
       task_promise.then (tasks)->
         $scope.tasks = tasks
 
-      task_promise.catch ->
+      task_promise.catch (err)->
+        $log.warn err
         $scope.$emit 'errorOccurred', 'Problem loading daily tasks'
 
     $scope.populateLinks = ->

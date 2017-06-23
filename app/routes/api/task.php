@@ -25,3 +25,8 @@
  * Time: 12:05 PM
  */
 Route::get('daily', 'TaskController@daily');
+Route::group(['prefix' => '{task_id}'], function(){
+  Route::delete('', 'TaskController@delete');
+  Route::get('/skip', 'TaskController@skip');
+  Route::get('complete', 'TaskController@complete');
+});

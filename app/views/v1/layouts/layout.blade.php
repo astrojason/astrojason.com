@@ -29,7 +29,7 @@
     @if(Auth::user())ng-init="initUser({ id: <% Auth::user()->id %>, username: '<% Auth::user()->username %>', firstname: '<% Auth::user()->firstname %>', lastname: '<% Auth::user()->lastname %>', email: '<% Auth::user()->email %>' })"@endif>
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container">
+      <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -93,12 +93,14 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-    <div class="container main">
+    <div class="container-fluid main">
       <div class="row">
         <div class="alert alert-danger" ng-show="show_error" ng-cloak>{{ error_message }}</div>
       </div>
-      <div class="jumbotron">
-        @yield('content')
+      <div class="row">
+        <div class="col-sm-12">
+          @yield('content')
+        </div>
       </div>
     </div><!-- /container -->
     @include('v1.partials.js')

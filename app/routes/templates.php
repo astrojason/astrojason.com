@@ -15,3 +15,4 @@ Route::get('game-modal', 'TemplateController@gameModal');
 Route::get('link-modal', 'TemplateController@linkModal');
 Route::get('movie-modal', 'TemplateController@movieModal');
 Route::get('song-modal', 'TemplateController@songModal');
+Route::get('task-table', 'TemplateController@taskTable');

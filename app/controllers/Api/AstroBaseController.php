@@ -2,11 +2,13 @@
 
 namespace Api;
 
+use Controller;
+
 use Illuminate\Http\Response as IlluminateResponse;
 
 use Response;
 
-abstract class AstroBaseController extends \Controller {
+abstract class AstroBaseController extends Controller {
 
   abstract function transform($item);
 

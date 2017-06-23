@@ -115,4 +115,8 @@ class TemplateController extends BaseController {
   public function movieModal() {
     return View::make('v1.templates.movieModal');
   }
+
+  public function taskTable() {
+    return View::make('v1.templates.taskTable');
+  }
 }
