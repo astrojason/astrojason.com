@@ -36,4 +36,8 @@ class Task extends Eloquent {
     return $this->hasMany('Task\TaskDue');
   }
 
+  public function project() {
+    return $this->belongsTo('Task\TaskProject');
+  }
+
 }

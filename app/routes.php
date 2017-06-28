@@ -49,8 +49,10 @@ Route::group(array('prefix' => 'templates'), function(){
 
 Route::group(['prefix' => 'modals'], function(){
   Route::get('article-form', 'ModalController@articleForm');
+  Route::get('task-form', 'ModalController@taskForm');
+  Route::get('task-delete', 'ModalController@taskDelete');
 });
 
 Route::group(['prefix' => 'react'], function(){
-  Route::get('', 'HomeController@react');
+  Route::get('*', 'HomeController@react');
 });

@@ -4,11 +4,11 @@ angular.module('astroApp').factory 'TaskResource', [
   '$uibModal'
   '$log'
 ($resource, $http, $uibModal, $log) ->
-    subTaskParser = (subTasks) ->
-      subTasks.map (task)->
-        if task.subTasks.length > 0
-          task.subTasks = subTaskParser(task.subTasks)
-        new TaskResource(task)
+    subTaskParser = (task_dues) ->
+      task_dues.map (task_due)->
+        if task_due.task.tasks.length > 0
+          task_due.task.tasks = subTaskParser(task_due.task.tasks)
+        new TaskResource(task_due)
 
     arrayResponder =
       isArray: true
@@ -18,8 +18,8 @@ angular.module('astroApp').factory 'TaskResource', [
           angular.forEach wrappedResponse.tasks, (task) ->
             if task.subTasks.length > 0
               task.subTasks = subTaskParser(task.subTasks)
-          # wrappedResponse.tasks.$page_count = wrappedResponse.page_count
-          # wrappedResponse.tasks.$total = wrappedResponse.$total
+          wrappedResponse.tasks.$page_count = wrappedResponse.page_count
+          wrappedResponse.tasks.$total = wrappedResponse.total
 
           wrappedResponse.tasks
         else
@@ -31,10 +31,35 @@ angular.module('astroApp').factory 'TaskResource', [
           response.resource
 
     resourceMethods =
-      daily: angular.merge {}, arrayResponder,
+      today:
         method: 'GET'
         params:
-          id: 'daily'
+          id: 'today'
+        transformResponse: (response)->
+          wrappedResponse = angular.fromJson response
+          if wrappedResponse.projects && wrappedResponse.tasks
+            parsedResponse =
+              projects: wrappedResponse.projects
+              tasks: wrappedResponse.tasks
+            parsedResponse.projects.map (project)->
+              project.tasks = subTaskParser project.tasks
+            parsedResponse.tasks = subTaskParser parsedResponse.tasks
+
+            parsedResponse
+          else
+            wrappedResponse
+
+      projects:
+        method: 'GET'
+        params:
+          id: 'projects'
+        isArray: true
+        transformResponse: (response)->
+          wrappedResponse = angular.fromJson response
+          if wrappedResponse.projects
+            wrappedResponse.projects
+          else
+            wrappedResponse
 
     TaskResource = $resource '/api/task/:id', {}, resourceMethods
 
@@ -45,7 +70,7 @@ angular.module('astroApp').factory 'TaskResource', [
         controller: "TaskFormController"
         resolve:
           task: ->
-            task
+            task.task
 
     TaskResource.prototype.complete = ->
       task = @
@@ -78,33 +103,21 @@ angular.module('astroApp').factory 'TaskResource', [
       postponePromise
 
     TaskResource.prototype.warnDelete = ->
-      task = @
+      task_due = @
       $uibModal.open
-        template: """
-          <div class="modal-header">
-              <h3 class="modal-title" id="modal-title">Deleting {{ task.title }}</h3>
-          </div>
-          <div class="modal-body bg-danger" id="modal-body">
-            <p class="text-white">You can either skip the task for today, or delete it permanently. This action cannot be undone.</p>
-          </div>
-          <div class="modal-footer">
-              <button class="btn btn-warning" type="button" ng-click="task.skip(); cancel()">Skip</button>
-              <button class="btn btn-danger" type="button" ng-click="task.delete(); cancel()">Delete</button>
-              <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
-          </div>
-        """
+        templateUrl: '/modals/task-delete'
         controller: [
           '$scope'
           '$uibModalInstance'
-          'task'
-          ($scope, $uibModalInstance, task)->
-            $scope.task = task
+          'task_due'
+          ($scope, $uibModalInstance, task_due)->
+            $scope.task_due = task_due
             $scope.cancel = ->
               $uibModalInstance.dismiss()
         ]
         resolve:
-          task: ->
-            task
+          task_due: ->
+            task_due
 
     TaskResource.prototype.delete = ->
       task = @
@@ -118,7 +131,7 @@ angular.module('astroApp').factory 'TaskResource', [
         task.deleting = false
 
     TaskResource.prototype.subTasksCompleted = ->
-      @hasSubTasks && !(@subTasks.filter((item) => !item.completed) > 0)
+      @task.tasks.length > 0 && !(@task.tasks.filter((task) => !task.completed) > 0)
 
     TaskResource.prototype.hide = ->
       @completed || @skipped || @deleted || @subTasksCompleted()

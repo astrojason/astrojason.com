@@ -29,6 +29,10 @@ namespace Task;
 
 use Eloquent;
 
-class TaskProject extends Eloquent{
+class TaskProject extends Eloquent {
+
+  public function tasks() {
+    return $this->hasMany('Task\Task');
+  }
 
 }

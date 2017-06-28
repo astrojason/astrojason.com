@@ -10,7 +10,6 @@
     <link href="assets/bower/alertifyjs/dist/css/alertify.css" rel="stylesheet" />
     <link href="assets/bower/angular-fx/dist/angular-fx.min.css" rel="stylesheet" />
     <link href="assets/bower/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet" />
-    <link href="assets/sass/build/vendor/loader.css" rel="stylesheet" />
     <link href="assets/bower/typeahead.js-bootstrap3.less/typeaheadjs.css" rel="stylesheet" />
     <link href="assets/sass/build/v1/base.css" rel="stylesheet" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

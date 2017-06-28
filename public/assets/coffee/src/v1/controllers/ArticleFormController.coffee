@@ -1,13 +1,17 @@
 angular.module('astroApp').controller 'ArticleFormController', [
   '$scope'
   '$log'
+  '$timeout'
   '$uibModalInstance'
   'ArticleResource'
+  'AlertifyService'
   'article'
   ($scope,
   $log,
+  $timeout,
   $uibModalInstance,
   ArticleResource,
+  AlertifyService,
   article) ->
 
     $scope.article = article
@@ -22,10 +26,21 @@ angular.module('astroApp').controller 'ArticleFormController', [
           category.id in $scope.article.categories.map (article_category)-> article_category.id
 
     $scope.save = ->
-      save_promise = ArticleResource.save($scope.article).$promise
+      if $scope.article.id
+        save_promise = ArticleResource.save($scope.article).$promise
+      else
+        save_promise = ArticleResource.add($scope.article).$promise
 
       save_promise.then ->
-        $uibModalInstance.dismiss()
+        AlertifyService.success "Article added successfully."
+        if !$scope.article.id
+          $timeout ->
+            $scope.article = new ArticleResource()
+            $scope.article_form.$setPristine()
+            $uibModalInstance.dismiss()
+          , 1000
+        else
+          $uibModalInstance.dismiss()
 
     $scope.closeWindow = ->
       $uibModalInstance.dismiss()

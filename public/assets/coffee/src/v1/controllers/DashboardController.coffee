@@ -27,12 +27,15 @@ angular.module('astroApp').controller 'DashboardController', [
     $scope.article_results = []
     $scope.loading_unread = false
     $scope.loading_category = false
+    $scope.loading_tasks = false
+    $scope.updating_status = false
     $scope.recommendingBook = false
     $scope.recommendingGame = false
     $scope.recommendingSong = false
     $scope.bookModalOpen = false
     $scope.gameModalOpen = false
     $scope.songModalOpen = false
+    $scope.newArticle = new ArticleResource()
 
     $scope.$on 'userLoggedIn', ->
       $scope.initDashboard()
@@ -124,6 +127,7 @@ angular.module('astroApp').controller 'DashboardController', [
 
     $scope.loadDashboard = ->
       $scope.loading_category = true
+      $scope.loading_tasks = true
       articles_promise = ArticleResource.daily().$promise
 
       articles_promise.then (articles)->
@@ -148,14 +152,18 @@ angular.module('astroApp').controller 'DashboardController', [
       daily_promise.catch ->
         $scope.$emit 'errorOccurred', 'Problem loading daily articles'
 
-      task_promise = TaskResource.daily().$promise
+      task_promise = TaskResource.today().$promise
 
-      task_promise.then (tasks)->
-        $scope.tasks = tasks
+      task_promise.then (response)->
+        $scope.tasks = response.tasks
+        $scope.projects = response.projects
 
       task_promise.catch (err)->
         $log.warn err
         $scope.$emit 'errorOccurred', 'Problem loading daily tasks'
+
+      task_promise.finally ->
+        $scope.loading_tasks = false
 
     $scope.populateLinks = ->
       populate_promise = ArticleResource.populate().$promise
@@ -163,10 +171,14 @@ angular.module('astroApp').controller 'DashboardController', [
         $scope.loadDashboard()
 
     $scope.refreshReadCount = ->
+      $scope.updating_status = true
       readCount_promise = ArticleResource.readToday().$promise
 
       readCount_promise.then (response)->
         $scope.articles_read_today = response.articles_read_today
+
+      readCount_promise.finally ->
+        $scope.updating_status = false
 
     $scope.removeArticleFromList = (article, list)->
       $scope[list] = $scope[list].filter (list_article)->

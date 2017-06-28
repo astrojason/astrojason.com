@@ -1,4 +1,5 @@
 <?php
+
 /**
  *         _----_    _________       /\
  *        /      \  /         \/\ __///
@@ -21,13 +22,38 @@
  *
  * Created by PhpStorm.
  * User: jsylvester
- * Date: 6/12/17
- * Time: 12:05 PM
+ * Date: 6/26/17
+ * Time: 2:06 PM
  */
-Route::get('today', 'DailyTasksController@get');
-Route::get('projects', 'TaskProjectController@get');
-Route::group(['prefix' => '{task_id}'], function(){
-  Route::delete('', 'TaskController@delete');
-  Route::get('/skip', 'TaskDueController@skip');
-  Route::get('complete', 'TaskDueController@complete');
-});
+namespace Api\Task;
+
+use Api\AstroBaseController;
+use Auth;
+use Illuminate\Http\Response as IlluminateResponse;
+use Task\TaskProject;
+
+class TaskProjectController extends AstroBaseController {
+
+  private $user = null;
+
+  public function __construct() {
+    $this->user = Auth::user();
+  }
+
+  public function get() {
+    $projects = TaskProject::where('user_id', $this->user->id)
+      ->orderBy('name')
+      ->get();
+    return $this->successResponse([
+      'projects' => $this->transformCollection($projects)
+    ]);
+  }
+
+  public function transform($project) {
+    return [
+      'id' => (int)$project['id'],
+      'name' => $project['name']
+    ];
+  }
+
+}

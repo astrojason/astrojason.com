@@ -105,6 +105,7 @@
         </table>
       </div>
       <div class="col-lg-5 col-sm-12 panel">
+        <loader ng-show="loading_tasks" ng-cloak></loader>
         <table class="table table-condensed table-hover">
           <thead>
             <tr>
@@ -139,7 +140,7 @@
             @endif
             <tr>
               <td>
-                <a class="btn btn-success btn-xs" href="/readlater" target="_self">Add Article</a>
+                <a class="btn btn-success btn-xs" ng-click="newArticle.edit()">Add Article</a>
                 <button class="btn btn-success btn-xs" ng-click="bookModalOpen = true">Add Book</button>
                 <button class="btn btn-success btn-xs" ng-click="gameModalOpen = true">Add Game</button>
               </td>
@@ -161,6 +162,7 @@
             <tr ng-show="total_articles || total_books" ng-cloak>
               <td>
                 <div ng-show="total_articles" ng-cloak>
+                  <loader ng-show="updating_status" ng-cloak></loader>
                   <h5>Articles Read <small>{{ articles_read }} of {{ total_articles }} ({{ (articles_read / total_articles) * 100 | number:2 }}%)</small></h5>
                   <em>Today <small>({{ articles_read_today }} of 10)</small></em><br />
                   <progress max="10" value="{{ articles_read_today }}" ng-click="refreshReadCount()"></progress>
