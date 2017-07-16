@@ -5,7 +5,6 @@ angular.module('astroApp').controller 'ArticleController', [
   '$timeout'
   '$location'
   '$log'
-  'LinkResource'
   'Link'
   'AlertifyService'
   'ArticleResource'
@@ -15,7 +14,6 @@ angular.module('astroApp').controller 'ArticleController', [
     $timeout,
     $location,
     $log,
-    LinkResource,
     Link,
     AlertifyService,
     ArticleResource)->

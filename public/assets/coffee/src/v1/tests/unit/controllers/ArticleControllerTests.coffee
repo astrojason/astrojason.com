@@ -5,7 +5,6 @@ describe 'ArticleController unit tests', ->
   ArticleController = null
   Link = null
   scopeLink = null
-  mockLinkResource = null
   mockArticlesResource = null
   mockAlertifyService = null
   mockLinkQueryDeferred = null
@@ -27,19 +26,6 @@ describe 'ArticleController unit tests', ->
       $compile = _$compile_
       Link = _Link_
 
-      mockLinkResource =
-        query: ->
-          mockLinkQueryDeferred = $q.defer()
-          $promise: mockLinkQueryDeferred.promise
-
-        save: ->
-          mockLinkSaveDeferred = $q.defer()
-          $promise: mockLinkSaveDeferred.promise
-
-        remove: ->
-          mockLinkRemoveDeferred = $q.defer()
-          $promise: mockLinkRemoveDeferred.promise
-
       mockArticlesResource =
         import: ->
           mockArticleImportDeferred = $q.defer()
@@ -51,7 +37,6 @@ describe 'ArticleController unit tests', ->
 
       mockInjections =
         $scope: $scope
-        LinkResource: mockLinkResource
         AlertifyService: mockAlertifyService
         ArticleResource: mockArticlesResource
 
@@ -200,44 +185,44 @@ describe 'ArticleController unit tests', ->
     $scope.query()
     expect($scope.loading_links).toEqual true
 
-  it 'should pass the default parameters to LinkResource.query if the optional values are not set', ->
-    spyOn(mockLinkResource, 'query').and.callThrough()
+  it 'should pass the default parameters to ArticleResource.query if the optional values are not set', ->
+    spyOn(mockArticleResource, 'query').and.callThrough()
     $scope.query()
-    expect(mockLinkResource.query).toHaveBeenCalledWith
+    expect(mockArticleResource.query).toHaveBeenCalledWith
       limit: $scope.limit
       page: $scope.page
 
-  it 'should pass the q parameter to LinkResource.query when $scope.links_query is set', ->
-    spyOn(mockLinkResource, 'query').and.callThrough()
+  it 'should pass the q parameter to ArticleResource.query when $scope.links_query is set', ->
+    spyOn(mockArticleResource, 'query').and.callThrough()
     $scope.links_query = 'test'
     $scope.query()
-    expect(mockLinkResource.query).toHaveBeenCalledWith
+    expect(mockArticleResource.query).toHaveBeenCalledWith
       limit: $scope.limit
       page: $scope.page
       q: 'test'
 
-  it 'should pass the category parameter to LinkResource.query when $scope.display_category is set', ->
-    spyOn(mockLinkResource, 'query').and.callThrough()
+  it 'should pass the category parameter to ArticleResource.query when $scope.display_category is set', ->
+    spyOn(mockArticleResource, 'query').and.callThrough()
     $scope.display_category = 'test'
     $scope.query()
-    expect(mockLinkResource.query).toHaveBeenCalledWith
+    expect(mockArticleResource.query).toHaveBeenCalledWith
       limit: $scope.limit
       page: $scope.page
       category: 'test'
 
-  it 'should set $scope.loading_links to false when LinkResource.query succeeds', ->
+  it 'should set $scope.loading_links to false when ArticleResource.query succeeds', ->
     $scope.query()
     mockLinkQueryDeferred.resolve angular.copy(mockLinkQueryResponse)
     $scope.$digest()
     expect($scope.loading_links).toEqual false
 
-  it 'should set $scope.links to the returned value when LinkResource.query succeeds', ->
+  it 'should set $scope.links to the returned value when ArticleResource.query succeeds', ->
     $scope.query()
     mockLinkQueryDeferred.resolve angular.copy(mockLinkQueryResponse.links)
     $scope.$digest()
     expect($scope.links_list).toEqual mockLinkQueryResponse.links
 
-  it 'should set $scope.total to the returned value when LinkResource.query succeeds', ->
+  it 'should set $scope.total to the returned value when ArticleResource.query succeeds', ->
     $scope.query()
     response = angular.copy(mockLinkQueryResponse.links)
     response.$total = 10
@@ -245,7 +230,7 @@ describe 'ArticleController unit tests', ->
     $scope.$digest()
     expect($scope.total).toEqual 10
 
-  it 'should set $scope.pages to the returned value when LinkResource.query succeeds', ->
+  it 'should set $scope.pages to the returned value when ArticleResource.query succeeds', ->
     $scope.query()
     response = angular.copy(mockLinkQueryResponse.links)
     response.$pages = 10
@@ -253,14 +238,14 @@ describe 'ArticleController unit tests', ->
     $scope.$digest()
     expect($scope.pages).toEqual 10
 
-  it 'should call $scope.generatePages when LinkResource.query succeeds', ->
+  it 'should call $scope.generatePages when ArticleResource.query succeeds', ->
     spyOn $scope, 'generatePages'
     $scope.query()
     mockLinkQueryDeferred.resolve angular.copy(mockLinkQueryResponse.links)
     $scope.$digest()
     expect($scope.generatePages).toHaveBeenCalled()
 
-  it 'should set $scope.loading_links to false when LinkResource.query fails', ->
+  it 'should set $scope.loading_links to false when ArticleResource.query fails', ->
     $scope.query()
     mockLinkQueryDeferred.reject()
     $scope.$digest()
@@ -292,13 +277,13 @@ describe 'ArticleController unit tests', ->
     $scope.toggleRead()
     expect($scope.save).toHaveBeenCalled()
 
-  it 'should call LinkResource.remove when $scope.delete is called', ->
-    spyOn(mockLinkResource, 'remove').and.callThrough()
+  it 'should call ArticleResource.remove when $scope.delete is called', ->
+    spyOn(mockArticleResource, 'remove').and.callThrough()
     $scope.link = scopeLink
     $scope.delete()
-    expect(mockLinkResource.remove).toHaveBeenCalledWith id: $scope.link.id
+    expect(mockArticleResource.remove).toHaveBeenCalledWith id: $scope.link.id
 
-  it 'should set call AlertifyService.success when LinkResource.remove succeeds', ->
+  it 'should set call AlertifyService.success when ArticleResource.remove succeeds', ->
     spyOn mockAlertifyService, 'success'
     $scope.link = scopeLink
     $scope.delete()
@@ -327,13 +312,13 @@ describe 'ArticleController unit tests', ->
     $scope.save()
     expect($scope.link.category).toEqual 'My New Category'
 
-  it 'should call LinkResource.save when $scope.save is called', ->
-    spyOn(mockLinkResource, 'save').and.callThrough()
+  it 'should call ArticleResource.save when $scope.save is called', ->
+    spyOn(mockArticleResource, 'save').and.callThrough()
     $scope.link = scopeLink
     $scope.save()
-    expect(mockLinkResource.save).toHaveBeenCalledWith $scope.link
+    expect(mockArticleResource.save).toHaveBeenCalledWith $scope.link
 
-  it 'should call Alertify.success with the updated message when the LinkResource.save succeeds and an existing scopeLink is updated', ->
+  it 'should call Alertify.success with the updated message when the ArticleResource.save succeeds and an existing scopeLink is updated', ->
     spyOn mockAlertifyService, 'success'
     $scope.link = scopeLink
     $scope.originalLink = scopeLink
@@ -342,7 +327,7 @@ describe 'ArticleController unit tests', ->
     $scope.$digest()
     expect(mockAlertifyService.success).toHaveBeenCalledWith 'Link updated successfully.'
 
-  it 'should call Alertify.success with the added message when the LinkResource.save succeeds and an existing scopeLink is added', ->
+  it 'should call Alertify.success with the added message when the ArticleResource.save succeeds and an existing scopeLink is added', ->
     element = angular.element mockForm
     linker = $compile element
     element = linker $scope
@@ -355,7 +340,7 @@ describe 'ArticleController unit tests', ->
     $scope.$digest()
     expect(mockAlertifyService.success).toHaveBeenCalledWith 'Link added successfully.'
 
-  it 'should set $scope.editing to false when LinkResource.save succeeds', ->
+  it 'should set $scope.editing to false when ArticleResource.save succeeds', ->
     $scope.editing = true
     element = angular.element mockForm
     linker = $compile element
@@ -367,7 +352,7 @@ describe 'ArticleController unit tests', ->
     $scope.$digest()
     expect($scope.editing).toEqual false
 
-  it 'should $emit the linkUpdated event when LinkResource.save succeeds', ->
+  it 'should $emit the linkUpdated event when ArticleResource.save succeeds', ->
     spyOn $scope, '$emit'
     element = angular.element mockForm
     linker = $compile element
@@ -379,7 +364,7 @@ describe 'ArticleController unit tests', ->
     $scope.$digest()
     expect($scope.$emit).toHaveBeenCalledWith 'linkUpdated', $scope.link
 
-  it 'should not $emit the linkUpdated event when LinkResource.save fails', ->
+  it 'should not $emit the linkUpdated event when ArticleResource.save fails', ->
     spyOn $scope, '$emit'
     element = angular.element mockForm
     linker = $compile element
@@ -391,7 +376,7 @@ describe 'ArticleController unit tests', ->
     $scope.$digest()
     expect($scope.$emit).not.toHaveBeenCalled()
 
-  it 'should $emit the linkRead event when LinkResource.save succeeds and the read status has changed', ->
+  it 'should $emit the linkRead event when ArticleResource.save succeeds and the read status has changed', ->
     spyOn $scope, '$emit'
     element = angular.element mockForm
     linker = $compile element
@@ -404,7 +389,7 @@ describe 'ArticleController unit tests', ->
     $scope.$digest()
     expect($scope.$emit).toHaveBeenCalledWith 'linkRead', $scope.link.is_read
 
-  it 'should not $emit the linkRead event when LinkResource.save succeeds and the read status has not changed', ->
+  it 'should not $emit the linkRead event when ArticleResource.save succeeds and the read status has not changed', ->
     spyOn $scope, '$emit'
     element = angular.element mockForm
     linker = $compile element
@@ -416,7 +401,7 @@ describe 'ArticleController unit tests', ->
     $scope.$digest()
     expect($scope.$emit).not.toHaveBeenCalledWith 'linkRead', $scope.link.is_read
 
-  it 'should not set $scope.editing to false when LinkResource.save fails', ->
+  it 'should not set $scope.editing to false when ArticleResource.save fails', ->
     $scope.editing = true
     element = angular.element mockForm
     linker = $compile element
@@ -428,7 +413,7 @@ describe 'ArticleController unit tests', ->
     $scope.$digest()
     expect($scope.editing).toEqual true
 
-  it 'should set the form to pristine when it is a new link and the LinkResource.save succeeds', ->
+  it 'should set the form to pristine when it is a new link and the ArticleResource.save succeeds', ->
     element = angular.element mockForm
     linker = $compile element
     element = linker $scope
@@ -441,7 +426,7 @@ describe 'ArticleController unit tests', ->
     $scope.$digest()
     expect($scope.link_form.$pristine).toEqual true
 
-  it 'should close the modal when it is a new link and the LinkResource.save succeeds', ->
+  it 'should close the modal when it is a new link and the ArticleResource.save succeeds', ->
     spyOn $scope, '$emit'
     element = angular.element mockForm
     linker = $compile element
@@ -452,7 +437,7 @@ describe 'ArticleController unit tests', ->
     $scope.$digest()
     expect($scope.$emit).toHaveBeenCalledWith 'closeModal', scopeLink
 
-  it 'should set $scope.errorMessage to the default value when LinkResource.save fails and no error is returned', ->
+  it 'should set $scope.errorMessage to the default value when ArticleResource.save fails and no error is returned', ->
     $scope.editing = true
     element = angular.element mockForm
     linker = $compile element
@@ -464,7 +449,7 @@ describe 'ArticleController unit tests', ->
     $scope.$digest()
     expect($scope.errorMessage).toEqual 'There was an error saving the selected link.'
 
-  it 'should set $scope.errorMessage to the passed message when LinkResource.save fails and an error is returned', ->
+  it 'should set $scope.errorMessage to the passed message when ArticleResource.save fails and an error is returned', ->
     $scope.editing = true
     element = angular.element mockForm
     linker = $compile element

@@ -19,9 +19,6 @@ Route::group(['before' => 'auth'], function() {
   Route::group(['prefix' => 'game'], function(){
     @include('api/game.php');
   });
-  Route::group(['prefix' => 'link'], function(){
-    @include('api/link.php');
-  });
   Route::group(['prefix' => 'song'], function(){
     @include('api/song.php');
   });

@@ -1,4 +1,4 @@
-describe 'LinkResource test', ->
+Cdescribe 'CreditResource unit tests', ->
   CreditResource = null
   $httpBackend = null
 
