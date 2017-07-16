@@ -10,7 +10,7 @@
     </div>
     <div class="row" ng-show="user.id">
       <div class="col-lg-5 col-sm-12 panel">
-        <table class="table table-condensed table-hover">
+        <table class="table table-condensed">
           <thead>
             <tr>
               <th>Articles</th>
@@ -106,7 +106,7 @@
       </div>
       <div class="col-lg-5 col-sm-12 panel">
         <loader ng-show="loading_tasks" ng-cloak></loader>
-        <table class="table table-condensed table-hover">
+        <table class="table table-condensedr">
           <thead>
             <tr>
               <th>Tasks</th>

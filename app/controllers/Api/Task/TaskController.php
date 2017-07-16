@@ -5,6 +5,7 @@ namespace Api\Task;
 use Api\AstroBaseController;
 use Auth;
 use Illuminate\Http\Response as IlluminateResponse;
+use Task\Task;
 use Task\TaskDue;
 
 class TaskController extends AstroBaseController {
@@ -13,6 +14,20 @@ class TaskController extends AstroBaseController {
 
   public function __construct() {
     $this->user = Auth::user();
+  }
+
+  public function get() {
+    $tasks = Task::where('user_id', $this->user->id)->get();
+
+    return $this->successResponse([
+      'tasks' => $this->transformCollection($tasks),
+      'page_count' => 0,
+      'total' => count($tasks)
+    ]);
+  }
+
+  public function post($task_id) {
+    $task = Task::whereId($task_id)->firstOrFail();
   }
 
   public function delete($task_due_id) {

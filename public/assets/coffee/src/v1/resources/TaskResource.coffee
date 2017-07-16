@@ -15,9 +15,6 @@ angular.module('astroApp').factory 'TaskResource', [
       transformResponse: (response)->
         wrappedResponse = angular.fromJson response
         if wrappedResponse.tasks
-          angular.forEach wrappedResponse.tasks, (task) ->
-            if task.subTasks.length > 0
-              task.subTasks = subTaskParser(task.subTasks)
           wrappedResponse.tasks.$page_count = wrappedResponse.page_count
           wrappedResponse.tasks.$total = wrappedResponse.total
 
@@ -31,6 +28,26 @@ angular.module('astroApp').factory 'TaskResource', [
           response.resource
 
     resourceMethods =
+      projects:
+        method: 'GET'
+        params:
+          id: 'projects'
+        isArray: true
+        transformResponse: (response)->
+          wrappedResponse = angular.fromJson response
+          if wrappedResponse.projects
+            wrappedResponse.projects
+          else
+            wrappedResponse
+
+      query: angular.merge {}, arrayResponder,
+        method: 'GET'
+
+      save:
+        method: 'POST'
+        params:
+          id: '@id'
+          
       today:
         method: 'GET'
         params:
@@ -46,18 +63,6 @@ angular.module('astroApp').factory 'TaskResource', [
             parsedResponse.tasks = subTaskParser parsedResponse.tasks
 
             parsedResponse
-          else
-            wrappedResponse
-
-      projects:
-        method: 'GET'
-        params:
-          id: 'projects'
-        isArray: true
-        transformResponse: (response)->
-          wrappedResponse = angular.fromJson response
-          if wrappedResponse.projects
-            wrappedResponse.projects
           else
             wrappedResponse
 

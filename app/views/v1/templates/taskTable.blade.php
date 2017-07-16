@@ -1,6 +1,15 @@
 <table class="table table-condensed table-striped table-hover" ng-cloak>
   <tbody>
     <tr
+      ng-repeat="project in projects">
+      <td>
+        <span class="task-header">
+          {{ project.name }}
+        </span>
+        <task-table tasks="projects.tasks"></task-table>
+      </td>
+    </tr>
+    <tr
       ng-repeat="task_due in tasks"
       ng-hide="task_due.hide()">
       <td>

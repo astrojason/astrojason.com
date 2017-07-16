@@ -51,8 +51,10 @@ class TaskTablesSeeder extends Seeder
     $subTasks = Task::where('user_id', 1)->orderBy(DB::raw('RAND()'))->take(20)->get();
     foreach ($subTasks as $subTask) {
       $parentTask = Task::whereId($faker->numberBetween(1, 50))->first();
+      $parentTask->frequency = 'daily';
       $subTask->parent_task_id = $parentTask->id;
       $subTask->project_id = $parentTask->project_id;
+      $subTask->frequency = 'daily';
       $subTask->save();
     }
   }
