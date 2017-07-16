@@ -9,7 +9,6 @@ class BaseController extends Controller {
     $userNav[] = new NavItem('Games', '/games', Route::current()->getPath() == 'games');
     $userNav[] = new NavItem('Articles', '/articles', Route::current()->getPath() == 'articles');
     $userNav[] = new NavItem('Songs', '/songs', Route::current()->getPath() == 'songs');
-    $userNav[] = new NavItem('Credit Accounts', '/credit', Route::current()->getPath() == 'credit');
     View::share('userNav', $userNav);
   }
 
