@@ -9,7 +9,7 @@
       Do you have too much stuff to read, paralyzed by choices. Let me decide! Create an account now.
     </div>
     <div class="row" ng-show="user.id">
-      <div class="col-lg-5 col-sm-12 panel">
+      <div class="col-lg-9 col-sm-12 panel">
         <table class="table table-condensed">
           <thead>
             <tr>
@@ -104,24 +104,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-lg-5 col-sm-12 panel">
-        <loader ng-show="loading_tasks" ng-cloak></loader>
-        <table class="table table-condensedr">
-          <thead>
-            <tr>
-              <th>Tasks</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="no-padding">
-                <task-table tasks="tasks"></task-table>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="col-lg-2 hidden-sm">
+      <div class="col-lg-3 hidden-sm">
         <table class="table table-condensed table-hover">
           <thead>
             <tr>
