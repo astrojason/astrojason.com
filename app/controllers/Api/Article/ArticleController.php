@@ -331,6 +331,12 @@ class ArticleController extends AstroBaseController {
           $settingArticles = $settingArticles->filter(function($article){
             return !(count($article['read']) > 0);
           });
+        } else {
+          $settingArticles = $settingArticles->filter(function($article) use ($selectedArticleIds, $today) {
+            return !(in_array($article->id, $selectedArticleIds))
+              &&
+              !(in_array($today->subDay(7), $article['read']->toArray()));
+          });
         }
         if ($userSetting->category_id) {
           $settingArticles = $settingArticles->filter(function($article) use ($userSetting) {
