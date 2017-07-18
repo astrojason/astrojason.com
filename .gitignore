@@ -10,7 +10,6 @@ coverage/
 app/config/development/
 app/config/production/
 app/config/testing/
-app/storage/
 bootstrap/compiled.php
 composer.lock
 .env.local.php
