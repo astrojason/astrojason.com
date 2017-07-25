@@ -35,6 +35,16 @@ angular.module('astroApp').controller 'DashboardController', [
     $scope.songModalOpen = false
     $scope.newArticle = new ArticleResource()
 
+    $scope.$on 'article_read', (event, message)->
+      lists = ['daily_articles', 'selected_articles', 'article_results']
+
+      angular.forEach lists, (list) ->
+        angular.forEach $scope[list], (article)->
+          if article.id == message.id
+            article.read.push (new moment()).format('YYYY-MM-DD')
+      $scope.articles_read_today += 1
+      $scope.removeArticleFromList(message, 'daily_articles')
+
     $scope.$on 'userLoggedIn', ->
       $scope.initDashboard()
 

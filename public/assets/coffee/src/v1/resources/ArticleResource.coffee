@@ -1,9 +1,11 @@
 angular.module('astroApp').factory 'ArticleResource', [
   '$resource'
+  '$rootScope'
   '$log'
   '$http'
   '$uibModal'
   ($resource,
+    $rootScope,
     $log,
     $http,
     $uibModal)->
@@ -75,6 +77,7 @@ angular.module('astroApp').factory 'ArticleResource', [
       readPromise = $http.get "/api/article/#{article.id}/read"
 
       readPromise.then ->
+        $rootScope.$broadcast 'article_read', article
         article.read.push (new moment()).format('YYYY-MM-DD')
 
       readPromise

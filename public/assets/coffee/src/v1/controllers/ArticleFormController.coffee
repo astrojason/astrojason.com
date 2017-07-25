@@ -1,4 +1,5 @@
 angular.module('astroApp').controller 'ArticleFormController', [
+  '$rootScope'
   '$scope'
   '$log'
   '$timeout'
@@ -6,7 +7,9 @@ angular.module('astroApp').controller 'ArticleFormController', [
   'ArticleResource'
   'AlertifyService'
   'article'
-  ($scope,
+  (
+  $rootScope,
+  $scope,
   $log,
   $timeout,
   $uibModalInstance,
@@ -32,7 +35,7 @@ angular.module('astroApp').controller 'ArticleFormController', [
         save_promise = ArticleResource.add($scope.article).$promise
 
       save_promise.then ->
-        AlertifyService.success "Article added successfully."
+        AlertifyService.success "Article #{$scope.actionPerformed()} successfully."
         if !$scope.article.id
           $timeout ->
             $scope.article = new ArticleResource()
@@ -41,7 +44,15 @@ angular.module('astroApp').controller 'ArticleFormController', [
           , 1000
         else
           $uibModalInstance.dismiss()
+        if $scope.article.is_read
+          $rootScope.$broadcast 'article_read', $scope.article
 
     $scope.closeWindow = ->
       $uibModalInstance.dismiss()
+
+    $scope.actionPerformed = ->
+      if $scope.article.id
+        'updated'
+      else
+        'added'
 ]
