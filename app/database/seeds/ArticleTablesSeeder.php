@@ -119,7 +119,7 @@ class ArticleTablesSeeder extends Seeder {
       ->orderBy(DB::raw('RAND()'))->take(10)->get();
     DailySetting::create([
       'user_id' => 1,
-      'number' => $faker->numberBetween(1, 5)
+      'number' => 10
     ]);
     foreach ($categories as $category) {
       DailySetting::create([

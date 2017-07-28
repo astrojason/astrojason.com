@@ -187,13 +187,6 @@ angular.module('astroApp').controller 'DashboardController', [
           deleted_articles.forEach (article)->
             $scope.removeArticleFromList(article, list)
 
-    $scope.readArticle = (article, list)->
-      article.markRead().then ->
-        $scope.removeArticleFromList(article, list)
-        $scope.articles_read_today += 1
-        if article.read.length == 0
-          $scope.articles_read += 1
-
     $scope.postponeArticle = (article)->
       article.postpone().then ->
         $scope.removeArticleFromList(article, 'daily_articles')

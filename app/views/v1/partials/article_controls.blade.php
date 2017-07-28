@@ -1,7 +1,7 @@
 <div class="pull-right">
   <span
     class="glyphicon glyphicon-ok-circle text-success"
-    ng-click="readArticle(article, 'daily_articles')">
+    ng-click="article.markRead()">
   </span>
   <span
     class="glyphicon glyphicon-edit"
