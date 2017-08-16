@@ -26,6 +26,7 @@
  */
 Route::get('', 'ArticleController@query');
 Route::put('', 'ArticleController@put');
+Route::get('unread', 'ArticleController@unread');
 Route::group(['prefix' => 'category'], function(){
   Route::get('', 'CategoryController@get');
 });

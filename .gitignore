@@ -21,3 +21,4 @@ VagrantFile
 _ide_helper*
 npm-debug.log
 .ruby-version
+app/vagrant/astrojason.sql

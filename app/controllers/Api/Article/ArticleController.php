@@ -430,6 +430,19 @@ class ArticleController extends AstroBaseController {
     return $category;
   }
 
+  public function unread() {
+    /** @var Collection $results */
+    $results = Article::where('user_id', Auth::user()->id)->get();
+
+    $results = $results->filter(function($article){
+      return !(count($article->read) > 0);
+    });
+    /** @var Article $result */
+    foreach ($results as $result) {
+      print($result->url . ' | ' . $result->title . PHP_EOL);
+    }
+  }
+
   /**
    * @param $items
    * @return array
