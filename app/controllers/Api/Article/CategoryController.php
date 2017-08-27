@@ -32,6 +32,7 @@ use Api\AstroBaseController;
 use Article\Category;
 use Auth;
 use Illuminate\Http\JsonResponse;
+use Input;
 use Response;
 
 class CategoryController extends AstroBaseController {
@@ -43,10 +44,27 @@ class CategoryController extends AstroBaseController {
     return Response::json(['categories' => $this->query()]);
   }
 
+  /** @return Category[] */
   public function query() {
     return $this->transformCollection(Category::where('user_id', Auth::user()->id)->get());
   }
 
+  /**
+   * @return JsonResponse
+   */
+  public function put() {
+    $category = Category::create([
+        'name' => Input::get('name'),
+        'user_id' =>  Auth::user()->id
+      ]);
+    return Response::json(['category' => $this->transform($category)]);
+  }
+
+  /**
+   * @param Category[] $items
+   *
+   * @return array
+   */
   public function transformCollection($items) {
     $transformedItems = [];
     foreach ($items as $item) {

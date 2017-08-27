@@ -29,6 +29,7 @@ Route::put('', 'ArticleController@put');
 Route::get('unread', 'ArticleController@unread');
 Route::group(['prefix' => 'category'], function(){
   Route::get('', 'CategoryController@get');
+  Route::put('', 'CategoryController@put');
 });
 Route::get('daily', 'ArticleController@daily');
 Route::post('import', 'ArticleController@import');

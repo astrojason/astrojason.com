@@ -5,6 +5,7 @@ angular.module('astroApp').controller 'ArticleFormController', [
   '$timeout'
   '$uibModalInstance'
   'ArticleResource'
+  'ArticleCategoryResource'
   'AlertifyService'
   'article'
   (
@@ -14,13 +15,14 @@ angular.module('astroApp').controller 'ArticleFormController', [
   $timeout,
   $uibModalInstance,
   ArticleResource,
+  ArticleCategoryResource,
   AlertifyService,
   article) ->
 
     $scope.article = article
 
     $scope.init = ->
-      category_promise = ArticleResource.categories().$promise
+      category_promise = ArticleCategoryResource.get().$promise
 
       category_promise.then (response)->
         $scope.categories = response.categories
@@ -55,4 +57,21 @@ angular.module('astroApp').controller 'ArticleFormController', [
         'updated'
       else
         'added'
+
+    $scope.categoryExists = ->
+      $scope.categories.some (category) ->
+        category.name == $scope.new_category
+
+    $scope.addCategory = ->
+      if not $scope.categoryExists()
+        data =
+          name: $scope.new_category
+        category_add_promise = ArticleCategoryResource.add(data).$promise
+
+        category_add_promise.then (response)->
+          $scope.categories.push response.category
+          $scope.article.categories.push response.category
+          $scope.new_category = ''
+      else
+        alert('Category already exists')
 ]

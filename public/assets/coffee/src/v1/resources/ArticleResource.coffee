@@ -34,11 +34,6 @@ angular.module('astroApp').factory 'ArticleResource', [
       add:
         method: 'PUT'
 
-      categories:
-        method: 'GET'
-        params:
-          id: 'category'
-
       daily: angular.merge {}, arrayResponder,
         method: 'GET'
         params:
