@@ -5,7 +5,6 @@ angular.module('astroApp').controller 'ArticleController', [
   '$timeout'
   '$location'
   '$log'
-  'Link'
   'AlertifyService'
   'ArticleResource'
   ($scope,
@@ -14,7 +13,6 @@ angular.module('astroApp').controller 'ArticleController', [
     $timeout,
     $location,
     $log,
-    Link,
     AlertifyService,
     ArticleResource)->
 
@@ -27,9 +25,9 @@ angular.module('astroApp').controller 'ArticleController', [
     $scope.article_query = query_data.q || ''
     $scope.deleting = false
     $scope.errorMessage = false
-    $scope.originalLink = angular.copy $scope.link
+    $scope.originalArticle = angular.copy $scope.article
     $scope.importedCount = 0
-    $scope.loading_links = false
+    $scope.loading_articles = false
 
     $scope.initList = ->
       $scope.query()
@@ -108,7 +106,7 @@ angular.module('astroApp').controller 'ArticleController', [
       $scope.alerts = []
       submitLinks = []
       errorLinks = []
-      links = $scope.splitImports $scope.links_to_import
+      links = $scope.splitImports $scope.articles_to_import
       angular.forEach links, (link)->
         if link.trim != ''
           exploded = link.split '|'
@@ -116,7 +114,8 @@ angular.module('astroApp').controller 'ArticleController', [
             thisLink =
               url: ('http' + exploded[0]).trim()
               name: exploded[1].trim()
-            submitLinks.push thisLink
+            if(thisLink.url != '' && thisLink.name != '')
+              submitLinks.push thisLink
           else
             errorLinks.push link
       data =
@@ -132,10 +131,10 @@ angular.module('astroApp').controller 'ArticleController', [
         if imported.length > 0
           $scope.alerts.push
             type: 'success'
-            msg: "Imported #{imported.length} link(s)."
+            msg: "Imported #{imported.length} article(s)."
         if skipped.length > 0
           message = """
-            Skipped #{skipped.length} link(s).
+            <p>Skipped #{skipped.length} link(s).</p>
             <table class='table table-striped'>
           """
           angular.forEach skipped, (article)->
@@ -149,7 +148,7 @@ angular.module('astroApp').controller 'ArticleController', [
           $scope.alerts.push
             type: 'danger'
             msg: message
-        $scope.links_to_import = ''
+        $scope.articles_to_import = ''
 
       importPromise.catch ->
         $scope.errorMessage = 'There was a problem with the import'
@@ -159,7 +158,7 @@ angular.module('astroApp').controller 'ArticleController', [
         data.split 'http'
 
     $scope.checkEditing = ->
-      $scope.link?.id?
+      $scope.article?.id?
 
     $scope.closeAlert = (index)->
       $scope.alerts.splice index, 1

@@ -124,23 +124,7 @@
             <tr>
               <td>
                 <a class="btn btn-success btn-xs" ng-click="newArticle.edit()">Add Article</a>
-                <button class="btn btn-success btn-xs" ng-click="bookModalOpen = true">Add Book</button>
-                <button class="btn btn-success btn-xs" ng-click="gameModalOpen = true">Add Game</button>
               </td>
-            </tr>
-            <tr>
-              <td>
-                <button class="btn btn-success btn-xs" ng-click="songModalOpen = true">Add Song</button>
-              </td>
-            </tr>
-            <tr ng-show="books_toread" ng-cloak>
-              <td><button class="btn btn-success btn-xs" ng-click="recommendingBook = true">Book Recommendation</button></td>
-            </tr>
-            <tr ng-show="games_toplay" ng-cloak>
-              <td><button class="btn btn-success btn-xs" ng-click="recommendingGame = true">Game Recommendation</button></td>
-            </tr>
-            <tr ng-show="songs_toplay" ng-cloak>
-              <td><button class="btn btn-success btn-xs" ng-click="recommendingSong = true">Song Recommendation</button></td>
             </tr>
             <tr ng-show="total_articles || total_books" ng-cloak>
               <td>
@@ -150,102 +134,11 @@
                   <em>Today <small>({{ articles_read_today }} of 10)</small></em><br />
                   <progress max="10" value="{{ articles_read_today }}" ng-click="refreshReadCount()"></progress>
                 </div>
-                <div ng-show="total_books" ng-cloak>
-                  <h7>Books Read</h7><br />
-                  <small>{{ books_read }} of {{ total_books }} ({{ (books_read / total_books) * 100 | number:2 }}%)</small>
-                </div>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-
-    <div
-        class="modal fade"
-        id="recommendBookModal"
-        modal-visible="recommendingBook"
-        astro-modal>
-      <div
-        class="modal-dialog"
-        ng-controller="BookController"
-        ng-init="setCategories(<% $book_categories %>); recommendation_category = 'To Read'; triggerRecommender()">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Get a Book Recommendation</h4>
-          </div>
-          <div class="modal-body">
-            <loader ng-show="getting_recomendation" ng-cloak></loader>
-            <form name="book_reco_form" class="form-inline" novalidate>
-              <div class="row">
-                <div class="col-md-8">
-                  <select ng-model="recommendation_category" class="form-control">
-                    <option ng-repeat="category in categories">{{ category }}</option>
-                  </select>
-                </div>
-                <div class="col-md-4">
-                  <button class="btn btn-primary" ng-click="getRecommendation()" ng-disabled="!recommendation_category">Get Recommendation</button>
-                </div>
-              </div>
-            </form>
-            <div class="row" ng-show="book">
-              <div class="col-md-12 top-margin">
-                <div ng-class="{'alert alert-warning' : book.times_recommended > 5}">
-                  <book-form book="book" recommendation="true"></book-form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
-    <book-modal></book-modal>
-
-    <game-modal></game-modal>
-
-    <div
-      class="modal fade"
-      id="recommendGameModal"
-      astro-modal
-      modal-visible="recommendingGame">
-      <div class="modal-dialog" ng-controller="GameController" ng-init="triggerRecommender()">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Recommended Game <span class="glyphicon glyphicon-refresh tool" ng-click="getRecommendation()"></span></h4>
-          </div>
-          <div class="modal-body">
-            <div ng-class="{'alert alert-warning' : game.times_recommended > 5}">
-              <game-form game="game" recommendation="true" show-platform="true"></game-form>
-            </div>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
-    <div
-      class="modal fade"
-      id="recommendSongModal"
-      astro-modal
-      modal-visible="recommendingSong">
-      <div class="modal-dialog" ng-controller="SongController" ng-init="triggerRecommender()">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Recommended Song <span class="glyphicon glyphicon-refresh tool" ng-click="getRecommendation()"></span></h4>
-          </div>
-          <div class="modal-body">
-            <div ng-class="{'alert alert-warning' : song.times_recommended > 5}">
-              <song-form song="song"></song-form>
-            </div>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
-    <song-modal></song-modal>
-
   </div>
 @stop

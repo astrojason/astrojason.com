@@ -12,9 +12,8 @@ class HomeController extends BaseController {
       } else {
         $bookmarklet = null;
       }
-      $categoriesString = BookController::getBookCategoryString();
     }
-    return View::make('v1.index')->with('bookmarklet', $bookmarklet)->with('book_categories', $categoriesString);
+    return View::make('v1.index')->with('bookmarklet', $bookmarklet);
   }
 
   public function register() {

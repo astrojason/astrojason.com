@@ -27,12 +27,8 @@ Route::group(['before' => 'auth'], function(){
       Route::post('{dashboardCategoryId}', 'DashboardCategoryController@update');
     });
   });
-  Route::get('games', 'GameController@index');
   Route::get('articles', 'ArticleController@index');
   Route::get('readlater', 'ArticleController@readLater');
-  Route::get('songs', 'SongController@index');
-  Route::get('charts', 'ChartController@index');
-  Route::get('credit', 'CreditController@index');
 });
 
 Route::group(['prefix' => 'books'], function(){
@@ -49,10 +45,4 @@ Route::group(array('prefix' => 'templates'), function(){
 
 Route::group(['prefix' => 'modals'], function(){
   Route::get('article-form', 'ModalController@articleForm');
-  Route::get('task-form', 'ModalController@taskForm');
-  Route::get('task-delete', 'ModalController@taskDelete');
-});
-
-Route::group(['prefix' => 'react'], function(){
-  Route::get('*', 'HomeController@react');
 });

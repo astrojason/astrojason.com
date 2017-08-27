@@ -17,7 +17,6 @@
 <script type="text/javascript" src="assets/bower/moment/min/moment.min.js"></script>
 
 <script type="text/javascript" src="assets/js/v1/app.min.js"></script>
-<script type="text/javascript" src="assets/js/v1/models.min.js"></script>
 <script type="text/javascript" src="assets/js/v1/directives.min.js"></script>
 <script type="text/javascript" src="assets/js/v1/filters.min.js"></script>
 <script type="text/javascript" src="assets/js/v1/services.min.js"></script>

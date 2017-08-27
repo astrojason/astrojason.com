@@ -40,6 +40,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response as IlluminateResponse;
 use Illuminate\Http\JsonResponse;
 use Input;
+use Mockery\Exception;
 use Response;
 
 /**
@@ -213,15 +214,36 @@ class ArticleController extends AstroBaseController {
   public function import() {
     $importArticles = Input::get('importlist');
     $articles = [];
+    $errorArticles = [];
     foreach($importArticles as $importLink){
-      $params = [
-        'title' => $importLink['name'],
-        'url' => $importLink['url'],
-        'categories' => []
-      ];
-      $articles[] = $this->add(Auth::user()->id, $params);
+      $params = null;
+      try {
+        if(array_key_exists('name', $importLink) && array_key_exists('url', $importLink)) {
+          $params = [
+            'title' => $importLink['name'],
+            'url' => $importLink['url'],
+            'categories' => []
+          ];
+          $articles[] = $this->add(Auth::user()->id, $params);
+        } else {
+          $error = [
+            'article' => $importLink,
+            'message' => 'Article Missing Required Key(s)'
+          ];
+          $errorArticles[] = $error;
+        }
+      } catch (Exception $e) {
+        $error = [
+          'article' => $importLink,
+          'message' => $e->getMessage()
+        ];
+        $errorArticles[] = $error;
+      }
     }
-    return $this->successResponse(['articles' => $this->transformCollection($articles)]);
+    return $this->successResponse([
+      'articles' => $this->transformCollection($articles),
+      'errors' => $errorArticles
+    ]);
   }
 
   public function populate() {

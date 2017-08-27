@@ -32,11 +32,6 @@ class DashboardControllerTest extends TestCase {
     $this->assertTrue(array_key_exists('categories', $responseData));
     $this->assertTrue(array_key_exists('total_articles', $responseData));
     $this->assertTrue(array_key_exists('articles_read', $responseData));
-    $this->assertTrue(array_key_exists('total_books', $responseData));
-    $this->assertTrue(array_key_exists('books_read', $responseData));
-    $this->assertTrue(array_key_exists('books_toread', $responseData));
-    $this->assertTrue(array_key_exists('games_toplay', $responseData));
-    $this->assertTrue(array_key_exists('songs_toplay', $responseData));
   }
 
 }

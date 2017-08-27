@@ -46,7 +46,6 @@ module.exports = (grunt) ->
           'public/assets/js/v1/app.min.js': 'public/assets/coffee/build/v1/app.js'
           'public/assets/js/v1/bookmarklet.min.js': 'public/assets/coffee/build/v1/bookmarklet.js'
           'public/assets/js/v1/bookmarkletLoader.min.js': 'public/assets/coffee/build/v1/bookmarkletLoader.js'
-          'public/assets/js/v1/models.min.js': 'public/assets/coffee/build/v1/models/*'
           'public/assets/js/v1/controllers.min.js': 'public/assets/coffee/build/v1/controllers/*'
           'public/assets/js/v1/directives.min.js': 'public/assets/coffee/build/v1/directives/*'
           'public/assets/js/v1/filters.min.js': 'public/assets/coffee/build/v1/filters/*'

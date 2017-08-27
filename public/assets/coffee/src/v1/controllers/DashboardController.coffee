@@ -6,19 +6,13 @@ angular.module('astroApp').controller 'DashboardController', [
   'UserService'
   'DashboardResource'
   'ArticleResource'
-  'Book'
-  'Game'
-  'Song'
   ($scope,
     $location,
     $filter,
     $log,
     UserService,
     DashboardResource,
-    ArticleResource,
-    Book,
-    Game,
-    Song)->
+    ArticleResource)->
 
     $scope.display_category = $location.search().category || ''
     $scope.search_timeout = null
@@ -27,12 +21,6 @@ angular.module('astroApp').controller 'DashboardController', [
     $scope.loading_category = false
     $scope.loading_tasks = false
     $scope.updating_status = false
-    $scope.recommendingBook = false
-    $scope.recommendingGame = false
-    $scope.recommendingSong = false
-    $scope.bookModalOpen = false
-    $scope.gameModalOpen = false
-    $scope.songModalOpen = false
     $scope.newArticle = new ArticleResource()
 
     $scope.$on 'article_read', (event, message)->
@@ -70,18 +58,6 @@ angular.module('astroApp').controller 'DashboardController', [
     $scope.$watch 'is_read', (newValue, oldValue)->
       if newValue != oldValue && $scope.article_search
         $scope.search_articles()
-
-    $scope.$watch 'bookModalOpen', ->
-      if !$scope.bookModalOpen
-        $scope.newBook = new Book()
-
-    $scope.$watch 'gameModalOpen', ->
-      if !$scope.gameModalOpen
-        $scope.newGame = new Game()
-
-    $scope.$watch 'songModalOpen', ->
-      if !$scope.songModalOpen
-        $scope.newSong = new Song()
 
     $scope.getArticlesForCategory = (category, limit, randomize, update_load_count)->
       $scope.loading_category = true
@@ -150,11 +126,6 @@ angular.module('astroApp').controller 'DashboardController', [
         $scope.categories = response.categories
         $scope.total_articles = response.total_articles
         $scope.articles_read = response.articles_read
-        $scope.total_books = response.total_books
-        $scope.books_read = response.books_read
-        $scope.books_toread = response.books_toread
-        $scope.games_toplay = response.games_toplay
-        $scope.songs_toplay = response.songs_toplay
         $scope.display_categories = response.dashboard_layout
 
       daily_promise.catch ->
