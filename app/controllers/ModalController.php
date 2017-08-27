@@ -29,12 +29,4 @@ class ModalController extends BaseController {
   public function articleForm() {
     return View::make('v1.modals.articleform')->with(['title' => '', 'url' => '']);
   }
-
-  public function taskForm() {
-    return View::make('v1.modals.taskForm');
-  }
-
-  public function taskDelete() {
-    return View::make('v1.modals.taskDelete');
-  }
 }
