@@ -8,7 +8,7 @@ class HomeController extends BaseController {
     $categoriesString = null;
     if(Auth::user()) {
       if(file_exists($fileName)) {
-        $bookmarklet = str_replace('"', "'", file_get_contents($fileName));
+        $bookmarklet = str_replace('{{BASEURL}}', Config::get('App.url'), str_replace('"', "'", file_get_contents($fileName)));
       } else {
         $bookmarklet = null;
       }

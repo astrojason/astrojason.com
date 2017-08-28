@@ -1,3 +1,5 @@
+baseUrl = 'http://astro.dev'
+
 container = null
 
 window.addEventListener 'message', (e)->
@@ -25,7 +27,7 @@ addTheLink = ->
   container = $('<div />').attr('id', 'readlaterwrapper').css containerStyle
   container.on 'click', ->
     container.remove()
-  iframe = $('<iframe />').attr 'src', "http://astrojason.com/readlater?title=" + title + "&url=" + url
+  iframe = $('<iframe />').attr 'src', "#{baseUrl}/readlater?title=" + title + "&url=" + url
   iframe.css frameStyle
   container.append iframe
   $('body').append container

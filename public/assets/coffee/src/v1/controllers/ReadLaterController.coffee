@@ -4,13 +4,15 @@ angular.module('astroApp').controller 'ReadLaterController', [
   '$window'
   '$log'
   'AlertifyService'
-  'ArticleResource'
+  'ArticleResource',
+  'ArticleCategoryResource'
   ($scope,
     $timeout,
     $window,
     $log,
     AlertifyService,
-    ArticleResource)->
+    ArticleResource,
+    ArticleCategoryResource)->
       $scope.success = false
       $scope.editing = true
       $scope.error = false
@@ -25,7 +27,7 @@ angular.module('astroApp').controller 'ReadLaterController', [
         $scope.article = angular.extend {}, new_article, article
 
       $scope.init = ->
-        category_promise = ArticleResource.categories().$promise
+        category_promise = ArticleCategoryResource.get().$promise
 
         category_promise.then (response)->
           $scope.categories = response.categories
@@ -48,19 +50,20 @@ angular.module('astroApp').controller 'ReadLaterController', [
             $scope.article_form.$setPristine()
           , 1000
 
-      $scope.addCategory = ->
-        exists = false
-        angular.forEach $scope.categories, (category) ->
-          if category.name == $scope.new_category
-            exists = true
-            $scope.article.categories.push category
-        if !exists
-          newCategory =
-            id: 0
-            name: $scope.new_category
+      $scope.categoryExists = ->
+        $scope.categories.some (category) ->
+          category.name == $scope.new_category
 
-          $scope.categories.unshift newCategory
-          $scope.article.categories.push newCategory
-        $scope.new_category = ''
-        $scope.article_form.new_category.$setPristine()
+      $scope.addCategory = ->
+        if not $scope.categoryExists()
+          data =
+            name: $scope.new_category
+          category_add_promise = ArticleCategoryResource.add(data).$promise
+
+          category_add_promise.then (response)->
+            $scope.categories.push response.category
+            $scope.article.categories.push response.category
+            $scope.new_category = ''
+        else
+          alert('Category already exists')
 ]
