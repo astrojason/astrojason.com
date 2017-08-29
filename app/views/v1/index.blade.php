@@ -20,7 +20,9 @@
             <tr>
               <td>
                 <div ng-show="total_articles == 0" ng-cloak>
-                  You do not have any links, would you like me to <button class="btn btn-default" ng-click="populateLinks()">Randomize</button> some for you?
+                  You do not have any links, would you like me to
+                  <button class="btn btn-default" ng-click="populateLinks()">Randomize</button>
+                  some for you?
                 </div>
                 <div>
                   <div id="search_links" class="link_container">
@@ -28,15 +30,23 @@
                     <table class="table table-condensed table-striped table-hover">
                       <thead>
                         <tr>
-                          <th class="input-group">
-                            <div class="search-wrapper">
-                              <input type="text" ng-model="article_search" class="form-control" placeholder="Article Search" />
-                              <small
-                                class="clear-input glyphicon glyphicon-remove-circle"
-                                ng-show="article_search"
-                                ng-click="article_search = ''; article_results = []"></small>
+                          <th colspan="4">
+                            <div class="input-group col-sm-12">
+                              <div class="search-wrapper">
+                                <input type="text"
+                                       ng-model="article_search"
+                                       class="form-control"
+                                       placeholder="Article Search"/>
+                                <small
+                                  class="clear-input glyphicon glyphicon-remove-circle"
+                                  ng-show="article_search"
+                                  ng-click="article_search = ''; article_results = []"></small>
+                              </div>
+                              <div class="input-group-addon">
+                                <input type="checkbox" ng-model="is_read"/>
+                                <label>Include read</label>
+                              </div>
                             </div>
-                            <div class="input-group-addon"><input type="checkbox" ng-model="is_read" /> <label>Include read</label></div>
                           </th>
                         </tr>
                         <tr ng-show="article_results.length > 0">
@@ -71,7 +81,9 @@
                   </table>
                   <div id="category_links" class="link_selected">
                     <loader ng-show="loading_category" ng-cloak></loader>
-                    <table class="table table-condensed table-striped table-hover" ng-show="categories.length > 0" ng-cloak>
+                    <table class="table table-condensed table-striped table-hover"
+                           ng-show="categories.length > 0"
+                           ng-cloak>
                       <thead>
                         <tr>
                           <th class="input-group">
@@ -130,8 +142,14 @@
               <td>
                 <div ng-show="total_articles" ng-cloak>
                   <loader ng-show="updating_status" ng-cloak></loader>
-                  <h5>Articles Read <small>{{ articles_read }} of {{ total_articles }} ({{ (articles_read / total_articles) * 100 | number:2 }}%)</small></h5>
-                  <em>Today <small>({{ articles_read_today }} of 10)</small></em><br />
+                  <h5>Articles Read
+                    <small>{{ articles_read }} of {{ total_articles }}
+                      ({{ (articles_read / total_articles) * 100 | number:2 }}%)
+                    </small>
+                  </h5>
+                  <em>Today
+                    <small>({{ articles_read_today }} of 10)</small>
+                  </em><br/>
                   <progress max="10" value="{{ articles_read_today }}" ng-click="refreshReadCount()"></progress>
                 </div>
               </td>
