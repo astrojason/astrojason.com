@@ -36,6 +36,7 @@ use Api\AstroBaseController;
 use Auth;
 use Carbon\Carbon;
 use DB;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response as IlluminateResponse;
 use Illuminate\Http\JsonResponse;
@@ -343,7 +344,7 @@ class ArticleController extends AstroBaseController {
     if(count($dailyArticles) == 0) {
 //    Get all the postponed articles from yesterday
       $dailyArticles = $this->getPostponedArticles($userId);
-      $selectedArticleIds = array_map(function($article){return $article->id;}, $dailyArticles);
+      $selectedArticleIds = array_map(function($article){return $article['id'];}, $dailyArticles);
 //    Get the user's settings
       $userSettings = DailySetting::where('user_id', $userId)->get();
       $allArticles = Article::where('user_id', $userId)

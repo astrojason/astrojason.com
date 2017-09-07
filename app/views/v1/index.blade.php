@@ -20,7 +20,7 @@
             <tr>
               <td>
                 <div ng-show="total_articles == 0" ng-cloak>
-                  You do not have any links, would you like me to
+                  You do not have any articles, would you like me to
                   <button class="btn btn-default" ng-click="populateLinks()">Randomize</button>
                   some for you?
                 </div>
@@ -67,8 +67,24 @@
                       </tbody>
                     </table>
                   </div>
+                  <table
+                    id="active_articles"
+                    class="table table-condensed table-striped table-hover"
+                    ng-show="active_articles.length > 0"
+                    ng-cloak>
+                    <thead>
+                      <tr>
+                        <th>Active Articles</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="article in active_articles">
+                        @include('v1.partials.article_row', ['detail_view' => false])
+                      </tr>
+                    </tbody>
+                  </table>
                   <table id="daily_articles" class="table table-condensed table-striped table-hover" ng-cloak>
-                    <thead ng-show="article_results.length > 0">
+                    <thead ng-show="article_results.length > 0 || active_articles.length > 0">
                       <tr>
                         <th>Daily Articles</th>
                       </tr>

@@ -131,6 +131,11 @@ angular.module('astroApp').controller 'DashboardController', [
       daily_promise.catch ->
         $scope.$emit 'errorOccurred', 'Problem loading daily articles'
 
+      active_articles_promise = ArticleResource.query({category: 13}).$promise
+
+      active_articles_promise.then (articles)->
+        $scope.active_articles = articles
+
     $scope.populateLinks = ->
       populate_promise = ArticleResource.populate().$promise
       populate_promise.then ->
