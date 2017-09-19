@@ -7,6 +7,7 @@ angular.module('astroApp').controller 'ArticleController', [
   '$log'
   'AlertifyService'
   'ArticleResource'
+  'ArticleCategoryResource'
   ($scope,
     $controller,
     $filter,
@@ -14,7 +15,8 @@ angular.module('astroApp').controller 'ArticleController', [
     $location,
     $log,
     AlertifyService,
-    ArticleResource)->
+    ArticleResource,
+    ArticleCategoryResource)->
 
     $controller 'FormMasterController', $scope: $scope
 
@@ -28,51 +30,28 @@ angular.module('astroApp').controller 'ArticleController', [
     $scope.originalArticle = angular.copy $scope.article
     $scope.importedCount = 0
     $scope.loading_articles = false
+    $scope.watchers_init = false
+    $scope.include_read = false
+
+    all_category =
+      id: 0
+      name: 'All'
 
     $scope.initList = ->
-      $scope.query()
+      $scope.loading_articles
+      categories_promise = ArticleCategoryResource.query().$promise
 
-      categories_promise = ArticleResource.categories().$promise
+      categories_promise.then (categories)->
+        categories.unshift all_category
+        $scope.categories = categories
+        $scope.display_category = categories.find (category) ->
+          category.id == parseInt(query_data.category)
+        if !$scope.display_category
+          $scope.display_category = all_category
+        $scope.query()
 
-      categories_promise.then (response)->
-        $scope.categories = response.categories
-
-      categories_promise.catch ->
-        $log.debug 'something went wrong'
-
-      $scope.$watch 'article_query', ->
-        $timeout.cancel $scope.search_timeout
-        if !$scope.loading_articles
-          $scope.search_timeout = $timeout ->
-            $scope.query()
-          , 500
-
-      $scope.$watch 'include_read', ->
-        if !$scope.loading_articles
-          $scope.query()
-
-      $scope.$watch 'page', (newValue, oldValue)->
-        if !$scope.loading_articles
-          if newValue != oldValue
-            cur_opts = $location.search()
-            cur_opts.page = newValue
-            $location.search(cur_opts)
-            $scope.query()
-
-      $scope.$watch 'display_category', ->
-        if !$scope.loading_articles
-          $scope.query()
-
-      $scope.$watch 'sort', ->
-        if !$scope.loading_articles
-          if $scope.page > 1
-            $scope.page = 1
-          else
-            $scope.query()
-
-      $scope.$watch 'descending', ->
-        if !$scope.loading_articles
-          $scope.query()
+      categories_promise.catch (response)->
+        $log.error 'ArticleCategoryResource.query() failed', response
 
     $scope.query = ->
       $scope.articles = []
@@ -82,7 +61,7 @@ angular.module('astroApp').controller 'ArticleController', [
         page: $scope.page
       if $scope.article_query
         data['q'] = $scope.article_query
-      if $scope.display_category
+      if $scope.display_category?.id > 0
         data['category'] = $scope.display_category.id
       if $scope.include_read
         data['include_read'] = $scope.include_read
@@ -98,6 +77,11 @@ angular.module('astroApp').controller 'ArticleController', [
         $scope.total = articles.$total
         $scope.pages = articles.$page_count
         $scope.generatePages()
+        if !$scope.watchers_init
+          $scope.initWatchers()
+
+      articles_promise.catch (response)->
+        $log.error 'ArticleCategoryResource.query() failed', response
 
       articles_promise.finally ->
         $scope.loading_articles = false
@@ -171,4 +155,53 @@ angular.module('astroApp').controller 'ArticleController', [
           $scope.articles = newValue.filter (article)->
             !article.deleted
     , true
+
+    $scope.initWatchers = ->
+      $scope.watchers_init = true
+      $scope.$watch 'article_query', (newValue, oldValue)->
+        if newValue != oldValue
+          $timeout.cancel $scope.search_timeout
+          if !$scope.loading_articles
+            $log.debug 'article_query changed', oldValue, newValue
+            $scope.search_timeout = $timeout ->
+              $scope.query()
+            , 500
+
+      $scope.$watch 'include_read', (newValue, oldValue)->
+        if newValue != oldValue
+          if !$scope.loading_articles
+            $log.debug 'include_read changed', oldValue, newValue
+            $scope.query()
+
+      $scope.$watch 'page', (newValue, oldValue)->
+        if !$scope.loading_articles
+          if newValue != oldValue
+            $log.debug 'page changed'
+            cur_opts = $location.search()
+            cur_opts.page = newValue
+            $location.search(cur_opts)
+            $scope.query()
+
+      $scope.$watch 'display_category', (newValue, oldValue)->
+        if !$scope.loading_articles
+          if newValue != oldValue
+            $log.debug 'display_category changed', oldValue, newValue
+            $scope.loading_articles = true
+            $scope.page = 1
+            $scope.query()
+
+      $scope.$watch 'sort', (newValue, oldValue)->
+        if !$scope.loading_articles
+          if newValue != oldValue
+            $log.debug 'sort changed', oldValue, newValue
+            if $scope.page > 1
+              $scope.page = 1
+            else
+              $scope.query()
+
+      $scope.$watch 'descending', (newValue, oldValue)->
+        if !$scope.loading_articles
+          if newValue != oldValue
+            $log.debug 'descending changed', oldValue, newValue
+            $scope.query()
 ]

@@ -10,7 +10,7 @@
       <div class="col-md-12">
         <loader ng-show="loading_articles" ng-cloak></loader>
         <table class="table table-condensed table-striped table-hover" ng-init="initList()">
-          <thead>
+          <thead ng-hide="loading_articles">
             <tr>
               <th colspan="4">
                 Articles
@@ -48,7 +48,6 @@
                     ng-model="display_category"
                     ng-options="category as category.name for category in categories"
                     class="form-control">
-                    <option value="">All</option>
                   </select>
                 </div>
               </th>
@@ -58,13 +57,13 @@
                 <a href="#" ng-click="toggleSort('title')">Title</a>
               </th>
               <th>
-                <div class="hidden-xs" ng-show="!display_category">
+                <div class="hidden-xs">
                   Category
                   <!--a href="#" ng-click="toggleSort('category')">Category</a-->
                 </div>
               </th>
               <th>
-                <div class="hidden-xs" ng-show="!display_category">
+                <div class="hidden-xs">
                   <a href="#" ng-click="toggleSort('times_recommended')">Times Recommended</a>
                 </div>
               </th>
@@ -81,7 +80,7 @@
               @include('v1.partials.article_row', ['detail_view' => true])
             </tr>
           </tbody>
-          <tfoot ng-show="pages > 1">
+          <tfoot ng-show="pages > 1 && !loading_articles">
             <tr>
               <td colspan="4">
                 <paginator page="page" pages="pages" nav-pages="nav_pages"></paginator>

@@ -1,4 +1,4 @@
-<td class="col-xs-6" ng-class="!display_category ? 'col-md-6' : 'col-md-10'">
+<td class="col-xs-6 col-md-6">
   <ul class="list-unstyled">
     <li><a ng-href="{{ article.url }}" target="_blank">{{ article.title }}</a></li>
     <li ng-show="article.lastRead()">Last read: {{ article.lastRead() | date }}</li>
@@ -12,9 +12,8 @@
 <td>
   @if($detail_view)
     <div
-      ng-class="!display_category ? 'col-md-6' : 'col-md-10'"
-      class="col-md-2 hidden-xs"
-      ng-show="!display_category">
+      class="col-md-2 hidden-xs col-md-6"
+      ng-hide="display_category.id > 0">
       {{ article.recommended.length }}
     </div>
   @endif
