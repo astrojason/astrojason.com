@@ -1,5 +1,6 @@
 angular.module('astroApp').controller 'DashboardController', [
   '$scope'
+  '$q'
   '$location'
   '$filter'
   '$log'
@@ -7,6 +8,7 @@ angular.module('astroApp').controller 'DashboardController', [
   'DashboardResource'
   'ArticleResource'
   ($scope,
+    $q,
     $location,
     $filter,
     $log,
@@ -38,26 +40,6 @@ angular.module('astroApp').controller 'DashboardController', [
 
     $scope.$on 'userLoggedOut', ->
       $scope.initDashboard()
-
-    $scope.$on 'closeModal', ->
-      $scope.bookModalOpen = false
-      $scope.gameModalOpen = false
-      $scope.songModalOpen = false
-
-    $scope.$watch 'display_category', (newValue)->
-      if newValue != ''
-        $scope.getArticlesForCategory newValue, 10, true, false, true
-
-    $scope.$watch 'article_search', (newValue)->
-      if newValue
-        $scope.searching = true
-        $scope.search_articles()
-      else
-        $scope.article_results = []
-
-    $scope.$watch 'is_read', (newValue, oldValue)->
-      if newValue != oldValue && $scope.article_search
-        $scope.search_articles()
 
     $scope.getArticlesForCategory = (category, limit, randomize, update_load_count)->
       $scope.loading_category = true
@@ -136,6 +118,9 @@ angular.module('astroApp').controller 'DashboardController', [
       active_articles_promise.then (articles)->
         $scope.active_articles = articles
 
+      $q.all([articles_promise, daily_promise, active_articles_promise]).then ->
+        $scope.initWatchers()
+
     $scope.populateLinks = ->
       populate_promise = ArticleResource.populate().$promise
       populate_promise.then ->
@@ -167,15 +152,31 @@ angular.module('astroApp').controller 'DashboardController', [
       article.postpone().then ->
         $scope.removeArticleFromList(article, 'daily_articles')
 
-    $scope.$watch 'daily_articles', ->
-      $scope.filterDeletedArticles('daily_articles')
-    , true
+    $scope.initWatchers = ->
+      $scope.$watch 'display_category', (newValue)->
+        if newValue != ''
+          $scope.getArticlesForCategory newValue, 10, true, false, true
 
-    $scope.$watch 'selected_articles', ->
-      $scope.filterDeletedArticles('selected_articles')
-    , true
+      $scope.$watch 'article_search', (newValue)->
+        if newValue
+          $scope.searching = true
+          $scope.search_articles()
+        else
+          $scope.article_results = []
 
-    $scope.$watch 'article_results', ->
-      $scope.filterDeletedArticles('article_results')
-    , true
+      $scope.$watch 'is_read', (newValue, oldValue)->
+        if newValue != oldValue && $scope.article_search
+          $scope.search_articles()
+
+      $scope.$watch 'daily_articles', ->
+        $scope.filterDeletedArticles('daily_articles')
+      , true
+
+      $scope.$watch 'selected_articles', ->
+        $scope.filterDeletedArticles('selected_articles')
+      , true
+
+      $scope.$watch 'article_results', ->
+        $scope.filterDeletedArticles('article_results')
+      , true
 ]

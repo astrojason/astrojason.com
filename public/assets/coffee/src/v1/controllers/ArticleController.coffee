@@ -86,7 +86,7 @@ angular.module('astroApp').controller 'ArticleController', [
       articles_promise.finally ->
         $scope.loading_articles = false
 
-    $scope.importLinks = ->
+    $scope.importArticles = ->
       $scope.alerts = []
       submitLinks = []
       errorLinks = []

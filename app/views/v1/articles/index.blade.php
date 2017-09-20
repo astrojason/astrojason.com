@@ -110,11 +110,11 @@
               close="closeAlert($index)">
             </uib-alert>
             <textarea
-              ng-model="links_to_import"
+              ng-model="articles_to_import"
               class="form-control"></textarea>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="importLinks()">Import</button>
+            <button class="btn btn-primary" ng-click="importArticles()">Import</button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->

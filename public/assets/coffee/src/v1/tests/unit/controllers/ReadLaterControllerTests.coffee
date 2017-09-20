@@ -8,7 +8,7 @@ describe 'ReadLaterController unit tests', ->
 
   beforeEach ->
     module 'astroApp'
-    inject ($rootScope, $controller, $q, _$timeout_, _$window_)->
+    inject ($rootScope, $controller, $q, $compile, _$timeout_, _$window_)->
       $scope = $rootScope.$new()
       $timeout = _$timeout_
       $window = _$window_
@@ -24,6 +24,11 @@ describe 'ReadLaterController unit tests', ->
         ArticleResource: mockArticleResource
 
       ReadLaterController = $controller 'ReadLaterController', mockInjections
+
+      formElem = angular.element('<form name="article_form"></form>')
+      $compile(formElem)($scope)
+
+      $scope.$apply()
 
   it '$scope.success should be false on init', ->
     expect($scope.success).toEqual false

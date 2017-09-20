@@ -16,24 +16,31 @@ describe 'DashboardController tests', ->
 
   beforeEach ->
     module 'astroApp'
-    inject ($rootScope, $controller, _$timeout_, _$httpBackend_, $q)->
+    inject ($rootScope, $controller, _$timeout_, _$httpBackend_, $q, _ArticleResource_)->
       $scope = $rootScope.$new()
       $timeout = _$timeout_
       $httpBackend = _$httpBackend_
+      mockArticleResource = _ArticleResource_
 
-      mockArticleResource =
-        query: ->
-          mockArticleQuery = $q.defer()
-          $promise: mockArticleQuery.promise
-        daily: ->
-          mockArticleDailyQuery = $q.defer()
-          $promise: mockArticleDailyQuery.promise
-        populate: ->
-          mockArticlePopulate = $q.defer()
-          $promise: mockArticlePopulate.promise
-        readToday: ->
-          mockArticleReadToday = $q.defer()
-          $promise: mockArticleReadToday.promise
+      spyOn(mockArticleResource, 'query').and.callFake(() ->
+        mockArticleQuery = $q.defer()
+        $promise: mockArticleQuery.promise
+      )
+
+      spyOn(mockArticleResource, 'daily').and.callFake(() ->
+        mockArticleDailyQuery = $q.defer()
+        $promise: mockArticleDailyQuery.promise
+      )
+
+      spyOn(mockArticleResource, 'populate').and.callFake(() ->
+        mockArticlePopulate = $q.defer()
+        $promise: mockArticlePopulate.promise
+      )
+
+      spyOn(mockArticleResource, 'readToday').and.callFake(() ->
+        mockArticleReadToday = $q.defer()
+        $promise: mockArticleReadToday.promise
+      )
 
       mockUserService =
         get: ->
@@ -66,24 +73,6 @@ describe 'DashboardController tests', ->
   it 'should set loading_category to the default value', ->
     expect($scope.loading_category).toEqual false
 
-  it 'should set recommendingBook to the default value', ->
-    expect($scope.recommendingBook).toEqual false
-
-  it 'should set recommendingGame to the default value', ->
-    expect($scope.recommendingGame).toEqual false
-
-  it 'should set recommendingSong to the default value', ->
-    expect($scope.recommendingSong).toEqual false
-
-  it 'should set bookModalOpen to the default value', ->
-    expect($scope.bookModalOpen).toEqual false
-
-  it 'should set gameModalOpen to the default value', ->
-    expect($scope.gameModalOpen).toEqual false
-
-  it 'should set songModalOpen to the default value', ->
-    expect($scope.songModalOpen).toEqual false
-
   it 'should call initDashboard when userLoggedIn is broadcast', ->
     spyOn($scope, 'initDashboard').and.returnValue true
     $scope.$broadcast 'userLoggedIn'
@@ -96,25 +85,8 @@ describe 'DashboardController tests', ->
     $scope.$digest()
     expect($scope.initDashboard).toHaveBeenCalled()
 
-  it 'should set bookModalOpen to false when closeModal is broadcast', ->
-    $scope.bookModalOpen = true
-    $scope.$broadcast 'closeModal'
-    $scope.$digest()
-    expect($scope.bookModalOpen).toEqual false
-
-  it 'should set gameModalOpen to false when closeModal is broadcast', ->
-    $scope.gameModalOpen = true
-    $scope.$broadcast 'closeModal'
-    $scope.$digest()
-    expect($scope.gameModalOpen).toEqual false
-
-  it 'should set songModalOpen to false when closeModal is broadcast', ->
-    $scope.songModalOpen = true
-    $scope.$broadcast 'closeModal'
-    $scope.$digest()
-    expect($scope.songModalOpen).toEqual false
-
   it 'should call getArticlesForCategory when display_category is changed and it has a value', ->
+    $scope.initWatchers()
     spyOn($scope, 'getArticlesForCategory').and.returnValue true
     $scope.display_category = 'Test'
     $scope.$digest()
@@ -127,11 +99,13 @@ describe 'DashboardController tests', ->
     expect($scope.getArticlesForCategory).not.toHaveBeenCalled()
 
   it 'should set $scope.searching to true when article_search changes', ->
+    $scope.initWatchers()
     $scope.article_search = 'test'
     $scope.$digest()
     expect($scope.searching).toEqual true
 
   it 'should call $scope.search_articles if article_search is long enough', ->
+    $scope.initWatchers()
     spyOn($scope, 'search_articles').and.returnValue true
     $scope.article_search = 'test'
     $scope.$digest()
@@ -140,16 +114,8 @@ describe 'DashboardController tests', ->
     $timeout.flush()
     expect($scope.search_articles).toHaveBeenCalled()
 
-  it 'should not call $scope.search_articles if article_search is not long enough', ->
-    spyOn($scope, 'search_articles').and.returnValue true
-    $scope.article_search = 'te'
-    $scope.$digest()
-    #    This is necessary since there will be no timeout created if the code works properly
-    $timeout ->
-    $timeout.flush()
-    expect($scope.search_articles).not.toHaveBeenCalled()
-
   it 'should call $scope.search_articles when there is a long enough search term and is_read is changed', ->
+    $scope.initWatchers()
     spyOn($scope, 'search_articles').and.returnValue true
     $scope.article_search = 'test'
     $scope.$digest()
@@ -171,7 +137,6 @@ describe 'DashboardController tests', ->
     expect($scope.loading_category).toEqual true
 
   it 'should call ArticleResource.query when $scope.getArticlesForCategory is called', ->
-    spyOn(mockArticleResource, 'query').and.callThrough()
     $scope.getArticlesForCategory 'Daily'
     expect(mockArticleResource.query).toHaveBeenCalled()
 
@@ -208,13 +173,13 @@ describe 'DashboardController tests', ->
 
   it 'should set $scope.article_results to the returned values when ArticleResource.query succeeds', ->
     $scope.search_articles()
-    mockArticleQuery.resolve angular.copy(mockArticleQueryResponse.links)
+    mockArticleQuery.resolve angular.copy(mockArticleQueryResponse.articles)
     $scope.$digest()
-    expect($scope.article_results).toEqual mockArticleQueryResponse.links
+    expect($scope.article_results).toEqual mockArticleQueryResponse.articles
 
   it 'should set $scope.searching to false when ArticleResource.query succeeds', ->
     $scope.search_articles()
-    mockArticleQuery.resolve angular.copy(mockArticleQueryResponse.links)
+    mockArticleQuery.resolve angular.copy(mockArticleQueryResponse.articles)
     $scope.$digest()
     expect($scope.loading_category).toEqual false
 
@@ -276,45 +241,14 @@ describe 'DashboardController tests', ->
     $scope.$digest()
     expect($scope.articles_read).toEqual mockDashboardQueryResponse.articles_read
 
-  it 'should set the total_books value to what is returned from DashboardResource.get on success', ->
-    $scope.loadDashboard()
-    mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
-    $scope.$digest()
-    expect($scope.total_books).toEqual mockDashboardQueryResponse.total_books
-
-  it 'should set the books_read value to what is returned from DashboardResource.get on success', ->
-    $scope.loadDashboard()
-    mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
-    $scope.$digest()
-    expect($scope.books_read).toEqual mockDashboardQueryResponse.books_read
-
-  it 'should set the books_toread value to what is returned from DashboardResource.get on success', ->
-    $scope.loadDashboard()
-    mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
-    $scope.$digest()
-    expect($scope.books_toread).toEqual mockDashboardQueryResponse.books_toread
-
-  it 'should set the games_toplay value to what is returned from DashboardResource.get on success', ->
-    $scope.loadDashboard()
-    mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
-    $scope.$digest()
-    expect($scope.games_toplay).toEqual mockDashboardQueryResponse.games_toplay
-
-  it 'should set the songs_toplay value to what is returned from DashboardResource.get on success', ->
-    $scope.loadDashboard()
-    mockDashboardGet.resolve angular.copy(mockDashboardQueryResponse)
-    $scope.$digest()
-    expect($scope.songs_toplay).toEqual mockDashboardQueryResponse.songs_toplay
-
   it 'should emit an error when Dashboard.get fails', ->
     spyOn($scope, '$emit').and.callThrough()
     $scope.loadDashboard()
     mockDashboardGet.reject()
     $scope.$digest()
-    expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Problem loading daily results'
+    expect($scope.$emit).toHaveBeenCalledWith 'errorOccurred', 'Problem loading daily articles'
 
   it 'should call ArticleResource.populate when populateLinks is called', ->
-    spyOn(mockArticleResource, 'populate').and.callThrough()
     $scope.populateLinks()
     expect(mockArticleResource.populate).toHaveBeenCalled()
 
@@ -335,6 +269,5 @@ describe 'DashboardController tests', ->
     expect($scope.loadDashboard).not.toHaveBeenCalled()
 
   it 'should call ArticleResource.readToday when $scope.refreshReadCount is called', ->
-    spyOn(mockArticleResource, 'readToday').and.callThrough()
     $scope.refreshReadCount()
     expect(mockArticleResource.readToday).toHaveBeenCalled()

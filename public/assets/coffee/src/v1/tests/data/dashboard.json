@@ -1,0 +1,175 @@
+{
+  "articles_read_today": 0,
+  "categories": [
+    {
+      "id": 1,
+      "name": "Guitar"
+    },
+    {
+      "id": 2,
+      "name": "Recipe"
+    },
+    {
+      "id": 3,
+      "name": "Goalie"
+    },
+    {
+      "id": 4,
+      "name": "Defenseman"
+    },
+    {
+      "id": 5,
+      "name": "For Review"
+    },
+    {
+      "id": 6,
+      "name": "Hockey Workout"
+    },
+    {
+      "id": 7,
+      "name": "Software Development"
+    },
+    {
+      "id": 8,
+      "name": "Piano"
+    },
+    {
+      "id": 9,
+      "name": "Music"
+    },
+    {
+      "id": 10,
+      "name": "Hockey Skills"
+    },
+    {
+      "id": 11,
+      "name": "Javascript"
+    },
+    {
+      "id": 12,
+      "name": "IDE"
+    },
+    {
+      "id": 13,
+      "name": "1 - Active"
+    },
+    {
+      "id": 14,
+      "name": "Photography"
+    },
+    {
+      "id": 15,
+      "name": "CSS"
+    },
+    {
+      "id": 16,
+      "name": "Dessert"
+    },
+    {
+      "id": 17,
+      "name": "Cooking"
+    },
+    {
+      "id": 18,
+      "name": "Tutorial"
+    },
+    {
+      "id": 19,
+      "name": "Breakfast"
+    },
+    {
+      "id": 20,
+      "name": "Smoking"
+    },
+    {
+      "id": 21,
+      "name": "React"
+    },
+    {
+      "id": 22,
+      "name": "Tools"
+    },
+    {
+      "id": 23,
+      "name": "Fish"
+    },
+    {
+      "id": 24,
+      "name": "Electron"
+    },
+    {
+      "id": 25,
+      "name": "Node"
+    },
+    {
+      "id": 26,
+      "name": "jQuery"
+    },
+    {
+      "id": 27,
+      "name": "DIY"
+    },
+    {
+      "id": 28,
+      "name": "Projects"
+    },
+    {
+      "id": 29,
+      "name": "Snack"
+    },
+    {
+      "id": 30,
+      "name": "Angular 2"
+    },
+    {
+      "id": 31,
+      "name": "Exercise"
+    },
+    {
+      "id": 32,
+      "name": "Redux"
+    },
+    {
+      "id": 33,
+      "name": "Immutable.js"
+    },
+    {
+      "id": 34,
+      "name": "Angular"
+    },
+    {
+      "id": 35,
+      "name": "Hockey Training"
+    },
+    {
+      "id": 36,
+      "name": "Coaching"
+    },
+    {
+      "id": 37,
+      "name": "Jazz"
+    },
+    {
+      "id": 38,
+      "name": "Baking"
+    },
+    {
+      "id": 39,
+      "name": "2 - Next"
+    },
+    {
+      "id": 40,
+      "name": "Vegan"
+    },
+    {
+      "id": 41,
+      "name": "Skating"
+    },
+    {
+      "id": 42,
+      "name": "Alton Brown"
+    }
+  ],
+  "total_articles": 3068,
+  "articles_read": 24
+}
